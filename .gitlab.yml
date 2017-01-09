@@ -1,0 +1,118 @@
+image: docker:latest
+
+# When using dind, it's wise to use the overlayfs driver for
+# improved performance.
+variables:
+  DOCKER_DRIVER: overlay
+  CONTAINER_TEST_IMAGE: sources.meta-it.fr:4567/euskal-moneta/cel:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: sources.meta-it.fr:4567/euskal-moneta/cel
+
+services:
+  - docker:dind
+
+before_script:
+  # This code allows to use SSH with public key authentication
+  # See https://docs.gitlab.com/ce/ci/ssh_keys/README.html
+  - 'which ssh-agent || ( apk --update --no-cache add openssh-client )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" > /tmp/ssh_key
+  - chmod 600 /tmp/ssh_key
+  - ssh-add /tmp/ssh_key
+  - rm /tmp/ssh_key
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  
+  - docker info
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN sources.meta-it.fr:4567
+
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+build_job:
+  stage: build
+  script:
+    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+  tags:
+    - docker
+
+test_job_develop:
+  stage: test
+  variables:
+    ODOO_CONTAINER_TAG: dev
+  script:
+    - bash test.sh
+  only:
+    - develop
+  tags:
+    - docker
+
+release_job:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:latest
+    - docker push $CONTAINER_RELEASE_IMAGE:latest
+  only:
+    - master
+  tags:
+    - docker
+
+release_job_staging:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:release
+    - docker push $CONTAINER_RELEASE_IMAGE:release
+  only:
+    - /^release-.*$/
+  tags:
+    - docker
+
+release_job_develop:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:dev
+    - docker push $CONTAINER_RELEASE_IMAGE:dev
+  only:
+    - develop
+  tags:
+    - docker
+
+deploy_job_develop:
+  stage: deploy
+  script:
+    # Update build repository
+    - cd /home/meta-it/sources/eusko-develop
+    - git pull
+    # Restart stack
+    - docker-compose pull bureaudechange
+    - docker-compose stop
+    - docker-compose rm -f bureaudechange
+    - docker-compose up -d
+  only:
+    - develop
+  tags:
+    - meta-it-f3
+  environment: dev
+
+deploy_job_staging:
+  stage: deploy
+  script:
+    # Update build repository
+    - cd /home/meta-it/sources/euskal-moneta
+    - git pull
+    # Restart stack
+    - docker-compose pull bureaudechange
+    - docker-compose stop
+    - docker-compose rm -f bureaudechange
+    - docker-compose up -d
+  only:
+    - /^release-.*$/
+  tags:
+    - eusko-integration
+  environment: staging

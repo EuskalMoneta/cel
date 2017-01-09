@@ -1,0 +1,26 @@
+*.pyc
+__pycache__/
+*.db
+.~lock*
+.cache/
+
+data/
+log/
+old/
+
+db.sqlite3
+eusko.sublime-project
+eusko.sublime-workspace
+
+# NodeJS / npm
+npm-debug.log
+
+## webpack & bundles
+bundles/
+webpack-stats.json
+
+## Dependency directories
+node_modules/
+
+## Optional npm cache directory
+.npm/

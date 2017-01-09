@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  cel:
+    build: .
+    container_name: cel
+    volumes:
+      - ./src/cel:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8003:8000
+    environment:
+      - API_PUBLIC_URL=http://localhost:8000
+      - API_INTERNAL_URL=http://api:8000
+      - DJANGO_DEBUG=True
+    networks:
+      - eusko_net
+
+networks:
+  eusko_net:
+    external:
+      name: api_eusko_net

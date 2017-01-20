@@ -1,4 +1,4 @@
-"""gi URL Configuration
+"""cel URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -33,9 +33,13 @@ urlpatterns = [
     # login
     url(r'^login/?$', login_view, name='login'),
     # logout
-    url(r'^logout/?$', logout, {'next_page': reverse_lazy('home')}, name='logout'),
+    url(r'^logout/?$', logout, {'next_page': reverse_lazy('login')}, name='logout'),
     # change-password
     url(r'^change-password/?$', base_views.change_password, name='change-password'),
+    # first-time
+    url(r'^first-time/?$', adherents_views.first_time, name='first-time'),
+    # lost-password
+    url(r'^lost-password/?$', adherents_views.lost_password, name='lost-password'),
 
     # home
     url(r'^$', adherents_views.index, name='home'),

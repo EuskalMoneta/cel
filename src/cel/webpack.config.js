@@ -28,6 +28,7 @@ module.exports = Object.keys(languages).map(function(language) {
             Base: './static/js/base',
             ChangePassword: './static/js/change-password',
             Login: './static/js/login',
+            FirstTime: './static/js/first-time',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

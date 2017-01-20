@@ -72,7 +72,7 @@ class LoginPage extends React.Component {
     handleChange = (event) => {
         // /!\ I had to use a callback function (validateForm) /!\
         // setState() does not immediately mutate this.state but creates a pending state transition
-        // See Notes: https://facebook.github.io/react/docs/component-api.html#setstate
+        // See Notes: https://facebook.github.io/react/docs/react-component.html#setstate
         this.setState({
             [event.target.name]: event.target.value,
             invalidLogin: false
@@ -171,7 +171,7 @@ class LoginPage extends React.Component {
                                    name="username" id="username"
                                    value={this.state.username}
                                    onChange={this.handleChange}
-                                   placeholder={__('Identifiant')}
+                                   placeholder={__("Identifiant ou Email")}
                                    disabled={this.state.displaySpinner}
                                    required
                             />
@@ -190,6 +190,15 @@ class LoginPage extends React.Component {
                             <input type="submit" className="btn btn-lg btn-success btn-block"
                                    defaultValue={__("Se connecter")} formNoValidate={true}
                                    disabled={!this.state.canSubmit} />
+
+                            <div className="links-login">
+                                <div className="row">
+                                    <a href="/first-time">{__("Première connexion ?")}</a>
+                                </div>
+                                <div className="row">
+                                    <a href="/lost-password">{__("J'ai perdu mon mot de passe")}</a>
+                                </div>
+                            </div>
                     </LoginForm>
                 </div>
             </div>
@@ -204,6 +213,6 @@ ReactDOM.render(
 )
 
 ReactDOM.render(
-    <NavbarTitle />,
+    <NavbarTitle title={__("Compte en ligne Eusko")}/>,
     document.getElementById('navbar-title')
 )

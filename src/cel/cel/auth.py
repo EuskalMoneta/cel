@@ -26,7 +26,7 @@ class CELAuthBackend(object):
                 log.critical('Identifiant ou Mot de passe invalide.')
                 raise PermissionDenied()
         except requests.exceptions.RequestException as e:
-            log.critical('GIAuthBackend - RequestException: {}'.format(e))
+            log.critical('CELAuthBackend - RequestException: {}'.format(e))
             log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
             raise PermissionDenied()
 
@@ -48,7 +48,7 @@ class CELAuthBackend(object):
                 log.critical('Identifiant ou Mot de passe invalide.')
                 raise PermissionDenied()
         except requests.exceptions.RequestException as e:
-            log.critical('GIAuthBackend - RequestException: {}'.format(e))
+            log.critical('CELAuthBackend - RequestException: {}'.format(e))
             log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
             raise PermissionDenied()
 

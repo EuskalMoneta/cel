@@ -22,7 +22,7 @@ moment.locale(document.documentElement.lang)
 moment().utcOffset("+01:00")
 
 // Setup raven (Sentry client)
-Raven.config('http://02c622eee5004e9fa9b661395e6ca409@localhost:8081/3').install()
+// Raven.config('http://02c622eee5004e9fa9b661395e6ca409@localhost:8081/3').install()
 
 
 ReactDOM.render(
@@ -31,7 +31,7 @@ ReactDOM.render(
 )
 
 // The 'id' field is mandatory!
-const navbarObjects = [{href: '/mon-compte', label: __("Mon compte"), id: 0},
+const navbarObjects = [{href: '/', label: __("Mon profil"), id: 0},
                        ]
 
 ReactDOM.render(

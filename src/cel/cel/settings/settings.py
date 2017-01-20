@@ -73,7 +73,7 @@ CSP_FONT_SRC = ["'self'", "http://fonts.gstatic.com"]
 CSP_SCRIPT_SRC = ["'self'"]
 CSP_IMG_SRC = ["'self'", "data: image:"]
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'", "http://fonts.googleapis.com", "data: blob:"]
-CSP_CONNECT_SRC = ["'self'", API_PUBLIC_URL, "http://localhost:8002", "http://localhost:8081"]
+CSP_CONNECT_SRC = ["'self'", API_PUBLIC_URL, "http://localhost:8003", "http://localhost:8081"]
 
 ROOT_URLCONF = 'cel.urls'
 
@@ -86,8 +86,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(os.path.dirname(BASE_DIR), 'templates'),
-                 os.path.join(os.path.dirname(BASE_DIR), 'cel', 'templates'),
-                 os.path.join(os.path.dirname(BASE_DIR), 'base', 'templates'), ],
+                 os.path.join(os.path.dirname(BASE_DIR), 'adherents', 'templates'),
+                 os.path.join(os.path.dirname(BASE_DIR), 'base', 'templates'),
+                 os.path.join(os.path.dirname(BASE_DIR), 'cel', 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

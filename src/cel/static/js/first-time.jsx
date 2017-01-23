@@ -84,10 +84,10 @@ class FirstTimePage extends React.Component {
 
     onFieldChange = (event, value) => {
         if (event == "login") {
-            this.setState({[event]: value.toUpperCase()})
+            this.setState({[event]: value.toUpperCase(), invalidData: false})
         }
         else {
-            this.setState({[event]: value})
+            this.setState({[event]: value, invalidData: false})
         }
     }
 

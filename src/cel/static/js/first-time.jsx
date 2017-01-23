@@ -1,5 +1,5 @@
 import {
-    fetchAuth,
+    fetchNoAuth,
     getAPIBaseURL,
     NavbarTitle,
     isMemberIdEusko
@@ -15,6 +15,8 @@ Formsy.addValidationRule('isMemberIdEusko', isMemberIdEusko)
 
 
 import classNames from 'classnames'
+
+import ReactSpinner from 'react-spinjs'
 
 const {
     ToastContainer
@@ -51,6 +53,41 @@ class FirstTimePage extends React.Component {
         this.state = {
             canSubmit: false,
             validFields: false,
+            login: undefined,
+            email: undefined,
+            invalidData: false,
+            displaySpinner: false,
+            spinnerConfig: {
+                lines: 13, // The number of lines to draw
+                length: 28, // The length of each line
+                width: 14, // The line thickness
+                radius: 42, // The radius of the inner circle
+                scale: 0.5, // Scales overall size of the spinner
+                corners: 1, // Corner roundness (0..1)
+                color: '#000', // #rgb or #rrggbb or array of colors
+                opacity: 0.25, // Opacity of the lines
+                rotate: 0, // The rotation offset
+                direction: 1, // 1: clockwise, -1: counterclockwise
+                speed: 1, // Rounds per second
+                trail: 60, // Afterglow percentage
+                fps: 20, // Frames per second when using setTimeout() as a fallback for CSS
+                zIndex: 2e9, // The z-index (defaults to 2000000000)
+                className: 'spinner', // The CSS class to assign to the spinner
+                top: '62%', // Top position relative to parent
+                left: '50%', // Left position relative to parent
+                shadow: false, // Whether to render a shadow
+                hwaccel: false, // Whether to use hardware acceleration
+                position: 'absolute' // Element positioning
+            },
+        }
+    }
+
+    onFieldChange = (event, value) => {
+        if (event == "login") {
+            this.setState({[event]: value.toUpperCase()})
+        }
+        else {
+            this.setState({[event]: value})
         }
     }
 
@@ -62,95 +99,119 @@ class FirstTimePage extends React.Component {
         this.setState({canSubmit: false})
     }
 
-    validFields = () => {
-        this.setState({validFields: true})
-    }
-
     submitForm = (data) => {
-        this.disableButton()
-
-        data.member_login = this.state.member.login
-        data.payment_mode = this.state.paymentMode.cyclos_id
-        data.payment_mode_name = this.state.paymentMode.label
+        // Trigger <ReactSpinner /> to disable login form
+        this.setState({displaySpinner: true, canSubmit: false})
 
         var computeForm = (data) => {
-            this.refs.container.success(
-                __("L'enregistrement s'est déroulé correctement."),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
-
-            setTimeout(() => window.location.assign("/members/" + document.getElementById("member_id").value), 3000)
+            // setTimeout(() => window.location.assign("/login"), 3000)
         }
 
         var promiseError = (err) => {
-            // Error during request, or parsing NOK :(
-            this.enableButton()
-
+            setTimeout(() => {}, 30000)
             console.error(this.props.url, err)
-            this.refs.container.error(
-                __("Une erreur s'est produite lors de l'enregistrement, vérifiez si le solde est bien disponible !"),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
+            // Highlight login/password fields !
+            this.setState({invalidData: true, displaySpinner: false, canSubmit: false})
         }
-        fetchAuth(this.props.url, this.props.method, computeForm, data, promiseError)
+        fetchNoAuth(this.props.url, this.props.method, computeForm, data, promiseError)
     }
 
     render = () => {
-        var divAmountClass = classNames({
-            'form-group row': true,
-            'has-error has-feedback': this.state.amountInvalid,
+        var parentDivClasses = classNames({
+            'has-spinner': this.state.displaySpinner,
         })
 
+        var divClasses = classNames({
+            'has-error': this.state.invalidData,
+        })
+
+        if (this.state.invalidData) {
+            var messageInvalidData = (
+                <div className="alert alert-danger">
+                    {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
+                </div>
+            )
+            var returnToLogin = (
+                <Row layout="horizontal" elementWrapperClassName="margin-top">
+                    <a href="/contact">{__("Formulaire de contact")}</a>
+                </Row>
+            )
+        }
+        else {
+            var messageInvalidData = null
+            var returnToLogin = (
+                <Row layout="horizontal" elementWrapperClassName="margin-top">
+                    <a href="/login">{__("Se connecter")}</a>
+                </Row>
+            )
+        }
+
+        if (this.state.displaySpinner)
+            var spinner = <ReactSpinner config={this.state.spinnerConfig} />
+        else
+            var spinner = null
+
         return (
-            <div className="row">
-                <FirstTimeForm
-                    onValidSubmit={this.submitForm}
-                    onInvalid={this.disableButton}
-                    onValid={this.validFields}
-                    ref="first-time">
-                    <fieldset>
-                        <Input
-                            name="amount"
-                            data-eusko="first-time-amount"
-                            value=""
-                            label={__("Montant")}
-                            type="number"
-                            placeholder={__("Montant du change")}
-                            validations="isMemberIdEusko"
-                            validationErrors={{
-                                isMemberIdEusko: __("Montant invalide.")
-                            }}
-                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
-                            required
-                        />
-                    </fieldset>
-                    <fieldset>
-                        <Row layout="horizontal">
-                            <input
-                                name="submit"
-                                data-eusko="first-time-submit"
-                                type="submit"
-                                defaultValue={__("Valider")}
-                                className="btn btn-success"
-                                formNoValidate={true}
-                                disabled={!this.state.canSubmit}
+            <div className={parentDivClasses}>
+                {spinner}
+                <div className={divClasses}>
+                    <FirstTimeForm
+                        onValidSubmit={this.submitForm}
+                        onInvalid={this.disableButton}
+                        onValid={this.enableButton}
+                        ref="first-time">
+                        <fieldset>
+                            <Input
+                                name="login"
+                                data-eusko="first-time-login"
+                                value=""
+                                label={__("N° adhérent")}
+                                type="text"
+                                placeholder={__("N° adhérent")}
+                                help={__("Format: E12345")}
+                                onChange={this.onFieldChange}
+                                validations="isMemberIdEusko"
+                                validationErrors={{
+                                    isMemberIdEusko: __("Ceci n'est pas un N° adhérent Eusko valide.")
+                                }}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
+                                required
                             />
-                        </Row>
-                    </fieldset>
-                </FirstTimeForm>
-                <ToastContainer ref="container"
-                                toastMessageFactory={ToastMessageFactory}
-                                className="toast-top-right toast-top-right-navbar" />
+                            <Input
+                                name="email"
+                                data-eusko="first-time-email"
+                                value=""
+                                label={__("Email")}
+                                type="email"
+                                placeholder={__("Email de l'adhérent")}
+                                onChange={this.onFieldChange}
+                                validations="isEmail"
+                                validationErrors={{
+                                    isEmail: __("Adresse email non valide")
+                                }}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
+                                required
+                            />
+
+                            <Row layout="horizontal" elementWrapperClassName="margin-top-ten col-sm-5">
+                                {messageInvalidData}
+                            </Row>
+                            
+                            <Row layout="horizontal">
+                                <input
+                                    name="submit"
+                                    data-eusko="first-time-submit"
+                                    type="submit"
+                                    defaultValue={__("Valider")}
+                                    className="btn btn-success"
+                                    formNoValidate={true}
+                                    disabled={!this.state.canSubmit}
+                                />
+                            </Row>
+                            {returnToLogin}
+                        </fieldset>
+                    </FirstTimeForm>
+            </div>
             </div>
         );
     }
@@ -158,7 +219,7 @@ class FirstTimePage extends React.Component {
 
 
 ReactDOM.render(
-    <FirstTimePage url={getAPIBaseURL + "change-euro-eusko/"} method="POST" />,
+    <FirstTimePage url={getAPIBaseURL + "first-connection/"} method="POST" />,
     document.getElementById('first-time')
 )
 

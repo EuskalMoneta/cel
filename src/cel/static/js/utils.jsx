@@ -95,6 +95,35 @@ var fetchAuth = (url, method, promise, data=null, promiseError=null) => {
     }
 }
 
+var fetchNoAuth = (url, method, promise, data=null, promiseError=null) => {
+    var payload = {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+
+    if (method.toLowerCase() != 'get' && data != null) {
+        payload.body = JSON.stringify(data)
+    }
+
+    if (!promiseError) {
+        var promiseError = (err) => {
+            // Error during request, or parsing NOK :(
+            if (err.message != "No content") {
+                console.error(url, method, promise, token, data, promiseError, err)
+            }
+        }
+    }
+
+    fetch(url, payload)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(promise)
+    .catch(promiseError)
+}
+
 var getUrlParameter = (name) => {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -338,6 +367,7 @@ module.exports = {
     checkStatus: checkStatus,
     parseJSON: parseJSON,
     fetchAuth: fetchAuth,
+    fetchNoAuth: fetchNoAuth,
     fetchCustom: fetchCustom,
     fetchGetToken: fetchGetToken,
     getUrlParameter: getUrlParameter,

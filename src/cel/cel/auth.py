@@ -40,7 +40,7 @@ class CELAuthBackend(object):
 
         try:
             r_groups = requests.get('{}{}'.format(settings.API_INTERNAL_URL,
-                                                  'verify-usergroup/?api_key={}&username={}&usergroup=gestion_interne'
+                                                  'verify-usergroup/?api_key={}&username={}&usergroup=adherents'
                                                   .format(auth_token, username)))
 
             if not r_groups.status_code == requests.codes.ok:

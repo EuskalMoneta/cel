@@ -193,10 +193,10 @@ class LoginPage extends React.Component {
 
                             <div className="links-login">
                                 <div className="row">
-                                    <a href="/first-time">{__("Première connexion ?")}</a>
+                                    <a href="/premiere-connexion">{__("Première connexion ?")}</a>
                                 </div>
                                 <div className="row">
-                                    <a href="/lost-password">{__("J'ai perdu mon mot de passe")}</a>
+                                    <a href="/passe-perdu">{__("J'ai perdu mon mot de passe")}</a>
                                 </div>
                             </div>
                     </LoginForm>

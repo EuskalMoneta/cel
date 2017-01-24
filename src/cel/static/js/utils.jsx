@@ -255,20 +255,20 @@ class NavbarItems extends React.Component {
 var NavbarRight = React.createClass({
     getInitialState() {
         return {
-            bdcName: '',
+            name: '',
             userAuth: window.config.userAuth,
             showDropdown: false,
         }
     },
 
     componentDidMount() {
-        // Get bdc name
+        // Get member name
         if (this.state.userAuth)
         {
             var computeData = (data) => {
-                this.setState({bdcName: data})
+                this.setState({name: data})
             }
-            fetchAuth(getAPIBaseURL + "bdc-name/", 'get', computeData)
+            fetchAuth(getAPIBaseURL + "member-name/", 'get', computeData)
         }
     },
 
@@ -295,10 +295,11 @@ var NavbarRight = React.createClass({
                     <li className="dropdown">
                         <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                            onClick={() => this.toggleDropdown()}>
-                            {window.config.userName + " - " + this.state.bdcName + " "}<span className="caret"></span>
+                            {window.config.userName + " - " + this.state.name + " "}<span className="caret"></span>
                         </a>
                         <ul className={dropdownClassName} role="menu">
-                            <li><a href="/change-password">{__("Changer mon mot de passe")}</a></li>
+                            <li><a href="/profil">{__("Mon profil")}</a></li>
+                            <li><a href="/change-passe">{__("Changer mon mot de passe")}</a></li>
                             <li className="divider"></li>
                             <li><a href={window.config.getLogoutURL}>{__("Me déconnecter")}</a></li>
                         </ul>

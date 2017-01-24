@@ -134,9 +134,8 @@ textarea {
   margin-left: 50px;
 }
 
-/* MemberAddForm */
 // Adjust size for the "birthdate" field
-.memberaddform-birth {
+.profilform-birth {
   .react-datepicker__input-container {
     display: block;
   }
@@ -147,7 +146,15 @@ textarea {
   width: 100% !important;
 }
 
-.memberaddform {
+.profil-town-div {
+  padding-left: 10px;
+}
+
+.profil-town {
+  width: 100% !important;
+}
+
+.profilform {
   .react-selectize-placeholder {
     font-size: 16px;
     font-family: $font-stack;
@@ -163,7 +170,7 @@ textarea {
   }
 }
 
-.memberaddform {
+.profilform {
   font-size: 16px;
   font-family: $font-stack;
   line-height: 1.42857143;
@@ -247,6 +254,63 @@ textarea {
   .row {
     margin-top: 10px;
   }
+}
+
+/* profil */
+
+.profil-span {
+  padding-top: 11px;
+}
+
+.profil-div-margin-left {
+  margin-left: 50px;
+}
+
+.member-status-text {
+  margin-right: 5px;
+}
+
+.profil-panel {
+  border: 0px;
+}
+
+.profil-panel {
+  label {
+    text-align: right;
+  }
+}
+
+.member-status-text {
+  margin-right: 5px;
+}
+
+.member-status-date {
+  font-size: 15px;
+}
+
+.font-member-status {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.member-status-ok {
+  color: #128f76;
+  vertical-align: -1px;
+  margin-right: 5px;
+}
+
+.member-status-nok {
+  color: #e74c3c;
+  vertical-align: -2px;
+  margin-right: 5px;
+}
+
+.profil-status {
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  vertical-align: middle;
 }
 
 /* search members */

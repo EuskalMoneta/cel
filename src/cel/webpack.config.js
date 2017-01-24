@@ -26,9 +26,11 @@ module.exports = Object.keys(languages).map(function(language) {
         // Voir la section sur les alias dans ce fichier de config
         entry: {
             Base: './static/js/base',
-            ChangePassword: './static/js/change-password',
-            Login: './static/js/login',
             FirstTime: './static/js/first-time',
+            ChangePassword: './static/js/change-password',
+            LostPassword: './static/js/lost-password',
+            Profil: './static/js/profil',
+            Login: './static/js/login',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

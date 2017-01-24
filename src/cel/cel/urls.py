@@ -35,11 +35,11 @@ urlpatterns = [
     # logout
     url(r'^logout/?$', logout, {'next_page': reverse_lazy('login')}, name='logout'),
     # change-password
-    url(r'^change-password/?$', base_views.change_password, name='change-password'),
+    url(r'^change-passe/?$', base_views.change_password, name='change-password'),
     # first-time
-    url(r'^first-time/?$', adherents_views.first_time, name='first-time'),
+    url(r'^premiere-connexion/?$', adherents_views.first_time, name='first-time'),
     # lost-password
-    url(r'^lost-password/?$', adherents_views.lost_password, name='lost-password'),
+    url(r'^passe-perdu/?$', adherents_views.lost_password, name='lost-password'),
 
     # home
     url(r'^$', adherents_views.index, name='home'),

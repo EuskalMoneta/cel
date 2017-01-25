@@ -69,8 +69,7 @@ const MemberShow = React.createClass({
             member: null,
             canSubmit: false,
             validFields: false,
-            validCustomFields: false,
-            login: undefined,
+            address: undefined,
             country: undefined,
             zip: undefined,
             zipSearch: undefined,
@@ -80,7 +79,7 @@ const MemberShow = React.createClass({
             birth: undefined,
             phone: undefined,
             email: undefined,
-            recevoirActus: false,
+            options_recevoir_actus: false,
             assoSaisieLibre: false,
             fkAsso: undefined,
             fkAsso2: undefined,
@@ -89,16 +88,58 @@ const MemberShow = React.createClass({
         }
     },
 
-
     componentDidMount() {
         // Get member data
         var computeMemberData = (member) => {
-            // this.setState({member: member[0]})
+            moment.locale(getCurrentLang)
             this.setState({member: member[0],
-                           recevoirActus: member[0].array_options.options_recevoir_actus == "1" ? "1" : "0",
+                           options_recevoir_actus: member[0].array_options.options_recevoir_actus == "1" ? "1" : "0",
+                           address: member[0].address, phone: member[0].phone, email: member[0].email,
+                           birth: moment.utc(member[0].birth),
                            zip: {label: member[0].zip + " - " + member[0].town,
                                  town: member[0].town, value: member[0].zip},
-                           town: {label: member[0].town, value: member[0].town}})
+                           town: {label: member[0].town, value: member[0].town},
+                           country: {label: member[0].country, value: member[0].country_id}},
+                           this.validateForm)
+
+            // Get all associations (no filter): fkAssoAllList
+            var computeAllAssociations = (associations) => {
+                var res = _.chain(associations)
+                    .map(function(item){
+                        if (item.nb_parrains == "0")
+                            var label = item.nom + " – " + __("Aucun parrain")
+                        else if (item.nb_parrains == "1")
+                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrain")
+                        else
+                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrains")
+                        return {label: label, value: item.id}
+                    })
+                    .sortBy(function(item){ return item.label })
+                    .value()
+
+                this.setState({fkAssoAllList: res}, this.setAssoFromMember)
+            }
+            fetchAuth(getAPIBaseURL + "associations/", 'get', computeAllAssociations)
+
+            // Get only approved associations: fkAssoApprovedList
+            var computeApprovedAssociations = (associations) => {
+                var res = _.chain(associations)
+                    .map(function(item){
+                        if (item.nb_parrains == "0")
+                            var label = item.nom + " – " + __("Aucun parrain")
+                        else if (item.nb_parrains == "1")
+                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrain")
+                        else
+                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrains")
+                        return {label: label, value: item.id}
+                    })
+                    .sortBy(function(item){ return item.label })
+                    .value()
+
+                this.setState({fkAssoApprovedList: res}, this.setAssoFromMember)
+            }
+            fetchAuth(getAPIBaseURL + "associations/?approved=yes", 'get', computeApprovedAssociations)
+
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
 
@@ -113,49 +154,21 @@ const MemberShow = React.createClass({
                 .sortBy(function(item){ return item.label })
                 .value()
 
-            // We add France at first position of the Array, and we set it as the default value
+            // We add France at first position of the Array
             res.unshift(france)
-            this.setState({countries: res, country: france})
+            this.setState({countries: res})
         }
         fetchAuth(getAPIBaseURL + "countries/", 'get', computeCountries)
+    },
 
-        // Get all associations (no filter): fkAssoAllList
-        var computeAllAssociations = (associations) => {
-            var res = _.chain(associations)
-                .map(function(item){
-                    if (item.nb_parrains == "0")
-                        var label = item.nom + " – " + __("Aucun parrain")
-                    else if (item.nb_parrains == "1")
-                        var label = item.nom + " – " + item.nb_parrains + " " + __("parrain")
-                    else
-                        var label = item.nom + " – " + item.nb_parrains + " " + __("parrains")
-                    return {label: label, value: item.id}
-                })
-                .sortBy(function(item){ return item.label })
-                .value()
+    setAssoFromMember() {
+        if (this.state.fkAssoAllList)
+            var itemAsso = _.findWhere(this.state.fkAssoAllList, {value: this.state.member.fk_asso})
 
-            this.setState({fkAssoAllList: res})
-        }
-        fetchAuth(getAPIBaseURL + "associations/", 'get', computeAllAssociations)
+        if (this.state.fkAssoApprovedList)
+            var itemAsso2 = _.findWhere(this.state.fkAssoApprovedList, {value: this.state.member.fk_asso2})
 
-        // Get only approved associations: fkAssoApprovedList
-        var computeApprovedAssociations = (associations) => {
-            var res = _.chain(associations)
-                .map(function(item){
-                    if (item.nb_parrains == "0")
-                        var label = item.nom + " – " + __("Aucun parrain")
-                    else if (item.nb_parrains == "1")
-                        var label = item.nom + " – " + item.nb_parrains + " " + __("parrain")
-                    else
-                        var label = item.nom + " – " + item.nb_parrains + " " + __("parrains")
-                    return {label: label, value: item.id}
-                })
-                .sortBy(function(item){ return item.label })
-                .value()
-
-            this.setState({fkAssoApprovedList: res})
-        }
-        fetchAuth(getAPIBaseURL + "associations/?approved=yes", 'get', computeApprovedAssociations)
+        this.setState({fkAsso: itemAsso, fkAsso2: itemAsso2})
     },
 
     enableButton() {
@@ -166,27 +179,19 @@ const MemberShow = React.createClass({
         this.setState({canSubmit: false})
     },
 
-    validFields() {
-        this.setState({validFields: true})
-
-        if (this.state.validCustomFields)
-            this.enableButton()
-    },
-
-    validateFormOnBlur() {
-        if (this.state.birth && this.state.zip && this.state.town && this.state.country)
+    validateForm() {
+        if (this.state.birth && this.state.zip && this.state.town && this.state.country &&
+            this.state.address && this.state.email &&
+             (this.state.options_recevoir_actus == "0" || this.state.options_recevoir_actus == "1"))
         {
-            this.setState({validCustomFields: true})
-
-            if (this.state.validFields)
-                this.enableButton()
+            this.setState({validFields: true}, this.enableButton)
         }
         else
             this.disableButton()
     },
 
     onFormChange(event, value) {
-        this.setState({[event]: value}, this.validateFormOnBlur)
+        this.setState({[event]: value}, this.validateForm)
     },
 
     // zip
@@ -289,6 +294,68 @@ const MemberShow = React.createClass({
         this.setState({birth: date});
     },
 
+    submitForm() {
+        this.disableButton()
+
+        // We push fields into the data object that will be passed to the server
+        var data = {birth: this.state.birth.format('DD/MM/YYYY'),
+                    address: this.state.address,
+                    login: this.state.member.login,
+                    civility_id: this.state.member.civility_id,
+                    lastname: this.state.member.lastname,
+                    firstname: this.state.member.firstname,
+                    address: this.state.address,
+                    zip: this.state.zip.value,
+                    town: this.state.town.value,
+                    country_id: this.state.country.value,
+                    email: this.state.email,
+                    options_recevoir_actus: this.state.options_recevoir_actus,
+        }
+
+        if (this.state.phone)
+            data.phone = this.state.phone
+
+        // We need to verify whether we are in "saisie libre" or not
+        if (this.state.fkAsso) {
+            if (this.state.assoSaisieLibre)
+                data.options_asso_saisie_libre = this.state.fkAsso.value
+            else
+                data.fk_asso = this.state.fkAsso.value
+        }
+
+        if (this.state.fkAsso2)
+            data.fk_asso2 = this.state.fkAsso2.value
+
+        var computeForm = (data) => {
+            this.refs.container.success(
+                __("La modification de votre profil adhérent s'est déroulée correctement."),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+
+        var promiseError = (err) => {
+            // Error during request, or parsing NOK :(
+            this.enableButton()
+
+            console.log(this.props.url, err)
+            this.refs.container.error(
+                __("Une erreur s'est produite lors de la modification de votre profil adhérent !"),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        fetchAuth(this.props.postUrl + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+    },
+
     render() {
         moment.locale(getCurrentLang)
         if (this.state.member) {
@@ -321,6 +388,42 @@ const MemberShow = React.createClass({
 
                 var memberStatusUpToDate = false
             }
+
+            // Whether or not, we have a business member or a individual
+            if (this.state.member.type.toLowerCase() != 'particulier') {
+                // We have a business member
+                var memberName = (
+                    <div className="form-group row">
+                        <label className="control-label col-sm-2">{__("Nom")}</label>
+                        <div className="col-sm-3 profil-span">
+                            <span data-eusko="profil-company">{this.state.member.company}</span>
+                        </div>
+
+                        <label className="control-label col-sm-1">{__("Dirigeant")}</label>
+                        <div className="col-sm-3 profil-span">
+                            <span data-eusko="profil-fullname">
+                                {this.state.member.firstname + " " + this.state.member.lastname}
+                            </span>
+                        </div>
+                    </div>
+                )
+            }
+            else {
+                // We have a individual member
+                var memberName = (
+                    <div className="form-group row">
+                        <label className="control-label col-sm-2">{__("Nom")}</label>
+                        <div className="col-sm-3 profil-span">
+                            <span data-eusko="profil-lastname">{this.state.member.lastname}</span>
+                        </div>
+
+                        <label className="control-label col-sm-1">{__("Prénom")}</label>
+                        <div className="col-sm-3 profil-span">
+                            <span data-eusko="profil-firstname">{this.state.member.firstname}</span>
+                        </div>
+                    </div>
+                )
+            }
         }
         else
             return null
@@ -328,9 +431,8 @@ const MemberShow = React.createClass({
         return (
             <div className="row">
                 <ProfilForm
-                    onValidSubmit={this.buildForm}
-                    onInvalid={this.disableButton}
-                    onValid={this.validFields}
+                    onInvalid={this.validateForm}
+                    onValid={this.validateForm}
                     ref="profil-form">
                     <fieldset>
                         <div className="form-group row">
@@ -342,17 +444,7 @@ const MemberShow = React.createClass({
                                 {memberStatus}
                             </div>
                         </div>
-                        <div className="form-group row">
-                            <label className="control-label col-sm-2">{__("Nom")}</label>
-                            <div className="col-sm-3 profil-span">
-                                <span data-eusko="profil-lastname">{this.state.member.lastname}</span>
-                            </div>
-
-                            <label className="control-label col-sm-1">{__("Prénom")}</label>
-                            <div className="col-sm-3 profil-span">
-                                <span data-eusko="profil-firstname">{this.state.member.firstname}</span>
-                            </div>
-                        </div>
+                        {memberName}
                         <div className="form-group row">
                             <label
                                 className="control-label col-sm-2"
@@ -366,7 +458,7 @@ const MemberShow = React.createClass({
                                     name="birth"
                                     className="form-control"
                                     placeholderText={__("Date de naissance")}
-                                    selected={moment(this.state.member.birth)}
+                                    selected={moment(this.state.birth)}
                                     onChange={this.handleBirthChange}
                                     showYearDropdown
                                     locale="fr"
@@ -376,9 +468,10 @@ const MemberShow = React.createClass({
                         <Textarea
                             name="address"
                             data-eusko="profilform-address"
-                            value={this.state.member.address ? this.state.member.address : ""}
+                            value={this.state.address ? this.state.address : ""}
                             label={__("Adresse postale")}
                             type="text"
+                            onChange={this.onFormChange}
                             placeholder={__("Adresse postale")}
                             labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
@@ -431,7 +524,7 @@ const MemberShow = React.createClass({
                                         createFromSearch={SelectizeUtils.selectizeCreateFromSearch}
                                         onValueChange={this.townOnValueChange}
                                         renderValue={SelectizeUtils.selectizeRenderValue}
-                                        onBlur={this.validateFormOnBlur}
+                                        onBlur={this.validateForm}
                                         renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                         required
                                     />
@@ -457,7 +550,7 @@ const MemberShow = React.createClass({
                                     onValueChange={this.countryOnValueChange}
                                     renderOption={SelectizeUtils.selectizeNewRenderOption}
                                     renderValue={SelectizeUtils.selectizeRenderValue}
-                                    onBlur={this.validateFormOnBlur}
+                                    onBlur={this.validateForm}
                                     renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                     required
                                 />
@@ -469,7 +562,7 @@ const MemberShow = React.createClass({
                                 <Input
                                     name="phone"
                                     data-eusko="profilform-phone"
-                                    value={this.state.member.phone ? this.state.member.phone : ""}
+                                    value={this.state.phone ? this.state.phone : ""}
                                     layout="elementOnly"
                                     type="tel"
                                     placeholder={__("N° téléphone")}
@@ -482,12 +575,15 @@ const MemberShow = React.createClass({
                                 />
                             </div>
 
-                            <label className="control-label col-sm-1">{__("Email")}</label>
+                            <label className="control-label col-sm-1">
+                                {__("Email")}
+                                <span className="required-symbol">&nbsp;*</span>
+                            </label>
                             <div className="col-sm-3">
                                 <Input
                                     name="email"
                                     data-eusko="profilform-email"
-                                    value={this.state.member.email ? this.state.member.email : ""}
+                                    value={this.state.email ? this.state.email : ""}
                                     layout="elementOnly"
                                     type="email"
                                     placeholder={__("Email de l'adhérent")}
@@ -505,12 +601,13 @@ const MemberShow = React.createClass({
                             name="options_recevoir_actus"
                             data-eusko="profilform-options-recevoir-actus"
                             type="inline"
-                            value={this.state.recevoirActus}
+                            value={this.state.options_recevoir_actus}
                             label={__("Souhaite être informé des actualités liées à l'eusko")}
                             help={__("Vous recevrez un à deux mails par semaine.")}
                             options={[{value: '1', label: __('Oui')},
                                       {value: '0', label: __('Non')}
                             ]}
+                            onChange={this.onFormChange}
                             labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
                             required
@@ -533,7 +630,7 @@ const MemberShow = React.createClass({
                                     onValueChange={this.fkAssoOnValueChange}
                                     renderValue={SelectizeUtils.selectizeRenderValue}
                                     renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                    onBlur={this.validateFormOnBlur}
+                                    onBlur={this.validateForm}
                                     renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                 />
                             </div>
@@ -553,22 +650,32 @@ const MemberShow = React.createClass({
                                     onValueChange={this.fkAsso2OnValueChange}
                                     renderOption={SelectizeUtils.selectizeRenderOption}
                                     renderValue={SelectizeUtils.selectizeRenderValue}
-                                    onBlur={this.validateFormOnBlur}
+                                    onBlur={this.validateForm}
                                     renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                 />
                             </div>
                         </div>
                     </fieldset>
                     <div className="row profil-div-margin-left margin-top">
-                        <a href="/" className="btn btn-default">
+                        <a href="/" className="btn btn-default col-sm-offset-3">
                            {__("Annuler")}
                         </a>
-                        <a href={"/members/reconversion/" + this.state.member.id}
-                           className="btn btn-success col-sm-offset-2">
-                           {__("Valider")}
-                        </a>
+                        <input
+                            name="submit"
+                            data-eusko="profil-form-submit"
+                            type="submit"
+                            defaultValue={__("Valider")}
+                            className="btn btn-success col-sm-offset-2"
+                            formNoValidate={true}
+                            onClick={() => this.submitForm()}
+                            disabled={!this.state.canSubmit}
+                        />
                     </div>
                 </ProfilForm>
+                <ToastContainer ref="container"
+                    toastMessageFactory={ToastMessageFactory}
+                    className="toast-top-right toast-top-right-navbar"
+                />
             </div>
         )
     }
@@ -576,7 +683,7 @@ const MemberShow = React.createClass({
 
 
 ReactDOM.render(
-    <MemberShow url={getAPIBaseURL + "members/?login="} method="GET" />,
+    <MemberShow url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
     document.getElementById('adherent')
 )
 

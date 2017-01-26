@@ -13,3 +13,6 @@ def first_time(request):
 
 def lost_password(request):
     return render(request, 'adherents/lost-password.html')
+
+def history(request):
+    return render(request, 'adherents/history.html')

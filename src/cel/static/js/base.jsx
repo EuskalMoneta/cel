@@ -31,7 +31,7 @@ ReactDOM.render(
 )
 
 // The 'id' field is mandatory!
-const navbarObjects = [{href: '/', label: __("Mon profil"), id: 0},
+const navbarObjects = [{href: '/history', label: __("Historique"), id: 0},
                        ]
 
 ReactDOM.render(

@@ -31,6 +31,7 @@ module.exports = Object.keys(languages).map(function(language) {
             LostPassword: './static/js/lost-password',
             Profil: './static/js/profil',
             Login: './static/js/login',
+            History: './static/js/history',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

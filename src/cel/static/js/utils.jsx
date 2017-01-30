@@ -18,6 +18,10 @@ var parseJSON = (response) => {
     return response.json()
 }
 
+var parseBLOB = (response) => {
+    return response.blob()
+}
+
 var storeToken = (data) => {
     // Save data to sessionStorage
     sessionStorage.setItem('cel-api-token-auth', data.token)
@@ -29,11 +33,15 @@ var getToken = () => {
     return sessionStorage.getItem('cel-api-token-auth')
 }
 
-var fetchCustom = (url, method, promise, token, data, promiseError=null) => {
+var fetchCustom = (url, method, promise, token, data, promiseError=null, accept=null) => {
+    if (!accept) {
+        var accept = 'application/json'
+    }
+
     var payload = {
         method: method,
         headers: {
-            'Accept': 'application/json',
+            'Accept': accept,
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + token
         }
@@ -54,7 +62,7 @@ var fetchCustom = (url, method, promise, token, data, promiseError=null) => {
 
     fetch(url, payload)
     .then(checkStatus)
-    .then(parseJSON)
+    .then(accept == 'application/json' ? parseJSON : parseBLOB)
     .then(promise)
     .catch(promiseError)
 }
@@ -78,11 +86,11 @@ var fetchGetToken = (username, password, promiseSuccess, promiseError) => {
     .catch(promiseError)
 }
 
-var fetchAuth = (url, method, promise, data=null, promiseError=null) => {
+var fetchAuth = (url, method, promise, data=null, promiseError=null, accept=null) => {
     var token = getToken()
     if (token) {
         // We have a token
-        fetchCustom(url, method, promise, token, data, promiseError)
+        fetchCustom(url, method, promise, token, data, promiseError, accept)
     }
     else {
         // We need a token

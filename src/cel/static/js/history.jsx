@@ -7,6 +7,8 @@ import {
     getCurrentLang
 } from 'Utils'
 
+import FileSaver from 'file-saver'
+
 import {
     BootstrapTable,
     TableHeaderColumn
@@ -22,6 +24,16 @@ var ManagerHistoryPage = React.createClass({
             historyList: Array(),
             currentSolde: undefined
         }
+    },
+
+    getHistoryPDF() {
+        var computePDFData = (blob) => {
+            FileSaver.saveAs(blob, 'releve_compte_eusko.pdf')
+        }
+
+        // Get PDF data
+        var urlSummary = getAPIBaseURL + "export-history-adherent-pdf/"
+        fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
     computeHistoryList(historyList) {
@@ -134,6 +146,15 @@ var ManagerHistoryPage = React.createClass({
                         </div>
                     </div>
                 </div>
+                <input
+                    name="submit"
+                    data-eusko="profil-form-submit"
+                    type="submit"
+                    defaultValue={__("Exporter")}
+                    className="btn btn-success col-sm-offset-2"
+                    formNoValidate={true}
+                    onClick={this.getHistoryPDF}
+                />
             </div>
         );
     }

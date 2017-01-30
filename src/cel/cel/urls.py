@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^premiere-connexion/?$', adherents_views.first_time, name='first-time'),
     # lost-password
     url(r'^passe-perdu/?$', adherents_views.lost_password, name='lost-password'),
-    # historique
+    # history
     url(r'^history/?$', adherents_views.history, name='history'),
 
     # home

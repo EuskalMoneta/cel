@@ -37,7 +37,9 @@ var ManagerHistoryPage = React.createClass({
             FileSaver.saveAs(blob, 'releve_compte_eusko.pdf')
         }
         // Get PDF data
-        var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
+        var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + 
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+            moment(this.state.endDate).format("YYYY-MM-DD"))
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
@@ -78,7 +80,9 @@ var ManagerHistoryPage = React.createClass({
             this.setState({currentSolde: data.result[0]},
                 () => {
                     // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                        moment(this.state.endDate).format("YYYY-MM-DD"))
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
@@ -95,7 +99,9 @@ var ManagerHistoryPage = React.createClass({
             this.setState({currentSolde: data.result[0]},
                 () => {
                     // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                        moment(this.state.endDate).format("YYYY-MM-DD"))
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
@@ -112,7 +118,9 @@ var ManagerHistoryPage = React.createClass({
             this.setState({currentSolde: data.result[0]},
                 () => {
                     // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                        moment(this.state.endDate).format("YYYY-MM-DD"))
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );

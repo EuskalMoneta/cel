@@ -26,8 +26,8 @@ var ManagerHistoryPage = React.createClass({
             login: window.config.userName,
             historyList: Array(),
             currentSolde: undefined,
-            endDate: new Date().setMonth(new Date().getMonth()+1, 0),
-            beginDate: new Date().setDate(1),
+            endDate: moment().endOf('month'),
+            beginDate: moment().startOf('month'),
             
         }
     },
@@ -36,10 +36,8 @@ var ManagerHistoryPage = React.createClass({
         var computePDFData = (blob) => {
             FileSaver.saveAs(blob, 'releve_compte_eusko.pdf')
         }
-        var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
-        var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
         // Get PDF data
-        var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
+        var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
@@ -79,10 +77,8 @@ var ManagerHistoryPage = React.createClass({
         var computeHistoryData = (data) => {
             this.setState({currentSolde: data.result[0]},
                 () => {
-                    var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
-                    var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
                     // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
@@ -98,18 +94,9 @@ var ManagerHistoryPage = React.createClass({
         var computeHistoryData = (data) => {
             this.setState({currentSolde: data.result[0]},
                 () => {
-                    var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
-                    var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
                     // Get account history
-                    if(this.state.endDate)
-                    {
-                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
-                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                    }
-                    else {
-                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=1&end=1")
-                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                    }
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
+                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
         }
@@ -122,17 +109,11 @@ var ManagerHistoryPage = React.createClass({
     endDateChange(date) {
         this.setState({endDate: date});
         var computeHistoryData = (data) => {
-            var postData = {}
-            postData.beginDate = this.state.beginDate
-            postData.endDate = this.state.endDate
             this.setState({currentSolde: data.result[0]},
                 () => {
-                    var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
-                    var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
                     // Get account history
-                    
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
-                    fetchAuth(urlHistory, 'get', this.computeHistoryList, postData)
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + moment(this.state.beginDate).format("YYYY-MM-DDT00:00:00.000") + "&end=" + moment(this.state.endDate).format("YYYY-MM-DDT23:59:59.999"))
+                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
         }
@@ -140,7 +121,6 @@ var ManagerHistoryPage = React.createClass({
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
-
     },
 
     render() {

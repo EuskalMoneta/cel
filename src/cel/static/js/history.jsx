@@ -15,6 +15,9 @@ import {
 } from 'react-bootstrap-table'
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
 
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+
 var ManagerHistoryPage = React.createClass({
 
     getInitialState() {
@@ -22,7 +25,10 @@ var ManagerHistoryPage = React.createClass({
         return {
             login: window.config.userName,
             historyList: Array(),
-            currentSolde: undefined
+            currentSolde: undefined,
+            endDate: new Date().setMonth(new Date().getMonth()+1, 0),
+            beginDate: new Date().setDate(1),
+            
         }
     },
 
@@ -72,9 +78,10 @@ var ManagerHistoryPage = React.createClass({
         var computeHistoryData = (data) => {
             this.setState({currentSolde: data.result[0]},
                 () => {
+                    var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
+                    var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
                     // Get account history
-                    
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/")
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
@@ -83,6 +90,56 @@ var ManagerHistoryPage = React.createClass({
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
+    },
+
+    beginDateChange(date) {
+        this.setState({beginDate: date});
+        var computeHistoryData = (data) => {
+            this.setState({currentSolde: data.result[0]},
+                () => {
+                    var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
+                    var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
+                    // Get account history
+                    if(this.state.endDate)
+                    {
+                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
+                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
+                    }
+                    else {
+                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=1&end=1")
+                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
+                    }
+                }
+            );
+        }
+
+        // Get account summary
+        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+        fetchAuth(urlSummary, 'get', computeHistoryData)
+    },
+
+    endDateChange(date) {
+        this.setState({endDate: date});
+        var computeHistoryData = (data) => {
+            var postData = {}
+            postData.beginDate = this.state.beginDate
+            postData.endDate = this.state.endDate
+            this.setState({currentSolde: data.result[0]},
+                () => {
+                    var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
+                    var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
+                    // Get account history
+                    
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
+                    fetchAuth(urlHistory, 'get', this.computeHistoryList, postData)
+                }
+            );
+        }
+
+        // Get account summary
+        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+        fetchAuth(urlSummary, 'get', computeHistoryData)
+
     },
 
     render() {
@@ -107,7 +164,6 @@ var ManagerHistoryPage = React.createClass({
                 </div>
             </div>
         )
-    
 
         // History data table
         var dateFormatter = (cell, row) => {
@@ -140,6 +196,24 @@ var ManagerHistoryPage = React.createClass({
             <div className="row">
                 <div className="col-md-10">
                     {actionButtons}
+                    <label for="dateSelectorBegin">Date de début :</label>
+                    <DatePicker
+                        name="dateSelectorBegin"
+                        className="form-control"
+                        selected={moment(this.state.beginDate)}
+                        onChange={this.beginDateChange}
+                        showYearDropdown 
+                        locale="fr"
+                    />
+                    <label for="dateSelectorEnd">Date de fin :</label>
+                    <DatePicker
+                        name="dateSelectorEnd"
+                        className="form-control"
+                        selected={moment(this.state.endDate)}
+                        onChange={this.endDateChange}
+                        showYearDropdown 
+                        locale="fr"
+                    />
                     <div className="row margin-right">
                         <div className="col-md-12 col-md-offset-1">
                             {historyTable}

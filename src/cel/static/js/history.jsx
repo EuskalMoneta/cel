@@ -36,9 +36,10 @@ var ManagerHistoryPage = React.createClass({
         var computePDFData = (blob) => {
             FileSaver.saveAs(blob, 'releve_compte_eusko.pdf')
         }
-
+        var begin = new Date(this.state.beginDate).setHours(0, -new Date().getTimezoneOffset(), 0, 0)
+        var end = new Date(this.state.endDate).setHours(24, 59, 59, 999)
         // Get PDF data
-        var urlSummary = getAPIBaseURL + "export-history-adherent-pdf/"
+        var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + new Date(begin).toISOString() + "&end=" + new Date(end).toISOString())
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 

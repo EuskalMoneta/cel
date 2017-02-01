@@ -45,4 +45,5 @@ urlpatterns = [
 
     # home
     url(r'^$', adherents_views.index, name='home'),
+    url(r'^profil/?$', adherents_views.index, name='profil'),
 ]

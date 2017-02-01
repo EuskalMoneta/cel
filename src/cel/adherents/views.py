@@ -11,8 +11,16 @@ def first_time(request):
     return render(request, 'adherents/first-time.html')
 
 
+def valid_first_time(request):
+    return render(request, 'adherents/valid-token.html')
+
+
 def lost_password(request):
     return render(request, 'adherents/lost-password.html')
+
+
+def valid_lost_password(request):
+    return render(request, 'adherents/valid-token.html')
 
 
 def history(request):

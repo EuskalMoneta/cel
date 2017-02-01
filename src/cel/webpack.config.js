@@ -29,6 +29,7 @@ module.exports = Object.keys(languages).map(function(language) {
             FirstTime: './static/js/first-time',
             ChangePassword: './static/js/change-password',
             LostPassword: './static/js/lost-password',
+            ValidToken: './static/js/valid-token',
             Profil: './static/js/profil',
             Login: './static/js/login',
             History: './static/js/history',

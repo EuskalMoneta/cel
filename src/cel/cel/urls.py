@@ -38,12 +38,14 @@ urlpatterns = [
     url(r'^change-passe/?$', base_views.change_password, name='change-password'),
     # first-time
     url(r'^premiere-connexion/?$', adherents_views.first_time, name='first-time'),
+    url(r'^valide-premiere-connexion/?$', adherents_views.valid_first_time, name='valide-premiere-connexion'),
     # lost-password
     url(r'^passe-perdu/?$', adherents_views.lost_password, name='lost-password'),
+    url(r'^valide-passe-perdu/?$', adherents_views.valid_lost_password, name='valide-premiere-connexion'),
     # history
     url(r'^history/?$', adherents_views.history, name='history'),
 
     # home
     url(r'^$', adherents_views.index, name='home'),
-    url(r'^profil/?$', adherents_views.index, name='profil'),
+    url(r'^profil/?$', adherents_views.index, name='profile'),
 ]

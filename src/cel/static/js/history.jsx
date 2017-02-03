@@ -8,7 +8,8 @@ import {
 } from 'Utils'
 
 import FileSaver from 'file-saver'
-
+import ReactSelectize from 'react-selectize'
+const SimpleSelect = ReactSelectize.SimpleSelect
 import {
     BootstrapTable,
     TableHeaderColumn
@@ -26,9 +27,10 @@ var ManagerHistoryPage = React.createClass({
             login: window.config.userName,
             historyList: Array(),
             currentSolde: undefined,
+            
             endDate: moment().endOf('month'),
             beginDate: moment().startOf('month'),
-            
+            selectedValue: undefined,
         }
     },
 
@@ -87,7 +89,6 @@ var ManagerHistoryPage = React.createClass({
                 }
             );
         }
-
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
@@ -106,7 +107,10 @@ var ManagerHistoryPage = React.createClass({
                 }
             );
         }
-
+        this.setState({selectedValue:  {
+            label: "Autres",
+            value: "custom"
+        }})
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
@@ -125,8 +129,50 @@ var ManagerHistoryPage = React.createClass({
                 }
             );
         }
-
+        this.setState({selectedValue:  {
+            label: "Autres",
+            value: "custom"
+        }})
         // Get account summary
+        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+        fetchAuth(urlSummary, 'get', computeHistoryData)
+    },
+    DateOnValueChange(item) {
+        var computeHistoryData = (data) => {
+            this.setState({currentSolde: data.result[0]},
+                () => {
+                    // Get account history
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                        moment(this.state.endDate).format("YYYY-MM-DD"))
+                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
+                }
+            )
+        }
+        if (item.value == 'day') {
+            this.setState({beginDate: moment()})
+            this.setState({endDate: moment()})
+        }
+        else if (item.value == 'this_week') {
+            this.setState({beginDate: moment().subtract(1,'week')})
+            this.setState({endDate: moment()})
+        }
+        else if (item.value == 'last_month') {
+            this.setState({beginDate: moment().subtract(1,'month')})
+            this.setState({endDate: moment()})
+        }
+        else if (item.value == '3_month') {
+            this.setState({beginDate: moment().subtract(3,'month')})
+            this.setState({endDate: moment()})
+        }
+        else if (item.value == '12_month') {
+            this.setState({beginDate: moment().subtract(12,'month')})
+            this.setState({endDate: moment()})
+        }
+        this.setState({selectedValue:  {
+            label: item.label,
+            value: item.value
+        }})
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
     },
@@ -145,12 +191,10 @@ var ManagerHistoryPage = React.createClass({
 
         var actionButtons = (
             <div className="row margin-bottom">
-                <div className="col-md-offset-1 col-md-2 col-sm-4">
-                    <label className="control-label col-md-12 solde-history-label">
-                        {__("Solde") + ": "}
+                    <label className="control-label solde-history-label">
+                        {__("Solde du compte") + ": "}
                         {currentSoldeLabel}
                     </label>
-                </div>
             </div>
         )
 
@@ -183,26 +227,65 @@ var ManagerHistoryPage = React.createClass({
 
         return (
             <div className="row">
+                <div className="col-md-12">
+                    <div className="form-group row">
+                        <div className="col-sm-1"></div>
+                        <label
+                            className="control-label col-sm-3"
+                            htmlFor="memberaddsubscription-payment_mode">
+                            {__("Période")}
+                        </label>
+                        <div className="col-sm-4 memberaddsubscription" data-eusko="memberaddsubscription-payment_mode">
+                            <SimpleSelect
+                                ref="select"
+                                placeholder={__("Période")}
+                                theme="bootstrap3"
+                                onValueChange={this.DateOnValueChange}
+                                value = {this.state.selectedValue}
+                                required
+                            >
+                                <option value = "day">Aujourd'hui</option>
+                                <option value = "this_week">Cette semaine</option>
+                                <option value = "last_month">Mois précédent</option>
+                                <option value = "3_month">Trois derniers mois</option>
+                                <option value = "12_month">Douze derniers mois</option>
+                                <option value = "custom">Autres</option>
+                            </SimpleSelect>
+                        </div>
+                        <div className="col-sm-2"></div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-sm-1"></div>
+                        <label className="control-label col-sm-3" for="dateSelectorBegin">Date début / fin :</label>
+                        <div className="col-sm-2 memberaddsubscription" data-eusko="memberaddsubscription-payment_mode">
+                            <DatePicker
+                                name="dateSelectorBegin"
+                                className="form-control"
+                                selected={moment(this.state.beginDate)}
+                                onChange={this.beginDateChange}
+                                showYearDropdown 
+                                locale="fr"
+                            />
+                        </div>
+                        <div className="col-sm-1"></div>
+                        <div className="col-sm-2 memberaddsubscription" data-eusko="memberaddsubscription-payment_mode">
+                            <DatePicker
+                                name="dateSelectorEnd"
+                                className="form-control"
+                                selected={moment(this.state.endDate)}
+                                onChange={this.endDateChange}
+                                showYearDropdown 
+                                locale="fr"
+                            />
+                        </div>
+                        <div className="col-sm-3"></div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-sm-9"></div>
+                        <div className="col-sm-3">{actionButtons}</div>
+                    </div>
+                </div>
                 <div className="col-md-10">
-                    {actionButtons}
-                    <label for="dateSelectorBegin">Date de début :</label>
-                    <DatePicker
-                        name="dateSelectorBegin"
-                        className="form-control"
-                        selected={moment(this.state.beginDate)}
-                        onChange={this.beginDateChange}
-                        showYearDropdown 
-                        locale="fr"
-                    />
-                    <label for="dateSelectorEnd">Date de fin :</label>
-                    <DatePicker
-                        name="dateSelectorEnd"
-                        className="form-control"
-                        selected={moment(this.state.endDate)}
-                        onChange={this.endDateChange}
-                        showYearDropdown 
-                        locale="fr"
-                    />
                     <div className="row margin-right">
                         <div className="col-md-12 col-md-offset-1">
                             {historyTable}

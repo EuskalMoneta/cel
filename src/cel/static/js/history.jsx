@@ -18,7 +18,10 @@ import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-
+const {
+    ToastContainer
+} = ReactToastr
+const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 var ManagerHistoryPage = React.createClass({
 
     getInitialState() {
@@ -98,47 +101,75 @@ var ManagerHistoryPage = React.createClass({
     },
 
     beginDateChange(date) {
-        this.setState({beginDate: date});
-        var computeHistoryData = (data) => {
-            this.setState({currentSolde: data.result[0]},
-                () => {
-                    // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                        moment(this.state.endDate).format("YYYY-MM-DD"))
-                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                }
-            );
+        if (date < this.state.endDate) {
+            this.setState({beginDate: date});
+            var computeHistoryData = (data) => {
+                this.setState({currentSolde: data.result[0]},
+                    () => {
+                        // Get account history
+                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                            moment(this.state.endDate).format("YYYY-MM-DD"))
+                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
+                    }
+                );
+            }
+            this.setState({selectedValue:  {
+                label: "Autres",
+                value: "custom"
+            }})
+            // Get account summary
+            var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+            fetchAuth(urlSummary, 'get', computeHistoryData)
         }
-        this.setState({selectedValue:  {
-            label: "Autres",
-            value: "custom"
-        }})
-        // Get account summary
-        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-        fetchAuth(urlSummary, 'get', computeHistoryData)
+        else {
+            
+            this.refs.container.error(
+                __("Attention, la date de début doit être antérieur à celle de fin !"),
+                "",
+                {
+                    timeOut: 5000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
     },
 
     endDateChange(date) {
-        this.setState({endDate: date});
-        var computeHistoryData = (data) => {
-            this.setState({currentSolde: data.result[0]},
-                () => {
-                    // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                        moment(this.state.endDate).format("YYYY-MM-DD"))
-                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                }
-            );
+        if (date > this.state.beginDate) {
+            this.setState({endDate: date});
+            var computeHistoryData = (data) => {
+                this.setState({currentSolde: data.result[0]},
+                    () => {
+                        // Get account history
+                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                            moment(this.state.endDate).format("YYYY-MM-DD"))
+                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
+                    }
+                );
+            }
+            this.setState({selectedValue:  {
+                label: "Autres",
+                value: "custom"
+            }})
+            // Get account summary
+            var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+            fetchAuth(urlSummary, 'get', computeHistoryData)
         }
-        this.setState({selectedValue:  {
-            label: "Autres",
-            value: "custom"
-        }})
-        // Get account summary
-        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-        fetchAuth(urlSummary, 'get', computeHistoryData)
+        else {
+            
+            this.refs.container.error(
+                __("Attention, la date de fin doit être postérieur à celle de début !"),
+                "",
+                {
+                    timeOut: 5000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
     },
     DateOnValueChange(item) {
         var computeHistoryData = (data) => {
@@ -315,6 +346,10 @@ var ManagerHistoryPage = React.createClass({
                     className="btn btn-success col-sm-offset-2"
                     formNoValidate={true}
                     onClick={this.getHistoryPDF}
+                />
+                <ToastContainer ref="container"
+                    toastMessageFactory={ToastMessageFactory}
+                    className="toast-top-right toast-top-right-navbar"
                 />
             </div>
         );

@@ -28,10 +28,12 @@ var ManagerHistoryPage = React.createClass({
             historyList: Array(),
             currentSolde: undefined,
             
-            endDate: moment().endOf('month'),
-            beginDate: moment().startOf('month'),
-            selectedValue: undefined,
-
+            endDate: moment(),
+            beginDate: moment().subtract(1,'month'),
+            selectedValue: {
+                label: "Mois précédent",
+                value: "last_month"
+            }
         }
     },
 

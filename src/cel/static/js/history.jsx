@@ -206,10 +206,21 @@ var ManagerHistoryPage = React.createClass({
             return moment(cell).format('LLLL')
         }
 
-        var amountFormatter = (cell, row) => {
+        var debitFormatter = (cell, row) => {
             // Cell is a string for now,
             // we need to cast it in a Number object to use the toFixed method.
-            return Number(cell).toFixed(2)
+            if (cell<0)
+            {
+                return Number(cell).toFixed(2)
+            }
+        }
+        var creditFormatter = (cell, row) => {
+            // Cell is a string for now,
+            // we need to cast it in a Number object to use the toFixed method.
+            if (cell>0)
+            {
+                return Number(cell).toFixed(2)
+            }
         }
 
         var historyTable = (
@@ -221,7 +232,9 @@ var ManagerHistoryPage = React.createClass({
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="date" dataFormat={dateFormatter}>{__("Date")}</TableHeaderColumn>
                 <TableHeaderColumn columnClassName="line-break" dataField="description">{__("Libellé")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="amount" dataFormat={amountFormatter}>{__("Montant")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="amount" dataFormat={debitFormatter}>{__("Débit")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="amount" dataFormat={creditFormatter}>{__("Crédit")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="solde">{__("Solde")}</TableHeaderColumn>
             </BootstrapTable>
         )
 

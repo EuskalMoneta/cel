@@ -101,7 +101,7 @@ var ManagerHistoryPage = React.createClass({
     },
 
     beginDateChange(date) {
-        if (date < this.state.endDate) {
+        if (date <= this.state.endDate) {
             this.setState({beginDate: date});
             var computeHistoryData = (data) => {
                 this.setState({currentSolde: data.result[0]},
@@ -137,7 +137,7 @@ var ManagerHistoryPage = React.createClass({
     },
 
     endDateChange(date) {
-        if (date > this.state.beginDate) {
+        if (date >= this.state.beginDate) {
             this.setState({endDate: date});
             var computeHistoryData = (data) => {
                 this.setState({currentSolde: data.result[0]},

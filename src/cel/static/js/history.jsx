@@ -48,8 +48,8 @@ var ManagerHistoryPage = React.createClass({
 
     computeHistoryList(historyList) {
         try {
-            if (historyList.result.pageItems) {
-                var historyListData = historyList.result.pageItems
+            if (historyList[0].result.pageItems) {
+                var historyListData = historyList[0].result.pageItems
             }
             else {
                 var historyListData = historyList
@@ -66,7 +66,7 @@ var ManagerHistoryPage = React.createClass({
                 // Input data are strings,
                 // we need to cast it in a Number object to use the toFixed method.
                 if (index === 0)
-                    newItem.solde = Number(this.state.currentSolde.status.balance)
+                    newItem.solde = Number(historyList[1])
                 else
                     newItem.solde = Number(list[index-1].solde) - Number(list[index-1].amount)
 

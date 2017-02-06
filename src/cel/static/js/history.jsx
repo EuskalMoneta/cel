@@ -31,6 +31,7 @@ var ManagerHistoryPage = React.createClass({
             endDate: moment().endOf('month'),
             beginDate: moment().startOf('month'),
             selectedValue: undefined,
+
         }
     },
 
@@ -221,7 +222,6 @@ var ManagerHistoryPage = React.createClass({
                 <TableHeaderColumn dataField="date" dataFormat={dateFormatter}>{__("Date")}</TableHeaderColumn>
                 <TableHeaderColumn columnClassName="line-break" dataField="description">{__("Libellé")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="amount" dataFormat={amountFormatter}>{__("Montant")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="solde">{__("Solde")}</TableHeaderColumn>
             </BootstrapTable>
         )
 

@@ -15,13 +15,40 @@ import {
     TableHeaderColumn
 } from 'react-bootstrap-table'
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
-
+const {
+    Input,
+    RadioGroup,
+    Row,
+    Textarea,
+} = FRC
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 const {
     ToastContainer
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
+
+const HistoricalForm = React.createClass({
+
+    mixins: [FRC.ParentContextMixin],
+
+    propTypes: {
+        children: React.PropTypes.node
+    },
+
+    render() {
+        return (
+            <Formsy.Form
+                className={this.getLayoutClassName()}
+                {...this.props}
+                ref="historical-form"
+            >
+                {this.props.children}
+            </Formsy.Form>
+        );
+    }
+})
+
 var ManagerHistoryPage = React.createClass({
 
     getInitialState() {
@@ -30,13 +57,14 @@ var ManagerHistoryPage = React.createClass({
             login: window.config.userName,
             historyList: Array(),
             currentSolde: undefined,
-            
+            phone: undefined,
             endDate: moment(),
             beginDate: moment().subtract(1,'month'),
             selectedValue: {
                 label: "Mois précédent",
                 value: "last_month"
-            }
+            },
+            description: "",
         }
     },
 
@@ -90,7 +118,7 @@ var ManagerHistoryPage = React.createClass({
                     // Get account history
                     var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
                         moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                        moment(this.state.endDate).format("YYYY-MM-DD"))
+                        moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             );
@@ -109,7 +137,7 @@ var ManagerHistoryPage = React.createClass({
                         // Get account history
                         var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
                             moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                            moment(this.state.endDate).format("YYYY-MM-DD"))
+                            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
                         fetchAuth(urlHistory, 'get', this.computeHistoryList)
                     }
                 );
@@ -145,7 +173,7 @@ var ManagerHistoryPage = React.createClass({
                         // Get account history
                         var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
                             moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                            moment(this.state.endDate).format("YYYY-MM-DD"))
+                            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
                         fetchAuth(urlHistory, 'get', this.computeHistoryList)
                     }
                 );
@@ -178,7 +206,7 @@ var ManagerHistoryPage = React.createClass({
                     // Get account history
                     var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
                         moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                        moment(this.state.endDate).format("YYYY-MM-DD"))
+                        moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
                     fetchAuth(urlHistory, 'get', this.computeHistoryList)
                 }
             )
@@ -211,6 +239,22 @@ var ManagerHistoryPage = React.createClass({
         fetchAuth(urlSummary, 'get', computeHistoryData)
     },
 
+    DescriptionOnValueChange(event, value) {
+        var computeHistoryData = (data) => {
+            this.setState({currentSolde: data.result[0]},
+                () => {
+                    // Get account history
+                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                        moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
+                }
+            )
+        }
+        this.setState({description: value})
+        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+        fetchAuth(urlSummary, 'get', computeHistoryData)
+    },
     render() {
         // Display current solde information
         if (this.state.currentSolde || this.state.currentSolde === 0) {
@@ -277,11 +321,29 @@ var ManagerHistoryPage = React.createClass({
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <label
+                            className="control-label col-sm-2"
+                            htmlFor="memberhistorical-description">
+                            {__("Description")}
+                        </label>
+                        <div className="col-sm-5">
+                            <HistoricalForm ref="historical-form">
+                                <Input
+                                    name="description"
+                                    data-eusko="memberhistorical-description"
+                                    onChange={this.DescriptionOnValueChange}
+                                    value = {this.state.description}
+                                />
+                            </HistoricalForm>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-sm-1"></div>
+                        <label
                             className="control-label col-sm-3"
-                            htmlFor="memberaddsubscription-payment_mode">
+                            htmlFor="memberhistorical-date-period">
                             {__("Période")}
                         </label>
-                        <div className="col-sm-4 memberaddsubscription" data-eusko="memberaddsubscription-payment_mode">
+                        <div className="col-sm-4 memberhistorical" data-eusko="memberhistorical-date-period">
                             <SimpleSelect
                                 ref="select"
                                 placeholder={__("Période")}
@@ -302,8 +364,8 @@ var ManagerHistoryPage = React.createClass({
                     </div>
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
-                        <label className="control-label col-sm-3" for="dateSelectorBegin">Date début / fin :</label>
-                        <div className="col-sm-2 memberaddsubscription" data-eusko="memberaddsubscription-payment_mode">
+                        <label className="control-label col-sm-3" for="memberhistorical-date-start-end">Date début / fin :</label>
+                        <div className="col-sm-1 memberhistorical" data-eusko="memberhistorical-date-start">
                             <DatePicker
                                 name="dateSelectorBegin"
                                 className="form-control"
@@ -313,8 +375,8 @@ var ManagerHistoryPage = React.createClass({
                                 locale="fr"
                             />
                         </div>
-                        <div className="col-sm-1"></div>
-                        <div className="col-sm-2 memberaddsubscription" data-eusko="memberaddsubscription-payment_mode">
+                        <div className="col-sm-2"></div>
+                        <div className="col-sm-1 memberhistorical" data-eusko="memberhistorical-date-end">
                             <DatePicker
                                 name="dateSelectorEnd"
                                 className="form-control"
@@ -340,7 +402,7 @@ var ManagerHistoryPage = React.createClass({
                 </div>
                 <input
                     name="submit"
-                    data-eusko="profil-form-submit"
+                    data-eusko="memberhistorical-export"
                     type="submit"
                     defaultValue={__("Exporter")}
                     className="btn btn-success col-sm-offset-2"

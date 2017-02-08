@@ -38,6 +38,7 @@ var ManagerHistoryPage = React.createClass({
                 label: "Mois précédent",
                 value: "last_month"
             },
+            description: '',
         }
     },
 
@@ -48,7 +49,9 @@ var ManagerHistoryPage = React.createClass({
         // Get PDF data
         var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + 
             moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-            moment(this.state.endDate).format("YYYY-MM-DD"))
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+        fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
+    },
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
@@ -172,7 +175,7 @@ var ManagerHistoryPage = React.createClass({
             )
         }
     },
-    DateOnValueChange(item) {
+    dateOnValueChange(item) {
         var computeHistoryData = (data) => {
             this.setState({currentSolde: data.result[0]},
                 () => {
@@ -212,7 +215,17 @@ var ManagerHistoryPage = React.createClass({
         fetchAuth(urlSummary, 'get', computeHistoryData)
     },
 
+    handleSearchChange(searchText, colInfos, multiColumnSearch) {
+        this.setState({description: searchText})
+    },
+
     render() {
+        const options = {
+            noDataText: __("Pas d'historique à afficher."), 
+            hideSizePerPage: true, 
+            sizePerPage: 20,
+            onSearchChange: this.handleSearchChange,
+        };
         // Display current solde information
         if (this.state.currentSolde || this.state.currentSolde === 0) {
             var currentSoldeLabel = (
@@ -263,8 +276,7 @@ var ManagerHistoryPage = React.createClass({
              data={this.state.historyList} striped={true} hover={true} pagination={true}
              search={true} searchPlaceholder={__("Rechercher une opération")}
              selectRow={{mode: 'none'}} tableContainerClass="react-bs-table-account-history"
-             options={{noDataText: __("Pas d'historique à afficher."), hideSizePerPage: true, sizePerPage: 20}}
-             >
+             options={options}>
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="date" dataFormat={dateFormatter}>{__("Date")}</TableHeaderColumn>
                 <TableHeaderColumn columnClassName="line-break" dataField="description">{__("Libellé")}</TableHeaderColumn>
@@ -289,7 +301,7 @@ var ManagerHistoryPage = React.createClass({
                                 ref="select"
                                 placeholder={__("Période")}
                                 theme="bootstrap3"
-                                onValueChange={this.DateOnValueChange}
+                                onValueChange={this.dateOnValueChange}
                                 value = {this.state.selectedValue}
                                 required
                             >
@@ -345,7 +357,7 @@ var ManagerHistoryPage = React.createClass({
                     name="submit"
                     data-eusko="memberhistorical-export"
                     type="submit"
-                    defaultValue={__("Exporter")}
+                    defaultValue={__("Export PDF")}
                     className="btn btn-success col-sm-offset-2"
                     formNoValidate={true}
                     onClick={this.getHistoryPDF}

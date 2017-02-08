@@ -78,7 +78,7 @@ class SetPasswordPage extends React.Component {
 
         var computeForm = (data) => {
             this.refs.container.success(
-                __("L'enregistrement s'est déroulé correctement."),
+                __("Le changement de mot de passe s'est déroulé correctement."),
                 "",
                 {
                     timeOut: 5000,
@@ -87,14 +87,14 @@ class SetPasswordPage extends React.Component {
                 }
             )
 
-            // setTimeout(() => window.location.assign("/login"), 3000)
+            setTimeout(() => window.location.assign("/login"), 5000)
         }
 
         var promiseError = (err) => {
             // Error during request, or parsing NOK :(
             console.error(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors de l'enregistrement !"),
+                __("Une erreur s'est produite lors de la validation !"),
                 "",
                 {
                     timeOut: 5000,

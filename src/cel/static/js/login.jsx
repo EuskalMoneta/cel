@@ -5,7 +5,6 @@ import {
     getUrlParameter,
     getCSRFToken,
     getAPIBaseURL,
-    NavbarTitle,
 } from 'Utils'
 
 import classNames from 'classnames'
@@ -210,9 +209,4 @@ class LoginPage extends React.Component {
 ReactDOM.render(
     <LoginPage />,
     document.getElementById('login')
-)
-
-ReactDOM.render(
-    <NavbarTitle title={__("Compte en ligne Eusko")}/>,
-    document.getElementById('navbar-title')
 )

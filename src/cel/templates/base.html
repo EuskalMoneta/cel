@@ -11,14 +11,13 @@
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
-  <div class="navbar navbar-default navbar-fixed-top">
+  <div class="topbar topbar-default topbar-fixed-top">
     <div class="container">
-      <div class="navbar-header" id="navbar-title">
+      <div class="topbar-header" id="topbar-title">
+        <!-- IMAGE À DÉFINIR -->
       </div>
-      <div class="navbar-collapse collapse" id="navbar-main">
-        <div id="navbar-content">
-        </div>
-        <div id="navbar-right">
+      <div class="topbar-collapse collapse" id="topbar-main">
+        <div id="topbar-right">
         </div>
       </div>
     </div>
@@ -30,15 +29,15 @@
     </div>
   {% endblock %}
 
-  <div class="container-fluid footer">
+<!--   <div class="container-fluid footer">
     <div class="row">
       <div class="col-lg-12">Compte en ligne - Euskal Moneta</div>
     </div>
-  </div>
+  </div> -->
 
   <script src="{% url 'config_js' %}"></script>
   {% with 'bundles/js/'|add:CURRENT_LANG|add:'.Base.js' as base_js_static %}
-    <script src="{% static base_js_static %}"></script>
+  <script src="{% static base_js_static %}"></script>
   {% endwith %}
   {% block extra_js %}
   {% endblock %}

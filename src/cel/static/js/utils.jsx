@@ -193,83 +193,85 @@ var getCurrentLang = document.documentElement.lang
 var getCSRFToken = window.config.getCSRFToken
 var getAPIBaseURL = window.config.getAPIBaseURL
 
-var Flag = React.createClass({
-    render() {
-        // We want to hide the flag showing the current lang
-        if (this.props.lang != getCurrentLang) {
-            return (
-                    <li>
-                        <a className={"lang-select " + this.props.lang}
-                           href={"/i18n/setlang_custom/?lang=" + this.props.lang}>
-                            <img className={"lang-select-flag-" + this.props.lang}
-                                 alt={this.props.langname}
-                                 src={"/static/img/" + this.props.lang + ".gif"}
-                                 />
-                        </a>
-                    </li>
-            )
-        }
-        else { return null }
-    }
-})
-
-class Flags extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    render() {
-        return (
-            <ul className="nav navbar-nav pull-right">
-                <Flag lang="eu" langname="Euskara"/>
-                <Flag lang="fr" langname="Français"/>
-            </ul>
-        )
-    }
-}
-
-class NavbarTitle extends React.Component {
-    render() {
-        if (this.props.title) {
-            return <a className="navbar-brand">{this.props.title}</a>
-        }
-        else {
-            return <a className="navbar-brand">Euskal Moneta</a>
-        }
-    }
-}
 
 class NavbarItems extends React.Component {
     render() {
-        if (window.config.userAuth) {
-            var navbarData = _.map(this.props.objects, (item) => {
-                return (
-                    <li key={item.id}>
-                        <a href={item.href}>{item.label}</a>
-                    </li>
-                )
-            })
-        }
-        else
-            var navbarData = null
+        // debugger
+        var navbarData = _.map(this.props.objects, (item) => {
+            if (item) {
+                if (item.href) {
+                    return (
+                        <li key={item.id}>
+                            <a href={item.href}>{item.label}</a>
+                        </li>
+                    )
+                }
+                else if (item.data) {
+                    return (
+                        <li key={item.id}>
+                            <a>{item.data}</a>
+                        </li>
+                    )
+                }
+                else {
+                    return (
+                        <li key={item.id}>
+                            <a>{item.label}</a>
+                        </li>
+                    )
+                }
+            }
+        })
+
         return (
-            <ul className="nav navbar-nav" id="navbar-items">
+            <ul className="nav navbar-nav">
                 {navbarData}
             </ul>
         )
     }
 }
 
-var NavbarRight = React.createClass({
-    getInitialState() {
-        return {
+class TopbarRight extends React.Component {
+    constructor(props) {
+        super(props);
+
+        moment.locale(document.documentElement.lang)
+
+        this.state = {
             name: '',
+            objects: Array(),
             userAuth: window.config.userAuth,
-            showDropdown: false,
         }
-    },
+    }
+
+    tick() {
+        this.setState((previousState, currentProps) => {
+            if (previousState.objects.length == 0) {
+                var objects = currentProps.objects
+            }
+            else {
+                var objects = previousState.objects
+            }
+
+            return {objects:
+                _.map(objects, (item) => {
+                    if (item) {
+                        if (item.id === 0) {
+                            item.data = moment().format('DD/MM/YYYY hh:mm:ss')
+                            return item
+                        }
+                        else if (this.state.userAuth) {
+                            return item
+                        }
+                    }
+                })
+            }
+        })
+    }
 
     componentDidMount() {
+        setInterval(() => { this.tick() }, 1000)
+
         // Get member name
         if (this.state.userAuth)
         {
@@ -278,47 +280,21 @@ var NavbarRight = React.createClass({
             }
             fetchAuth(getAPIBaseURL + "member-name/", 'get', computeData)
         }
-    },
+    }
 
-    toggleDropdown() {
-        this.setState({showDropdown: !this.state.showDropdown})
-    },
-
-    hideDropdown() {
-        this.setState({showDropdown: false})
-    },
+    componentWillReceiveProps(nextProps) {
+        debugger
+        if (nextProps) {
+            this.setState(newProps)
+        }
+    }
 
     render() {
-        if (this.state.userAuth)
-        {
-            if (this.state.showDropdown) {
-                var dropdownClassName = "dropdown-menu show-dropdown-menu"
-            }
-            else {
-                var dropdownClassName = "dropdown-menu"
-            }
-
-            return (
-                <ul className="nav navbar-nav pull-right" onBlur={() => this.toggleDropdown()}>
-                    <li className="dropdown">
-                        <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                           onClick={() => this.toggleDropdown()}>
-                            {window.config.userName + " - " + this.state.name + " "}<span className="caret"></span>
-                        </a>
-                        <ul className={dropdownClassName} role="menu">
-                            <li><a href="/profil">{__("Mon profil")}</a></li>
-                            <li><a href="/change-passe">{__("Changer mon mot de passe")}</a></li>
-                            <li className="divider"></li>
-                            <li><a href={window.config.getLogoutURL}>{__("Me déconnecter")}</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            )
-        }
-        else
-            return null
+        return (
+            <NavbarItems objects={this.state.objects} />
+        )
     }
-})
+}
 
 class SelectizeUtils {
     // generic callback for all selectize objects
@@ -387,10 +363,7 @@ module.exports = {
     getCurrentLang: getCurrentLang,
     getCSRFToken: getCSRFToken,
     getAPIBaseURL: getAPIBaseURL,
-    NavbarTitle: NavbarTitle,
     NavbarItems: NavbarItems,
-    NavbarRight: NavbarRight,
-    Flags: Flags,
-    Flag: Flag,
+    TopbarRight: TopbarRight,
     SelectizeUtils: SelectizeUtils
 }

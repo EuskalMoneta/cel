@@ -56,6 +56,7 @@ var ManagerHistoryPage = React.createClass({
         return {
             login: window.config.userName,
             historyList: Array(),
+            historyListWithSolde: Array(),
             currentSolde: undefined,
             endDate: moment(),
             beginDate: moment().subtract(1,'month'),
@@ -80,17 +81,17 @@ var ManagerHistoryPage = React.createClass({
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
-    computeHistoryList(historyList) {
+    computeHistoryListWithSolde(historyListWithSolde) {
         try {
-            if (historyList[0].result.pageItems) {
-                var historyListData = historyList[0].result.pageItems
+            if (historyListWithSolde[0].result.pageItems) {
+                var historyListData = historyListWithSolde[0].result.pageItems
             }
             else {
-                var historyListData = historyList
+                var historyListData = historyListWithSolde
             }
         }
         catch (e) {
-            var historyListData = historyList
+            var historyListData = historyListWithSolde
         }
 
         var res = _.map(historyListData,
@@ -100,7 +101,7 @@ var ManagerHistoryPage = React.createClass({
                 // Input data are strings,
                 // we need to cast it in a Number object to use the toFixed method.
                 if (index === 0)
-                    newItem.solde = Number(historyList[1])
+                    newItem.solde = Number(historyListWithSolde[1])
                 else
                     newItem.solde = Number(list[index-1].solde) - Number(list[index-1].amount)
 
@@ -109,50 +110,64 @@ var ManagerHistoryPage = React.createClass({
             }
         )
 
-        this.setState({historyList: res});
+        this.setState({historyListWithSolde: res});
     },
 
+    computeHistoryList(historyList) {
+        for(var j=0; j < this.state.historyListWithSolde.length; j++)
+        {
+            for (var i=0; i < historyList[0].result.pageItems.length; i++)
+            {
+
+                if (historyList[0].result.pageItems[i].id == this.state.historyListWithSolde[j].id)
+                {
+                    historyList[0].result.pageItems[i].solde = this.state.historyListWithSolde[j].solde
+                }
+            }
+        }
+        this.setState({historyList: historyList[0].result.pageItems});
+    },
     componentDidMount() {
         var computeHistoryData = (data) => {
-            this.setState({currentSolde: data.result[0]},
-                () => {
-                    // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                        moment(this.state.endDate).format("YYYY-MM-DD"))
-                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                }
-            );
+            this.setState({currentSolde: data.result[0]});
         }
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
+
+        var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD"))
+        fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
+
+        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+        fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
     beginDateChange(date) {
         if (date <= this.state.endDate) {
             this.setState({beginDate: date});
-            var computeHistoryData = (data) => {
-                this.setState({currentSolde: data.result[0]},
-                    () => {
-                        // Get account history
-                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                            moment(this.state.endDate).format("YYYY-MM-DD"))
-                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                    }
-                );
-            }
             this.setState({selectedValue:  {
                 label: "Autres",
                 value: "custom"
             }})
             // Get account summary
             var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-            fetchAuth(urlSummary, 'get', computeHistoryData)
+            fetchAuth(urlSummary, 'get')
+
+            var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+                moment(date).format("YYYY-MM-DD") + "&end=" +
+                moment(this.state.endDate).format("YYYY-MM-DD"))
+            fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
+
+            var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+                moment(date).format("YYYY-MM-DD") + "&end=" +
+                moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+            fetchAuth(urlHistory, 'get', this.computeHistoryList)
         }
         else {
-            
             this.refs.container.error(
                 __("Attention, la date de début doit être antérieur à celle de fin !"),
                 "",
@@ -168,24 +183,23 @@ var ManagerHistoryPage = React.createClass({
     endDateChange(date) {
         if (date >= this.state.beginDate) {
             this.setState({endDate: date});
-            var computeHistoryData = (data) => {
-                this.setState({currentSolde: data.result[0]},
-                    () => {
-                        // Get account history
-                        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                            moment(this.state.endDate).format("YYYY-MM-DD"))
-                        fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                    }
-                );
-            }
             this.setState({selectedValue:  {
                 label: "Autres",
                 value: "custom"
             }})
             // Get account summary
             var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-            fetchAuth(urlSummary, 'get', computeHistoryData)
+            fetchAuth(urlSummary, 'get')
+
+            var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                moment(date).format("YYYY-MM-DD"))
+            fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
+
+            var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
+                moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
+                moment(date).format("YYYY-MM-DD") + "&description=" + this.state.description)
+            fetchAuth(urlHistory, 'get', this.computeHistoryList)   
         }
         else {
             
@@ -200,18 +214,8 @@ var ManagerHistoryPage = React.createClass({
             )
         }
     },
+
     dateOnValueChange(item) {
-        var computeHistoryData = (data) => {
-            this.setState({currentSolde: data.result[0]},
-                () => {
-                    // Get account history
-                    var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                        moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                        moment(this.state.endDate).format("YYYY-MM-DD"))
-                    fetchAuth(urlHistory, 'get', this.computeHistoryList)
-                }
-            )
-        }
         if (item.value == 'day') {
             this.setState({beginDate: moment()})
             this.setState({endDate: moment()})
@@ -237,11 +241,31 @@ var ManagerHistoryPage = React.createClass({
             value: item.value
         }})
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-        fetchAuth(urlSummary, 'get', computeHistoryData)
+
+        var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD"))
+        fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
+
+        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+        fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
-    handleSearchChange(searchText, colInfos, multiColumnSearch) {
-        this.setState({description: searchText})
+    descriptionOnValueChange(event, value) {
+        this.setState({description: value})
+        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
+
+        var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD"))
+        fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
+
+        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + value)
+        fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
     render() {

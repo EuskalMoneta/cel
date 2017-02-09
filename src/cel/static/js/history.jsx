@@ -78,6 +78,15 @@ var ManagerHistoryPage = React.createClass({
             moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
+
+    getHistoryCSV() {
+        var computePDFData = (blob) => {
+            FileSaver.saveAs(blob, 'releve_compte_eusko.csv')
+        }
+        // Get PDF data
+        var urlSummary = (getAPIBaseURL + "export-history-adherent-csv/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
@@ -426,6 +435,15 @@ var ManagerHistoryPage = React.createClass({
                     className="btn btn-success col-sm-offset-2"
                     formNoValidate={true}
                     onClick={this.getHistoryPDF}
+                />
+                <input
+                    name="submit"
+                    data-eusko="memberhistorical-export"
+                    type="submit"
+                    defaultValue={__("Export CSV")}
+                    className="btn btn-success col-sm-offset-2"
+                    formNoValidate={true}
+                    onClick={this.getHistoryCSV}
                 />
                 <ToastContainer ref="container"
                     toastMessageFactory={ToastMessageFactory}

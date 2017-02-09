@@ -11,6 +11,7 @@
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
+<div id="wrap">
   <div class="topbar navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="topbar-header navbar-header" id="topbar-title">
@@ -23,6 +24,9 @@
       </div>
     </div>
   </div>
+  <div id="navbar"></div>
+  <div id="sub-navbar"></div>
+</div>
 
   {% block container %}
     <div class="alert alert-warning">

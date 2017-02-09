@@ -4,6 +4,7 @@ import {
     getAPIBaseURL,
     getCurrentLang,
     SelectizeUtils,
+    Navbar,
 } from 'Utils'
 
 const {
@@ -684,4 +685,9 @@ const MemberShow = React.createClass({
 ReactDOM.render(
     <MemberShow url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
     document.getElementById('adherent')
+)
+
+ReactDOM.render(
+    <Navbar />,
+    document.getElementById('navbar')
 )

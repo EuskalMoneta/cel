@@ -195,8 +195,27 @@ var getAPIBaseURL = window.config.getAPIBaseURL
 
 
 class NavbarItems extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            classes: 'nav navbar-nav',
+            objects: Array(),
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        debugger
+        if (nextProps.objects) {
+            this.setState({objects: nextProps.objects})
+        }
+        if (nextProps.classes) {
+            this.setState({classes: nextProps.classes})
+        }
+    }
+
     render() {
-        var navbarData = _.map(this.props.objects, (item) => {
+        var navbarData = _.map(this.state.objects, (item) => {
             if (item) {
                 if (item.href) {
                     if (item.href == '/logout') {
@@ -232,9 +251,46 @@ class NavbarItems extends React.Component {
         })
 
         return (
-            <ul className={this.props.classes}>
+            <ul className={this.state.classes}>
                 {navbarData}
             </ul>
+        )
+    }
+}
+
+class Navbar extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // The 'id' fields are mandatory!
+        var navbarObjects = [{href: '/compte', label: __("Mon compte"), status: 'inactive', id: 0},
+                             {href: '/virements', label: __("Mes virements"), status: 'inactive', id: 1},
+                             {href: '/euskokart', label: __("Mon EuskoKart"), status: 'inactive', id: 2},
+                             {href: '/profil', label: __("Mon profil"), status: 'inactive', id: 3},
+                             ]
+
+        navbarObjects = _.map(navbarObjects, (item) => {
+            if (window.location.pathname.toLowerCase().indexOf(item.href.substring(1)) != -1) {
+                item.status = 'active'
+            }
+
+            return item
+        })
+
+        this.state = {objects: navbarObjects}
+    }
+
+    render() {
+        return (
+            <div className="navbar navbar-static-top">
+                <div className="container">
+                    <div className="navbar-header">
+                    </div>
+                    <div className="collapse navbar-collapse main-nav">
+                        <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                    </div>
+                </div>
+            </div>
         )
     }
 }
@@ -375,6 +431,7 @@ module.exports = {
     getCurrentLang: getCurrentLang,
     getCSRFToken: getCSRFToken,
     getAPIBaseURL: getAPIBaseURL,
+    Navbar: Navbar,
     NavbarItems: NavbarItems,
     TopbarRight: TopbarRight,
     SelectizeUtils: SelectizeUtils

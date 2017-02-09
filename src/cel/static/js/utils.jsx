@@ -199,11 +199,20 @@ class NavbarItems extends React.Component {
         var navbarData = _.map(this.props.objects, (item) => {
             if (item) {
                 if (item.href) {
-                    return (
+                    if (item.href == '/logout') {
+                        return (
+                            <li key={item.id}>
+                                <a href={item.href}>{item.label + ' '}
+                                    <span className="glyphicon glyphicon-log-out"></span>
+                                </a>
+                            </li>
+                        )
+                    }
+                    else {
                         <li key={item.id}>
                             <a href={item.href}>{item.label}</a>
                         </li>
-                    )
+                    }
                 }
                 else if (item.data) {
                     return (
@@ -237,7 +246,7 @@ class TopbarRight extends React.Component {
         moment.locale(document.documentElement.lang)
 
         this.state = {
-            name: '',
+            memberData: '',
             objects: Array(),
             userAuth: window.config.userAuth,
         }
@@ -260,6 +269,11 @@ class TopbarRight extends React.Component {
                             return item
                         }
                         else if (this.state.userAuth) {
+                            if (item.id === 1 && this.state.memberData) {
+                                item.data = window.config.userName + ' - ' + this.state.memberData
+                                return item
+                            }
+
                             return item
                         }
                     }
@@ -275,7 +289,7 @@ class TopbarRight extends React.Component {
         if (this.state.userAuth)
         {
             var computeData = (data) => {
-                this.setState({name: data})
+                this.setState({memberData: data})
             }
             fetchAuth(getAPIBaseURL + "member-name/", 'get', computeData)
         }

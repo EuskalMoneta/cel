@@ -21,10 +21,11 @@ moment().utcOffset("+01:00")
 
 // Setup raven (Sentry client)
 // Raven.config('http://02c622eee5004e9fa9b661395e6ca409@localhost:8081/3').install()
-
+ 
 // The 'id' field is mandatory!
-const navbarObjects = [{data: '', id: 0},
-                       {href: '/logout', label: __("Déconnexion"), id: 1},
+const navbarObjects = [{data: '', id: 0}, // Clock
+                       {data: '', id: 1}, // Member data: ID Adhérent & Member name
+                       {href: '/logout', label: __("Déconnexion"), id: 2},
                        ]
 
 ReactDOM.render(

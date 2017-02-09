@@ -196,7 +196,6 @@ var getAPIBaseURL = window.config.getAPIBaseURL
 
 class NavbarItems extends React.Component {
     render() {
-        // debugger
         var navbarData = _.map(this.props.objects, (item) => {
             if (item) {
                 if (item.href) {
@@ -224,7 +223,7 @@ class NavbarItems extends React.Component {
         })
 
         return (
-            <ul className="nav navbar-nav">
+            <ul className={this.props.classes}>
                 {navbarData}
             </ul>
         )
@@ -283,7 +282,6 @@ class TopbarRight extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        debugger
         if (nextProps) {
             this.setState(newProps)
         }
@@ -291,7 +289,7 @@ class TopbarRight extends React.Component {
 
     render() {
         return (
-            <NavbarItems objects={this.state.objects} />
+            <NavbarItems objects={this.state.objects} classes={"nav navbar-nav navbar-right topbar-right"} />
         )
     }
 }

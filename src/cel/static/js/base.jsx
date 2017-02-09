@@ -29,5 +29,5 @@ const navbarObjects = [{data: '', id: 0},
 
 ReactDOM.render(
     <TopbarRight objects={navbarObjects} />,
-    document.getElementById('topbar-right')
+    document.getElementById('topbar-main')
 )

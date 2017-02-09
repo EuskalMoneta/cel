@@ -199,17 +199,19 @@ class NavbarItems extends React.Component {
         super(props);
 
         this.state = {
-            classes: 'nav navbar-nav',
-            objects: Array(),
+            classes: props.classes ? props.classes : 'nav navbar-nav',
+            objects: props.objects ? props.objects : [],
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        debugger
-        if (nextProps.objects) {
+        const isObjectsChanging = nextProps.objects !== this.props.objects
+        if (isObjectsChanging) {
             this.setState({objects: nextProps.objects})
         }
-        if (nextProps.classes) {
+
+        const isClassesChanging = nextProps.classes !== this.props.classes
+        if (isClassesChanging) {
             this.setState({classes: nextProps.classes})
         }
     }
@@ -220,7 +222,7 @@ class NavbarItems extends React.Component {
                 if (item.href) {
                     if (item.href == '/logout') {
                         return (
-                            <li key={item.id}>
+                            <li key={item.id} className="log-out">
                                 <a href={item.href}>{item.label + ' '}
                                     <span className="glyphicon glyphicon-log-out"></span>
                                 </a>
@@ -228,9 +230,11 @@ class NavbarItems extends React.Component {
                         )
                     }
                     else {
-                        <li key={item.id}>
-                            <a href={item.href}>{item.label}</a>
-                        </li>
+                        return (
+                            <li key={item.id}>
+                                <a href={item.href}>{item.label}</a>
+                            </li>
+                        )
                     }
                 }
                 else if (item.data) {
@@ -284,8 +288,6 @@ class Navbar extends React.Component {
         return (
             <div className="navbar navbar-static-top">
                 <div className="container">
-                    <div className="navbar-header">
-                    </div>
                     <div className="collapse navbar-collapse main-nav">
                         <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
                     </div>

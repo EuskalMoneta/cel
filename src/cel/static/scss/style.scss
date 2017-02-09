@@ -8,12 +8,32 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   height: 50px;
 }
 
+.topbar-right li {
+  pointer-events: none;
+}
+
+.log-out {
+  pointer-events: auto !important;
+}
+
 #navbar {
   height: 115px;
   padding-top: 60px;
   background-color: #f8f8f8;
   border-bottom: 1px solid;
   border-bottom-color: #c3c3c3;
+  // pointer-events: none;
+}
+
+#navbar a {
+  padding-top: 15px;
+  padding-bottom: 17px;
+}
+
+#navbar a:hover, #navbar a:focus {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid;
+  border-bottom-color: #18bc9c;
 }
 
 .lang-select {

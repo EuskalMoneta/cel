@@ -198,6 +198,7 @@ class NavbarItems extends React.Component {
     constructor(props) {
         super(props);
 
+        // debugger
         this.state = {
             classes: props.classes ? props.classes : 'nav navbar-nav',
             objects: props.objects ? props.objects : [],
@@ -262,6 +263,61 @@ class NavbarItems extends React.Component {
     }
 }
 
+class SubNavbar extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // The 'id' fields are mandatory!
+        var navbarObjects = [
+            {parent: '/profil',
+             listObjects: [{href: '/compte/synthese', label: __("Synthèse"), status: 'inactive', id: 0},
+                           {href: '/compte/historique', label: __("Historique"), status: 'inactive', id: 1}]},
+            {parent: '/virements',
+             listObjects: [{href: '/virements/ponctuel', label: __("Virement ponctuel"), status: 'inactive', id: 0},
+                           {href: '/virements/recurrent', label: __("Virement récurrent"), status: 'inactive', id: 1},
+                           {href: '/virements/beneficiaires', label: __("Gestion des bénéficiaires"), status: 'inactive', id: 2}]},
+            {parent: '/euskokart', listObjects: []},
+            {parent: '/toto', listObjects: []},
+        ]
+
+        navbarObjects = _.chain(navbarObjects)
+                         .filter((item) => { return item.parent == props.activeObject.href })
+                         .map((item) => { return item.listObjects })
+                         .flatten(true)
+                         .value()
+
+        this.state = {
+            objects: navbarObjects,
+            activeObject: props.activeObject[0],
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const isObjectsChanging = nextProps.objects !== this.props.objects
+        if (isObjectsChanging) {
+            this.setState({objects: nextProps.objects})
+        }
+
+        const isActiveObjectChanging = nextProps.activeObject !== this.props.activeObject
+        if (isActiveObjectChanging) {
+            this.setState({activeObject: nextProps.activeObject[0]})
+        }
+    }
+
+    render() {
+        // debugger
+        return (
+            <div className="navbar navbar-static-top subnav">
+                <div className="container">
+                    <div className="collapse navbar-collapse">
+                        <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
 class Navbar extends React.Component {
     constructor(props) {
         super(props);
@@ -286,12 +342,18 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <div className="navbar navbar-static-top">
-                <div className="container">
-                    <div className="collapse navbar-collapse main-nav">
-                        <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+            <div>
+                <div className="navbar navbar-static-top navbar-content">
+                    <div className="container">
+                        <div className="collapse navbar-collapse main-nav">
+                            <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                        </div>
                     </div>
                 </div>
+                <SubNavbar activeObject={_.chain(this.state.objects)
+                                          .filter((item) => { return item.status == 'active' })
+                                          .flatten(true)
+                                          .value()} />
             </div>
         )
     }
@@ -323,7 +385,7 @@ class TopbarRight extends React.Component {
                 _.map(objects, (item) => {
                     if (item) {
                         if (item.id === 0) {
-                            item.data = moment().format('DD/MM/YYYY hh:mm:ss')
+                            item.data = moment().format('DD/MM/YYYY HH:mm:ss')
                             return item
                         }
                         else if (this.state.userAuth) {
@@ -433,6 +495,7 @@ module.exports = {
     getCurrentLang: getCurrentLang,
     getCSRFToken: getCSRFToken,
     getAPIBaseURL: getAPIBaseURL,
+    SubNavbar: SubNavbar,
     Navbar: Navbar,
     NavbarItems: NavbarItems,
     TopbarRight: TopbarRight,

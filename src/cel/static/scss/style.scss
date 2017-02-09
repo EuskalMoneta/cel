@@ -16,22 +16,23 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   pointer-events: auto !important;
 }
 
-#navbar {
+.navbar-content {
   height: 115px;
   padding-top: 60px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
   background-color: #f8f8f8;
   border-bottom: 1px solid;
   border-bottom-color: #c3c3c3;
-  // pointer-events: none;
 }
 
-#navbar a {
-  padding-top: 15px;
-  padding-bottom: 17px;
+.navbar-content a {
+  padding-top: 15px !important;
+  padding-bottom: 17px !important;
 }
 
-#navbar a:hover, #navbar a:focus {
-  background-color: #f8f8f8;
+.navbar-content a:hover, .navbar-content a:focus {
+  background-color: #f8f8f8 !important;
   border-bottom: 1px solid;
   border-bottom-color: #18bc9c;
 }
@@ -54,7 +55,7 @@ textarea {
 }
 
 .container-eusko {
-  margin-top: 50px;
+  // margin-top: 50px;
   margin-bottom: 80px;
 }
 

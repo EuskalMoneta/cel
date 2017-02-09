@@ -15,7 +15,12 @@ import {
     TableHeaderColumn
 } from 'react-bootstrap-table'
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
-
+const {
+    Input,
+    RadioGroup,
+    Row,
+    Textarea,
+} = FRC
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 const {
@@ -23,6 +28,26 @@ const {
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
+const HistoricalForm = React.createClass({
+
+    mixins: [FRC.ParentContextMixin],
+
+    propTypes: {
+        children: React.PropTypes.node
+    },
+
+    render() {
+        return (
+            <Formsy.Form
+                className={this.getLayoutClassName()}
+                {...this.props}
+                ref="historical-form"
+            >
+                {this.props.children}
+            </Formsy.Form>
+        );
+    }
+})
 
 var ManagerHistoryPage = React.createClass({
 
@@ -224,7 +249,6 @@ var ManagerHistoryPage = React.createClass({
             noDataText: __("Pas d'historique à afficher."), 
             hideSizePerPage: true, 
             sizePerPage: 20,
-            onSearchChange: this.handleSearchChange,
         };
         // Display current solde information
         if (this.state.currentSolde || this.state.currentSolde === 0) {
@@ -274,7 +298,6 @@ var ManagerHistoryPage = React.createClass({
 
             <BootstrapTable
              data={this.state.historyList} striped={true} hover={true} pagination={true}
-             search={true} searchPlaceholder={__("Rechercher une opération")}
              selectRow={{mode: 'none'}} tableContainerClass="react-bs-table-account-history"
              options={options}>
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
@@ -289,6 +312,24 @@ var ManagerHistoryPage = React.createClass({
         return (
             <div className="row">
                 <div className="col-md-12">
+                    <div className="form-group row">
+                        <div className="col-sm-1"></div>
+                        <label
+                            className="control-label col-sm-2"
+                            htmlFor="memberhistorical-description">
+                            {__("Description")}
+                        </label>
+                        <div className="col-sm-5">
+                            <HistoricalForm ref="historical-form">
+                                <Input
+                                    name="description"
+                                    data-eusko="memberhistorical-description"
+                                    onChange={this.descriptionOnValueChange}
+                                    value = {this.state.description}
+                                />
+                            </HistoricalForm>
+                        </div>
+                    </div>
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <label

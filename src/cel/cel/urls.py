@@ -43,7 +43,9 @@ urlpatterns = [
     url(r'^passe-perdu/?$', adherents_views.lost_password, name='lost-password'),
     url(r'^valide-passe-perdu/?$', adherents_views.valid_lost_password, name='valide-premiere-connexion'),
     # history
-    url(r'^history/?$', adherents_views.history, name='history'),
+    url(r'^compte/?$', adherents_views.compte_home, name='compte-home'),
+    # url(r'^compte/synthese/?$', adherents_views.synthese, name='synthese'),
+    url(r'^compte/historique/?$', adherents_views.history, name='history'),
 
     # home
     url(r'^$', adherents_views.index, name='home'),

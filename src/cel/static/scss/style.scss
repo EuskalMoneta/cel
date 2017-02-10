@@ -4,6 +4,11 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
 
 /* Custom styles */
 
+#wrap {
+  // TODO, fix those navbars on scroll!
+  // top: 0px !important;
+}
+
 .topbar-brand-image {
   height: 50px;
 }
@@ -31,10 +36,28 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   padding-bottom: 17px !important;
 }
 
-.navbar-content a:hover, .navbar-content a:focus {
+.navbar-content a:hover, .navbar-content a:focus, .navbar-content .active {
   background-color: #f8f8f8 !important;
   border-bottom: 1px solid;
   border-bottom-color: #18bc9c;
+}
+
+.subnav {
+  min-height: 40px;
+  background-color: #f8f8f8;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.subnav a {
+  color: #2c3e50;
+  padding-top: 10px !important;
+  padding-bottom: 7px !important;
+}
+
+.subnav a:hover, .subnav a:focus, .subnav .active {
+  border-bottom: 0.7px solid;
+  border-bottom-color: #2c3e50;
 }
 
 .lang-select {
@@ -55,7 +78,7 @@ textarea {
 }
 
 .container-eusko {
-  // margin-top: 50px;
+  margin-top: 15px;
   margin-bottom: 80px;
 }
 

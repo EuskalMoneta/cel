@@ -3,7 +3,8 @@
 // thus we can also setup JavaScript things ... all of those will be used everywhere in our app
 
 import {
-    TopbarRight
+    TopbarRight,
+    Navbar,
 } from 'Utils'
 
 // Load the CSS stylesheets for our dependencies
@@ -31,4 +32,9 @@ const navbarObjects = [{data: '', id: 0}, // Clock
 ReactDOM.render(
     <TopbarRight objects={navbarObjects} />,
     document.getElementById('topbar-main')
+)
+
+ReactDOM.render(
+    <Navbar />,
+    document.getElementById('navbar')
 )

@@ -218,48 +218,56 @@ class NavbarItems extends React.Component {
     }
 
     render() {
-        var navbarData = _.map(this.state.objects, (item) => {
-            if (item) {
-                if (item.href) {
-                    if (item.href == '/logout') {
+        if (_.isEmpty(this.state.objects)) {
+            var navbarData = undefined
+        }
+        else {
+            var navbarData = _.map(this.state.objects, (item) => {
+                if (item) {
+                    if (item.href) {
+                        if (item.href == '/logout') {
+                            return (
+                                <li key={item.id} className="log-out">
+                                    <a href={item.href}>{item.label + ' '}
+                                        <span className="glyphicon glyphicon-log-out"></span>
+                                    </a>
+                                </li>
+                            )
+                        }
+                        else {
+                            return (
+                                <li key={item.id}>
+                                    <a className={item.status == "active" ? "active" : ""} href={item.href}>{item.label}</a>
+                                </li>
+                            )
+                        }
+                    }
+                    else if (item.data) {
                         return (
-                            <li key={item.id} className="log-out">
-                                <a href={item.href}>{item.label + ' '}
-                                    <span className="glyphicon glyphicon-log-out"></span>
-                                </a>
+                            <li key={item.id}>
+                                <a>{item.data}</a>
                             </li>
                         )
                     }
                     else {
                         return (
                             <li key={item.id}>
-                                <a href={item.href}>{item.label}</a>
+                                <a className={item.status == "active" ? "active" : ""}>{item.label}</a>
                             </li>
                         )
                     }
                 }
-                else if (item.data) {
-                    return (
-                        <li key={item.id}>
-                            <a>{item.data}</a>
-                        </li>
-                    )
-                }
-                else {
-                    return (
-                        <li key={item.id}>
-                            <a>{item.label}</a>
-                        </li>
-                    )
-                }
-            }
-        })
+            })
+        }
 
-        return (
-            <ul className={this.state.classes}>
-                {navbarData}
-            </ul>
-        )
+        if (navbarData) {
+            return (
+                <ul className={this.state.classes}>
+                    {navbarData}
+                </ul>
+            )
+        }
+        else return null
     }
 }
 
@@ -268,8 +276,8 @@ class SubNavbar extends React.Component {
         super(props);
 
         // The 'id' fields are mandatory!
-        var navbarObjects = [
-            {parent: '/profil',
+        var subNavbarObjects = [
+            {parent: '/compte',
              listObjects: [{href: '/compte/synthese', label: __("Synthèse"), status: 'inactive', id: 0},
                            {href: '/compte/historique', label: __("Historique"), status: 'inactive', id: 1}]},
             {parent: '/virements',
@@ -277,44 +285,62 @@ class SubNavbar extends React.Component {
                            {href: '/virements/recurrent', label: __("Virement récurrent"), status: 'inactive', id: 1},
                            {href: '/virements/beneficiaires', label: __("Gestion des bénéficiaires"), status: 'inactive', id: 2}]},
             {parent: '/euskokart', listObjects: []},
-            {parent: '/toto', listObjects: []},
+            {parent: '/profil', listObjects: []},
         ]
 
-        navbarObjects = _.chain(navbarObjects)
-                         .filter((item) => { return item.parent == props.activeObject.href })
-                         .map((item) => { return item.listObjects })
-                         .flatten(true)
-                         .value()
-
         this.state = {
-            objects: navbarObjects,
+            objects: this.computeSubNavbarObjects(subNavbarObjects, props.activeObject[0]),
             activeObject: props.activeObject[0],
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const isObjectsChanging = nextProps.objects !== this.props.objects
-        if (isObjectsChanging) {
-            this.setState({objects: nextProps.objects})
+    computeSubNavbarObjects(subNavbarObjects, activeObject=null) {
+        if (!activeObject) {
+            var activeObject = this.state.activeObject
         }
 
-        const isActiveObjectChanging = nextProps.activeObject !== this.props.activeObject
+        return _.chain(subNavbarObjects)
+                .filter((item) => { return item.parent == activeObject.href })
+                .map((item) => {
+                    return _.map(item.listObjects, (subitem) => {
+                        if (window.location.pathname.toLowerCase().indexOf(subitem.href) != -1) {
+                            subitem.status = 'active'
+                        }
+
+                        return subitem
+                    })
+                })
+                .flatten(true)
+                .value()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const isObjectsChanging = nextProps.objects !== this.state.objects
+        if (isObjectsChanging) {
+            this.setState({objects: this.computeSubNavbarObjects(nextProps.objects)})
+        }
+
+        const isActiveObjectChanging = nextProps.activeObject !== this.state.activeObject
         if (isActiveObjectChanging) {
             this.setState({activeObject: nextProps.activeObject[0]})
         }
     }
 
     render() {
-        // debugger
-        return (
-            <div className="navbar navbar-static-top subnav">
-                <div className="container">
-                    <div className="collapse navbar-collapse">
-                        <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+        if (_.isEmpty(this.state.objects)) {
+            return null
+        }
+        else {
+            return (
+                <div className="navbar navbar-static-top subnav">
+                    <div className="container">
+                        <div className="collapse navbar-collapse">
+                            <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
 

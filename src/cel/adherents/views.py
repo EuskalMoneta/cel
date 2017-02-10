@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 
 @login_required
@@ -21,6 +21,10 @@ def lost_password(request):
 
 def valid_lost_password(request):
     return render(request, 'adherents/valid-token.html')
+
+
+def compte_home(request):
+    return redirect('history')
 
 
 def history(request):

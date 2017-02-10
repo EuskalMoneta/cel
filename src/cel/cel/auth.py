@@ -52,7 +52,7 @@ class CELAuthBackend(object):
             log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
             raise PermissionDenied()
 
-        user, created = User.objects.get_or_create(username=username)
+        user, created = User.objects.get_or_create(username=json_response['login'])
         return user
 
     # Required for your backend to work properly - unchanged in most scenarios

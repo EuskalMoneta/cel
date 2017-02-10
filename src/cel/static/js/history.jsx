@@ -56,14 +56,13 @@ const HistoricalForm = React.createClass({
 var HistoryPage = React.createClass({
 
     getInitialState() {
-
         return {
             login: window.config.userName,
             historyList: Array(),
             historyListWithSolde: Array(),
             currentSolde: undefined,
             endDate: moment(),
-            beginDate: moment().subtract(1,'month'),
+            beginDate: moment().subtract(1, 'month'),
             selectedValue: {
                 label: "Mois précédent",
                 value: "last_month"
@@ -138,8 +137,13 @@ var HistoryPage = React.createClass({
                 }
             }
         }
+
+        // var res = _.each(historyList[0].result.pageItems, (item, index, list) => {
+        // }, this.state.historyListWithSolde)
+
         this.setState({historyList: historyList[0].result.pageItems});
     },
+
     componentDidMount() {
         var computeHistoryData = (data) => {
             this.setState({currentSolde: data.result[0]});
@@ -148,6 +152,14 @@ var HistoryPage = React.createClass({
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
 
+        this.refreshTable()
+    },
+
+    refreshTable(description=null) {
+        if (!description) {
+            var description = this.state.description
+        }
+
         var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
             moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
             moment(this.state.endDate).format("YYYY-MM-DD"))
@@ -155,30 +167,21 @@ var HistoryPage = React.createClass({
 
         var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
             moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + description)
         fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
     beginDateChange(date) {
-        if (date <= this.state.endDate) {
-            this.setState({beginDate: date});
-            this.setState({selectedValue:  {
-                label: "Autres",
-                value: "custom"
-            }})
-            // Get account summary
-            var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-            fetchAuth(urlSummary, 'get')
+        if (date <= this.state.endDate)
+        {
+            this.setState({beginDate: date,
+                           selectedValue:  {
+                                label: "Autres",
+                                value: "custom"
+                           }
+            })
 
-            var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-                moment(date).format("YYYY-MM-DD") + "&end=" +
-                moment(this.state.endDate).format("YYYY-MM-DD"))
-            fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
-
-            var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-                moment(date).format("YYYY-MM-DD") + "&end=" +
-                moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
-            fetchAuth(urlHistory, 'get', this.computeHistoryList)
+            this.refreshTable()
         }
         else {
             this.refs.container.error(
@@ -195,27 +198,16 @@ var HistoryPage = React.createClass({
 
     endDateChange(date) {
         if (date >= this.state.beginDate) {
-            this.setState({endDate: date});
-            this.setState({selectedValue:  {
-                label: "Autres",
-                value: "custom"
-            }})
-            // Get account summary
-            var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-            fetchAuth(urlSummary, 'get')
+            this.setState({endDate: date,
+                           selectedValue:  {
+                                label: "Autres",
+                                value: "custom"
+                          }
+            })
 
-            var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                moment(date).format("YYYY-MM-DD"))
-            fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
-
-            var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" + 
-                moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-                moment(date).format("YYYY-MM-DD") + "&description=" + this.state.description)
-            fetchAuth(urlHistory, 'get', this.computeHistoryList)   
+            this.refreshTable()
         }
         else {
-            
             this.refs.container.error(
                 __("Attention, la date de fin doit être postérieur à celle de début !"),
                 "",
@@ -229,56 +221,39 @@ var HistoryPage = React.createClass({
     },
 
     dateOnValueChange(item) {
-        if (item.value == 'day') {
-            this.setState({beginDate: moment()})
-            this.setState({endDate: moment()})
+        // We need to determine our beginDate
+        switch (item.value) {
+            case 'day':
+                var beginDate = moment()
+                break;
+            case 'this_week':
+                var beginDate = moment().subtract(1, 'week')
+                break;
+            case 'last_month':
+                var beginDate = moment().subtract(1, 'month')
+                break;
+            case '3_month':
+                var beginDate = moment().subtract(3, 'month')
+                break;
+            case '12_month':
+                var beginDate = moment().subtract(12,'month')
+                break;
         }
-        else if (item.value == 'this_week') {
-            this.setState({beginDate: moment().subtract(1,'week')})
-            this.setState({endDate: moment()})
-        }
-        else if (item.value == 'last_month') {
-            this.setState({beginDate: moment().subtract(1,'month')})
-            this.setState({endDate: moment()})
-        }
-        else if (item.value == '3_month') {
-            this.setState({beginDate: moment().subtract(3,'month')})
-            this.setState({endDate: moment()})
-        }
-        else if (item.value == '12_month') {
-            this.setState({beginDate: moment().subtract(12,'month')})
-            this.setState({endDate: moment()})
-        }
-        this.setState({selectedValue:  {
-            label: item.label,
-            value: item.value
-        }})
-        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
 
-        var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD"))
-        fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
+        this.setState({
+            beginDate: beginDate,
+            endDate: moment(),
+            selectedValue: {
+                label: item.label,
+                value: item.value
+            }
+        })
 
-        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
-        fetchAuth(urlHistory, 'get', this.computeHistoryList)
+        this.refreshTable()
     },
 
     descriptionOnValueChange(event, value) {
-        this.setState({description: value})
-        var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-
-        var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD"))
-        fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
-
-        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + value)
-        fetchAuth(urlHistory, 'get', this.computeHistoryList)
+        this.setState({description: value}, this.refreshTable)
     },
 
     render() {
@@ -287,6 +262,7 @@ var HistoryPage = React.createClass({
             hideSizePerPage: true, 
             sizePerPage: 20,
         };
+
         // Display current solde information
         if (this.state.currentSolde || this.state.currentSolde === 0) {
             var currentSoldeLabel = (
@@ -317,7 +293,7 @@ var HistoryPage = React.createClass({
         var debitFormatter = (cell, row) => {
             // Cell is a string for now,
             // we need to cast it in a Number object to use the toFixed method.
-            if (cell<0)
+            if (cell < 0)
             {
                 return Number(cell).toFixed(2)
             }
@@ -325,7 +301,7 @@ var HistoryPage = React.createClass({
         var creditFormatter = (cell, row) => {
             // Cell is a string for now,
             // we need to cast it in a Number object to use the toFixed method.
-            if (cell>0)
+            if (cell > 0)
             {
                 return Number(cell).toFixed(2)
             }

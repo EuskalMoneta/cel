@@ -60,6 +60,10 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   border-bottom-color: #2c3e50;
 }
 
+#first-time, #login, #lost-password {
+  margin-top: 7%;
+}
+
 .lang-select {
   cursor: pointer;
 }

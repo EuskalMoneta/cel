@@ -53,7 +53,7 @@ const HistoricalForm = React.createClass({
     }
 })
 
-var ManagerHistoryPage = React.createClass({
+var HistoryPage = React.createClass({
 
     getInitialState() {
 
@@ -395,7 +395,7 @@ var ManagerHistoryPage = React.createClass({
                     </div>
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
-                        <label className="control-label col-sm-3" for="memberhistorical-date-start-end">Date début / fin :</label>
+                        <label className="control-label col-sm-3" htmlFor="memberhistorical-date-start-end">Date début / fin :</label>
                         <div className="col-sm-1 memberhistorical" data-eusko="memberhistorical-date-start">
                             <DatePicker
                                 name="dateSelectorBegin"
@@ -459,7 +459,7 @@ var ManagerHistoryPage = React.createClass({
 })
 
 ReactDOM.render(
-    <ManagerHistoryPage />,
+    <HistoryPage />,
     document.getElementById('history')
 )
 document.title = __("Mon compte") + ": " + __("Historique") + " - " + __("Compte en ligne") + " " + document.title

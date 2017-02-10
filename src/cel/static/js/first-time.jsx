@@ -238,3 +238,4 @@ ReactDOM.render(
     <FirstTimePage url={getAPIBaseURL + "first-connection/"} method="POST" />,
     document.getElementById('first-time')
 )
+document.title = __("Première connexion") + " - " + __("Compte en ligne") + " " + document.title

@@ -173,3 +173,4 @@ ReactDOM.render(
     <MemberChangePasswordPage url={getAPIBaseURL + "change-password/"} method="POST" />,
     document.getElementById('change-password')
 )
+document.title = __("Mon profil") + ": " + __("Mot de passe") + " - " + __("Compte en ligne") + " " + document.title

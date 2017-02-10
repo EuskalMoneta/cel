@@ -7,23 +7,28 @@ import {
 } from 'Utils'
 
 import FileSaver from 'file-saver'
+
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
+
 import {
     BootstrapTable,
-    TableHeaderColumn
+    TableHeaderColumn,
 } from 'react-bootstrap-table'
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
+
 const {
     Input,
     RadioGroup,
     Row,
     Textarea,
 } = FRC
+
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+
 const {
-    ToastContainer
+    ToastContainer,
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
@@ -457,3 +462,4 @@ ReactDOM.render(
     <ManagerHistoryPage />,
     document.getElementById('history')
 )
+document.title = __("Mon compte") + ": " + __("Historique") + " - " + __("Compte en ligne") + " " + document.title

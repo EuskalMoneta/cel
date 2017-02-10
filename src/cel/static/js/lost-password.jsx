@@ -221,3 +221,4 @@ ReactDOM.render(
     <FirstTimePage url={getAPIBaseURL + "lost-password/"} method="POST" />,
     document.getElementById('lost-password')
 )
+document.title = __("Mot de passe perdu") +  " - " + __("Compte en ligne") + " " + document.title

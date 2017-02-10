@@ -210,3 +210,4 @@ ReactDOM.render(
     <LoginPage />,
     document.getElementById('login')
 )
+document.title = __("Connexion") + " - " + __("Compte en ligne") + " " + document.title

@@ -685,3 +685,4 @@ ReactDOM.render(
     <MemberShow url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
     document.getElementById('adherent')
 )
+document.title = __("Mon profil") + ": " + __("Coordonnées") + " - " + __("Compte en ligne") + " " + document.title

@@ -187,3 +187,4 @@ ReactDOM.render(
     />,
     document.getElementById('valid-token')
 )
+document.title = pageTitle + " - " + __("Compte en ligne") + " " + document.title

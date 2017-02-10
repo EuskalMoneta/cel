@@ -278,29 +278,50 @@ class SubNavbar extends React.Component {
         // The 'id' fields are mandatory!
         var subNavbarObjects = [
             {parent: '/compte',
+             accountMandatory: true,
              listObjects: [{href: '/compte/synthese', label: __("Synthèse"), status: 'inactive', id: 0},
                            {href: '/compte/historique', label: __("Historique"), status: 'inactive', id: 1}]},
             {parent: '/virements',
+             accountMandatory: true,
              listObjects: [{href: '/virements/ponctuel', label: __("Virement ponctuel"), status: 'inactive', id: 0},
                            {href: '/virements/recurrent', label: __("Virement récurrent"), status: 'inactive', id: 1},
                            {href: '/virements/beneficiaires', label: __("Gestion des bénéficiaires"), status: 'inactive', id: 2}]},
-            {parent: '/euskokart', listObjects: []},
-            {parent: '/profil', listObjects: []},
+            {parent: '/euskokart', accountMandatory: true, listObjects: []},
+            {parent: '/profil',
+             accountMandatory: false,
+             listObjects: [{href: '/profil/coordonnees', label: __("Coordonnées"),
+                            accountMandatory: false, status: 'inactive', id: 0},
+                           {href: '/profil/association', label: __("Association 3%"),
+                            accountMandatory: false, status: 'inactive', id: 1},
+                           {href: '/profil/beneficiaires', label: __("Options"),
+                            accountMandatory: false, status: 'inactive', id: 2},
+                           {href: '/profil/change-passe', label: __("Mot de passe"),
+                            accountMandatory: false, status: 'inactive', id: 3},
+                           {href: '/profil/change-automatique', label: __("Change automatique"),
+                            accountMandatory: true, status: 'inactive', id: 4},
+                           {href: '/profil/cotisation', label: __("Cotisation"),
+                            accountMandatory: true, status: 'inactive', id: 5}]},
         ]
 
         this.state = {
-            objects: this.computeSubNavbarObjects(subNavbarObjects, props.activeObject[0]),
+            objects: this.computeSubNavbarObjects(subNavbarObjects, props.accountEnabled, props.activeObject[0]),
             activeObject: props.activeObject[0],
+            accountEnabled: props.accountEnabled,
         }
     }
 
-    computeSubNavbarObjects(subNavbarObjects, activeObject=null) {
+    computeSubNavbarObjects(subNavbarObjects, accountEnabled=null, activeObject=null) {
         if (!activeObject) {
             var activeObject = this.state.activeObject
         }
 
+        if (accountEnabled === null) {
+            var accountEnabled = this.state.accountEnabled
+        }
+ 
         return _.chain(subNavbarObjects)
                 .filter((item) => { return item.parent == activeObject.href })
+                .filter((item) => { return item.accountMandatory === accountEnabled })
                 .map((item) => {
                     return _.map(item.listObjects, (subitem) => {
                         if (window.location.pathname.toLowerCase().indexOf(subitem.href) != -1) {
@@ -311,13 +332,19 @@ class SubNavbar extends React.Component {
                     })
                 })
                 .flatten(true)
+                .filter((item) => { return item.accountMandatory === accountEnabled })
                 .value()
     }
 
     componentWillReceiveProps(nextProps) {
-        const isObjectsChanging = nextProps.objects !== this.state.objects
+        const isAccountEnabledChanging = nextProps.accountEnabled !== this.state.accountEnabled
+        if (isAccountEnabledChanging) {
+            this.setState({accountEnabled: nextProps.accountEnabled})
+        }
+
+        const isObjectsChanging = ((nextProps.objects != undefined) && (nextProps.objects !== this.state.objects))
         if (isObjectsChanging) {
-            this.setState({objects: this.computeSubNavbarObjects(nextProps.objects)})
+            this.setState({objects: this.computeSubNavbarObjects(nextProps.objects, nextProps.accountEnabled)})
         }
 
         const isActiveObjectChanging = nextProps.activeObject !== this.state.activeObject
@@ -349,21 +376,50 @@ class Navbar extends React.Component {
         super(props);
 
         // The 'id' fields are mandatory!
-        var navbarObjects = [{href: '/compte', label: __("Mon compte"), status: 'inactive', id: 0},
-                             {href: '/virements', label: __("Mes virements"), status: 'inactive', id: 1},
-                             {href: '/euskokart', label: __("Mon EuskoKart"), status: 'inactive', id: 2},
-                             {href: '/profil', label: __("Mon profil"), status: 'inactive', id: 3},
+        var navbarObjects = [{href: '/compte', label: __("Mon compte"),
+                              status: 'inactive', id: 0, accountMandatory: true},
+                             {href: '/virements', label: __("Mes virements"),
+                              status: 'inactive', id: 1, accountMandatory: true},
+                             {href: '/euskokart', label: __("Mon EuskoKart"),
+                              status: 'inactive', id: 2, accountMandatory: true},
+                             {href: '/profil', label: __("Mon profil"),
+                              status: 'inactive', id: 3, accountMandatory: false},
                              ]
 
-        navbarObjects = _.map(navbarObjects, (item) => {
-            if (window.location.pathname.toLowerCase().indexOf(item.href.substring(1)) != -1) {
-                item.status = 'active'
+        navbarObjects = _.chain(navbarObjects)
+                         .filter((item) => { return item.accountMandatory === false })
+                         .map((item) => {
+                                if (window.location.pathname.toLowerCase().indexOf(item.href.substring(1)) != -1) {
+                                    item.status = 'active'
+                                }
+
+                                return item
+                         })
+                         .value()
+
+        this.state = {
+            objects: navbarObjects,
+            accountEnabled: false,
+            userAuth: window.config.userAuth,
+        }
+    }
+
+    componentDidMount() {
+        // Get member name
+        if (this.state.userAuth)
+        {
+            var computeData = (data) => {
+                if (_.findWhere(data, {name: "Adhérents"}))
+                    var accountEnabled = false
+                else
+                    var accountEnabled = true
+
+                var objects = _.filter(this.state.objects, (item) => { return item.accountMandatory === accountEnabled })
+
+                this.setState({objects: objects, accountEnabled: accountEnabled})
             }
-
-            return item
-        })
-
-        this.state = {objects: navbarObjects}
+            fetchAuth(getAPIBaseURL + "usergroups/?username=" + window.config.userName, 'get', computeData)
+        }
     }
 
     render() {
@@ -376,10 +432,13 @@ class Navbar extends React.Component {
                         </div>
                     </div>
                 </div>
-                <SubNavbar activeObject={_.chain(this.state.objects)
-                                          .filter((item) => { return item.status == 'active' })
-                                          .flatten(true)
-                                          .value()} />
+                <SubNavbar
+                    accountEnabled={this.state.accountEnabled}
+                    activeObject={_.chain(this.state.objects)
+                                   .filter((item) => { return item.status == 'active' })
+                                   .flatten(true)
+                                   .value()}
+                />
             </div>
         )
     }

@@ -23,6 +23,14 @@ def valid_lost_password(request):
     return render(request, 'adherents/valid-token.html')
 
 
+def profile_home(request):
+    return redirect('profile')
+
+
+def profile(request):
+    return render(request, 'adherents/index.html')
+
+
 def compte_home(request):
     return redirect('history')
 

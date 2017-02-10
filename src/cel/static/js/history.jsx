@@ -2,7 +2,6 @@ import {
     fetchAuth,
     getAPIBaseURL,
     isPositiveNumeric,
-    NavbarTitle,
     SelectizeUtils,
     getCurrentLang
 } from 'Utils'
@@ -457,9 +456,4 @@ var ManagerHistoryPage = React.createClass({
 ReactDOM.render(
     <ManagerHistoryPage />,
     document.getElementById('history')
-)
-
-ReactDOM.render(
-    <NavbarTitle title={__("Historique compte personnel")} />,
-    document.getElementById('navbar-title')
 )

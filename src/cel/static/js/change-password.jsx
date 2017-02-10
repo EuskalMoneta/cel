@@ -1,7 +1,6 @@
 import {
     fetchAuth,
     getAPIBaseURL,
-    NavbarTitle,
 } from 'Utils'
 
 const {
@@ -173,9 +172,4 @@ class MemberChangePasswordPage extends React.Component {
 ReactDOM.render(
     <MemberChangePasswordPage url={getAPIBaseURL + "change-password/"} method="POST" />,
     document.getElementById('change-password')
-)
-
-ReactDOM.render(
-    <NavbarTitle title={__("Changer mon mot de passe")} />,
-    document.getElementById('navbar-title')
 )

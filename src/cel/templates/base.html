@@ -11,18 +11,21 @@
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
-  <div class="navbar navbar-default navbar-fixed-top">
+<div id="wrap">
+  <div class="topbar navbar navbar-default navbar-fixed-top">
     <div class="container">
-      <div class="navbar-header" id="navbar-title">
+      <div class="topbar-header navbar-header" id="topbar-title">
+        <!-- IMAGE À DÉFINIR -->
+        <!-- <a class="navbar-brand" href="/"> -->
+          <img class="topbar-brand-image" src="{% static 'img/logo-eusko.jpg' %}">
+        <!-- </a> -->
       </div>
-      <div class="navbar-collapse collapse" id="navbar-main">
-        <div id="navbar-content">
-        </div>
-        <div id="navbar-right">
-        </div>
+      <div class="topbar-collapse navbar-collapse collapse" id="topbar-main">
       </div>
     </div>
   </div>
+  <div id="navbar"></div>
+</div>
 
   {% block container %}
     <div class="alert alert-warning">
@@ -30,15 +33,15 @@
     </div>
   {% endblock %}
 
-  <div class="container-fluid footer">
+<!--   <div class="container-fluid footer">
     <div class="row">
       <div class="col-lg-12">Compte en ligne - Euskal Moneta</div>
     </div>
-  </div>
+  </div> -->
 
   <script src="{% url 'config_js' %}"></script>
   {% with 'bundles/js/'|add:CURRENT_LANG|add:'.Base.js' as base_js_static %}
-    <script src="{% static base_js_static %}"></script>
+  <script src="{% static base_js_static %}"></script>
   {% endwith %}
   {% block extra_js %}
   {% endblock %}

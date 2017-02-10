@@ -2,7 +2,6 @@ import {
     fetchNoAuth,
     getAPIBaseURL,
     getUrlParameter,
-    NavbarTitle,
 } from 'Utils'
 
 const {
@@ -187,9 +186,4 @@ ReactDOM.render(
         mode={mode}
     />,
     document.getElementById('valid-token')
-)
-
-ReactDOM.render(
-    <NavbarTitle title={pageTitle} />,
-    document.getElementById('navbar-title')
 )

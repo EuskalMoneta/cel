@@ -1,7 +1,6 @@
 import {
     fetchNoAuth,
     getAPIBaseURL,
-    NavbarTitle,
     isMemberIdEusko
 } from 'Utils'
 
@@ -238,9 +237,4 @@ class FirstTimePage extends React.Component {
 ReactDOM.render(
     <FirstTimePage url={getAPIBaseURL + "first-connection/"} method="POST" />,
     document.getElementById('first-time')
-)
-
-ReactDOM.render(
-    <NavbarTitle title={__("Première connexion")} />,
-    document.getElementById('navbar-title')
 )

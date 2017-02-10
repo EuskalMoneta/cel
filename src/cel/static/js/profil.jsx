@@ -2,7 +2,6 @@ import {
     fetchAuth,
     titleCase,
     getAPIBaseURL,
-    NavbarTitle,
     getCurrentLang,
     SelectizeUtils,
 } from 'Utils'
@@ -685,9 +684,4 @@ const MemberShow = React.createClass({
 ReactDOM.render(
     <MemberShow url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
     document.getElementById('adherent')
-)
-
-ReactDOM.render(
-    <NavbarTitle title={__("Fiche adhérent")} />,
-    document.getElementById('navbar-title')
 )

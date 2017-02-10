@@ -423,24 +423,27 @@ class Navbar extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <div className="navbar navbar-static-top navbar-content">
-                    <div className="container">
-                        <div className="collapse navbar-collapse main-nav">
-                            <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+        if (this.state.userAuth) {
+            return (
+                <div>
+                    <div className="navbar navbar-static-top navbar-content">
+                        <div className="container">
+                            <div className="collapse navbar-collapse main-nav">
+                                <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                            </div>
                         </div>
                     </div>
+                    <SubNavbar
+                        accountEnabled={this.state.accountEnabled}
+                        activeObject={_.chain(this.state.objects)
+                                       .filter((item) => { return item.status == 'active' })
+                                       .flatten(true)
+                                       .value()}
+                    />
                 </div>
-                <SubNavbar
-                    accountEnabled={this.state.accountEnabled}
-                    activeObject={_.chain(this.state.objects)
-                                   .filter((item) => { return item.status == 'active' })
-                                   .flatten(true)
-                                   .value()}
-                />
-            </div>
-        )
+            )
+        }
+        else return null
     }
 }
 

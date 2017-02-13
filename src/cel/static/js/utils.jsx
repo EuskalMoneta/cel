@@ -316,10 +316,6 @@ class SubNavbar extends React.Component {
             return Array()
         }
 
-        // if (accountEnabled === null) {
-        //     var accountEnabled = this.state.accountEnabled
-        // }
-
         return _.chain(this.subNavbarObjects)
                 .filter((item) => { return item.parent == activeObject.href })
                 .filter((item) => {
@@ -418,11 +414,21 @@ class Navbar extends React.Component {
         if (this.state.userAuth)
         {
             var computeData = (data) => {
+                // debugger
                 // if (_.findWhere(data, {name: "Adhérents"}))
                 //     var accountEnabled = false
-                // else
+                //  else
                 //     var accountEnabled = true
                 var accountEnabled = true
+
+                // Accès restreint pour les adhérents n'ayant pas de compte numérique
+                if (!accountEnabled &&
+                    (window.location.pathname.toLowerCase().indexOf('compte') != -1 ||
+                     window.location.pathname.toLowerCase().indexOf('virements') != -1 ||
+                     window.location.pathname.toLowerCase().indexOf('euskokart') != -1))
+                {
+                    window.location.assign('/profil/coordonnees')
+                }
 
                 var objects = _.filter(this.navbarObjects, (item) => {
                         if (accountEnabled)
@@ -433,7 +439,8 @@ class Navbar extends React.Component {
 
                 this.setState({objects: objects, accountEnabled: accountEnabled})
             }
-            fetchAuth(getAPIBaseURL + "usergroups/?username=" + window.config.userName, 'get', computeData)
+            // fetchAuth(getAPIBaseURL + "verif-eusko-numerique/", 'get', computeData)
+            computeData(null)
         }
     }
 

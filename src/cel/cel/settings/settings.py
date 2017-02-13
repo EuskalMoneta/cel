@@ -78,7 +78,7 @@ CSP_CONNECT_SRC = ["'self'", API_PUBLIC_URL, "http://localhost:8003", "http://lo
 ROOT_URLCONF = 'cel.urls'
 
 APPEND_SLASH = False
-LOGIN_REDIRECT_URL = '/profil'
+LOGIN_REDIRECT_URL = '/compte'
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 

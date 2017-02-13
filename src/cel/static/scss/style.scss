@@ -13,11 +13,11 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   height: 50px;
 }
 
-.topbar-right li {
+.topbar-right li, .disable-pointer-events {
   pointer-events: none;
 }
 
-.log-out {
+.log-out, .enable-pointer-events {
   pointer-events: auto !important;
 }
 

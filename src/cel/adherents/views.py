@@ -32,7 +32,11 @@ def profile(request):
 
 
 def compte_home(request):
-    return redirect('history')
+    return redirect('overview')
+
+
+def overview(request):
+    return render(request, 'adherents/overview.html')
 
 
 def history(request):

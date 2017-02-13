@@ -49,7 +49,7 @@ urlpatterns = [
 
     # Mon compte
     url(r'^compte/?$', adherents_views.compte_home, name='compte-home'),
-    # url(r'^compte/synthese/?$', adherents_views.synthese, name='synthese'),
+    url(r'^compte/synthese/?$', adherents_views.overview, name='overview'),
     url(r'^compte/historique/?$', adherents_views.history, name='history'),
 
     # home

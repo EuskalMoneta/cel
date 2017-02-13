@@ -146,13 +146,13 @@ var HistoryPage = React.createClass({
 
     componentDidMount() {
         var computeHistoryData = (data) => {
-            this.setState({currentSolde: data.result[0]});
+            this.setState({currentSolde: data.result[0]}, this.refreshTable);
         }
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
         fetchAuth(urlSummary, 'get', computeHistoryData)
 
-        this.refreshTable()
+        
     },
 
     refreshTable(description=null) {
@@ -179,9 +179,7 @@ var HistoryPage = React.createClass({
                                 label: "Autres",
                                 value: "custom"
                            }
-            })
-
-            this.refreshTable()
+            }, this.refreshTable)
         }
         else {
             this.refs.container.error(
@@ -203,9 +201,7 @@ var HistoryPage = React.createClass({
                                 label: "Autres",
                                 value: "custom"
                           }
-            })
-
-            this.refreshTable()
+            }, this.refreshTable)
         }
         else {
             this.refs.container.error(
@@ -247,9 +243,7 @@ var HistoryPage = React.createClass({
                 label: item.label,
                 value: item.value
             }
-        })
-
-        this.refreshTable()
+        }, this.refreshTable)
     },
 
     descriptionOnValueChange(event, value) {

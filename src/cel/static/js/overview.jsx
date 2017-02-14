@@ -8,10 +8,14 @@ import {
     TableHeaderColumn,
 } from 'react-bootstrap-table'
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
-
+import FileSaver from 'file-saver'
 class AccountButtons extends React.Component {
     downloadReleveIdentite() {
-        debugger
+        var computePDFData = (blob) => {
+            FileSaver.saveAs(blob, 'releve_identite_eusko.pdf')
+        }
+        var urlRIE = (getAPIBaseURL + "export-rie-adherent/?account=" + "789953404")
+        fetchAuth(urlRIE, 'get', computePDFData, null, null, 'application/pdf')
     }
 
     rechargerCompte() {

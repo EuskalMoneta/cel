@@ -127,8 +127,8 @@ var HistoryPage = React.createClass({
 
     getHistoryList(historyList) {
         var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+            moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description)
         fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 

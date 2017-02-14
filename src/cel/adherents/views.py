@@ -46,3 +46,13 @@ def overview(request):
 @login_required
 def history(request):
     return render(request, 'adherents/history.html')
+
+
+@login_required
+def virements_home(request):
+    return redirect('virements-beneficiaires')
+
+
+@login_required
+def virements_beneficiaires(request):
+    return render(request, 'adherents/virements-beneficiaires.html')

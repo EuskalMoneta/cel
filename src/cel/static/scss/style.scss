@@ -107,6 +107,10 @@ textarea {
   width: 100%;
 }
 
+.plus-sign {
+  top: 2px;
+}
+
 .margin-top-ten {
   margin-top: 10px;
 }
@@ -117,6 +121,10 @@ textarea {
 
 .margin-right {
   margin-right: 5px;
+}
+
+.margin-left {
+  margin-left: 3px;
 }
 
 .margin-bottom {
@@ -148,6 +156,14 @@ textarea {
   color: #3498db;
   border-color: #3498db;
   background-color: white;
+}
+
+/* Beneficiaires List */
+.react-bs-table-list-beneficiaires {
+  margin-top: 10px !important;
+  margin-right: 0px !important;
+  margin-bottom: 5px !important;
+  margin-left: 0px !important;
 }
 
 /* BDCShow */
@@ -403,16 +419,11 @@ textarea {
 
 .react-bs-table-search-form {
   input {
-    height: 45px !important;
-    line-height: 1.42857143 !important;
-    padding-top: 10px !important;
-    padding-right: 15px !important;
-    padding-bottom: 10px !important;
-    padding-left: 15px !important;
+    height: 40px !important;
     font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif !important;
     font-size: 15px !important;
   }
-}
+ }
 
 /* manager/history */
 

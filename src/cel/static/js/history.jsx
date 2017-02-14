@@ -122,7 +122,14 @@ var HistoryPage = React.createClass({
             }
         )
 
-        this.setState({historyListWithSolde: res});
+        this.setState({historyListWithSolde: res}, this.getHistoryList)
+    },
+
+    getHistoryList(historyList) {
+        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
+            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+        fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
     computeHistoryList(historyList) {
@@ -150,25 +157,14 @@ var HistoryPage = React.createClass({
         }
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-        fetchAuth(urlSummary, 'get', computeHistoryData)
-
-        
+        fetchAuth(urlSummary, 'get', computeHistoryData)  
     },
 
-    refreshTable(description=null) {
-        if (!description) {
-            var description = this.state.description
-        }
-
+    refreshTable() {
         var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
             moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
             moment(this.state.endDate).format("YYYY-MM-DDThh:mm"))
         fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
-
-        var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + description)
-        fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
     beginDateChange(date) {

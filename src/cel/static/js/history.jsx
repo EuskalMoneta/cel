@@ -76,21 +76,21 @@ var HistoryPage = React.createClass({
             FileSaver.saveAs(blob, 'releve_compte_eusko.pdf')
         }
         // Get PDF data
-        var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + 
+        var urlSummary = (getAPIBaseURL + "export-history-adherent/?begin=" + 
             moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" + 
-            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description)
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description + "&mode=pdf")
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
     getHistoryCSV() {
-        var computePDFData = (blob) => {
+        var computeCSVData = (blob) => {
             FileSaver.saveAs(blob, 'releve_compte_eusko.csv')
         }
         // Get PDF data
-        var urlSummary = (getAPIBaseURL + "export-history-adherent-csv/?begin=" +
+        var urlSummary = (getAPIBaseURL + "export-history-adherent/?begin=" +
             moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description)
-        fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description + "&mode=csv")
+        fetchAuth(urlSummary, 'get', computeCSVData, null, null, 'text/csv')
     },
 
     computeHistoryListWithSolde(historyListWithSolde) {

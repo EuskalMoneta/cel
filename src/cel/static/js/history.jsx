@@ -77,8 +77,8 @@ var HistoryPage = React.createClass({
         }
         // Get PDF data
         var urlSummary = (getAPIBaseURL + "export-history-adherent-pdf/?begin=" + 
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" + 
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+            moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" + 
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description)
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
@@ -88,8 +88,8 @@ var HistoryPage = React.createClass({
         }
         // Get PDF data
         var urlSummary = (getAPIBaseURL + "export-history-adherent-csv/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + this.state.description)
+            moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description)
         fetchAuth(urlSummary, 'get', computePDFData, null, null, 'application/pdf')
     },
 
@@ -161,13 +161,13 @@ var HistoryPage = React.createClass({
         }
 
         var urlHistoryWithSolde = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD"))
+            moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm"))
         fetchAuth(urlHistoryWithSolde, 'get', this.computeHistoryListWithSolde)
 
         var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
-            moment(this.state.beginDate).format("YYYY-MM-DD") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DD") + "&description=" + description)
+            moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + description)
         fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 

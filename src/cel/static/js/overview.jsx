@@ -10,38 +10,21 @@ import {
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
 import FileSaver from 'file-saver'
 class AccountButtons extends React.Component {
-    downloadReleveIdentite() {
-        var computePDFData = (blob) => {
-            FileSaver.saveAs(blob, 'releve_identite_eusko.pdf')
-        }
-        var urlRIE = (getAPIBaseURL + "export-rie-adherent/?account=" + "789953404")
-        fetchAuth(urlRIE, 'get', computePDFData, null, null, 'application/pdf')
-    }
-
-    rechargerCompte() {
-        debugger
-        // window.location.assign()
-    }
-
-    reconvertirEusko() {
-        debugger
-        // window.location.assign()
-    }
 
     render() {
-        if (this.props.memberName.toUpperCase().startsWith('Z')) {
+        if (this.props.data.memberName.toUpperCase().startsWith('Z')) {
             return (
                 <div>
                     <button
-                        onClick={this.downloadReleveIdentite}
+                        onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
                     {' '}
                     <button
-                        onClick={this.rechargerCompte}
+                        onClick={() => this.props.rechargerCompte(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
                     {' '}
                     <button
-                        onClick={this.reconvertirEusko}
+                        onClick={() => this.props.reconvertirEusko(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Reconvertir des eusko en €")}</button>
                 </div>
             )
@@ -50,11 +33,11 @@ class AccountButtons extends React.Component {
             return (
                 <div>
                     <button
-                        onClick={this.downloadReleveIdentite}
+                        onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
                     {' '}
                     <button
-                        onClick={this.rechargerCompte}
+                        onClick={() => this.props.rechargerCompte(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
                 </div>
             )
@@ -69,6 +52,24 @@ var Overview = React.createClass({
         return {
             accountList: Array(),
         }
+    },
+
+    downloadReleveIdentite(number) {
+        var computePDFData = (blob) => {
+            FileSaver.saveAs(blob, 'releve_identite_eusko.pdf')
+        }
+        var urlRIE = (getAPIBaseURL + "export-rie-adherent/?account=" + number)
+        fetchAuth(urlRIE, 'get', computePDFData, null, null, 'application/pdf')
+    },
+
+    rechargerCompte() {
+        debugger
+        // window.location.assign()
+    },
+
+    reconvertirEusko() {
+        debugger
+        // window.location.assign()
     },
 
     computeAccountList(data) {
@@ -106,7 +107,7 @@ var Overview = React.createClass({
 
         var buttonFormatter = (cell, row) => {
             return (
-                <AccountButtons memberName={ cell } />
+                <AccountButtons data={ row } downloadReleveIdentite={ this.downloadReleveIdentite } rechargerCompte={this.rechargerCompte} reconvertirEusko={this.reconvertirEusko }/>
             );
         }
 

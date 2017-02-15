@@ -1,11 +1,6 @@
 var checkStatus = (response) => {
-    if (response.status != 204 && response.status >= 200 && response.status < 300) {
+    if (response.status >= 200 && response.status < 300) {
         return response
-    }
-    else if (response.status == 204) {
-        var error = new Error("No content")
-        error.response = response
-        throw error
     }
     else {
         var error = new Error(response.statusText)
@@ -15,7 +10,10 @@ var checkStatus = (response) => {
 }
 
 var parseJSON = (response) => {
-    return response.json()
+    if (response.status == 204)
+        return {}
+    else
+        return response.json()
 }
 
 var parseBLOB = (response) => {

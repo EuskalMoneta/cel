@@ -62,7 +62,7 @@ export default class ModalEusko extends React.Component {
                     <ModalTitle>{this.props.modalTitle}</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
-                    <div>{this.state.modalBody}</div>
+                    <div>{this.props.modalBody}</div>
                 </ModalBody>
                 <ModalFooter>
                     <button className="btn btn-default" onClick={this.props.hideModal}>
@@ -77,7 +77,7 @@ export default class ModalEusko extends React.Component {
     }
 }
 
-// Specifies the default values and type checking for props
+// Specifies default values and type checking for props
 ModalEusko.defaultProps = {
     cancelLabel: __("Annuler"),
     validateLabel: __("Valider"),

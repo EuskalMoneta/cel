@@ -18,7 +18,6 @@ const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animati
 
 
 class BeneficiairesButtons extends React.Component {
-
     render() {
         return (
             <button onClick={() => { this.props.deleteBeneficiaire(this.props.beneficiaire) }}
@@ -39,8 +38,10 @@ var BeneficiairesList = React.createClass({
             modalBody: Array(),
             modalTitle: '',
             modalMode: '',
+            btnValidateEnabled: false,
             validateLabel: '',
             resBeneficiaire: '',
+            valueBeneficiaire: '',
             deleteBeneficiaire: '',
         }
     },
@@ -50,22 +51,26 @@ var BeneficiairesList = React.createClass({
     },
 
     hideModal() {
-        this.setState({isModalOpen: false})
+        this.setState({isModalOpen: false, resBeneficiaire: '', valueBeneficiaire: '', btnValidateEnabled: false})
     },
 
     getModalElements(modalMode, beneficiaire=null) {
         if (modalMode == 'post') {
-            if (this.state.resBeneficiaire)
-                var spanResBeneficiaires = <span>{this.state.resBeneficiaire.label}</span>
-            else
+            if (_.isEmpty(this.state.resBeneficiaire)) {
+                // debugger
                 var spanResBeneficiaires = <span>{__("Aucun résultat")}</span>
+            }
+            else {
+                var spanResBeneficiaires = <span>{this.state.resBeneficiaire.label}</span>
+            }
 
             var modalBody = (
                 <form>
                     <div className="form-group row" key="search">
                         <label htmlFor="search" className="col-sm-5">{__("Recherche par n° de compte")} :</label>
                         <div className="col-sm-6">
-                            <input type="text" name="search" id="search"
+                            <input type="text" name="search" id="search" value={this.state.valueBeneficiaire}
+                                   className="form-control search-beneficiaire"
                                    onChange={this.searchBeneficiaires}>
                             </input>
                         </div>
@@ -87,14 +92,14 @@ var BeneficiairesList = React.createClass({
             var modalTitle = __("Suppression d'un bénéficiaire")
             var validateLabel = __("Supprimer")
 
-            this.setState({deleteBeneficiaire: beneficiaire})
+            this.setState({deleteBeneficiaire: beneficiaire, btnValidateEnabled: true})
         }
         this.setState({modalBody: modalBody, modalMode: modalMode,
                        modalTitle: modalTitle, validateLabel: validateLabel}, this.openModal)
     },
 
     searchBeneficiaires(event) {
-        if (event.target.value.length > 3) {
+        if (event.target.value.length == 9) {
             var promiseError = (err) => {
                 this.setState({resBeneficiaire: '', valueBeneficiaire: ''})
             }
@@ -102,10 +107,15 @@ var BeneficiairesList = React.createClass({
             var valueBeneficiaire = event.target.value
             var searchBeneficiairesList = (data) => {
                 // Calling this.postBeneficiaire again force modal child component to re-render
-                this.setState({resBeneficiaire: data, valueBeneficiaire: valueBeneficiaire}, this.postBeneficiaire)
+                this.setState({resBeneficiaire: data, valueBeneficiaire: valueBeneficiaire, btnValidateEnabled: true}, this.postBeneficiaire)
             }
             fetchAuth(getAPIBaseURL + "beneficiaires/search/?number=" + event.target.value,
                       'GET', searchBeneficiairesList, null, promiseError)
+        }
+        else {
+            this.setState({resBeneficiaire: '',
+                           valueBeneficiaire: event.target.value,
+                           btnValidateEnabled: false}, this.postBeneficiaire)
         }
     },
 
@@ -125,7 +135,7 @@ var BeneficiairesList = React.createClass({
             )
         }
 
-        if (this.state.modalMode == 'post') {
+        if (this.state.modalMode == 'post' && !_.isEmpty(this.state.resBeneficiaire)) {
             var formData = {owner: window.config.userName, cyclos_id: this.state.resBeneficiaire.id,
                             cyclos_name: this.state.resBeneficiaire.label, cyclos_account_number: this.state.valueBeneficiaire}
 
@@ -135,7 +145,7 @@ var BeneficiairesList = React.createClass({
             fetchAuth(this.props.beneficiairesUrl + this.state.deleteBeneficiaire.id + "/", this.state.modalMode, this.computeBeneficiairesList, formData, promiseError)
         }
 
-        this.setState({resBeneficiaire: '', valueBeneficiaire: ''})
+        this.setState({resBeneficiaire: '', valueBeneficiaire: '', btnValidateEnabled: false})
     },
 
     postBeneficiaire() {
@@ -230,6 +240,7 @@ var BeneficiairesList = React.createClass({
                             onValidate={this.submitForm}
                             staticContent={this.state.modalMode == 'post' ? true : false}
                             btnValidateClass={this.state.modalMode == 'post' ? "btn-success" : "btn-danger"}
+                            btnValidateEnabled={this.state.btnValidateEnabled}
                             searchBeneficiaires={this.searchBeneficiaires}
                             valueBeneficiaire={this.state.valueBeneficiaire}
                             resBeneficiaire={this.state.resBeneficiaire}

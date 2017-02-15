@@ -55,6 +55,24 @@ export default class ModalEusko extends React.Component {
     }
 
     render() {
+        if (this.props.btnValidateEnabled) {
+            var validateButton = (
+                <button className={"btn" + " " + this.props.btnValidateClass}
+                        data-eusko="validate-modal" onClick={this.onValidate.bind(this)}>
+                            {this.props.validateLabel}
+                </button>
+            )
+        }
+        else {
+            var validateButton = (
+                <button className={"btn" + " " + this.props.btnValidateClass}
+                        data-eusko="validate-modal" onClick={this.onValidate.bind(this)}
+                    disabled="disabled">
+                        {this.props.validateLabel}
+                    </button>
+            )
+        }
+
         return (
             <Modal isOpen={this.state.isModalOpen} onRequestHide={this.props.hideModal}>
                 <ModalHeader>
@@ -68,9 +86,7 @@ export default class ModalEusko extends React.Component {
                     <button className="btn btn-default" onClick={this.props.hideModal}>
                       {this.props.cancelLabel}
                     </button>
-                    <button className={"btn" + " " + this.props.btnValidateClass} data-eusko="validate-modal" onClick={this.onValidate.bind(this)}>
-                      {this.props.validateLabel}
-                    </button>
+                    {validateButton}
                 </ModalFooter>
             </Modal>
         )
@@ -82,7 +98,8 @@ ModalEusko.defaultProps = {
     cancelLabel: __("Annuler"),
     validateLabel: __("Valider"),
     modalTitle: __("Confirmation"),
-    btnValidateClass: "btn-success"
+    btnValidateClass: "btn-success",
+    btnValidateEnabled: false,
 }
 
 ModalEusko.propTypes = {

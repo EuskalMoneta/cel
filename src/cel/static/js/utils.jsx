@@ -412,12 +412,7 @@ class Navbar extends React.Component {
         if (this.state.userAuth)
         {
             var computeData = (data) => {
-                // debugger
-                // if (_.findWhere(data, {name: "Adhérents"}))
-                //     var accountEnabled = false
-                //  else
-                //     var accountEnabled = true
-                var accountEnabled = true
+                var accountEnabled = data.status
 
                 // Accès restreint pour les adhérents n'ayant pas de compte numérique
                 if (!accountEnabled &&
@@ -437,8 +432,7 @@ class Navbar extends React.Component {
 
                 this.setState({objects: objects, accountEnabled: accountEnabled})
             }
-            // fetchAuth(getAPIBaseURL + "verif-eusko-numerique/", 'get', computeData)
-            computeData(null)
+            fetchAuth(getAPIBaseURL + "check-account/", 'get', computeData)
         }
     }
 

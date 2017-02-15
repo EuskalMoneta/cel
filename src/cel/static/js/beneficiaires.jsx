@@ -57,7 +57,6 @@ var BeneficiairesList = React.createClass({
     getModalElements(modalMode, beneficiaire=null) {
         if (modalMode == 'post') {
             if (_.isEmpty(this.state.resBeneficiaire)) {
-                // debugger
                 var spanResBeneficiaires = <span>{__("Aucun résultat")}</span>
             }
             else {
@@ -210,7 +209,7 @@ var BeneficiairesList = React.createClass({
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="cyclos_account_number" width="350">{__("N° de Compte")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="cyclos_name">{__("Nom")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="delete" columnClassName="toto" width="150"
+                <TableHeaderColumn dataField="delete" columnClassName="disable-pointer-events" width="150"
                                    dataFormat={buttonFormatter}>{__("Supprimer")}</TableHeaderColumn>
             </BootstrapTable>
         )

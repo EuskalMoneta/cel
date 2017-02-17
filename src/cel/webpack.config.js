@@ -35,6 +35,7 @@ module.exports = Object.keys(languages).map(function(language) {
             History: './static/js/history',
             Overview: './static/js/overview',
             Beneficiaires: './static/js/beneficiaires',
+            Ponctuel: './static/js/ponctuel',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

@@ -55,7 +55,7 @@ urlpatterns = [
     # Virements
     url(r'^virements/?$', adherents_views.virements_home, name='virements-home'),
     url(r'^virements/beneficiaires/?$', adherents_views.virements_beneficiaires, name='virements-beneficiaires'),
-
+    url(r'^virements/ponctuel/?$', adherents_views.virements_ponctuel, name='virements-ponctuel'),
     # home
     url(r'^$', adherents_views.index, name='home'),
 ]

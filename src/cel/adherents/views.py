@@ -56,3 +56,8 @@ def virements_home(request):
 @login_required
 def virements_beneficiaires(request):
     return render(request, 'adherents/virements-beneficiaires.html')
+
+
+@login_required
+def virements_ponctuel(request):
+    return render(request, 'adherents/virements-ponctuel.html')

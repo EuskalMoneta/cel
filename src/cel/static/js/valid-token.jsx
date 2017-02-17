@@ -1,4 +1,5 @@
 import {
+    fetchAuth,
     fetchNoAuth,
     getAPIBaseURL,
     getUrlParameter,
@@ -46,6 +47,7 @@ class SetPasswordPage extends React.Component {
         this.state = {
             canSubmit: false,
             tokenError: false,
+            selectedQuestion: '',
         }
     }
 
@@ -63,6 +65,27 @@ class SetPasswordPage extends React.Component {
 
     disableTokenError = () => {
         this.setState({tokenError: false})
+    }
+
+    enableSecurityQA = () => {
+        if (this.props.mode == 'validate-lost-password') {
+            var getSelectedQuestion = (data) => {
+                debugger
+                // Get beneficiairesList
+                var data = data.question
+
+                this.setState({selectedQuestion: data})
+            }
+
+            var token = getUrlParameter('token')
+            if (!token) {
+                this.enableTokenError()
+            }
+            fetchAuth(getAPIBaseURL + "securityqa/me/?token=" + token, 'GET', getSelectedQuestion)
+        }
+        else {
+            this.enableButton()
+        }
     }
 
     submitForm = (data) => {
@@ -107,12 +130,34 @@ class SetPasswordPage extends React.Component {
 
     render = () =>
     {
+        if (this.props.mode == 'validate-lost-password' && this.state.selectedQuestion) {
+            var securityQA = (
+                <div>
+                    <div className="form-group row">
+                        <label className="col-sm-4">Votre question secrète :</label>
+                        <div className="col-sm-6">
+                            <span>{this.state.selectedQuestion}</span>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label className="col-sm-4">Votre question secrète :</label>
+                        <div className="col-sm-6">
+                            <span>{item.value}</span>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            var securityQA = null
+        }
+
         return (
             <div className="row">
                 <SetPasswordForm
                     onValidSubmit={this.submitForm}
                     onInvalid={this.disableButton}
-                    onValid={this.enableButton}
+                    onValid={this.enableSecurityQA}
                     ref="changepassword">
                     <fieldset>
                          <Input
@@ -147,6 +192,7 @@ class SetPasswordPage extends React.Component {
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
                             required
                         />
+                        {securityQA}
                     </fieldset>
                     <fieldset>
                         <Row layout="horizontal">

@@ -64,8 +64,12 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   margin-top: 7%;
 }
 
-.lang-select {
-  cursor: pointer;
+.uppercase {
+  text-transform: uppercase;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 .lang-select-flag-fr {

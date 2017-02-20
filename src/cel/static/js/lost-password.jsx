@@ -1,7 +1,7 @@
 import {
     fetchNoAuth,
     getAPIBaseURL,
-    isMemberIdEusko
+    isMemberIdEusko,
 } from 'Utils'
 
 const {
@@ -35,7 +35,7 @@ const LostPasswordForm = React.createClass({
             <Formsy.Form
                 className={this.getLayoutClassName()}
                 {...this.props}
-                ref="first-time"
+                ref="lost-password"
             >
                 {this.props.children}
             </Formsy.Form>
@@ -148,18 +148,15 @@ class LostPasswordPage extends React.Component {
             if (this.state.validData) {
                 var messageData = (
                     <div className="alert alert-success">
-                        {__("Check tes mails.")}
+                        {__("Veuillez vérifier vos emails.")}
+                        <br />
+                        <br />
+                        {__("Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.")}
                     </div>
                 )
             }
             else
                 var messageData = null
-
-            var returnToLogin = (
-                <Row layout="horizontal" elementWrapperClassName="margin-top">
-                    <a href="/login">{__("Se connecter")}</a>
-                </Row>
-            )
         }
 
         if (this.state.displaySpinner)
@@ -175,12 +172,12 @@ class LostPasswordPage extends React.Component {
                         onValidSubmit={this.submitForm}
                         onInvalid={this.disableButton}
                         onValid={this.enableButton}
-                        ref="first-time">
+                        ref="lost-password">
                         <fieldset>
                             <Input
                                 name="login"
-                                data-eusko="first-time-login"
-                                value=""
+                                data-eusko="lost-password-login"
+                                value={this.state.login ? this.state.login : ""}
                                 label={__("N° adhérent")}
                                 type="text"
                                 placeholder={__("N° adhérent")}
@@ -195,7 +192,7 @@ class LostPasswordPage extends React.Component {
                             />
                             <Input
                                 name="email"
-                                data-eusko="first-time-email"
+                                data-eusko="lost-password-email"
                                 value=""
                                 label={__("Email")}
                                 type="email"
@@ -216,7 +213,7 @@ class LostPasswordPage extends React.Component {
                             <Row layout="horizontal">
                                 <input
                                     name="submit"
-                                    data-eusko="first-time-submit"
+                                    data-eusko="lost-password-submit"
                                     type="submit"
                                     defaultValue={__("Valider")}
                                     className="btn btn-success"
@@ -224,7 +221,6 @@ class LostPasswordPage extends React.Component {
                                     disabled={!this.state.canSubmit}
                                 />
                             </Row>
-                            {returnToLogin}
                         </fieldset>
                     </LostPasswordForm>
             </div>

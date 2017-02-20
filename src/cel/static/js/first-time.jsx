@@ -138,7 +138,7 @@ class FirstTimePage extends React.Component {
                     {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
                 </div>
             )
-            var returnToLogin = (
+            var link = (
                 <Row layout="horizontal" elementWrapperClassName="margin-top">
                     <a href="/contact">{__("Formulaire de contact")}</a>
                 </Row>
@@ -148,18 +148,17 @@ class FirstTimePage extends React.Component {
             if (this.state.validData) {
                 var messageData = (
                     <div className="alert alert-success">
-                        {__("Check tes mails.")}
+                        {__("Veuillez vérifier vos emails.")}
+                        <br />
+                        <br />
+                        {__("Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.")}
                     </div>
                 )
             }
             else
                 var messageData = null
 
-            var returnToLogin = (
-                <Row layout="horizontal" elementWrapperClassName="margin-top">
-                    <a href="/login">{__("Se connecter")}</a>
-                </Row>
-            )
+            var link = null
         }
 
         if (this.state.displaySpinner)
@@ -180,7 +179,7 @@ class FirstTimePage extends React.Component {
                             <Input
                                 name="login"
                                 data-eusko="first-time-login"
-                                value=""
+                                value={this.state.login ? this.state.login : ""}
                                 label={__("N° adhérent")}
                                 type="text"
                                 placeholder={__("N° adhérent")}
@@ -224,7 +223,7 @@ class FirstTimePage extends React.Component {
                                     disabled={!this.state.canSubmit}
                                 />
                             </Row>
-                            {returnToLogin}
+                            {link}
                         </fieldset>
                     </FirstTimeForm>
             </div>

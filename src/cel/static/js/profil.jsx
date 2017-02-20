@@ -2,7 +2,6 @@ import {
     fetchAuth,
     titleCase,
     getAPIBaseURL,
-    NavbarTitle,
     getCurrentLang,
     SelectizeUtils,
 } from 'Utils'
@@ -92,10 +91,18 @@ const MemberShow = React.createClass({
         // Get member data
         var computeMemberData = (member) => {
             moment.locale(getCurrentLang)
+
+            if (member[0].birth) {
+                var birth = moment.utc(member[0].birth)
+            }
+            else {
+                var birth = undefined
+            }
+
             this.setState({member: member[0],
                            options_recevoir_actus: member[0].array_options.options_recevoir_actus == "1" ? "1" : "0",
                            address: member[0].address, phone: member[0].phone, email: member[0].email,
-                           birth: moment.utc(member[0].birth),
+                           birth: birth,
                            zip: {label: member[0].zip + " - " + member[0].town,
                                  town: member[0].town, value: member[0].zip},
                            town: {label: member[0].town, value: member[0].town},
@@ -686,8 +693,4 @@ ReactDOM.render(
     <MemberShow url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
     document.getElementById('adherent')
 )
-
-ReactDOM.render(
-    <NavbarTitle title={__("Fiche adhérent")} />,
-    document.getElementById('navbar-title')
-)
+document.title = __("Mon profil") + ": " + __("Coordonnées") + " - " + __("Compte en ligne") + " " + document.title

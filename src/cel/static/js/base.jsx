@@ -1,11 +1,10 @@
-// Load here global React objects like a navbar, i18n flags clicks, etc...
+// Load here global React objects like navbars etc...
 // We can load our Sass stylesheets which will be included in the bundle using Webpack,
 // thus we can also setup JavaScript things ... all of those will be used everywhere in our app
 
 import {
-    NavbarTitle,
-    NavbarItems,
-    NavbarRight,
+    TopbarRight,
+    Navbar,
 } from 'Utils'
 
 // Load the CSS stylesheets for our dependencies
@@ -23,23 +22,19 @@ moment().utcOffset("+01:00")
 
 // Setup raven (Sentry client)
 // Raven.config('http://02c622eee5004e9fa9b661395e6ca409@localhost:8081/3').install()
-
-
-ReactDOM.render(
-    <NavbarTitle />,
-    document.getElementById('navbar-title')
-)
-
+ 
 // The 'id' field is mandatory!
-const navbarObjects = [{href: '/history', label: __("Historique"), id: 0},
+const navbarObjects = [{data: '', id: 0}, // Clock
+                       {data: '', id: 1}, // Member data: ID Adhérent & Member name
+                       {href: '/logout', label: __("Déconnexion"), id: 2},
                        ]
 
 ReactDOM.render(
-    <NavbarItems objects={navbarObjects} />,
-    document.getElementById('navbar-content')
+    <TopbarRight objects={navbarObjects} />,
+    document.getElementById('topbar-main')
 )
 
 ReactDOM.render(
-    <NavbarRight />,
-    document.getElementById('navbar-right')
+    <Navbar />,
+    document.getElementById('navbar')
 )

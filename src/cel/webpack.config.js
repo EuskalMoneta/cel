@@ -29,9 +29,13 @@ module.exports = Object.keys(languages).map(function(language) {
             FirstTime: './static/js/first-time',
             ChangePassword: './static/js/change-password',
             LostPassword: './static/js/lost-password',
+            ValidToken: './static/js/valid-token',
             Profil: './static/js/profil',
             Login: './static/js/login',
             History: './static/js/history',
+            Overview: './static/js/overview',
+            Beneficiaires: './static/js/beneficiaires',
+            Ponctuel: './static/js/ponctuel',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)
@@ -133,6 +137,7 @@ module.exports = Object.keys(languages).map(function(language) {
             // Que nous pourrons importer depuis celui-ci (comme les Utils ou une modale utilisés un peu partout)
             alias: {
                 Utils: 'static/js/utils',
+                Modal: 'static/js/modal',
             },
 
             // tells webpack where to look for modules

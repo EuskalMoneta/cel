@@ -1,6 +1,8 @@
 import {
     fetchAuth,
+    fetchNoAuth,
     getAPIBaseURL,
+    getUrlParameter,
 } from 'Utils'
 
 const {
@@ -15,7 +17,7 @@ const {
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
-const MemberChangePasswordForm = React.createClass({
+const SetPasswordForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
 
@@ -36,7 +38,7 @@ const MemberChangePasswordForm = React.createClass({
     }
 });
 
-class MemberChangePasswordPage extends React.Component {
+class SetPasswordPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -44,6 +46,8 @@ class MemberChangePasswordPage extends React.Component {
         // Default state
         this.state = {
             canSubmit: false,
+            tokenError: false,
+            selectedQuestion: '',
         }
     }
 
@@ -55,13 +59,48 @@ class MemberChangePasswordPage extends React.Component {
         this.setState({canSubmit: false})
     }
 
+    enableTokenError = () => {
+        this.setState({tokenError: true})
+    }
+
+    disableTokenError = () => {
+        this.setState({tokenError: false})
+    }
+
+    enableSecurityQA = () => {
+        if (this.props.mode == 'validate-lost-password') {
+            var getSelectedQuestion = (data) => {
+                debugger
+                // Get beneficiairesList
+                var data = data.question
+
+                this.setState({selectedQuestion: data})
+            }
+
+            var token = getUrlParameter('token')
+            if (!token) {
+                this.enableTokenError()
+            }
+            fetchAuth(getAPIBaseURL + "securityqa/me/?token=" + token, 'GET', getSelectedQuestion)
+        }
+        else {
+            this.enableButton()
+        }
+    }
+
     submitForm = (data) => {
         this.disableButton()
-        data.cyclos_mode = 'gi'
+
+        // We POST the token back to our API
+        var token = getUrlParameter('token')
+        if (!token) {
+            this.enableTokenError()
+        }
+        data.token = token
 
         var computeForm = (data) => {
             this.refs.container.success(
-                __("L'enregistrement s'est déroulé correctement."),
+                __("Le changement de mot de passe s'est déroulé correctement."),
                 "",
                 {
                     timeOut: 5000,
@@ -70,14 +109,14 @@ class MemberChangePasswordPage extends React.Component {
                 }
             )
 
-            setTimeout(() => window.location.assign("/logout"), 3000)
+            setTimeout(() => window.location.assign("/login"), 5000)
         }
 
         var promiseError = (err) => {
             // Error during request, or parsing NOK :(
             console.error(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors de l'enregistrement !"),
+                __("Une erreur s'est produite lors de la validation !"),
                 "",
                 {
                     timeOut: 5000,
@@ -86,33 +125,41 @@ class MemberChangePasswordPage extends React.Component {
                 }
             )
         }
-        fetchAuth(this.props.url, this.props.method, computeForm, data, promiseError)
+        fetchNoAuth(this.props.postURL, 'POST', computeForm, data, promiseError)
     }
 
     render = () =>
     {
+        if (this.props.mode == 'validate-lost-password' && this.state.selectedQuestion) {
+            var securityQA = (
+                <div>
+                    <div className="form-group row">
+                        <label className="col-sm-4">Votre question secrète :</label>
+                        <div className="col-sm-6">
+                            <span>{this.state.selectedQuestion}</span>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label className="col-sm-4">Votre question secrète :</label>
+                        <div className="col-sm-6">
+                            <span>{item.value}</span>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            var securityQA = null
+        }
+
         return (
             <div className="row">
-                <MemberChangePasswordForm
+                <SetPasswordForm
                     onValidSubmit={this.submitForm}
                     onInvalid={this.disableButton}
-                    onValid={this.enableButton}
+                    onValid={this.enableSecurityQA}
                     ref="changepassword">
                     <fieldset>
-                         <Input
-                            name="old_password"
-                            data-eusko="changepassword-old_password"
-                            value=""
-                            label={__("Mot de passe actuel")}
-                            type="password"
-                            placeholder={__("Votre mot de passe")}
-                            validations="isExisty"
-                            validationErrors={{
-                                isExisty: __("Mot de passe invalide."),
-                            }}
-                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
-                            required
-                        />
                          <Input
                             name="new_password"
                             data-eusko="changepassword-new_password"
@@ -145,6 +192,7 @@ class MemberChangePasswordPage extends React.Component {
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
                             required
                         />
+                        {securityQA}
                     </fieldset>
                     <fieldset>
                         <Row layout="horizontal">
@@ -159,7 +207,7 @@ class MemberChangePasswordPage extends React.Component {
                             />
                         </Row>
                     </fieldset>
-                </MemberChangePasswordForm>
+                </SetPasswordForm>
                 <ToastContainer ref="container"
                                 toastMessageFactory={ToastMessageFactory}
                                 className="toast-top-right toast-top-right-navbar" />
@@ -168,9 +216,21 @@ class MemberChangePasswordPage extends React.Component {
     }
 }
 
+if (window.location.pathname.toLowerCase().indexOf("valide-passe-perdu") != -1)
+{
+    var pageTitle = __("J'ai perdu mon mot de passe")
+    var mode = 'validate-lost-password'
+}
+else if (window.location.pathname.toLowerCase().indexOf("valide-premiere-connexion") != -1) {
+    var pageTitle = __("Première connexion")
+    var mode = 'validate-first-connection'
+}
 
 ReactDOM.render(
-    <MemberChangePasswordPage url={getAPIBaseURL + "change-password/"} method="POST" />,
-    document.getElementById('change-password')
+    <SetPasswordPage
+        postURL={getAPIBaseURL + mode + "/"}
+        mode={mode}
+    />,
+    document.getElementById('valid-token')
 )
-document.title = __("Mon profil") + ": " + __("Mot de passe") + " - " + __("Compte en ligne") + " " + document.title
+document.title = pageTitle + " - " + __("Compte en ligne") + " " + document.title

@@ -1,7 +1,6 @@
 import {
     fetchNoAuth,
     getAPIBaseURL,
-    NavbarTitle,
     isMemberIdEusko
 } from 'Utils'
 
@@ -56,6 +55,7 @@ class FirstTimePage extends React.Component {
             login: undefined,
             email: undefined,
             invalidData: false,
+            validData: false,
             displaySpinner: false,
             spinnerConfig: {
                 lines: 13, // The number of lines to draw
@@ -104,12 +104,19 @@ class FirstTimePage extends React.Component {
         this.setState({displaySpinner: true, canSubmit: false})
 
         var computeForm = (data) => {
-            // setTimeout(() => window.location.assign("/login"), 3000)
+            this.setState({displaySpinner: false, canSubmit: false})
+
+            if (data.member === null) {
+                // We got an error!
+                this.setState({invalidData: true, validData: false})
+            }
+            else {
+                // Everything is ok!
+                this.setState({validData: true, invalidData: false})   
+            }
         }
 
         var promiseError = (err) => {
-            setTimeout(() => {}, 30000)
-            console.error(this.props.url, err)
             // Highlight login/password fields !
             this.setState({invalidData: true, displaySpinner: false, canSubmit: false})
         }
@@ -126,24 +133,32 @@ class FirstTimePage extends React.Component {
         })
 
         if (this.state.invalidData) {
-            var messageInvalidData = (
+            var messageData = (
                 <div className="alert alert-danger">
                     {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
                 </div>
             )
-            var returnToLogin = (
+            var link = (
                 <Row layout="horizontal" elementWrapperClassName="margin-top">
                     <a href="/contact">{__("Formulaire de contact")}</a>
                 </Row>
             )
         }
         else {
-            var messageInvalidData = null
-            var returnToLogin = (
-                <Row layout="horizontal" elementWrapperClassName="margin-top">
-                    <a href="/login">{__("Se connecter")}</a>
-                </Row>
-            )
+            if (this.state.validData) {
+                var messageData = (
+                    <div className="alert alert-success">
+                        {__("Veuillez vérifier vos emails.")}
+                        <br />
+                        <br />
+                        {__("Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.")}
+                    </div>
+                )
+            }
+            else
+                var messageData = null
+
+            var link = null
         }
 
         if (this.state.displaySpinner)
@@ -164,7 +179,7 @@ class FirstTimePage extends React.Component {
                             <Input
                                 name="login"
                                 data-eusko="first-time-login"
-                                value=""
+                                value={this.state.login ? this.state.login : ""}
                                 label={__("N° adhérent")}
                                 type="text"
                                 placeholder={__("N° adhérent")}
@@ -194,7 +209,7 @@ class FirstTimePage extends React.Component {
                             />
 
                             <Row layout="horizontal" elementWrapperClassName="margin-top-ten col-sm-5">
-                                {messageInvalidData}
+                                {messageData}
                             </Row>
                             
                             <Row layout="horizontal">
@@ -208,7 +223,7 @@ class FirstTimePage extends React.Component {
                                     disabled={!this.state.canSubmit}
                                 />
                             </Row>
-                            {returnToLogin}
+                            {link}
                         </fieldset>
                     </FirstTimeForm>
             </div>
@@ -222,8 +237,4 @@ ReactDOM.render(
     <FirstTimePage url={getAPIBaseURL + "first-connection/"} method="POST" />,
     document.getElementById('first-time')
 )
-
-ReactDOM.render(
-    <NavbarTitle title={__("Première connexion")} />,
-    document.getElementById('navbar-title')
-)
+document.title = __("Première connexion") + " - " + __("Compte en ligne") + " " + document.title

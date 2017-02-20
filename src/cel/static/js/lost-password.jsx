@@ -1,8 +1,7 @@
 import {
     fetchNoAuth,
     getAPIBaseURL,
-    NavbarTitle,
-    isMemberIdEusko
+    isMemberIdEusko,
 } from 'Utils'
 
 const {
@@ -23,7 +22,7 @@ const {
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
-const FirstTimeForm = React.createClass({
+const LostPasswordForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
 
@@ -36,7 +35,7 @@ const FirstTimeForm = React.createClass({
             <Formsy.Form
                 className={this.getLayoutClassName()}
                 {...this.props}
-                ref="first-time"
+                ref="lost-password"
             >
                 {this.props.children}
             </Formsy.Form>
@@ -44,7 +43,7 @@ const FirstTimeForm = React.createClass({
     }
 });
 
-class FirstTimePage extends React.Component {
+class LostPasswordPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -56,6 +55,7 @@ class FirstTimePage extends React.Component {
             login: undefined,
             email: undefined,
             invalidData: false,
+            validData: false,
             displaySpinner: false,
             spinnerConfig: {
                 lines: 13, // The number of lines to draw
@@ -104,12 +104,19 @@ class FirstTimePage extends React.Component {
         this.setState({displaySpinner: true, canSubmit: false})
 
         var computeForm = (data) => {
-            // setTimeout(() => window.location.assign("/login"), 3000)
+            this.setState({displaySpinner: false, canSubmit: false})
+
+            if (data.member === null) {
+                // We got an error!
+                this.setState({invalidData: true, validData: false})
+            }
+            else {
+                // Everything is ok!
+                this.setState({validData: true, invalidData: false})   
+            }
         }
 
         var promiseError = (err) => {
-            setTimeout(() => {}, 30000)
-            console.error(this.props.url, err)
             // Highlight login/password fields !
             this.setState({invalidData: true, displaySpinner: false, canSubmit: false})
         }
@@ -126,7 +133,7 @@ class FirstTimePage extends React.Component {
         })
 
         if (this.state.invalidData) {
-            var messageInvalidData = (
+            var messageData = (
                 <div className="alert alert-danger">
                     {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
                 </div>
@@ -138,12 +145,18 @@ class FirstTimePage extends React.Component {
             )
         }
         else {
-            var messageInvalidData = null
-            var returnToLogin = (
-                <Row layout="horizontal" elementWrapperClassName="margin-top">
-                    <a href="/login">{__("Se connecter")}</a>
-                </Row>
-            )
+            if (this.state.validData) {
+                var messageData = (
+                    <div className="alert alert-success">
+                        {__("Veuillez vérifier vos emails.")}
+                        <br />
+                        <br />
+                        {__("Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.")}
+                    </div>
+                )
+            }
+            else
+                var messageData = null
         }
 
         if (this.state.displaySpinner)
@@ -155,16 +168,16 @@ class FirstTimePage extends React.Component {
             <div className={parentDivClasses}>
                 {spinner}
                 <div className={divClasses}>
-                    <FirstTimeForm
+                    <LostPasswordForm
                         onValidSubmit={this.submitForm}
                         onInvalid={this.disableButton}
                         onValid={this.enableButton}
-                        ref="first-time">
+                        ref="lost-password">
                         <fieldset>
                             <Input
                                 name="login"
-                                data-eusko="first-time-login"
-                                value=""
+                                data-eusko="lost-password-login"
+                                value={this.state.login ? this.state.login : ""}
                                 label={__("N° adhérent")}
                                 type="text"
                                 placeholder={__("N° adhérent")}
@@ -179,7 +192,7 @@ class FirstTimePage extends React.Component {
                             />
                             <Input
                                 name="email"
-                                data-eusko="first-time-email"
+                                data-eusko="lost-password-email"
                                 value=""
                                 label={__("Email")}
                                 type="email"
@@ -194,13 +207,13 @@ class FirstTimePage extends React.Component {
                             />
 
                             <Row layout="horizontal" elementWrapperClassName="margin-top-ten col-sm-5">
-                                {messageInvalidData}
+                                {messageData}
                             </Row>
                             
                             <Row layout="horizontal">
                                 <input
                                     name="submit"
-                                    data-eusko="first-time-submit"
+                                    data-eusko="lost-password-submit"
                                     type="submit"
                                     defaultValue={__("Valider")}
                                     className="btn btn-success"
@@ -208,9 +221,8 @@ class FirstTimePage extends React.Component {
                                     disabled={!this.state.canSubmit}
                                 />
                             </Row>
-                            {returnToLogin}
                         </fieldset>
-                    </FirstTimeForm>
+                    </LostPasswordForm>
             </div>
             </div>
         );
@@ -219,11 +231,7 @@ class FirstTimePage extends React.Component {
 
 
 ReactDOM.render(
-    <FirstTimePage url={getAPIBaseURL + "lost-password/"} method="POST" />,
+    <LostPasswordPage url={getAPIBaseURL + "lost-password/"} method="POST" />,
     document.getElementById('lost-password')
 )
-
-ReactDOM.render(
-    <NavbarTitle title={__("Mot de passe perdu")} />,
-    document.getElementById('navbar-title')
-)
+document.title = __("Mot de passe perdu") +  " - " + __("Compte en ligne") + " " + document.title

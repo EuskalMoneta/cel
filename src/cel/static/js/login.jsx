@@ -5,7 +5,6 @@ import {
     getUrlParameter,
     getCSRFToken,
     getAPIBaseURL,
-    NavbarTitle,
 } from 'Utils'
 
 import classNames from 'classnames'
@@ -211,8 +210,4 @@ ReactDOM.render(
     <LoginPage />,
     document.getElementById('login')
 )
-
-ReactDOM.render(
-    <NavbarTitle title={__("Compte en ligne Eusko")}/>,
-    document.getElementById('navbar-title')
-)
+document.title = __("Connexion") + " - " + __("Compte en ligne") + " " + document.title

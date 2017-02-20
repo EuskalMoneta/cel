@@ -1,14 +1,14 @@
-image: docker:latest
+image: docker:1.12
 
 # When using dind, it's wise to use the overlayfs driver for
 # improved performance.
 variables:
   DOCKER_DRIVER: overlay
-  CONTAINER_TEST_IMAGE: sources.meta-it.fr:4567/euskal-moneta/cel:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: sources.meta-it.fr:4567/euskal-moneta/cel
+  CONTAINER_TEST_IMAGE: sources.meta-it.fr:4567/euskal-moneta/cel:$CI_BUILD_REF_NAME
 
 services:
-  - docker:dind
+  - docker:1.12-dind
 
 before_script:
   # This code allows to use SSH with public key authentication
@@ -60,6 +60,7 @@ release_job:
     - master
   tags:
     - docker
+  environment: production
 
 release_job_staging:
   stage: release
@@ -71,6 +72,7 @@ release_job_staging:
     - /^release-.*$/
   tags:
     - docker
+  environment: staging
 
 release_job_develop:
   stage: release
@@ -82,6 +84,7 @@ release_job_develop:
     - develop
   tags:
     - docker
+  environment: dev
 
 deploy_job_develop:
   stage: deploy
@@ -90,9 +93,9 @@ deploy_job_develop:
     - cd /home/meta-it/sources/eusko-develop
     - git pull
     # Restart stack
-    - docker-compose pull bureaudechange
+    - docker-compose pull compte
     - docker-compose stop
-    - docker-compose rm -f bureaudechange
+    - docker-compose rm -f compte
     - docker-compose up -d
   only:
     - develop
@@ -107,9 +110,9 @@ deploy_job_staging:
     - cd /home/meta-it/sources/euskal-moneta
     - git pull
     # Restart stack
-    - docker-compose pull bureaudechange
+    - docker-compose pull compte
     - docker-compose stop
-    - docker-compose rm -f bureaudechange
+    - docker-compose rm -f compte
     - docker-compose up -d
   only:
     - /^release-.*$/

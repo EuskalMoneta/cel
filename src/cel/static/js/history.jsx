@@ -57,6 +57,9 @@ var HistoryPage = React.createClass({
 
     getInitialState() {
         return {
+            currentAccount: undefined,
+            accountList: undefined,
+            allAccount: undefined,
             login: window.config.userName,
             historyList: Array(),
             historyListWithSolde: Array(),
@@ -64,7 +67,7 @@ var HistoryPage = React.createClass({
             endDate: moment(),
             beginDate: moment().subtract(1, 'month'),
             selectedValue: {
-                label: "Mois précédent",
+                label: "Le dernier mois",
                 value: "last_month"
             },
             description: '',
@@ -128,7 +131,7 @@ var HistoryPage = React.createClass({
     getHistoryList(historyList) {
         var urlHistory = (getAPIBaseURL + "payments-available-history-adherent/?begin=" +
             moment(this.state.beginDate).format("YYYY-MM-DDThh:mm") + "&end=" +
-            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description)
+            moment(this.state.endDate).format("YYYY-MM-DDThh:mm") + "&description=" + this.state.description + "&account=" + this.state.currentAccount.value)
         fetchAuth(urlHistory, 'get', this.computeHistoryList)
     },
 
@@ -153,11 +156,24 @@ var HistoryPage = React.createClass({
 
     componentDidMount() {
         var computeHistoryData = (data) => {
+            this.setState({allAccount: data.result});
             this.setState({currentSolde: data.result[0]}, this.refreshTable);
         }
         // Get account summary
         var urlSummary = getAPIBaseURL + "account-summary-adherents/"
-        fetchAuth(urlSummary, 'get', computeHistoryData)  
+        fetchAuth(urlSummary, 'get', computeHistoryData)
+
+        var computeAccountList = (data) => {
+            var res = _.chain(data.result)
+                .map(function(item){ return {label: item.type.name + '\n' + item.status.accountId, value:item.status.accountId} })
+                .sortBy(function(item){ return item.label })
+                .value()
+            this.setState({accountList: res})
+            this.setState({currentAccount:res[0]})
+        }
+        fetchAuth(urlSummary, 'GET', computeAccountList)
+
+
     },
 
     refreshTable() {
@@ -242,6 +258,10 @@ var HistoryPage = React.createClass({
         }, this.refreshTable)
     },
 
+    currentAccountOnValueChange(item) {
+        this.setState({currentAccount: item.value});
+    },
+
     descriptionOnValueChange(event, value) {
         this.setState({description: value}, this.refreshTable)
     },
@@ -264,14 +284,46 @@ var HistoryPage = React.createClass({
         else
             var currentSoldeLabel = null
 
-        var actionButtons = (
-            <div className="row margin-bottom">
+        var balanceData = (
+            <label className="control-label solde-history-label">
+                {__("Solde") + ": "}
+                {currentSoldeLabel}
+            </label>
+        )
+        if (this.state.allAccount) {
+            if (this.state.allAccount.length == 2 )
+            {
+                var accountData = (
                     <label className="control-label solde-history-label">
-                        {__("Solde du compte") + ": "}
+                        {__("Compte") + ": "}
                         {currentSoldeLabel}
                     </label>
-            </div>
-        )
+                )
+            }
+            else
+            {
+                var accountData = (
+                    <div>
+                    <label className="control-label solde-history-label">
+                        {__("Compte") + ": "}
+                    </label>
+                    <SimpleSelect
+                        ref="select"
+                        theme="bootstrap3"
+                        onValueChange={this.currentAccountOnValueChange}
+                        value = {this.state.currentAccount}
+                        options={this.state.accountList}
+                        renderValue={SelectizeUtils.selectizeRenderValueLineBreak}
+                        renderOption={SelectizeUtils.selectizeNewRenderOption}
+                        required
+                    >
+                        <option value = "day">{this.state.allAccount[0].id}</option>
+                    </SimpleSelect>
+                    </div>
+                )
+            }
+        }
+
 
         // History data table
         var dateFormatter = (cell, row) => {
@@ -314,80 +366,112 @@ var HistoryPage = React.createClass({
 
         return (
             <div className="row">
-                <div className="col-md-12">
+                <div className="search-solde-group col-md-10">
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-2"
-                            htmlFor="memberhistorical-description">
-                            {__("Description")}
-                        </label>
-                        <div className="col-sm-5">
-                            <HistoricalForm ref="historical-form">
-                                <Input
-                                    name="description"
-                                    data-eusko="memberhistorical-description"
-                                    onChange={this.descriptionOnValueChange}
-                                    value = {this.state.description}
-                                />
-                            </HistoricalForm>
-                        </div>
+                        <div className="col-sm-3">{accountData}</div>
                     </div>
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-3"
-                            htmlFor="memberhistorical-date-period">
-                            {__("Période")}
-                        </label>
-                        <div className="col-sm-4 memberhistorical" data-eusko="memberhistorical-date-period">
-                            <SimpleSelect
-                                ref="select"
-                                placeholder={__("Période")}
-                                theme="bootstrap3"
-                                onValueChange={this.dateOnValueChange}
-                                value = {this.state.selectedValue}
-                                required
-                            >
-                                <option value = "day">Aujourd'hui</option>
-                                <option value = "this_week">Cette semaine</option>
-                                <option value = "last_month">Mois précédent</option>
-                                <option value = "3_month">Trois derniers mois</option>
-                                <option value = "12_month">Douze derniers mois</option>
-                                <option value = "custom">Autres</option>
-                            </SimpleSelect>
-                        </div>
-                        <div className="col-sm-2"></div>
+                        <div className="col-sm-3">{balanceData}</div>
                     </div>
-                    <div className="form-group row">
-                        <div className="col-sm-1"></div>
-                        <label className="control-label col-sm-3" htmlFor="memberhistorical-date-start-end">Date début / fin :</label>
-                        <div className="col-sm-1 memberhistorical" data-eusko="memberhistorical-date-start">
-                            <DatePicker
-                                name="dateSelectorBegin"
-                                className="form-control"
-                                selected={moment(this.state.beginDate)}
-                                onChange={this.beginDateChange}
-                                showYearDropdown 
-                                locale="fr"
-                            />
+                    <div className="col-md-12 col-md-offset-1">
+                        <div className="search-group">
+                            <div className="form-group row">
+                                <div className="col-sm-3">
+                                    <h4>Rechercher des opérations</h4>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label
+                                    className="control-label col-sm-2 col-md-offset-2"
+                                    htmlFor="memberhistorical-description">
+                                    {__("Description")}
+                                </label>
+                                <div className="col-sm-6">
+                                    <HistoricalForm ref="historical-form">
+                                        <Input
+                                            name="description"
+                                            data-eusko="memberhistorical-description"
+                                            onChange={this.descriptionOnValueChange}
+                                            value = {this.state.description}
+                                        />
+                                    </HistoricalForm>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label
+                                    className="control-label col-sm-3 col-md-offset-2"
+                                    htmlFor="memberhistorical-date-period">
+                                    {__("Période")}
+                                </label>
+                                <div className="col-sm-5 memberhistorical" data-eusko="memberhistorical-date-period">
+                                    <SimpleSelect
+                                        ref="select"
+                                        placeholder={__("Période")}
+                                        theme="bootstrap3"
+                                        onValueChange={this.dateOnValueChange}
+                                        value = {this.state.selectedValue}
+                                        required
+                                    >
+                                        <option value = "day">Aujourd'hui</option>
+                                        <option value = "this_week">La dernière semaine</option>
+                                        <option value = "last_month">Le dernier mois</option>
+                                        <option value = "3_month">Les 3 derniers mois</option>
+                                        <option value = "12_month">Les 12 derniers mois</option>
+                                        <option value = "custom">Autres</option>
+                                    </SimpleSelect>
+                                </div>
+                                <div className="col-sm-2"></div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="control-label col-sm-3 col-md-offset-2" htmlFor="memberhistorical-date-start-end">Date début / fin :</label>
+                                <div className="col-sm-2 memberhistorical" data-eusko="memberhistorical-date-start">
+                                    <DatePicker
+                                        name="dateSelectorBegin"
+                                        className="form-control"
+                                        selected={moment(this.state.beginDate)}
+                                        onChange={this.beginDateChange}
+                                        showYearDropdown 
+                                        locale="fr"
+                                    />
+                                </div>
+                                <div className="col-sm-1"></div>
+                                <div className="col-sm-2 memberhistorical" data-eusko="memberhistorical-date-end">
+                                    <DatePicker
+                                        name="dateSelectorEnd"
+                                        className="form-control"
+                                        selected={moment(this.state.endDate)}
+                                        onChange={this.endDateChange}
+                                        showYearDropdown 
+                                        locale="fr"
+                                    />
+                                </div>
+                                <div className="col-sm-3"></div>
+                            </div>
                         </div>
-                        <div className="col-sm-2"></div>
-                        <div className="col-sm-1 memberhistorical" data-eusko="memberhistorical-date-end">
-                            <DatePicker
-                                name="dateSelectorEnd"
-                                className="form-control"
-                                selected={moment(this.state.endDate)}
-                                onChange={this.endDateChange}
-                                showYearDropdown 
-                                locale="fr"
-                            />
-                        </div>
-                        <div className="col-sm-3"></div>
                     </div>
-                    <div className="form-group row">
-                        <div className="col-sm-9"></div>
-                        <div className="col-sm-3">{actionButtons}</div>
+                </div>
+                <div className="form-group row no-bottom-space">
+                <div className="col-md-2 col-md-offset-9">
+                    <input
+                        name="submit"
+                        data-eusko="memberhistorical-export"
+                        type="submit"
+                        defaultValue={__("Export PDF")}
+                        className="btn btn-success margin-R10"
+                        formNoValidate={true}
+                        onClick={this.getHistoryPDF}
+                    />
+                    <input
+                        name="submit"
+                        data-eusko="memberhistorical-export"
+                        type="submit"
+                        defaultValue={__("Export CSV")}
+                        className="btn btn-success "
+                        formNoValidate={true}
+                        onClick={this.getHistoryCSV}
+                    />
                     </div>
                 </div>
                 <div className="col-md-10">
@@ -397,24 +481,7 @@ var HistoryPage = React.createClass({
                         </div>
                     </div>
                 </div>
-                <input
-                    name="submit"
-                    data-eusko="memberhistorical-export"
-                    type="submit"
-                    defaultValue={__("Export PDF")}
-                    className="btn btn-success col-sm-offset-2"
-                    formNoValidate={true}
-                    onClick={this.getHistoryPDF}
-                />
-                <input
-                    name="submit"
-                    data-eusko="memberhistorical-export"
-                    type="submit"
-                    defaultValue={__("Export CSV")}
-                    className="btn btn-success col-sm-offset-2"
-                    formNoValidate={true}
-                    onClick={this.getHistoryCSV}
-                />
+
                 <ToastContainer ref="container"
                     toastMessageFactory={ToastMessageFactory}
                     className="toast-top-right toast-top-right-navbar"

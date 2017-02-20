@@ -575,6 +575,13 @@ class SelectizeUtils {
                 </div>
     }
 
+    static selectizeRenderValueLineBreak (item) {
+        // When we select a value, this is how we display it
+        return    <div className="simple-value">
+                    <span className="accountchoice" >{item.label}</span>
+                </div>
+    }
+
     static selectizeNoResultsFound () {
         return    <div className="no-results-found" style={{fontSize: 15}}>
                     {__("Pas de résultat")}

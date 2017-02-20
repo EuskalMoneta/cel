@@ -506,3 +506,29 @@ textarea {
   visibility: visible;
   display: block;
 }
+
+.search-group {
+  background-color: #f9f9f9;
+  border: 0.1em #d9d9d9 solid;
+  margin-right: 15px;
+  margin-left: -3px;
+}
+
+.search-solde-group {
+  margin-bottom: 50px;
+}
+
+.no-bottom-space {
+  margin-bottom: 0px;
+}
+
+.margin-R10 {
+  margin-left:-10px;
+  margin-right: 10px;
+}
+
+.accountchoice {
+  marginLeft: 10;
+  verticalAlign: middle;
+  white-space: pre-wrap;
+}

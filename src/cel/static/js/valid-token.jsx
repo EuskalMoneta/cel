@@ -48,6 +48,7 @@ class SetPasswordPage extends React.Component {
             canSubmit: false,
             tokenError: false,
             selectedQuestion: '',
+            answer: undefined,
         }
     }
 
@@ -67,25 +68,22 @@ class SetPasswordPage extends React.Component {
         this.setState({tokenError: false})
     }
 
-    enableSecurityQA = () => {
+    componentDidMount = () => {
         if (this.props.mode == 'validate-lost-password') {
             var getSelectedQuestion = (data) => {
-                debugger
-                // Get beneficiairesList
-                var data = data.question
-
-                this.setState({selectedQuestion: data})
+                this.setState({selectedQuestion: data.question})
             }
 
             var token = getUrlParameter('token')
             if (!token) {
                 this.enableTokenError()
             }
-            fetchAuth(getAPIBaseURL + "securityqa/me/?token=" + token, 'GET', getSelectedQuestion)
+            fetchNoAuth(getAPIBaseURL + "securityqa/me/?token=" + token, 'GET', getSelectedQuestion)
         }
-        else {
-            this.enableButton()
-        }
+    }
+
+    answerOnValueChange = (field, value) => {
+        this.setState({answer: value})
     }
 
     submitForm = (data) => {
@@ -134,17 +132,27 @@ class SetPasswordPage extends React.Component {
             var securityQA = (
                 <div>
                     <div className="form-group row">
-                        <label className="col-sm-4">Votre question secrète :</label>
-                        <div className="col-sm-6">
-                            <span>{this.state.selectedQuestion}</span>
+                        <label className="control-label col-sm-3">Votre question secrète :</label>
+                        <div className="col-sm-5" style={{marginTop: "11px"}}>
+                            <span>{this.state.selectedQuestion.question}</span>
                         </div>
                     </div>
-                    <div className="form-group row">
-                        <label className="col-sm-4">Votre question secrète :</label>
-                        <div className="col-sm-6">
-                            <span>{item.value}</span>
-                        </div>
-                    </div>
+                    <Input
+                       name="answer"
+                       data-eusko="securityquestion-answer"
+                       value={this.state.answer ? this.state.answer : ""}
+                       label={__("Votre réponse")}
+                       type="text"
+                       placeholder={__("Votre réponse")}
+                       validations="isExisty"
+                       validationErrors={{
+                           isExisty: __("Réponse invalide."),
+                       }}
+                       help={__("Votre réponse n'est pas sensible à la casse.")}
+                       onChange={this.answerOnValueChange}
+                       elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
+                       required
+                    />
                 </div>
             )
         }
@@ -157,7 +165,7 @@ class SetPasswordPage extends React.Component {
                 <SetPasswordForm
                     onValidSubmit={this.submitForm}
                     onInvalid={this.disableButton}
-                    onValid={this.enableSecurityQA}
+                    onValid={this.enableButton}
                     ref="changepassword">
                     <fieldset>
                          <Input

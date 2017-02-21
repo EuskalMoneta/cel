@@ -118,7 +118,7 @@ var fetchNoAuth = (url, method, promise, data=null, promiseError=null) => {
         var promiseError = (err) => {
             // Error during request, or parsing NOK :(
             if (err.message != "No content") {
-                console.error(url, method, promise, token, data, promiseError, err)
+                console.error(url, method, promise, data, promiseError, err)
             }
         }
     }

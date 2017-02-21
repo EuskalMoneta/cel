@@ -168,6 +168,7 @@ class LostPasswordPage extends React.Component {
             <div className={parentDivClasses}>
                 {spinner}
                 <div className={divClasses}>
+                    <h2 className="margin-top-zero margin-bottom">{__("Mot de passe perdu")}</h2>
                     <LostPasswordForm
                         onValidSubmit={this.submitForm}
                         onInvalid={this.disableButton}

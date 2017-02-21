@@ -170,6 +170,7 @@ class FirstTimePage extends React.Component {
             <div className={parentDivClasses}>
                 {spinner}
                 <div className={divClasses}>
+                    <h2 className="margin-top-zero margin-bottom">{__("Première connexion")}</h2>
                     <FirstTimeForm
                         onValidSubmit={this.submitForm}
                         onInvalid={this.disableButton}

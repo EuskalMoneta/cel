@@ -1,5 +1,5 @@
 var checkStatus = (response) => {
-    if (response.status >= 200 && response.status < 300) {
+    if (response.status >= 200 && response.status < 401) {
         return response
     }
     else {
@@ -18,6 +18,25 @@ var parseJSON = (response) => {
 
 var parseBLOB = (response) => {
     return response.blob()
+}
+
+var checkSession = (data) => {
+    try {
+        if (data.detail.toUpperCase().indexOf("LOGGED_OUT") != -1) {
+            window.location.assign("/logout?next=" + window.location.pathname)
+        }
+        else if (data.detail.indexOf("Exception") != -1) {
+            var error = new Error(data)
+            error.response = data
+            throw error
+        }
+        else {
+            return data
+        }
+    }
+    catch(e) {
+        return data
+    }
 }
 
 var storeToken = (data) => {
@@ -61,6 +80,7 @@ var fetchCustom = (url, method, promise, token, data, promiseError=null, accept=
     fetch(url, payload)
     .then(checkStatus)
     .then(accept == 'application/json' ? parseJSON : parseBLOB)
+    .then(checkSession)
     .then(promise)
     .catch(promiseError)
 }
@@ -593,6 +613,7 @@ class SelectizeUtils {
 module.exports = {
     checkStatus: checkStatus,
     parseJSON: parseJSON,
+    checkSession: checkSession,
     fetchAuth: fetchAuth,
     fetchNoAuth: fetchNoAuth,
     fetchCustom: fetchCustom,

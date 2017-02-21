@@ -100,7 +100,7 @@ var Overview = React.createClass({
                     return false
                 }
                 else {
-                    // window.location.assign(this.props.bdcUrl + row.login)
+                    window.location.assign("/compte/historique")
                 }
             }
         }

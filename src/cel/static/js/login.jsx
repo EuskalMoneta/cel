@@ -36,10 +36,15 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props)
 
+        if (getUrlParameter('next') == window.config.getLoginRedirectURL || getUrlParameter('next') == "")
+            var sessionExpired = false
+        else
+            var sessionExpired = true
+
         // Default state
         this.state = {
             canSubmit: false,
-            sessionExpired: getUrlParameter('next') == window.config.getLoginRedirectURL ? true : false,
+            sessionExpired: sessionExpired,
             invalidLogin: false,
             displaySpinner: false,
             username: '',

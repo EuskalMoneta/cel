@@ -165,7 +165,7 @@ var HistoryPage = React.createClass({
 
         var computeAccountList = (data) => {
             var res = _.chain(data.result)
-                .map(function(item){ return {label: item.type.name + '\n' + item.status.accountId, value:item.status.accountId} })
+                .map(function(item){ return {label: item.number, value:item.status.accountId} })
                 .sortBy(function(item){ return item.label })
                 .value()
             this.setState({accountList: res})
@@ -291,12 +291,12 @@ var HistoryPage = React.createClass({
             </label>
         )
         if (this.state.allAccount) {
-            if (this.state.allAccount.length == 2 )
+            if (this.state.allAccount.length == 1 )
             {
                 var accountData = (
                     <label className="control-label solde-history-label">
                         {__("Compte") + ": "}
-                        {currentSoldeLabel}
+                        {this.state.allAccount[0].number}
                     </label>
                 )
             }

@@ -207,8 +207,8 @@ var BeneficiairesList = React.createClass({
                             tableContainerClass="react-bs-table-list-beneficiaires"
             >
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="cyclos_account_number" width="350">{__("N° de Compte")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="cyclos_name">{__("Nom")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="cyclos_account_number" width="350">{__("N° de Compte")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="delete" columnClassName="disable-pointer-events" width="150"
                                    dataFormat={buttonFormatter}>{__("Supprimer")}</TableHeaderColumn>
             </BootstrapTable>

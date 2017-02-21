@@ -19,6 +19,11 @@ const {
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
 
+const {
+    ToastContainer,
+} = ReactToastr
+const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
+
 const HistoricalForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
@@ -46,9 +51,9 @@ var Ponctuel = React.createClass({
         return {
             beneficiaires: undefined,
             beneficiairesList: undefined,
+            canSubmit: false,
             debit: undefined,
             debitList: undefined,
-            debit: undefined,
             credit: undefined,
             amount: undefined,
             description: '',
@@ -59,7 +64,7 @@ var Ponctuel = React.createClass({
     componentDidMount() {
         var computeBeneficiairesList = (data) => {
             var res = _.chain(data.results)
-                .map(function(item){ return {label: item.cyclos_name, value:item.cyclos_id} })
+                .map(function(item){ return {label: item.cyclos_name + ' - ' + item.cyclos_account_number, value:item.cyclos_id} })
                 .sortBy(function(item){ return item.label })
                 .value()
             this.setState({beneficiairesList: res})
@@ -67,9 +72,8 @@ var Ponctuel = React.createClass({
         fetchAuth(this.props.ponctuelListUrl, 'GET', computeBeneficiairesList)
 
         var computeDebitList = (data) => {
-            debugger
             var res = _.chain(data.result)
-                .map(function(item){ return {label: item.type.name, value:item.id} })
+                .map(function(item){ return {label: item.number, value:item.id} })
                 .sortBy(function(item){ return item.label })
                 .value()
             this.setState({debitList: res})
@@ -93,6 +97,87 @@ var Ponctuel = React.createClass({
             this.setState({debit: undefined})
     },
 
+    amountOnValueChange(event, value) {
+        var valueToTest = value.replace(',','.')
+        if(isNaN(valueToTest))
+        {
+            this.refs.container.error(
+                __("Attention, la valeur saisie pour le montant est incorrecte !"),
+                "",
+                {
+                    timeOut: 5000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        else
+        {
+            this.setState({amount: value}, this.validateForm)
+        }
+    },
+
+    descriptionOnValueChange(event, value) {
+        this.setState({description: value}, this.validateForm)
+    },
+
+    enableButton() {
+        this.setState({canSubmit: true})
+    },
+
+    disableButton() {
+        this.setState({canSubmit: false})
+    },
+
+    validateForm() {
+        if (this.state.debit && this.state.beneficiaires && this.state.amount && this.state.description)
+        {
+            this.enableButton()
+        }
+        else
+            this.disableButton()
+    },
+
+    submitForm() {
+        this.disableButton()
+
+        // We push fields into the data object that will be passed to the server
+        var data = {beneficiaire: this.state.beneficiaires.value,
+                    debit: this.state.debit.value,
+                    amount: this.state.amount,
+                    description: this.state.description
+        }
+
+        var computeForm = (data) => {
+            this.refs.container.success(
+                __("Le transfert a bien été effectué."),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+
+        var promiseError = (err) => {
+            // Error during request, or parsing NOK :(
+            this.enableButton()
+
+            console.log(this.props.url, err)
+            this.refs.container.error(
+                __("Une erreur s'est produite lors du transfert, vérifiez le solde de votre compte !"),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        fetchAuth(getAPIBaseURL + "one-time-transfer/", 'POST', computeForm, data, promiseError)
+    },
+
     render() {
 
         return (
@@ -111,12 +196,13 @@ var Ponctuel = React.createClass({
                                 ref="select"
                                 value={this.state.debit}
                                 options={this.state.debitList}
-                                placeholder={__("Compte à créditer")}
+                                placeholder={__("Compte à débiter")}
                                 theme="bootstrap3"
                                 autocomplete="off"
                                 onValueChange={this.debitOnValueChange}
                                 renderValue={SelectizeUtils.selectizeRenderValue}
                                 renderOption={SelectizeUtils.selectizeNewRenderOption}
+                                onBlur={this.validateForm}
                                 required
                             >
                             </SimpleSelect>
@@ -141,6 +227,7 @@ var Ponctuel = React.createClass({
                                 onValueChange={this.beneficiairesOnValueChange}
                                 renderValue={SelectizeUtils.selectizeRenderValue}
                                 renderOption={SelectizeUtils.selectizeNewRenderOption}
+                                onBlur={this.validateForm}
                                 required
                             >
                             </SimpleSelect>
@@ -182,7 +269,26 @@ var Ponctuel = React.createClass({
                             </HistoricalForm>
                         </div>
                     </div>
+                    <div className="row profil-div-margin-left margin-top">
+                        <a href="/" className="btn btn-default col-sm-offset-3">
+                           {__("Annuler")}
+                        </a>
+                        <input
+                            name="submit"
+                            data-eusko="one-time-transfer-form-submit"
+                            type="submit"
+                            defaultValue={__("Valider")}
+                            className="btn btn-success col-sm-offset-2"
+                            formNoValidate={true}
+                            onClick={() => this.submitForm()}
+                            disabled={!this.state.canSubmit}
+                        />
+                    </div>
                 </div>
+                <ToastContainer ref="container"
+                    toastMessageFactory={ToastMessageFactory}
+                    className="toast-top-right toast-top-right-navbar"
+                />
             </div>
         )
     }

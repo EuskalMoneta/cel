@@ -61,3 +61,8 @@ def virements_beneficiaires(request):
 @login_required
 def virements_ponctuel(request):
     return render(request, 'adherents/virements-ponctuel.html')
+
+
+@login_required
+def euskokart(request):
+    return render(request, 'adherents/euskokart.html')

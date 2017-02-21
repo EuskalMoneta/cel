@@ -412,6 +412,7 @@ var HistoryPage = React.createClass({
                                         theme="bootstrap3"
                                         onValueChange={this.dateOnValueChange}
                                         value = {this.state.selectedValue}
+                                        renderResetButton={() => { return null }}
                                         required
                                     >
                                         <option value = "day">Aujourd'hui</option>

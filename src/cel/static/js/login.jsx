@@ -105,14 +105,13 @@ class LoginPage extends React.Component {
             this.setState({invalidLogin: true, displaySpinner: false, canSubmit: false})
         }
 
-        var promiseSuccessApiAuth = () => {
+        var promiseSuccessApiAuth = (data) => {
             // Auth in Django
             fetch('/login/',
                   {
                     method: 'post',
                     credentials: 'same-origin',
-                    body: JSON.stringify({'username': this.state.username,
-                                          'password': this.state.password}),
+                    body: JSON.stringify({'token': data}),
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
@@ -139,8 +138,8 @@ class LoginPage extends React.Component {
         fetchGetToken(this.state.username, this.state.password, promiseSuccessApiAuth, promiseError)
     }
 
-    render = () => {
-
+    render = () =>
+    {
         var parentDivClasses = classNames({
             'has-spinner': this.state.displaySpinner,
         })

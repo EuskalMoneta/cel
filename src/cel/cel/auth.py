@@ -4,10 +4,12 @@ import logging
 from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 import requests
+
+from base import models
 
 log = logging.getLogger()
 
@@ -15,14 +17,23 @@ log = logging.getLogger()
 class CELAuthBackend(object):
     """ Authenticate users against Dolibarr through the EuskalMoneta API """
 
-    def authenticate(self, username, password):
+    def authenticate(self, token):
         user = None
-        try:
-            r_login = requests.post('{}{}'.format(settings.API_INTERNAL_URL, 'login/'),
-                                    json={'username': username, 'password': password})
 
-            if not r_login.status_code == requests.codes.ok:
-                log.critical('status_code: {} - content: {}'.format(r_login.status_code, r_login.content))
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Token {}'.format(token)
+        }
+
+        try:
+            r_username = requests.get('{}{}'.format(settings.API_INTERNAL_URL, 'username/'),
+                                      headers=headers)
+
+            username = r_username.json()
+
+            if not r_username.status_code == requests.codes.ok:
+                log.critical('status_code: {} - content: {}'.format(r_username.status_code, r_username.content))
                 log.critical('Identifiant ou Mot de passe invalide.')
                 raise PermissionDenied()
         except requests.exceptions.RequestException as e:
@@ -30,21 +41,14 @@ class CELAuthBackend(object):
             log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
             raise PermissionDenied()
 
-        json_response = r_login.json()
         try:
-            auth_token = json_response['auth_token']
-            log.debug(auth_token)
-        except KeyError:
-            log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
-            raise PermissionDenied()
+            r_account = requests.get('{}{}'.format(settings.API_INTERNAL_URL, 'has-account/'),
+                                     headers=headers)
 
-        try:
-            r_groups = requests.get('{}{}'.format(settings.API_INTERNAL_URL,
-                                                  'verify-usergroup/?api_key={}&username={}&usergroup=adherents'
-                                                  .format(auth_token, username)))
+            account = r_account.json()
 
-            if not r_groups.status_code == requests.codes.ok:
-                log.critical('status_code: {} - content: {}'.format(r_groups.status_code, r_groups.content))
+            if not r_account.status_code == requests.codes.ok:
+                log.critical('status_code: {} - content: {}'.format(r_account.status_code, r_account.content))
                 log.critical('Identifiant ou Mot de passe invalide.')
                 raise PermissionDenied()
         except requests.exceptions.RequestException as e:
@@ -52,7 +56,16 @@ class CELAuthBackend(object):
             log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
             raise PermissionDenied()
 
-        user, created = User.objects.get_or_create(username=json_response['login'])
+        user, created = User.objects.get_or_create(username=username)
+
+        try:
+            user_profile = user.profile
+        except ObjectDoesNotExist:
+            user_profile = models.Profile(user=user)
+
+        user_profile.has_account_eusko_numerique = account['status']
+
+        user.save()
         return user
 
     # Required for your backend to work properly - unchanged in most scenarios
@@ -71,15 +84,13 @@ def login_view(request, **kwargs):
         except (ValueError, UnicodeDecodeError):
             HttpResponseBadRequest({'error': 'Unable to decode request!'})
 
-        username = data.get('username', '')
-        password = data.get('password', '')
+        token = data.get('token', '')
 
-        if not username:
-            HttpResponseBadRequest({'error': 'Username must not be empty!'})
-        if not password:
-            HttpResponseBadRequest({'error': 'Password must not be empty!'})
+        if not token:
+            HttpResponseBadRequest({'error': 'You must provide a token!'})
+
         try:
-            user = authenticate(username=username, password=password)
+            user = authenticate(token=token)
         except PermissionDenied:
             return JsonResponse(status=401)
 

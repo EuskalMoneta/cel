@@ -50,7 +50,7 @@ def history(request):
 
 @login_required
 def virements_home(request):
-    return redirect('virements-beneficiaires')
+    return redirect('virements-ponctuel')
 
 
 @login_required

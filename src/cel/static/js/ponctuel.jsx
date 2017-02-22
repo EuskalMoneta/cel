@@ -53,7 +53,10 @@ var Ponctuel = React.createClass({
             beneficiaires: undefined,
             beneficiairesList: undefined,
             canSubmit: false,
-            debit: undefined,
+            debit: {
+                label: undefined,
+                value: undefined,
+            },
             debitList: undefined,
             credit: undefined,
             amount: undefined,
@@ -78,14 +81,16 @@ var Ponctuel = React.createClass({
                 .sortBy(function(item){ return item.label })
                 .value()
             this.setState({allAccount: data.result});
-            if (this.state.allAccount) {
-                if (this.state.allAccount.length == 1 ) {
-                    this.setState({debit: this.state.allAccount[0].number});
-                }
-            }
-            this.setState({debitList: res})
+            this.setState({debitList: res}, this.setDebitData)
         }
         fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
+    },
+    setDebitData() {
+        if (this.state.allAccount) {
+            if (this.state.allAccount.length == 1 ) {
+                this.setState({debit:  {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id} });
+            }
+        }
     },
 
     beneficiairesOnValueChange(item) {
@@ -147,7 +152,7 @@ var Ponctuel = React.createClass({
 
     submitForm() {
         this.disableButton()
-
+        debugger
         // We push fields into the data object that will be passed to the server
         var data = {beneficiaire: this.state.beneficiaires.value,
                     debit: this.state.debit.value,
@@ -189,7 +194,6 @@ var Ponctuel = React.createClass({
         if (this.state.allAccount) {
             if (this.state.allAccount.length == 1 )
             {
-
                 var debitData = (
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
@@ -201,7 +205,7 @@ var Ponctuel = React.createClass({
                         <div className="col-sm-1"></div>
                         <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
                         <label className="control-label solde-history-label">
-                            {this.state.debit}
+                            {this.state.debit.label}
                         </label>
                         </div>
                     </div>

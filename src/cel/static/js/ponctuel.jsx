@@ -73,7 +73,7 @@ var Ponctuel = React.createClass({
 
         var computeDebitList = (data) => {
             var res = _.chain(data.result)
-                .map(function(item){ return {label: item.number, value:item.id} })
+                .map(function(item){ return {label: item.number, value:item.owner.id} })
                 .sortBy(function(item){ return item.label })
                 .value()
             this.setState({debitList: res})

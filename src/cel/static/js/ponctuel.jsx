@@ -78,6 +78,11 @@ var Ponctuel = React.createClass({
                 .sortBy(function(item){ return item.label })
                 .value()
             this.setState({allAccount: data.result});
+            if (this.state.allAccount) {
+                if (this.state.allAccount.length == 1 ) {
+                    this.setState({debit: this.state.allAccount[0].number});
+                }
+            }
             this.setState({debitList: res})
         }
         fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
@@ -181,10 +186,10 @@ var Ponctuel = React.createClass({
     },
 
     render() {
-
         if (this.state.allAccount) {
             if (this.state.allAccount.length == 1 )
             {
+
                 var debitData = (
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
@@ -196,11 +201,12 @@ var Ponctuel = React.createClass({
                         <div className="col-sm-1"></div>
                         <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
                         <label className="control-label solde-history-label">
-                            {this.state.allAccount[0].number}
+                            {this.state.debit}
                         </label>
                         </div>
                     </div>
                 )
+
             }
             else
             {

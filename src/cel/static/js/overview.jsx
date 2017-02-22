@@ -68,8 +68,7 @@ var Overview = React.createClass({
     },
 
     reconvertirEusko() {
-        debugger
-        // window.location.assign()
+        window.location.assign("/compte/synthese/reconvertir")
     },
 
     computeAccountList(data) {

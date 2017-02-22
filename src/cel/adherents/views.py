@@ -66,3 +66,8 @@ def virements_ponctuel(request):
 @login_required
 def euskokart(request):
     return render(request, 'adherents/euskokart.html')
+
+
+@login_required
+def overview_reconvertir(request):
+    return render(request, 'adherents/overview-reconvertir.html')

@@ -37,6 +37,7 @@ module.exports = Object.keys(languages).map(function(language) {
             Beneficiaires: './static/js/beneficiaires',
             Ponctuel: './static/js/ponctuel',
             EuskoKart: './static/js/euskokart',
+            Reconvert: './static/js/reconvert',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

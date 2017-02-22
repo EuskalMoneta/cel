@@ -51,6 +51,7 @@ urlpatterns = [
     # Mon compte
     url(r'^compte/?$', adherents_views.compte_home, name='compte-home'),
     url(r'^compte/synthese/?$', adherents_views.overview, name='overview'),
+    url(r'^compte/synthese/reconvertir/?$', adherents_views.overview_reconvertir, name='overview-reconvertir'),
     url(r'^compte/historique/?$', adherents_views.history, name='history'),
 
     # euskokart

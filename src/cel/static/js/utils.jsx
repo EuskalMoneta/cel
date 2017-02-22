@@ -3,9 +3,21 @@ var checkStatus = (response) => {
         return response
     }
     else {
-        var error = new Error(response.statusText)
-        error.response = response
-        throw error
+        try {
+            if (response.statusText == "Forbidden") {
+                window.location.assign("/logout?next=" + window.location.pathname)
+            }
+            else {
+                var error = new Error(response.statusText)
+                error.response = response
+                throw error
+            }
+        }
+        catch(e) {
+            var error = new Error(response.statusText)
+            error.response = response
+            throw error
+        }
     }
 }
 
@@ -224,7 +236,6 @@ class NavbarItems extends React.Component {
     constructor(props) {
         super(props);
 
-        // debugger
         this.state = {
             classes: props.classes ? props.classes : 'nav navbar-nav',
             objects: props.objects ? props.objects : [],

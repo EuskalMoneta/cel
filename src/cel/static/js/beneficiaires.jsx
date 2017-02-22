@@ -121,7 +121,7 @@ var BeneficiairesList = React.createClass({
     submitForm() {
         var promiseError = (err) => {
             // Error during request, or parsing NOK :(
-
+            this.hideModal()
             console.error(this.props.url, err)
             this.refs.container.error(
                 __("Une erreur s'est produite lors de l'enregistrement !"),

@@ -49,6 +49,7 @@ var Ponctuel = React.createClass({
 
     getInitialState() {
         return {
+            allAccount: undefined,
             beneficiaires: undefined,
             beneficiairesList: undefined,
             canSubmit: false,
@@ -76,6 +77,7 @@ var Ponctuel = React.createClass({
                 .map(function(item){ return {label: item.number, value:item.owner.id} })
                 .sortBy(function(item){ return item.label })
                 .value()
+            this.setState({allAccount: data.result});
             this.setState({debitList: res})
         }
         fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
@@ -180,9 +182,29 @@ var Ponctuel = React.createClass({
 
     render() {
 
-        return (
-            <div className="row">
-                <div className="col-md-10 col-md-offset-1">
+        if (this.state.allAccount) {
+            if (this.state.allAccount.length == 1 )
+            {
+                var debitData = (
+                    <div className="form-group row">
+                        <div className="col-sm-1"></div>
+                        <label
+                            className="control-label col-sm-5"
+                            htmlFor="virement-debit">
+                            {__("Compte à débiter")}
+                        </label>
+                        <div className="col-sm-1"></div>
+                        <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
+                        <label className="control-label solde-history-label">
+                            {this.state.allAccount[0].number}
+                        </label>
+                        </div>
+                    </div>
+                )
+            }
+            else
+            {
+                var debitData = (
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <label
@@ -208,6 +230,16 @@ var Ponctuel = React.createClass({
                             </SimpleSelect>
                         </div>
                     </div>
+                )
+            }
+        }
+
+        return (
+            <div className="row">
+                <div className="col-md-10 col-md-offset-1">
+                    
+                         { debitData }
+                    
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <label

@@ -17,7 +17,13 @@ def config_js(request):
     It will be converted in real bool objects on JavaScript-side
     """
     if request.user.is_authenticated():
-        response = {'user_auth': 'true', 'username': request.user}
+        if request.user.profile.has_account_eusko_numerique:
+            has_account_eusko_numerique = 'true'
+        else:
+            has_account_eusko_numerique = 'false'
+
+        response = {'user_auth': 'true', 'username': request.user,
+                    'has_account_eusko_numerique': has_account_eusko_numerique}
     else:
         response = {'user_auth': 'false', 'username': ''}
 

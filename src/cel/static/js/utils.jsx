@@ -10,10 +10,17 @@ var checkStatus = (response) => {
 }
 
 var parseJSON = (response) => {
-    if (response.status == 204)
+    if (response.status == 204) {
         return {}
-    else
+    }
+    else if (response.status == 400) {
+        var error = new Error(response.statusText)
+        error.response = response
+        throw error
+    }
+    else {
         return response.json()
+    }
 }
 
 var parseBLOB = (response) => {
@@ -420,41 +427,21 @@ class Navbar extends React.Component {
     constructor(props) {
         super(props);
 
-
         this.state = {
             objects: _.filter(this.navbarObjects, (item) => { return item.accountMandatory === false }),
-            accountEnabled: false,
             userAuth: window.config.userAuth,
         }
     }
 
     componentDidMount() {
-        // Get member name
-        if (this.state.userAuth)
-        {
-            var computeData = (data) => {
-                var accountEnabled = data.status
+        var objects = _.filter(this.navbarObjects, (item) => {
+            if (window.config.hasAccountEuskoNumerique)
+                return true
+            else
+                return item.accountMandatory === window.config.hasAccountEuskoNumerique
+        })
 
-                // Accès restreint pour les adhérents n'ayant pas de compte numérique
-                if (!accountEnabled &&
-                    (window.location.pathname.toLowerCase().indexOf('compte') != -1 ||
-                     window.location.pathname.toLowerCase().indexOf('virements') != -1 ||
-                     window.location.pathname.toLowerCase().indexOf('euskokart') != -1))
-                {
-                    window.location.assign('/profil/coordonnees')
-                }
-
-                var objects = _.filter(this.navbarObjects, (item) => {
-                        if (accountEnabled)
-                            return true
-                        else
-                            return item.accountMandatory === accountEnabled
-                })
-
-                this.setState({objects: objects, accountEnabled: accountEnabled})
-            }
-            fetchAuth(getAPIBaseURL + "check-account/", 'get', computeData)
-        }
+        this.setState({objects: objects})
     }
 
     render() {
@@ -469,7 +456,7 @@ class Navbar extends React.Component {
                         </div>
                     </div>
                     <SubNavbar
-                        accountEnabled={this.state.accountEnabled}
+                        accountEnabled={window.config.hasAccountEuskoNumerique}
                         activeObject={_.chain(this.state.objects)
                                        .filter((item) => { return item.status == 'active' })
                                        .flatten(true)

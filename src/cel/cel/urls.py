@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^login/?$', login_view, name='login'),
     # logout
     url(r'^logout/?$', logout, {'next_page': reverse_lazy('login')}, name='logout'),
-    url(r'^logout/(?P<next_page>[\w\-]+)/?$', logout, name='logout'),
+    url(r'^logout/(?P<next_page>[\w\-]+)/?$', logout, name='logout-next'),
     # change-password
     # first-time
     url(r'^premiere-connexion/?$', adherents_views.first_time, name='first-time'),

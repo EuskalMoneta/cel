@@ -57,6 +57,7 @@ class FirstTimePage extends React.Component {
             invalidData: false,
             validData: false,
             displaySpinner: false,
+            userExist: false,
             spinnerConfig: {
                 lines: 13, // The number of lines to draw
                 length: 28, // The length of each line
@@ -105,20 +106,26 @@ class FirstTimePage extends React.Component {
 
         var computeForm = (data) => {
             this.setState({displaySpinner: false, canSubmit: false})
-
-            if (data.member === null) {
-                // We got an error!
-                this.setState({invalidData: true, validData: false})
+            if (data.error == "User already exist!")
+            {
+                this.setState({invalidData: true, displaySpinner: false, canSubmit: false, userExist: true})
             }
-            else {
-                // Everything is ok!
-                this.setState({validData: true, invalidData: false})   
+            else
+            {
+                if (data.member === null) {
+                    // We got an error!
+                    this.setState({invalidData: true, validData: false})
+                }
+                else {
+                    // Everything is ok!
+                    this.setState({validData: true, invalidData: false})   
+                }
             }
         }
 
         var promiseError = (err) => {
             // Highlight login/password fields !
-            this.setState({invalidData: true, displaySpinner: false, canSubmit: false})
+            this.setState({invalidData: true, displaySpinner: false, canSubmit: false, userExist: false})
         }
         fetchNoAuth(this.props.url, this.props.method, computeForm, data, promiseError)
     }
@@ -133,16 +140,27 @@ class FirstTimePage extends React.Component {
         })
 
         if (this.state.invalidData) {
-            var messageData = (
-                <div className="alert alert-danger">
-                    {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
-                </div>
-            )
-            var link = (
-                <Row layout="horizontal" elementWrapperClassName="margin-top">
-                    <a href="/contact">{__("Formulaire de contact")}</a>
-                </Row>
-            )
+            if (this.state.userExist) {
+                var messageData = (
+                    <div className="alert alert-danger">
+                        {__("L'utilisateur existe déjà. Si vous avez perdu votre mot de passe, ")}<a href="passe-perdu/">{__("cliquez ici.")}</a>
+                    </div>
+                )
+                var link = null
+            }
+            else
+            {
+                var messageData = (
+                    <div className="alert alert-danger">
+                        {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
+                    </div>
+                )
+                var link = (
+                    <Row layout="horizontal" elementWrapperClassName="margin-top">
+                        <a href="/contact">{__("Formulaire de contact")}</a>
+                    </Row>
+                )
+            }
         }
         else {
             if (this.state.validData) {

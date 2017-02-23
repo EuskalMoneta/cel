@@ -49,6 +49,7 @@ class SetPasswordPage extends React.Component {
             tokenError: false,
             selectedQuestion: '',
             answer: undefined,
+            userExist:false,
         }
     }
 
@@ -97,20 +98,29 @@ class SetPasswordPage extends React.Component {
         data.token = token
 
         var computeForm = (data) => {
-            this.refs.container.success(
-                __("Le changement de mot de passe s'est déroulé correctement."),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
+            if (data.error == "User already exist!")
+            {
+                this.setState({userExist: true})
+            }
+            else
+            {
+                this.refs.container.success(
+                    __("Le changement de mot de passe s'est déroulé correctement."),
+                    "",
+                    {
+                        timeOut: 5000,
+                        extendedTimeOut: 10000,
+                        closeButton:true
+                    }
+                )
+                setTimeout(() => window.location.assign("/login"), 5000)
+            }
 
-            setTimeout(() => window.location.assign("/login"), 5000)
+            
         }
 
         var promiseError = (err) => {
+            debugger
             // Error during request, or parsing NOK :(
             console.error(this.props.url, err)
             this.refs.container.error(
@@ -128,6 +138,13 @@ class SetPasswordPage extends React.Component {
 
     render = () =>
     {
+        if (this.state.userExist) {
+            var messageData = (
+                <div className="alert alert-danger">
+                    {__("L'utilisateur existe déjà. Si vous avez perdu votre mot de passe, ")}<a href="passe-perdu/">{__("cliquez ici.")}</a>
+                </div>
+            )
+        }
         if (this.props.mode == 'validate-lost-password' && this.state.selectedQuestion) {
             var securityQA = (
                 <div>
@@ -203,6 +220,9 @@ class SetPasswordPage extends React.Component {
                         {securityQA}
                     </fieldset>
                     <fieldset>
+                        <Row layout="horizontal" elementWrapperClassName="margin-top-ten col-sm-5">
+                            {messageData}
+                        </Row>
                         <Row layout="horizontal">
                             <input
                                 name="submit"

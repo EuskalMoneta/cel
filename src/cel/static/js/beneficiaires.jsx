@@ -103,10 +103,11 @@ var BeneficiairesList = React.createClass({
                 this.setState({resBeneficiaire: '', valueBeneficiaire: ''})
             }
 
-            var valueBeneficiaire = event.target.value
+            this.setState({valueBeneficiaire: event.target.value})
+
             var searchBeneficiairesList = (data) => {
                 // Calling this.postBeneficiaire again force modal child component to re-render
-                this.setState({resBeneficiaire: data, valueBeneficiaire: valueBeneficiaire, btnValidateEnabled: true}, this.postBeneficiaire)
+                this.setState({resBeneficiaire: data, btnValidateEnabled: true}, this.postBeneficiaire)
             }
             fetchAuth(getAPIBaseURL + "beneficiaires/search/?number=" + event.target.value,
                       'GET', searchBeneficiairesList, null, promiseError)

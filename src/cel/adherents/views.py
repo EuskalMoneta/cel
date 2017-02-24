@@ -71,3 +71,8 @@ def euskokart(request):
 @login_required
 def overview_reconvertir(request):
     return render(request, 'adherents/overview-reconvertir.html')
+
+
+@login_required
+def compte_recharger(request):
+    return render(request, 'adherents/compte-recharger.html')

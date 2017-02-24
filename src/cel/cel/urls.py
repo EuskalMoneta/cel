@@ -35,7 +35,7 @@ urlpatterns = [
     # logout
     url(r'^logout/?$', logout, {'next_page': reverse_lazy('login')}, name='logout'),
     url(r'^logout/(?P<next_page>[\w\-]+)/?$', logout, name='logout-next'),
-    # change-password
+
     # first-time
     url(r'^premiere-connexion/?$', adherents_views.first_time, name='first-time'),
     url(r'^valide-premiere-connexion/?$', adherents_views.valid_first_time, name='valide-premiere-connexion'),
@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^compte/synthese/?$', adherents_views.overview, name='overview'),
     url(r'^compte/synthese/reconvertir/?$', adherents_views.overview_reconvertir, name='overview-reconvertir'),
     url(r'^compte/historique/?$', adherents_views.history, name='history'),
+    url(r'^compte/recharger/?$', adherents_views.compte_recharger, name='compte-recharger'),
 
     # euskokart
     url(r'^euskokart/?$', adherents_views.euskokart, name='euskokart-home'),

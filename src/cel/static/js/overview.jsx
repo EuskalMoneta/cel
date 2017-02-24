@@ -63,8 +63,7 @@ var Overview = React.createClass({
     },
 
     rechargerCompte() {
-        debugger
-        // window.location.assign()
+        window.location.assign("/compte/recharger")
     },
 
     reconvertirEusko() {
@@ -95,7 +94,7 @@ var Overview = React.createClass({
             hideSelectColumn: true,
             onSelect: (row, isSelected, event) => {
                 // We want to disable click on cell #2 (which starts at #0, remember ?)
-                if (event.target.cellIndex == 2) {
+                if (event.target.localName == "button" || event.target.localName == "i" || event.target.cellIndex == 2) {
                     return false
                 }
                 else {
@@ -106,7 +105,12 @@ var Overview = React.createClass({
 
         var buttonFormatter = (cell, row) => {
             return (
-                <AccountButtons data={ row } downloadReleveIdentite={ this.downloadReleveIdentite } rechargerCompte={this.rechargerCompte} reconvertirEusko={this.reconvertirEusko }/>
+                <AccountButtons
+                    data={row}
+                    downloadReleveIdentite={this.downloadReleveIdentite}
+                    rechargerCompte={this.rechargerCompte}
+                    reconvertirEusko={this.reconvertirEusko}
+                />
             );
         }
 

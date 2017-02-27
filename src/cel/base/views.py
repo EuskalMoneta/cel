@@ -1,9 +1,12 @@
+import json
 import logging
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils.html import mark_safe
 from django.utils.translation import LANGUAGE_SESSION_KEY, check_for_language
 
 log = logging.getLogger()
@@ -17,13 +20,8 @@ def config_js(request):
     It will be converted in real bool objects on JavaScript-side
     """
     if request.user.is_authenticated():
-        if request.user.profile.has_account_eusko_numerique:
-            has_account_eusko_numerique = 'true'
-        else:
-            has_account_eusko_numerique = 'false'
-
-        response = {'user_auth': 'true', 'username': request.user,
-                    'has_account_eusko_numerique': has_account_eusko_numerique}
+        response = {'user_auth': 'true',
+                    'profile': mark_safe(json.dumps(model_to_dict(request.user.profile, exclude=['id', 'user'])))}
     else:
         response = {'user_auth': 'false', 'username': ''}
 

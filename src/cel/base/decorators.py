@@ -1,7 +1,12 @@
 import functools
 
+from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils.decorators import available_attrs
+
+CGU = 'has_accepted_cgu'
+EUSKO_NUM = 'has_account_eusko_numerique'
+VALID_MEMBERSHIP = 'has_valid_membership'
 
 
 def user_must_have_rights(needed_rights):
@@ -15,13 +20,20 @@ def user_must_have_rights(needed_rights):
         @functools.wraps(a_view, assigned=available_attrs(a_view))
         def _wrapped_view(request, *args, **kwargs):
 
-            # Verify user rights access_granted must contains every needed_rights to access the view
+            # Verify user rights access_granted must contains every needed_rights to access decorated view
+            profile = model_to_dict(request.user.profile)
             access_granted = [right
                               for right in needed_rights
-                              if request.user.profile.rights[right]]
+                              if profile.get(right, False)]
 
             if access_granted == needed_rights:
                 return a_view(request, *args, **kwargs)
+            elif CGU in needed_rights and CGU not in access_granted:
+                return redirect('accept-cgu')
+            elif VALID_MEMBERSHIP in needed_rights and VALID_MEMBERSHIP not in access_granted:
+                return redirect('renew-membership')
+            elif EUSKO_NUM in needed_rights and EUSKO_NUM not in access_granted:
+                return redirect('profile')
             else:
                 return redirect('logout')
 

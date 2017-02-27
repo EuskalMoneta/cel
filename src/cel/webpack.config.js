@@ -83,6 +83,7 @@ module.exports = Object.keys(languages).map(function(language) {
             EuskoKart: './static/js/euskokart',
             Reconvert: './static/js/reconvert',
             CompteRecharger: './static/js/compte-recharger',
+            AcceptCGU: './static/js/accepte-cgu',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

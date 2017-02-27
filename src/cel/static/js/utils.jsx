@@ -441,22 +441,23 @@ class Navbar extends React.Component {
         this.state = {
             objects: _.filter(this.navbarObjects, (item) => { return item.accountMandatory === false }),
             userAuth: window.config.userAuth,
+            userHasAcceptedCGU: window.config.userAuth ? window.config.profile.has_accepted_cgu : false,
         }
     }
 
     componentDidMount() {
         var objects = _.filter(this.navbarObjects, (item) => {
-            if (window.config.hasAccountEuskoNumerique)
+            if (window.config.profile.has_account_eusko_numerique)
                 return true
             else
-                return item.accountMandatory === window.config.hasAccountEuskoNumerique
+                return item.accountMandatory === window.config.profile.has_account_eusko_numerique
         })
 
         this.setState({objects: objects})
     }
 
     render() {
-        if (this.state.userAuth) {
+        if (this.state.userAuth && this.state.userHasAcceptedCGU) {
             return (
                 <div>
                     <div className="navbar navbar-static-top navbar-content">
@@ -467,7 +468,7 @@ class Navbar extends React.Component {
                         </div>
                     </div>
                     <SubNavbar
-                        accountEnabled={window.config.hasAccountEuskoNumerique}
+                        accountEnabled={window.config.profile.has_account_eusko_numerique}
                         activeObject={_.chain(this.state.objects)
                                        .filter((item) => { return item.status == 'active' })
                                        .flatten(true)
@@ -487,7 +488,7 @@ class TopbarRight extends React.Component {
         moment.locale(document.documentElement.lang)
 
         this.state = {
-            memberData: '',
+            memberData: window.config.userAuth ? window.config.profile.display_name : '',
             objects: Array(),
             userAuth: window.config.userAuth,
         }
@@ -525,15 +526,6 @@ class TopbarRight extends React.Component {
 
     componentDidMount() {
         setInterval(() => { this.tick() }, 1000)
-
-        // Get member name
-        if (this.state.userAuth)
-        {
-            var computeData = (data) => {
-                this.setState({memberData: data})
-            }
-            fetchAuth(getAPIBaseURL + "member-name/", 'get', computeData)
-        }
     }
 
     componentWillReceiveProps(nextProps) {

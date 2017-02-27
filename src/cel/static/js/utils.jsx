@@ -4,7 +4,9 @@ var checkStatus = (response) => {
     }
     else {
         try {
-            if (response.statusText == "Forbidden") {
+            // If we got a forbidden (403) response, *AND* we're not already in the login page:
+            // we redirect to the login page, in this page a "session expired" message will be displayed
+            if (response.statusText == "Forbidden" && window.location.pathname.indexOf("/login") === -1) {
                 window.location.assign("/logout?next=" + window.location.pathname)
             }
             else {

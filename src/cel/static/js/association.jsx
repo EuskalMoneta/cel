@@ -132,11 +132,13 @@ const Association = React.createClass({
                         <fieldset>
                             <div className="form-group row">
                                 <label
-                                    className="control-label col-sm-2"
+                                    className="control-label col-sm-4"
                                     data-required="true"
                                     htmlFor="profilform-asso">
                                     {__("Association parrainée - 1er choix :")}
                                 </label>
+                            </div>
+                            <div className="form-group row">
                                 <div className="col-sm-3 profilform" data-eusko="profilform-asso">
                                     <SimpleSelect
                                         ref="select"
@@ -151,12 +153,23 @@ const Association = React.createClass({
                                         renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                     />
                                 </div>
+                            </div>
+                            <div className="form-group row">
+                                <Input
+                                    name="montant"
+                                    data-eusko="virement-amount"
+                                    value = ""
+                                />
+                            </div>
+                            <div className="form-group row">
                                 <label
-                                    className="control-label col-sm-2"
+                                    className="control-label col-sm-4"
                                     data-required="true"
                                     htmlFor="profilform-asso2">
                                     {__("Association parrainée - 2nd choix :")}
                                 </label>
+                            </div>
+                            <div className="form-group row">
                                 <div className="col-sm-3 profilform" data-eusko="profilform-asso2">
                                     <SimpleSelect
                                         ref="select"

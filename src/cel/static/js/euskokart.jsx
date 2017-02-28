@@ -247,7 +247,7 @@ var EuskoKartList = React.createClass({
             {
                 console.error(this.props.url, err)
                 this.refs.container.error(
-                    __("Une erreur est survenue lors du choix de votre code !"),
+                    __("Une erreur est survenue lors de l'envoi du mail de confirmation !"),
                     "",
                     {
                         timeOut: 5000,

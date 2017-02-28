@@ -329,4 +329,4 @@ ReactDOM.render(
     <Ponctuel ponctuelListUrl={getAPIBaseURL + "beneficiaires/"} />,
     document.getElementById('reconvert')
 )
-document.title = __("Mes virements") + ": " + __("Virement ponctuel") + " - " + __("Compte en ligne") + " " + document.title
+document.title = __("Mon compte") + ": " + __("Reconversion") + " - " + __("Compte en ligne") + " " + document.title

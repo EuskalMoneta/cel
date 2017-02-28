@@ -50,6 +50,7 @@ urlpatterns = [
 
     # Mon profil
     url(r'^profil/?$', adherents_views.profile_home, name='profile-home'),
+    url(r'^profil/association/?$', adherents_views.association, name='association'),
     url(r'^profil/cotisation/?$', adherents_views.renew_membership, name='manage-membership'),
     url(r'^profil/coordonnees/?$', adherents_views.profile, name='profile'),
     url(r'^profil/change-passe/?$', base_views.change_password, name='change-password'),

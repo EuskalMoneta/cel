@@ -110,6 +110,12 @@ def renew_membership(request):
 
 
 @login_required
+@user_must_have_rights([CGU])
+def association(request):
+    return render(request, 'adherents/association.html')
+
+
+@login_required
 def update_session(request):
     if request.method == 'PUT':
         try:

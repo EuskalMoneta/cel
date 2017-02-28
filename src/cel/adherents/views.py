@@ -33,13 +33,13 @@ def valid_lost_password(request):
 
 
 @login_required
-@user_must_have_rights([CGU, VALID_MEMBERSHIP])
+@user_must_have_rights([VALID_MEMBERSHIP])
 def profile_home(request):
     return redirect('profile')
 
 
 @login_required
-@user_must_have_rights([CGU, VALID_MEMBERSHIP])
+@user_must_have_rights([VALID_MEMBERSHIP])
 def profile(request):
     return render(request, 'adherents/index.html')
 

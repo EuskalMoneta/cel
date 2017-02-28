@@ -9,6 +9,8 @@ from django.shortcuts import render
 from django.utils.html import mark_safe
 from django.utils.translation import LANGUAGE_SESSION_KEY, check_for_language
 
+from base.decorators import user_must_have_rights, VALID_MEMBERSHIP
+
 log = logging.getLogger()
 
 
@@ -57,5 +59,6 @@ def setlang_custom(request):
 
 
 @login_required
+@user_must_have_rights([VALID_MEMBERSHIP])
 def change_password(request):
     return render(request, 'change-password.html')

@@ -214,7 +214,6 @@ var EuskoKartList = React.createClass({
                         closeButton:true
                     }
                 )
-                setTimeout(() => window.location.assign("/logout"), 3000)
             }
             else if (data.status = 'Pin added!')
             {

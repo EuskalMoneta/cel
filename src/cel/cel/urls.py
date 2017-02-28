@@ -43,8 +43,13 @@ urlpatterns = [
     url(r'^passe-perdu/?$', adherents_views.lost_password, name='lost-password'),
     url(r'^valide-passe-perdu/?$', adherents_views.valid_lost_password, name='valide-premiere-connexion'),
 
+    # Special page: Accept CGU & Renew membership
+    url(r'^accepte-cgu/?$', adherents_views.accept_cgu, name='accept-cgu'),
+    url(r'^cotisation/?$', adherents_views.renew_membership, name='renew-membership'),
+
     # Mon profil
     url(r'^profil/?$', adherents_views.profile_home, name='profile-home'),
+    url(r'^profil/cotisation/?$', adherents_views.renew_membership, name='manage-membership'),
     url(r'^profil/coordonnees/?$', adherents_views.profile, name='profile'),
     url(r'^profil/change-passe/?$', base_views.change_password, name='change-password'),
 

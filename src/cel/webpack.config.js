@@ -9,7 +9,51 @@ var languages = {
     "eu": require('./static/locales/eu.json')  // Fichier de traduction
 }
 
+// if env var NODE_ENV === 'production', it will uglify/minify our JS codebase
+// if this is anything else, it will not: and we will be in 'dev' mode (.js files will be *MUCH LARGER*)
+var isProd = (process.env.NODE_ENV === 'production')
+
 module.exports = Object.keys(languages).map(function(language) {
+
+    // Conditionally return a list of plugins to use based on the current environment.
+    // Repeat this pattern for any other config key (ie: loaders, etc).
+    function getPlugins() {
+        var plugins = [];
+
+        // Always expose NODE_ENV to webpack, you can now use `process.env.NODE_ENV`
+        // inside your code for any environment checks; UglifyJS will automatically
+        // drop any unreachable code.
+        plugins.push(
+            new webpack.EnvironmentPlugin([
+                'NODE_ENV'
+            ]),
+            // makes our dependencies available in every module
+            new webpack.ProvidePlugin({
+                Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
+                fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+                Raven: 'raven-js',
+                React: 'react',
+                ReactDOM: 'react-dom',
+                ReactToastr: 'react-toastr',
+                Formsy: 'formsy-react',
+                FRC: 'formsy-react-components',
+                moment: 'moment',
+                "_": 'underscore'
+            }),
+            new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|eu/),
+            new I18nPlugin(
+                languages[language]
+            )
+        );
+
+        // Conditionally add plugins for Production builds.
+        if (isProd) {
+            plugins.push(new webpack.optimize.UglifyJsPlugin());
+        }
+
+        return plugins;
+    }
+
     return {
         // the base directory (absolute path) for resolving the entry option
         context: __dirname,
@@ -39,6 +83,7 @@ module.exports = Object.keys(languages).map(function(language) {
             EuskoKart: './static/js/euskokart',
             Reconvert: './static/js/reconvert',
             CompteRecharger: './static/js/compte-recharger',
+            AcceptCGU: './static/js/accepte-cgu',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)
@@ -51,25 +96,7 @@ module.exports = Object.keys(languages).map(function(language) {
         },
 
         // Modules externes utilisés par nos pages/scripts React
-        plugins: [
-            // makes our dependencies available in every module
-            new webpack.ProvidePlugin({
-                Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
-                fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
-                Raven: 'raven-js',
-                React: 'react',
-                ReactDOM: 'react-dom',
-                ReactToastr: 'react-toastr',
-                Formsy: 'formsy-react',
-                FRC: 'formsy-react-components',
-                moment: 'moment',
-                "_": 'underscore'
-            }),
-            new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|eu/),
-            new I18nPlugin(
-                languages[language]
-            )
-        ],
+        plugins: getPlugins(),
 
         // Les modules permettent à Webpack de charger d'autres types de données que le JavaScript (JSX dans notre cas)
         // Babel est le nom du compilateur utilisé par Webpack pour compiler notre JSX

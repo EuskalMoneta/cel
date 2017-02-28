@@ -6,7 +6,12 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    username = models.CharField(max_length=15, default='')
+    has_accepted_cgu = models.BooleanField(default=False)
     has_account_eusko_numerique = models.BooleanField(default=False)
+    has_valid_membership = models.BooleanField(default=False)
+    member_type = models.CharField(max_length=15, default='')
+    display_name = models.CharField(max_length=50, default='')
 
 
 @receiver(post_save, sender=User)

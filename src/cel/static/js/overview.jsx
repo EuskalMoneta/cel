@@ -85,6 +85,10 @@ var Overview = React.createClass({
 
     componentDidMount() {
         fetchAuth(this.props.accountListUrl, this.props.method, this.computeAccountList)
+        var toto = (data) => {
+            debugger
+        }
+        fetchAuth(getAPIBaseURL + 'user-rights/', 'GET', toto)
     },
 
     render() {

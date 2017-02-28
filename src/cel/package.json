@@ -4,7 +4,6 @@
   "description": "Front Eusko - Compte en Ligne",
   "scripts": {
     "build": "webpack --config webpack.config.js --progress --colors",
-    "build-production": "webpack --config webpack.prod.config.js --progress --colors",
     "watch": "webpack --config webpack.config.js --watch"
   },
   "author": "META-IT",

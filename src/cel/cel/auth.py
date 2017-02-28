@@ -27,13 +27,13 @@ class CELAuthBackend(object):
         }
 
         try:
-            r_username = requests.get('{}{}'.format(settings.API_INTERNAL_URL, 'username/'),
-                                      headers=headers)
+            r_user_data = requests.get('{}{}'.format(settings.API_INTERNAL_URL, 'user-rights/'),
+                                       headers=headers)
 
-            username = r_username.json()
+            user_data = r_user_data.json()
 
-            if not r_username.status_code == requests.codes.ok:
-                log.critical('status_code: {} - content: {}'.format(r_username.status_code, r_username.content))
+            if not r_user_data.status_code == requests.codes.ok:
+                log.critical('status_code: {} - content: {}'.format(r_user_data.status_code, r_user_data.content))
                 log.critical('Identifiant ou Mot de passe invalide.')
                 raise PermissionDenied()
         except requests.exceptions.RequestException as e:
@@ -41,29 +41,19 @@ class CELAuthBackend(object):
             log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
             raise PermissionDenied()
 
-        try:
-            r_account = requests.get('{}{}'.format(settings.API_INTERNAL_URL, 'has-account/'),
-                                     headers=headers)
-
-            account = r_account.json()
-
-            if not r_account.status_code == requests.codes.ok:
-                log.critical('status_code: {} - content: {}'.format(r_account.status_code, r_account.content))
-                log.critical('Identifiant ou Mot de passe invalide.')
-                raise PermissionDenied()
-        except requests.exceptions.RequestException as e:
-            log.critical('CELAuthBackend - RequestException: {}'.format(e))
-            log.critical('Identifiant ou Mot de passe invalide. Réessayez.')
-            raise PermissionDenied()
-
-        user, created = User.objects.get_or_create(username=username)
+        user, created = User.objects.get_or_create(username=user_data['username'])
 
         try:
             user_profile = user.profile
         except ObjectDoesNotExist:
             user_profile = models.Profile(user=user)
 
-        user_profile.has_account_eusko_numerique = account['status']
+        user_profile.username = user_data['username']
+        user_profile.has_accepted_cgu = user_data['has_accepted_cgu']
+        user_profile.has_account_eusko_numerique = user_data['has_account_eusko_numerique']
+        user_profile.has_valid_membership = user_data['has_valid_membership']
+        user_profile.member_type = user_data['member_type']
+        user_profile.display_name = user_data['display_name']
 
         user.save()
         return user

@@ -1,5 +1,5 @@
 var checkStatus = (response) => {
-    if (response.status >= 200 && response.status < 401) {
+    if (response.status >= 200 && response.status <= 401) {
         return response
     }
     else {
@@ -27,7 +27,7 @@ var parseJSON = (response) => {
     if (response.status == 204) {
         return {}
     }
-    else if (response.status == 400) {
+    else if (response.status == 400 || response.status == 401) {
         var error = new Error(response.statusText)
         error.response = response
         throw error

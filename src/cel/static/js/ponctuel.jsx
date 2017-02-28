@@ -152,7 +152,6 @@ var Ponctuel = React.createClass({
 
     submitForm() {
         this.disableButton()
-        debugger
         // We push fields into the data object that will be passed to the server
         var data = {beneficiaire: this.state.beneficiaires.value,
                     debit: this.state.debit.value,

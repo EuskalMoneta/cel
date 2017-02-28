@@ -7,8 +7,11 @@ import {
     BootstrapTable,
     TableHeaderColumn,
 } from 'react-bootstrap-table'
+
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
+
 import FileSaver from 'file-saver'
+
 class AccountButtons extends React.Component {
 
     render() {
@@ -85,10 +88,6 @@ var Overview = React.createClass({
 
     componentDidMount() {
         fetchAuth(this.props.accountListUrl, this.props.method, this.computeAccountList)
-        var toto = (data) => {
-            debugger
-        }
-        fetchAuth(getAPIBaseURL + 'user-rights/', 'GET', toto)
     },
 
     render() {

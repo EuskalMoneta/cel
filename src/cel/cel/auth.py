@@ -72,12 +72,12 @@ def login_view(request, **kwargs):
             payload = request.body.decode('utf-8')
             data = json.loads(payload)
         except (ValueError, UnicodeDecodeError):
-            HttpResponseBadRequest({'error': 'Unable to decode request!'})
+            return JsonResponse({'error': 'Unable to decode request!'}, status=400)
 
         token = data.get('token', '')
 
         if not token:
-            HttpResponseBadRequest({'error': 'You must provide a token!'})
+            return JsonResponse({'error': 'You must provide a token!'}, status=400)
 
         try:
             user = authenticate(token=token)

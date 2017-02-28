@@ -4,9 +4,13 @@ var checkStatus = (response) => {
     }
     else {
         try {
-            // If we got a forbidden (403) response, *AND* we're not already in the login page:
+            // If we got a forbidden (403) response,
+            // *AND* we're not already in the login page
+            // *AND* the call we've made was for the Euskal Moneta API and *NOT* the Django front
             // we redirect to the login page, in this page a "session expired" message will be displayed
-            if (response.statusText == "Forbidden" && window.location.pathname.indexOf("/login") === -1) {
+            if (response.statusText == "Forbidden"
+                && window.location.pathname.indexOf("/login") === -1
+                && response.url.indexOf(window.config.getAPIBaseURL) != -1) {
                 window.location.assign("/logout?next=" + window.location.pathname)
             }
             else {

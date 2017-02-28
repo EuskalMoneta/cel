@@ -43,9 +43,10 @@ urlpatterns = [
     url(r'^passe-perdu/?$', adherents_views.lost_password, name='lost-password'),
     url(r'^valide-passe-perdu/?$', adherents_views.valid_lost_password, name='valide-premiere-connexion'),
 
-    # Special page: Accept CGU & Renew membership
+    # Special page: Accept CGU, Renew membership & Update user session
     url(r'^accepte-cgu/?$', adherents_views.accept_cgu, name='accept-cgu'),
     url(r'^cotisation/?$', adherents_views.renew_membership, name='renew-membership'),
+    url(r'^update-session/?$', adherents_views.update_session, name='update-session'),
 
     # Mon profil
     url(r'^profil/?$', adherents_views.profile_home, name='profile-home'),

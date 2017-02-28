@@ -1,6 +1,9 @@
 import {
     fetchAuth,
+    checkStatus,
     getAPIBaseURL,
+    getCSRFToken,
+    parseJSON,
 } from 'Utils'
 
 const {
@@ -29,27 +32,86 @@ class AccepteCGUPage extends React.Component {
     }
 
     submitForm = (mode) => {
-        debugger
+        if (mode == "valid")
+            var url = getAPIBaseURL + "accept-cgu/"
+        else
+            var url = getAPIBaseURL + "refuse-cgu/"
+
         this.disableButton()
 
-        var computeForm = (data) => {
-            // TODO
+        var computeForm = () => {
+            if (mode == "valid") {
+                // Get Session data from API & update session data via Django front
+                fetch('/update-session/',
+                {
+                    method: 'put',
+                    credentials: 'same-origin',
+                    body: JSON.stringify({'token': sessionStorage.getItem('cel-api-token-auth')}),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken,
+                    }
+                })
+                .then(checkStatus)
+                .then(parseJSON)
+                .then((data) => {
+                    // Redirect to profile page
+                    window.location.assign('/compte/synthese/')
+                })
+                .catch((err) => {
+                    // Error during request, or parsing NOK :(
+                    console.error(err)
+
+                    // toast
+                    this.refs.container.error(
+                        __("Une erreur est survenue lors de l'enregistrement vers le serveur !"),
+                        "",
+                        {
+                            timeOut: 5000,
+                            extendedTimeOut: 10000,
+                            closeButton:true
+                        }
+                    )
+                })
+            }
+            else {
+                // logout user
+                window.location.assign('/logout/')
+            }
         }
 
         var promiseError = (err) => {
-            // TODO
+            // toast
+            this.refs.container.error(
+                __("Une erreur est survenue lors de l'enregistrement vers le serveur !"),
+                "",
+                {
+                    timeOut: 5000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
         }
-        fetchAuth(this.props.url, this.props.method, computeForm, data, promiseError)
+        fetchAuth(url, 'POST', computeForm, null, promiseError)
     }
 
     render = () => {
+        // TODO: Update links
+        if (window.config.profile.member_type == "Particulier")
+            var link = ""
+        else
+            var link = ""
+
         return (
             <div>
-                <h2 style={{marginTop: 60}} className="margin-bottom">{__("Conditions générales d'utilisation de l'Eusko numérique")}</h2>                         
+                <h2 style={{marginTop: 60}} className="margin-bottom">{__("Conditions Générales d'Utilisation de l'Eusko numérique")}</h2>                         
                 <div className="row margin-bottom">
-                    {__("Pour utiliser l'Eusko numérique et accéder à votre compte, vous devez accepter les Conditions générales d'utilisation de l'Eusko numérique, que vous pouvez télécharger ci-dessous.")}
+                    {__("Pour utiliser l'Eusko numérique et accéder à votre compte, vous devez accepter les Conditions Générales d'Utilisation de l'Eusko numérique, que vous pouvez télécharger ci-dessous.")}
                     <br />
-                    <a href="">{__("Télécharger les Conditions générales d'utilisation")}.</a>
+                    <a href={link}>
+                        {__("Télécharger les Conditions Générales d'Utilisation")} <i className="glyphicon glyphicon-download-alt"></i>
+                    </a>
                     <br />
                     <br />
                     {__("Si vous refusez les CGU, le compte Eusko numérique ouvert à votre nom sera fermé.")}
@@ -68,16 +130,20 @@ class AccepteCGUPage extends React.Component {
                     </div>
                     <div className="col-md-3 col-md-offset-1">
                         <input
-                            name="deny"
-                            data-eusko="accept-cgu-deny"
+                            name="refuse"
+                            data-eusko="accept-cgu-refuse"
                             type="submit"
-                            onClick={() => this.submitForm('deny')}
+                            onClick={() => this.submitForm('refuse')}
                             defaultValue={__("Je refuse")}
                             className="btn btn-danger"
                             disabled={!this.state.canSubmit}
                         />
                     </div>
                 </div>
+                <ToastContainer ref="container"
+                    toastMessageFactory={ToastMessageFactory}
+                    className="toast-top-right toast-top-right-navbar"
+                />
             </div>
         );
     }
@@ -85,7 +151,7 @@ class AccepteCGUPage extends React.Component {
 
 
 ReactDOM.render(
-    <AccepteCGUPage url={getAPIBaseURL + "accept-cgu/"} method="POST" />,
+    <AccepteCGUPage />,
     document.getElementById('accept-cgu')
 )
-document.title = __("Conditions générales d'utilisation") + " - " + __("Compte en ligne") + " " + document.title
+document.title = __("Conditions Générales d'Utilisation") + " - " + __("Compte en ligne") + " " + document.title

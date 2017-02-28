@@ -26,14 +26,14 @@ def user_must_have_rights(needed_rights):
                               for right in needed_rights
                               if profile.get(right, False)]
 
-            if access_granted == needed_rights:
+            if profile.get(EUSKO_NUM, False) is False:
+                return redirect('profile')
+            elif access_granted == needed_rights:
                 return a_view(request, *args, **kwargs)
             elif CGU in needed_rights and CGU not in access_granted:
                 return redirect('accept-cgu')
             elif VALID_MEMBERSHIP in needed_rights and VALID_MEMBERSHIP not in access_granted:
                 return redirect('renew-membership')
-            elif EUSKO_NUM in needed_rights and EUSKO_NUM not in access_granted:
-                return redirect('profile')
             else:
                 return redirect('logout')
 

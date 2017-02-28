@@ -352,8 +352,8 @@ var EuskoKartList = React.createClass({
                         </BootstrapTable>
                     </div>
                 </div>
-                <div className="search-solde-group col-md-10">
-                    <div className="col-md-12 col-md-offset-1">
+                <div className="row">
+                    <div className="col-md-9 col-md-offset-1 ">
                         <div className="search-group">
                             <div className="form-group row">
                                 <div className="col-sm-3">

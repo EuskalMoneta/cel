@@ -332,7 +332,7 @@ class SubNavbar extends React.Component {
                         accountMandatory: false, status: 'inactive', id: 0},
                        {href: '/profil/association', label: __("Association 3%"),
                         accountMandatory: false, status: 'inactive', id: 1},
-                       {href: '/profil/beneficiaires', label: __("Options"),
+                       {href: '/profil/options', label: __("Options"),
                         accountMandatory: false, status: 'inactive', id: 2},
                        {href: '/profil/change-passe', label: __("Mot de passe"),
                         accountMandatory: false, status: 'inactive', id: 3},

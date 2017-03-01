@@ -104,7 +104,7 @@ class SetPasswordPage extends React.Component {
     componentDidMount = () => {
         if (this.props.mode == 'validate-lost-password') {
             var getSelectedQuestion = (data) => {
-                this.setState({selectedQuestion: data.question})
+                this.setState({selectedQuestion: data.question, question: data.question})
             }
 
             var token = getUrlParameter('token')
@@ -134,23 +134,6 @@ class SetPasswordPage extends React.Component {
         this.setState({answer: value})
     }
 
-    enableButtonAnswer = () => {
-        if (this.state.answer && this.state.question) {
-            if (this.state.displayCustomQuestion && this.state.customQuestion) {
-                this.setState({canSubmitAnswer: true})
-            }
-            else if (!this.state.displayCustomQuestion) {
-                this.setState({canSubmitAnswer: true})
-            }
-            else {
-                this.disableButton()
-            }
-        }
-        else {
-            this.disableButton()
-        }
-    }
-
     customQuestionOnValueChange = (field, value) => {
         this.setState({customQuestion: value})
     }
@@ -164,15 +147,15 @@ class SetPasswordPage extends React.Component {
 
         try {
             if (item.value === 0) {
-                this.setState({displayCustomQuestion: true, customQuestion: undefined}, this.enableButtonAnswer)
+                this.setState({displayCustomQuestion: true, customQuestion: undefined}, this.enableButton)
             }
             else {
-                this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButtonAnswer)
+                this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButton)
             }
         }
         catch (e) {
             // item.value does not exist, item is undefined I guess ... disabling displayCustomQuestion
-            this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButtonAnswer)
+            this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButton)
         }
     }
 
@@ -189,15 +172,17 @@ class SetPasswordPage extends React.Component {
         postData.token = token
         postData.new_password = this.state.password
         postData.confirm_password = this.state.confirmPassword
+        postData.answer = this.state.answer
 
-        if (this.state.displayCustomQuestion && this.state.customQuestion) {
-            postData.answer = this.state.answer
-            postData.question_id = this.state.question.value
-            postData.question_text = this.state.customQuestion
-        }
-        else if (!this.state.displayCustomQuestion) {
-            postData.answer = this.state.answer
-            postData.question_id = this.state.question.value
+        if (this.props.mode == 'validate-first-connection') {
+            if (this.state.displayCustomQuestion && this.state.customQuestion) {
+                postData.question_id = this.state.question.value
+                postData.question_text = this.state.customQuestion
+            }
+            else if (!this.state.displayCustomQuestion) {
+                postData.answer = this.state.answer
+                postData.question_id = this.state.question.value
+            }
         }
 
         var computeForm = (res) => {
@@ -306,11 +291,11 @@ class SetPasswordPage extends React.Component {
                         <label
                             className="control-label col-sm-3"
                             data-required="true"
-                            htmlFor="bank-deposit-payment_mode">
+                            htmlFor="securityquestion-question">
                             {__("Votre question secrète")}
                             <span className="required-symbol">&nbsp;*</span>
                         </label>
-                        <div className="col-sm-5 bank-deposit" data-eusko="bank-deposit-payment_mode">
+                        <div className="col-sm-5" data-eusko="securityquestion-question">
                             <SimpleSelect
                                 ref="select"
                                 value={this.state.question}
@@ -321,7 +306,6 @@ class SetPasswordPage extends React.Component {
                                 onValueChange={this.questionOnValueChange}
                                 renderValue={SelectizeUtils.selectizeRenderValue}
                                 renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                required
                                 onBlur={this.enableButton}
                                 renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                 required

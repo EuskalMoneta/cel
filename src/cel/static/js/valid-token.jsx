@@ -1,5 +1,4 @@
 import {
-    fetchAuth,
     fetchNoAuth,
     getAPIBaseURL,
     getUrlParameter,
@@ -48,6 +47,7 @@ class SetPasswordPage extends React.Component {
         // Default state
         this.state = {
             canSubmit: false,
+            stdFieldsAreValid: false,
             tokenError: false,
             displayCustomQuestion: false,
             customQuestion: undefined,
@@ -60,10 +60,16 @@ class SetPasswordPage extends React.Component {
         }
     }
 
+    validateStdFields = () => {
+        this.setState({stdFieldsAreValid: true}, this.enableButton)
+    }
+
+    invalidateStdFields = () => {
+        this.setState({stdFieldsAreValid: false}, this.enableButton)
+    }
+
     enableButton = () => {
-        if (this.state.answer && this.state.question
-            && this.state.password && this.state.confirmPassword
-            && this.state.password === this.state.confirmPassword) {
+        if (this.state.answer && this.state.question && this.state.stdFieldsAreValid) {
             if (this.state.displayCustomQuestion && this.state.customQuestion) {
                 this.setState({canSubmit: true})
             }
@@ -98,7 +104,7 @@ class SetPasswordPage extends React.Component {
     componentDidMount = () => {
         if (this.props.mode == 'validate-lost-password') {
             var getSelectedQuestion = (data) => {
-                this.setState({selectedQuestion: data.question})
+                this.setState({selectedQuestion: data.question, question: data.question})
             }
 
             var token = getUrlParameter('token')
@@ -120,29 +126,12 @@ class SetPasswordPage extends React.Component {
 
                 this.setState({predefinedQuestions: predefinedQuestions})
             }
-            fetchAuth(getAPIBaseURL + "securityqa/", 'GET', getPredefinedQuestions)
+            fetchNoAuth(getAPIBaseURL + "securityqa/", 'GET', getPredefinedQuestions)
         }
     }
 
     answerOnValueChange = (field, value) => {
         this.setState({answer: value})
-    }
-
-    enableButtonAnswer = () => {
-        if (this.state.answer && this.state.question) {
-            if (this.state.displayCustomQuestion && this.state.customQuestion) {
-                this.setState({canSubmitAnswer: true})
-            }
-            else if (!this.state.displayCustomQuestion) {
-                this.setState({canSubmitAnswer: true})
-            }
-            else {
-                this.disableButton()
-            }
-        }
-        else {
-            this.disableButton()
-        }
     }
 
     customQuestionOnValueChange = (field, value) => {
@@ -158,15 +147,15 @@ class SetPasswordPage extends React.Component {
 
         try {
             if (item.value === 0) {
-                this.setState({displayCustomQuestion: true, customQuestion: undefined}, this.enableButtonAnswer)
+                this.setState({displayCustomQuestion: true, customQuestion: undefined}, this.enableButton)
             }
             else {
-                this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButtonAnswer)
+                this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButton)
             }
         }
         catch (e) {
             // item.value does not exist, item is undefined I guess ... disabling displayCustomQuestion
-            this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButtonAnswer)
+            this.setState({displayCustomQuestion: false, customQuestion: undefined}, this.enableButton)
         }
     }
 
@@ -178,17 +167,33 @@ class SetPasswordPage extends React.Component {
         if (!token) {
             this.enableTokenError()
         }
-        data.token = token
 
-        var computeForm = (data) => {
-            if (data.error == "User already exist!")
+        var postData = {}
+        postData.token = token
+        postData.new_password = this.state.password
+        postData.confirm_password = this.state.confirmPassword
+        postData.answer = this.state.answer
+
+        if (this.props.mode == 'validate-first-connection') {
+            if (this.state.displayCustomQuestion && this.state.customQuestion) {
+                postData.question_id = this.state.question.value
+                postData.question_text = this.state.customQuestion
+            }
+            else if (!this.state.displayCustomQuestion) {
+                postData.answer = this.state.answer
+                postData.question_id = this.state.question.value
+            }
+        }
+
+        var computeForm = (res) => {
+            if (res.error == "User already exist!")
             {
                 this.setState({userExist: true})
             }
             else
             {
                 this.refs.container.success(
-                    __("Le changement de mot de passe s'est déroulé correctement."),
+                    __("L'enregistrement s'est déroulé correctement."),
                     "",
                     {
                         timeOut: 5000,
@@ -198,14 +203,12 @@ class SetPasswordPage extends React.Component {
                 )
                 setTimeout(() => window.location.assign("/login"), 5000)
             }
-
-            
         }
 
         var promiseError = (err) => {
             debugger
             // Error during request, or parsing NOK :(
-            console.error(this.props.url, err)
+            console.error(this.props.postURL, err)
             this.refs.container.error(
                 __("Une erreur s'est produite lors de la validation !"),
                 "",
@@ -216,7 +219,7 @@ class SetPasswordPage extends React.Component {
                 }
             )
         }
-        fetchNoAuth(this.props.postURL, 'POST', computeForm, data, promiseError)
+        fetchNoAuth(this.props.postURL, 'POST', computeForm, postData, promiseError)
     }
 
     render = () =>
@@ -247,7 +250,8 @@ class SetPasswordPage extends React.Component {
         if (this.state.userExist) {
             var messageData = (
                 <div className="alert alert-danger">
-                    {__("L'utilisateur existe déjà. Si vous avez perdu votre mot de passe, ")}<a href="passe-perdu/">{__("cliquez ici.")}</a>
+                    {__("L'utilisateur existe déjà. Si vous avez perdu votre mot de passe, ")}
+                    <a href="passe-perdu/">{__("cliquez ici.")}</a>
                 </div>
             )
         }
@@ -287,11 +291,11 @@ class SetPasswordPage extends React.Component {
                         <label
                             className="control-label col-sm-3"
                             data-required="true"
-                            htmlFor="bank-deposit-payment_mode">
+                            htmlFor="securityquestion-question">
                             {__("Votre question secrète")}
                             <span className="required-symbol">&nbsp;*</span>
                         </label>
-                        <div className="col-sm-5 bank-deposit" data-eusko="bank-deposit-payment_mode">
+                        <div className="col-sm-5" data-eusko="securityquestion-question">
                             <SimpleSelect
                                 ref="select"
                                 value={this.state.question}
@@ -302,7 +306,6 @@ class SetPasswordPage extends React.Component {
                                 onValueChange={this.questionOnValueChange}
                                 renderValue={SelectizeUtils.selectizeRenderValue}
                                 renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                required
                                 onBlur={this.enableButton}
                                 renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
                                 required
@@ -335,8 +338,8 @@ class SetPasswordPage extends React.Component {
                 <h2 style={{marginTop: 0}} className="margin-bottom">{__("Votre mot de passe")}</h2>
                 <SetPasswordForm
                     onValidSubmit={this.submitForm}
-                    onInvalid={this.disableButton}
-                    onValid={this.enableButton}
+                    onInvalid={this.invalidateStdFields}
+                    onValid={this.validateStdFields}
                     ref="changepassword">
                     <fieldset>
                          <Input
@@ -388,7 +391,7 @@ class SetPasswordPage extends React.Component {
                                 name="submit"
                                 data-eusko="changepassword-submit"
                                 type="submit"
-                                defaultValue={__("Enregistrer le mot de passe")}
+                                defaultValue={__("Enregistrer")}
                                 className="btn btn-success"
                                 formNoValidate={true}
                                 disabled={!this.state.canSubmit}
@@ -400,7 +403,7 @@ class SetPasswordPage extends React.Component {
                                 toastMessageFactory={ToastMessageFactory}
                                 className="toast-top-right toast-top-right-navbar" />
             </div>
-        );
+        )
     }
 }
 

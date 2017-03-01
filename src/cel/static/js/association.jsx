@@ -6,6 +6,13 @@ import {
     SelectizeUtils,
 } from 'Utils'
 
+import classNames from 'classnames'
+
+const {
+    Input,
+    Row
+} = FRC
+
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
 
@@ -41,11 +48,13 @@ const Association = React.createClass({
         return {
             canSubmit: false,
             validFields: false,
-            assoSaisieLibre: false,
             fkAsso: undefined,
             fkAsso2: undefined,
             fkAssoAllList: undefined,
             fkAssoApprovedList: undefined,
+            selectedOption: 0,
+            otherAsso: false,
+            fkAssoOther: undefined,
         }
     },
 
@@ -92,22 +101,89 @@ const Association = React.createClass({
     // fkasso
     fkAssoOnValueChange(item) {
         if (item) {
-            if (item.newOption)
-                this.setState({assoSaisieLibre: true})
             this.setState({fkAsso: item})
+            // check if the first choice is an approved choice or not
+            if(_.findWhere(this.state.fkAssoApprovedList, {value: item.value}))
+            {
+                this.setState({canSubmit: true})
+            }
+            else
+            {
+                if(this.state.fkAsso2)
+                {
+                    this.setState({canSubmit: true})
+                }
+                else
+                {
+                    this.setState({canSubmit: false})
+                }
+            }
         }
         else {
-            this.setState({assoSaisieLibre: false})
             this.setState({fkAsso: undefined})
+            this.setState({canSubmit: false})
         }
     },
-
+    fkAssoOtherOnValueChange(event, value){
+        if(value) {
+            this.setState({fkAssoOther: value})
+            if(this.state.fkAsso2)
+            {
+                this.setState({canSubmit: true})
+            }
+            else
+            {
+                this.setState({canSubmit: false})
+            }
+        }
+        else{
+            this.setState({fkAssoOther: undefined})
+            this.setState({canSubmit: false})
+        }
+    },
     // fkasso2
     fkAsso2OnValueChange(item) {
-        this.setState({fkAsso2: item})
+        if(item) {
+           this.setState({fkAsso2: item}) 
+           if(this.state.fkAsso || this.state.fkAssoOther)
+           {
+                this.setState({canSubmit: true})
+           }
+           else
+           {
+                this.setState({canSubmit: false})
+           }
+        }
+        else
+        {
+            this.setState({fkAsso2: undefined}) 
+            this.setState({canSubmit: false})
+        }
+
+    },
+
+    radioOnChange(event, value) {
+        // update pin values
+        if (event.target.value == 0)
+        {
+            this.setState({selectedOption: 0})
+            this.setState({otherAsso: false})
+            this.setState({fkAssoOther: ''})
+            this.setState({canSubmit: false})
+        }
+        else if (event.target.value == 1)
+        {
+            this.setState({selectedOption: 1})
+            this.setState({otherAsso: true})
+            this.setState({fkAsso: undefined})
+            this.setState({canSubmit: false})
+        }
     },
 
     render() {
+        var greySimpleSelect = classNames({
+            'grey-back': this.state.otherAsso,
+        })
         return (
                 <div className="row">
                     <br/>
@@ -125,10 +201,7 @@ const Association = React.createClass({
                     <br/><br/>
                     Veuillez indiquer ci-dessous l'association que vous souhaitez parrainer.
                     <br/><br/><br/>
-                    <AssociationForm
-                        onInvalid={this.validateForm}
-                        onValid={this.validateForm}
-                        ref="profil-form">
+                    <AssociationForm ref="profil-form">
                         <fieldset>
                             <div className="form-group row">
                                 <label
@@ -139,7 +212,12 @@ const Association = React.createClass({
                                 </label>
                             </div>
                             <div className="form-group row">
-                                <div className="col-sm-3 profilform" data-eusko="profilform-asso">
+                                <div className="radio col-sm-1">
+                                  <label>
+                                    <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange}/>
+                                  </label>
+                                </div>
+                                <div className="col-sm-5 profilform" data-eusko="profilform-asso">
                                     <SimpleSelect
                                         ref="select"
                                         value={this.state.fkAsso}
@@ -151,15 +229,29 @@ const Association = React.createClass({
                                         renderOption={SelectizeUtils.selectizeNewRenderOption}
                                         onBlur={this.validateForm}
                                         renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
+                                        disabled={this.state.otherAsso}
+                                        required={!this.state.otherAsso}
+                                        className={greySimpleSelect}
                                     />
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <Input
-                                    name="montant"
-                                    data-eusko="virement-amount"
-                                    value = ""
-                                />
+                                <div className="radio col-sm-1">
+                                  <label>
+                                    <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
+                                  </label>
+                                </div>
+                                <div className="col-sm-5" data-eusko="other-association">
+                                    <Input
+                                        name="asso_other"
+                                        value={this.state.fkAssoOther}
+                                        placeholder={__("Saisie libre d'une association")}
+                                        readOnly={!this.state.otherAsso}
+                                        required={this.state.otherAsso}
+                                        onChange={this.fkAssoOtherOnValueChange}
+                                        layout="elementOnly"
+                                    />
+                                </div>
                             </div>
                             <div className="form-group row">
                                 <label
@@ -170,7 +262,7 @@ const Association = React.createClass({
                                 </label>
                             </div>
                             <div className="form-group row">
-                                <div className="col-sm-3 profilform" data-eusko="profilform-asso2">
+                                <div className="col-sm-5 col-md-offset-1 profilform" data-eusko="profilform-asso2">
                                     <SimpleSelect
                                         ref="select"
                                         value={this.state.fkAsso2}

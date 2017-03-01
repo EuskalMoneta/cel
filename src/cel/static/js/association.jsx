@@ -211,6 +211,7 @@ const Association = React.createClass({
                                     {__("Association parrainée - 1er choix :")}
                                 </label>
                             </div>
+                            Je sélectionne une association déjà adhérente à Euskal Moneta :<br/><br/>
                             <div className="form-group row">
                                 <div className="radio col-sm-1">
                                   <label>
@@ -235,6 +236,7 @@ const Association = React.createClass({
                                     />
                                 </div>
                             </div>
+                            ou je choisis une autre association :<br/><br/>
                             <div className="form-group row">
                                 <div className="radio col-sm-1">
                                   <label>
@@ -261,6 +263,7 @@ const Association = React.createClass({
                                     {__("Association parrainée - 2nd choix :")}
                                 </label>
                             </div>
+                            Je choisis l'association qui recevra les 3% de mes changes tant que la 1ère ne remplit pas les conditions :<br/><br/>
                             <div className="form-group row">
                                 <div className="col-sm-5 col-md-offset-1 profilform" data-eusko="profilform-asso2">
                                     <SimpleSelect

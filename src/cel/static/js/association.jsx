@@ -50,13 +50,13 @@ const Association = React.createClass({
             member: null,
             canSubmit: false,
             validFields: false,
-            fkAsso: undefined,
-            fkAsso2: undefined,
+            fkAsso: '',
+            fkAsso2: '',
             fkAssoAllList: undefined,
             fkAssoApprovedList: undefined,
             selectedOption: 0,
             otherAsso: false,
-            fkAssoOther: undefined,
+            fkAssoOther: '',
         }
     },
 
@@ -127,7 +127,7 @@ const Association = React.createClass({
             }
         }
         else {
-            this.setState({fkAsso: undefined})
+            this.setState({fkAsso: ''})
             this.setState({canSubmit: false})
         }
     },
@@ -144,7 +144,7 @@ const Association = React.createClass({
             }
         }
         else{
-            this.setState({fkAssoOther: undefined})
+            this.setState({fkAssoOther: ''})
             this.setState({canSubmit: false})
         }
     },
@@ -163,7 +163,7 @@ const Association = React.createClass({
         }
         else
         {
-            this.setState({fkAsso2: undefined}) 
+            this.setState({fkAsso2: ''}) 
             this.setState({canSubmit: false})
         }
 
@@ -182,7 +182,7 @@ const Association = React.createClass({
         {
             this.setState({selectedOption: 1})
             this.setState({otherAsso: true})
-            this.setState({fkAsso: undefined})
+            this.setState({fkAsso: ''})
             this.setState({canSubmit: false})
         }
     },
@@ -192,17 +192,22 @@ const Association = React.createClass({
         this.setState({canSubmit: false})
         // We push fields into the data object that will be passed to the server
         var data = {}
-
         // We need to verify whether we are in "saisie libre" or not
-        if (this.state.fkAsso) {
+        if(this.state.fkAsso.value) {
             data.fk_asso = this.state.fkAsso.value
         }
-        else if (this.state.fkAssoOther) {
-            data.options_asso_saisie_libre = this.state.fkAssoOther
+        else{
+            data.fk_asso = this.state.fkAsso
         }
-
-        if (this.state.fkAsso2)
+        if(this.state.fkAsso2.value) {
             data.fk_asso2 = this.state.fkAsso2.value
+        }
+        else{
+            data.fk_asso2 = this.state.fkAsso2
+        }
+            
+        data.options_asso_saisie_libre = this.state.fkAssoOther
+
 
         var computeForm = (data) => {
             this.refs.container.success(

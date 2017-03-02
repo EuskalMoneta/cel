@@ -163,10 +163,12 @@ const Association = React.createClass({
         }
         else
         {
-            this.setState({fkAsso2: ''}) 
-            this.setState({canSubmit: false})
+            this.setState({fkAsso2: ''})
+            if(this.state.fkAsso == '' || _.findWhere(this.state.fkAssoApprovedList, this.state.fkAsso) == undefined)
+            {
+                this.setState({canSubmit: false})
+            }
         }
-
     },
 
     radioOnChange(event, value) {

@@ -46,6 +46,8 @@ const Association = React.createClass({
 
     getInitialState() {
         return {
+            memberLogin: window.config.userName,
+            member: null,
             canSubmit: false,
             validFields: false,
             fkAsso: undefined,
@@ -59,6 +61,11 @@ const Association = React.createClass({
     },
 
     componentDidMount() {
+
+        var computeMemberData = (member) => {
+            this.setState({member: member[0]})
+        }
+        fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
         // Get all associations (no filter): fkAssoAllList
         var computeAllAssociations = (associations) => {
             var res = _.chain(associations)
@@ -179,6 +186,54 @@ const Association = React.createClass({
             this.setState({canSubmit: false})
         }
     },
+
+
+    submitForm() {
+        this.setState({canSubmit: false})
+        // We push fields into the data object that will be passed to the server
+        var data = {}
+
+        // We need to verify whether we are in "saisie libre" or not
+        if (this.state.fkAsso) {
+            data.fk_asso = this.state.fkAsso.value
+        }
+        else if (this.state.fkAssoOther) {
+            data.options_asso_saisie_libre = this.state.fkAssoOther
+        }
+
+        if (this.state.fkAsso2)
+            data.fk_asso2 = this.state.fkAsso2.value
+
+        var computeForm = (data) => {
+            this.refs.container.success(
+                __("Les changement de vos associations parrainées ont bien été pris en compte."),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+
+        var promiseError = (err) => {
+            // Error during request, or parsing NOK :(
+            this.enableButton()
+
+            console.log(this.props.url, err)
+            this.refs.container.error(
+                __("Une erreur s'est produite lors de la modification de vos assocation parrainées!"),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+    },
+
 
     render() {
         var greySimpleSelect = classNames({

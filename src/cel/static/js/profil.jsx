@@ -80,10 +80,6 @@ const MemberShow = React.createClass({
             email: undefined,
             options_recevoir_actus: false,
             assoSaisieLibre: false,
-            fkAsso: undefined,
-            fkAsso2: undefined,
-            fkAssoAllList: undefined,
-            fkAssoApprovedList: undefined,
         }
     },
 
@@ -109,44 +105,6 @@ const MemberShow = React.createClass({
                            country: {label: member[0].country, value: member[0].country_id}},
                            this.validateForm)
 
-            // Get all associations (no filter): fkAssoAllList
-            var computeAllAssociations = (associations) => {
-                var res = _.chain(associations)
-                    .map(function(item){
-                        if (item.nb_parrains == "0")
-                            var label = item.nom + " – " + __("Aucun parrain")
-                        else if (item.nb_parrains == "1")
-                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrain")
-                        else
-                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrains")
-                        return {label: label, value: item.id}
-                    })
-                    .sortBy(function(item){ return item.label })
-                    .value()
-
-                this.setState({fkAssoAllList: res}, this.setAssoFromMember)
-            }
-            fetchAuth(getAPIBaseURL + "associations/", 'get', computeAllAssociations)
-
-            // Get only approved associations: fkAssoApprovedList
-            var computeApprovedAssociations = (associations) => {
-                var res = _.chain(associations)
-                    .map(function(item){
-                        if (item.nb_parrains == "0")
-                            var label = item.nom + " – " + __("Aucun parrain")
-                        else if (item.nb_parrains == "1")
-                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrain")
-                        else
-                            var label = item.nom + " – " + item.nb_parrains + " " + __("parrains")
-                        return {label: label, value: item.id}
-                    })
-                    .sortBy(function(item){ return item.label })
-                    .value()
-
-                this.setState({fkAssoApprovedList: res}, this.setAssoFromMember)
-            }
-            fetchAuth(getAPIBaseURL + "associations/?approved=yes", 'get', computeApprovedAssociations)
-
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
 
@@ -166,16 +124,6 @@ const MemberShow = React.createClass({
             this.setState({countries: res})
         }
         fetchAuth(getAPIBaseURL + "countries/", 'get', computeCountries)
-    },
-
-    setAssoFromMember() {
-        if (this.state.fkAssoAllList)
-            var itemAsso = _.findWhere(this.state.fkAssoAllList, {value: this.state.member.fk_asso})
-
-        if (this.state.fkAssoApprovedList)
-            var itemAsso2 = _.findWhere(this.state.fkAssoApprovedList, {value: this.state.member.fk_asso2})
-
-        this.setState({fkAsso: itemAsso, fkAsso2: itemAsso2})
     },
 
     enableButton() {
@@ -279,24 +227,6 @@ const MemberShow = React.createClass({
         this.setState({country: item})
     },
 
-    // fkasso
-    fkAssoOnValueChange(item) {
-        if (item) {
-            if (item.newOption)
-                this.setState({assoSaisieLibre: true})
-            this.setState({fkAsso: item})
-        }
-        else {
-            this.setState({assoSaisieLibre: false})
-            this.setState({fkAsso: undefined})
-        }
-    },
-
-    // fkasso2
-    fkAsso2OnValueChange(item) {
-        this.setState({fkAsso2: item})
-    },
-
     handleBirthChange(date) {
         this.setState({birth: date});
     },
@@ -321,17 +251,6 @@ const MemberShow = React.createClass({
 
         if (this.state.phone)
             data.phone = this.state.phone
-
-        // We need to verify whether we are in "saisie libre" or not
-        if (this.state.fkAsso) {
-            if (this.state.assoSaisieLibre)
-                data.options_asso_saisie_libre = this.state.fkAsso.value
-            else
-                data.fk_asso = this.state.fkAsso.value
-        }
-
-        if (this.state.fkAsso2)
-            data.fk_asso2 = this.state.fkAsso2.value
 
         var computeForm = (data) => {
             this.refs.container.success(
@@ -619,49 +538,6 @@ const MemberShow = React.createClass({
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
                             required
                         />
-                        <div className="form-group row">
-                            <label
-                                className="control-label col-sm-2"
-                                data-required="true"
-                                htmlFor="profilform-asso">
-                                {__("Choix Association 3% #1")}
-                            </label>
-                            <div className="col-sm-3 profilform" data-eusko="profilform-asso">
-                                <SimpleSelect
-                                    ref="select"
-                                    value={this.state.fkAsso}
-                                    options={this.state.fkAssoAllList}
-                                    placeholder={__("Choix Association 3% #1")}
-                                    theme="bootstrap3"
-                                    createFromSearch={SelectizeUtils.selectizeCreateFromSearch}
-                                    onValueChange={this.fkAssoOnValueChange}
-                                    renderValue={SelectizeUtils.selectizeRenderValue}
-                                    renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                    onBlur={this.validateForm}
-                                    renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
-                                />
-                            </div>
-                            <label
-                                className="control-label col-sm-1"
-                                data-required="true"
-                                htmlFor="profilform-asso2">
-                                {__("Choix #2")}
-                            </label>
-                            <div className="col-sm-3 profilform" data-eusko="profilform-asso2">
-                                <SimpleSelect
-                                    ref="select"
-                                    value={this.state.fkAsso2}
-                                    options={this.state.fkAssoApprovedList}
-                                    placeholder={__("Choix Association 3% #2")}
-                                    theme="bootstrap3"
-                                    onValueChange={this.fkAsso2OnValueChange}
-                                    renderOption={SelectizeUtils.selectizeRenderOption}
-                                    renderValue={SelectizeUtils.selectizeRenderValue}
-                                    onBlur={this.validateForm}
-                                    renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
-                                />
-                            </div>
-                        </div>
                     </fieldset>
                     <div className="row profil-div-margin-left margin-top">
                         <a href="/" className="btn btn-default col-sm-offset-3">

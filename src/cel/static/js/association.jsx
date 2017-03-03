@@ -64,6 +64,16 @@ const Association = React.createClass({
 
         var computeMemberData = (member) => {
             this.setState({member: member[0]})
+            if(member[0]['array_options']['options_asso_saisie_libre']) {
+                this.setState({fkAssoOther: member[0]['array_options']['options_asso_saisie_libre']})
+                this.setState({selectedOption: 1})
+                this.setState({otherAsso: true})
+            }
+            else
+            {
+                this.setState({selectedOption: 0})
+                this.setState({otherAsso: false})
+            }
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
         // Get all associations (no filter): fkAssoAllList
@@ -104,7 +114,15 @@ const Association = React.createClass({
         }
         fetchAuth(getAPIBaseURL + "associations/?approved=yes", 'get', computeApprovedAssociations)
     },
+    setAssoFromMember() {
+        if (this.state.fkAssoAllList)
+            var itemAsso = _.findWhere(this.state.fkAssoAllList, {value: this.state.member.fk_asso})
 
+        if (this.state.fkAssoApprovedList)
+            var itemAsso2 = _.findWhere(this.state.fkAssoApprovedList, {value: this.state.member.fk_asso2})
+
+        this.setState({fkAsso: itemAsso, fkAsso2: itemAsso2})
+    },
     // fkasso
     fkAssoOnValueChange(item) {
         if (item) {

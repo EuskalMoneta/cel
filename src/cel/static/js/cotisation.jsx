@@ -152,7 +152,7 @@ const Cotisation = React.createClass({
                 </span>
                 ) 
         }
-        if (moment.unix(this.state.member.datefin) > moment()) {
+        if (moment.unix(this.state.member.datefin) < moment()) {
             if(this.state.member.login.toUpperCase().startsWith('Z')) {
                 var auto_prelev_auto = (
                     <span>
@@ -282,23 +282,27 @@ const Cotisation = React.createClass({
                                 required={this.state.displayCustomAmount}
                                 disabled={!this.state.displayCustomAmount}
                             />
-                            </div>
-                            <div className="form-group row">
-                                <label
-                                    className="control-label col-sm-2 col-md-offset-1"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
-                                    {__("Périodicité :")}
+                        </div>
+                        <div className="form-group row">
+                            <label
+                                className="control-label col-sm-2 col-md-offset-1"
+                                data-required="true"
+                                htmlFor="memberaddsubscription-amount">
+                                {__("Périodicité :")}
+                            </label>
+                            <div className="col-sm-5 memberaddsubscription col-md-offset-2" data-eusko="memberaddsubscription-amount">
+                                <label>
+                                    {__("Annuel")}
                                 </label>
-                                <div className="col-sm-5 memberaddsubscription col-md-offset-2" data-eusko="memberaddsubscription-amount">
-                                    <label>
-                                        {__("Annuel")}
-                                    </label>
-                                </div>
                             </div>
+                        </div>
                     </span>
-                    )
+                )
             }
+        }
+        else
+        {
+
         }
         return (
             <div className="row">

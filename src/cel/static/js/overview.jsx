@@ -21,10 +21,11 @@ class AccountButtons extends React.Component {
                     <button
                         onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
-                    {' '}
+                    {/*
                     <button
                         onClick={() => this.props.rechargerCompte(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
+                    */}
                     {' '}
                     <button
                         onClick={() => this.props.reconvertirEusko(this.props.data.number)}
@@ -38,10 +39,11 @@ class AccountButtons extends React.Component {
                     <button
                         onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
-                    {' '}
+                    {/*
                     <button
                         onClick={() => this.props.rechargerCompte(this.props.data.number)}
                         className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
+                    */}
                 </div>
             )
         }

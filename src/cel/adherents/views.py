@@ -110,9 +110,15 @@ def renew_membership(request):
 
 
 @login_required
-@user_must_have_rights([CGU])
+@user_must_have_rights([VALID_MEMBERSHIP])
 def association(request):
     return render(request, 'adherents/association.html')
+
+
+@login_required
+@user_must_have_rights([VALID_MEMBERSHIP])
+def options(request):
+    return render(request, 'adherents/options.html')
 
 
 @login_required

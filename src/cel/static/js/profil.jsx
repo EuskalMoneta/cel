@@ -523,21 +523,6 @@ const MemberShow = React.createClass({
                                 />
                             </div>
                         </div>
-                        <RadioGroup
-                            name="options_recevoir_actus"
-                            data-eusko="profilform-options-recevoir-actus"
-                            type="inline"
-                            value={this.state.options_recevoir_actus}
-                            label={__("Souhaite être informé des actualités liées à l'eusko")}
-                            help={__("Vous recevrez un à deux mails par semaine.")}
-                            options={[{value: '1', label: __('Oui')},
-                                      {value: '0', label: __('Non')}
-                            ]}
-                            onChange={this.onFormChange}
-                            labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
-                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
-                            required
-                        />
                     </fieldset>
                     <div className="row profil-div-margin-left margin-top">
                         <a href="/" className="btn btn-default col-sm-offset-3">

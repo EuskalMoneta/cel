@@ -85,6 +85,7 @@ module.exports = Object.keys(languages).map(function(language) {
             CompteRecharger: './static/js/compte-recharger',
             AcceptCGU: './static/js/accepte-cgu',
             Association: './static/js/association',
+            Options: './static/js/options',
         },
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

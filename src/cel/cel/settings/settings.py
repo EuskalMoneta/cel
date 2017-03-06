@@ -83,6 +83,10 @@ LOGIN_REDIRECT_URL = '/compte'
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 
+# TODO: Update CGU links
+CGU_PDF_PARTICULIERS = 'http://particuliers.euskalmoneta.org/cgu.pdf'
+CGU_PDF_PRESTATAIRES = 'http://prestataires.euskalmoneta.org/cgu.pdf'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -105,9 +109,9 @@ TEMPLATES = [
 ]
 
 # base.context_processors.get_django_settings needs it
-TEMPLATE_VISIBLE_SETTINGS = ['LOGIN_REDIRECT_URL',
-                             'LOGIN_URL', 'LOGOUT_URL',
-                             'API_PUBLIC_URL']
+TEMPLATE_VISIBLE_SETTINGS = ['API_PUBLIC_URL',
+                             'CGU_PDF_PARTICULIERS', 'CGU_PDF_PRESTATAIRES',
+                             'LOGIN_REDIRECT_URL', 'LOGIN_URL', 'LOGOUT_URL']
 
 WSGI_APPLICATION = 'cel.wsgi.application'
 

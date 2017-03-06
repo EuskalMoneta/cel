@@ -7,4 +7,6 @@ config.getAPIBaseURL = '{{ django_settings.API_PUBLIC_URL }}';
 config.getLoginRedirectURL = '{{ django_settings.LOGIN_REDIRECT_URL }}';
 config.getLoginURL = '{{ django_settings.LOGIN_URL }}';
 config.getLogoutURL = '{{ django_settings.LOGOUT_URL }}';
+config.cguParticuliersURL = '{{ django_settings.CGU_PDF_PARTICULIERS }}';
+config.cguPrestatairesURL = '{{ django_settings.CGU_PDF_PRESTATAIRES }}';
 window.config = config;

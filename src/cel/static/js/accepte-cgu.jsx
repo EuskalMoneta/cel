@@ -97,11 +97,11 @@ class AccepteCGUPage extends React.Component {
     }
 
     render = () => {
-        // TODO: Update links
+        // TODO: Update links in Django CEL settings
         if (window.config.profile.member_type == "Particulier")
-            var link = ""
+            var link = window.config.cguParticuliersURL
         else
-            var link = ""
+            var link = window.config.cguPrestatairesURL
 
         return (
             <div>

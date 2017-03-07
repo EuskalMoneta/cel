@@ -525,15 +525,12 @@ const MemberShow = React.createClass({
                         </div>
                     </fieldset>
                     <div className="row profil-div-margin-left margin-top">
-                        <a href="/" className="btn btn-default col-sm-offset-3">
-                           {__("Annuler")}
-                        </a>
                         <input
                             name="submit"
                             data-eusko="profil-form-submit"
                             type="submit"
                             defaultValue={__("Valider")}
-                            className="btn btn-success col-sm-offset-2"
+                            className="btn btn-success col-sm-offset-3"
                             formNoValidate={true}
                             onClick={() => this.submitForm()}
                             disabled={!this.state.canSubmit}

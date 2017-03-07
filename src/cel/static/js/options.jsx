@@ -76,6 +76,10 @@ const Options = React.createClass({
         this.setState({options_langue: item}, this.validateForm)
     },
 
+    recevoirActusOnValueChange(item, value) {
+        this.setState({options_recevoir_actus: value}, this.validateForm)
+    },
+
     componentDidMount() {
         // Get member data
         var computeMemberData = (member) => {
@@ -97,10 +101,12 @@ const Options = React.createClass({
         this.disableButton()
         // We push fields into the data object that will be passed to the server
         var data = {}
+        data.options_recevoir_actus = this.state.options_recevoir_actus
+        data.options_langue = this.state.options_langue.value
 
         var computeForm = (data) => {
             this.refs.container.success(
-                __("Les changement de vos Options parrainées ont bien été pris en compte."),
+                __("Les changement de vos Options ont bien été pris en compte."),
                 "",
                 {
                     timeOut: 3000,
@@ -144,7 +150,7 @@ const Options = React.createClass({
                                 options={[{value: '1', label: __('Oui')},
                                           {value: '0', label: __('Non')}
                                 ]}
-                                onChange={this.validateForm}
+                                onChange={this.recevoirActusOnValueChange}
                                 elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
                                 required
                             />

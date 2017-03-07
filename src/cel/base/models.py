@@ -11,6 +11,7 @@ class Profile(models.Model):
     has_account_eusko_numerique = models.BooleanField(default=False)
     has_valid_membership = models.BooleanField(default=False)
     member_type = models.CharField(max_length=15, default='')
+    lang = models.CharField(max_length=15, default='fr')
     display_name = models.CharField(max_length=50, default='')
 
 

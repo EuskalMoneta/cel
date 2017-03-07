@@ -15,26 +15,24 @@ Including another URLconf
 """
 
 from django.conf.urls import url
-from django.contrib.auth.views import logout
 from django.core.urlresolvers import reverse_lazy
 
 from adherents import views as adherents_views
 from base import views as base_views
-from cel.auth import login_view
+from cel.auth import login_view, logout_view
 
 urlpatterns = [
     # built-in Django i18n:
     # from django.conf.urls import include, i18n
     # url(r'^i18n/', include(i18n)),
-    url(r'^i18n/setlang_custom/$', base_views.setlang_custom, name='setlang_custom'),
 
     # JavaScript config for this Django/React app
     url(r'^config\.js$', base_views.config_js, name='config_js'),
     # login
     url(r'^login/?$', login_view, name='login'),
     # logout
-    url(r'^logout/?$', logout, {'next_page': reverse_lazy('login')}, name='logout'),
-    url(r'^logout/(?P<next_page>[\w\-]+)/?$', logout, name='logout-next'),
+    url(r'^logout/?$', logout_view, {'next_page': reverse_lazy('login')}, name='logout'),
+    url(r'^logout/(?P<next_page>[\w\-]+)/?$', logout_view, name='logout-next'),
 
     # first-time
     url(r'^premiere-connexion/?$', adherents_views.first_time, name='first-time'),

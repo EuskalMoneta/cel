@@ -3,10 +3,12 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils.translation import activate, LANGUAGE_SESSION_KEY
 import requests
 
 from base import models
@@ -53,6 +55,7 @@ class CELAuthBackend(object):
         user_profile.has_account_eusko_numerique = user_data['has_account_eusko_numerique']
         user_profile.has_valid_membership = user_data['has_valid_membership']
         user_profile.member_type = user_data['member_type']
+        user_profile.lang = user_data['lang']
         user_profile.display_name = user_data['display_name']
 
         user.save()
@@ -86,8 +89,27 @@ def login_view(request, **kwargs):
 
         if user is not None:
             login(request, user)
-            return JsonResponse({'connected': True})
+            response = JsonResponse({'connected': True})
+
+            # Force i18n for React
+            request.session[LANGUAGE_SESSION_KEY] = user.profile.lang
+            response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
+                                user.profile.lang,
+                                max_age=settings.LANGUAGE_COOKIE_AGE,
+                                path=settings.LANGUAGE_COOKIE_PATH,
+                                domain=settings.LANGUAGE_COOKIE_DOMAIN)
+            activate(user.profile.lang)
+            return response
         else:
             return JsonResponse({'connected': False}, status=401)
 
     return render(request, 'login.html')
+
+
+def logout_view(request, **kwargs):
+    response = logout(request, **kwargs)
+    # Force i18n for React
+    response.delete_cookie(settings.LANGUAGE_COOKIE_NAME)
+    request.session[LANGUAGE_SESSION_KEY] = 'fr'
+    activate('fr')
+    return response

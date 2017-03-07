@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.utils.translation import activate, LANGUAGE_SESSION_KEY
 import requests
 
 from base.decorators import user_must_have_rights, CGU, EUSKO_NUM, VALID_MEMBERSHIP
@@ -166,9 +167,25 @@ def update_session(request):
         user_profile.has_accepted_cgu = user_data['has_accepted_cgu']
         user_profile.has_account_eusko_numerique = user_data['has_account_eusko_numerique']
         user_profile.has_valid_membership = user_data['has_valid_membership']
+        user_profile.lang = user_data['lang']
 
         user.save()
 
-        return JsonResponse({'status': 'OK'})
+        # Prepare response to be returned
+        response = JsonResponse({'status': 'OK'})
+
+        # To set lang in React, I need both session... AND cookies !
+        # This piece of code is based on set_language():
+        # https://github.com/django/django/blob/stable/1.10.x/django/views/i18n.py#L28
+        # Force i18n for React
+        request.session[LANGUAGE_SESSION_KEY] = user_data['lang']
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
+                            user_data['lang'],
+                            max_age=settings.LANGUAGE_COOKIE_AGE,
+                            path=settings.LANGUAGE_COOKIE_PATH,
+                            domain=settings.LANGUAGE_COOKIE_DOMAIN)
+        activate(user_data['lang'])
+
+        return response
     else:
         return JsonResponse({'error': 'You must call this endpoint with the PUT method!'}, status=400)

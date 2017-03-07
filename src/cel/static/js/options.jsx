@@ -1,7 +1,10 @@
 import {
     fetchAuth,
     getAPIBaseURL,
+    checkStatus,
     getCurrentLang,
+    parseJSON,
+    getCSRFToken,
     SelectizeUtils,
 } from 'Utils'
 
@@ -105,15 +108,39 @@ const Options = React.createClass({
         data.options_langue = this.state.options_langue.value
 
         var computeForm = (data) => {
-            this.refs.container.success(
-                __("Les changement de vos Options ont bien été pris en compte."),
-                "",
-                {
-                    timeOut: 3000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
+            // Get Session data from API & update session data via Django front
+            fetch('/update-session/',
+            {
+                method: 'put',
+                credentials: 'same-origin',
+                body: JSON.stringify({'token': sessionStorage.getItem('cel-api-token-auth')}),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken,
                 }
-            )
+            })
+            .then(checkStatus)
+            .then(parseJSON)
+            .then((data) => {
+                // Reload the current page, without using the cache
+                document.location.reload(true)
+            })
+            .catch((err) => {
+                // Error during request, or parsing NOK :(
+                console.error(err)
+
+                // toast
+                this.refs.container.error(
+                    __("Une erreur est survenue lors de l'enregistrement vers le serveur !"),
+                    "",
+                    {
+                        timeOut: 5000,
+                        extendedTimeOut: 10000,
+                        closeButton:true
+                    }
+                )
+            })
         }
 
         var promiseError = (err) => {

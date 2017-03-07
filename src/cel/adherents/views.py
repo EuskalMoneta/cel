@@ -122,6 +122,12 @@ def options(request):
 
 
 @login_required
+@user_must_have_rights([CGU, EUSKO_NUM, VALID_MEMBERSHIP])
+def change_automatique(request):
+    return render(request, 'adherents/change-automatique.html')
+
+
+@login_required
 def update_session(request):
     if request.method == 'PUT':
         try:

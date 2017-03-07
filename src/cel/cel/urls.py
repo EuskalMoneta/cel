@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^profil/options/?$', adherents_views.options, name='options'),
     url(r'^profil/cotisation/?$', adherents_views.renew_membership, name='manage-membership'),
     url(r'^profil/coordonnees/?$', adherents_views.profile, name='profile'),
+    url(r'^profil/change-automatique/?$', adherents_views.change_automatique, name='change-automatique'),
     url(r'^profil/change-passe/?$', base_views.change_password, name='change-password'),
 
     # Mon compte

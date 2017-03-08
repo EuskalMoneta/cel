@@ -7,18 +7,23 @@ import {
 
 const {
     Input,
-    RadioGroup,
+    Textarea,
 } = FRC
+Formsy.addValidationRule('isMoreThanTen', (values, value) => {
+    return Number(value) >= Number(10)
+})
 
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
+
+import ModalEusko from 'Modal'
 
 const {
     ToastContainer
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
-const OptionsForm = React.createClass({
+const ChangeAutoForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
 
@@ -39,17 +44,23 @@ const OptionsForm = React.createClass({
     }
 })
 
-const Options = React.createClass({
+const ChangeAuto = React.createClass({
 
     getInitialState() {
         return {
-            memberLogin: window.config.userName,
             member: null,
             canSubmit: false,
-            validFields: false,
-            options_recevoir_actus: false,
-            options_langue: 'fr',
-            langs: [{label: 'Français', value: 'fr'}, {label: 'Euskara', value: 'eu'}],
+            hasChangeAuto: false,
+            newMontantChangeAuto: undefined,
+            montantChangeAuto: undefined,
+            periodiciteChangeAuto: undefined,
+            rumChangeAuto: undefined,
+            modalBody: undefined,
+            modalTitle: undefined,
+            validateLabel: undefined,
+            isModalOpen: false,
+            modalMode: undefined,
+            textareaCommentaire: '',
         }
     },
 
@@ -61,52 +72,92 @@ const Options = React.createClass({
         this.setState({canSubmit: false})
     },
 
-    validateForm() {
-        if (this.state.options_langue &&
-            this.state.options_recevoir_actus &&
-            (this.state.options_recevoir_actus == "0" || this.state.options_recevoir_actus == "1"))
-        {
-            this.enableButton()
+    amountOnValueChange(event, value) {
+        this.setState({amount: value})
+    },
+
+    openModal() {
+        this.setState({isModalOpen: true})
+    },
+
+    hideModal() {
+        this.setState({isModalOpen: false})
+    },
+
+    getModalElements(modalMode) {
+        if (modalMode == 'delete') {
+            var modalTitle = __("Arrêt du change automatique")
+            var validateLabel = __("Confirmer")
+            var modalBody = <p>{__("Êtes-vous sûr de vouloir arrêter votre change automatique mensuel ?")}</p>
+            var canSubmit = true
         }
-        else
-            this.disableButton()
-    },
-
-    langOnValueChange(item) {
-        this.setState({options_langue: item}, this.validateForm)
-    },
-
-    recevoirActusOnValueChange(item, value) {
-        this.setState({options_recevoir_actus: value}, this.validateForm)
+        else {
+            var modalTitle = __("Modification du change automatique")
+            var validateLabel = __("Confirmer")
+            var canSubmit = false
+            var modalBody = (
+                    <ChangeAutoForm onValid={this.enableButton}>
+                        <Input
+                            name="montant"
+                            data-eusko="change-auto-amount"
+                            validations="isMoreThanTen"
+                            validationErrors={{
+                                isMoreThanTen: __("Un change automatique ne peut être en dessous de 10.")
+                            }}
+                            label={__("Montant")}
+                            type="number"
+                            placeholder={__("Montant du change automatique")}
+                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-8']}
+                            required={true}
+                            onChange={this.amountOnValueChange}
+                            value={this.state.newMontantChangeAuto ? this.state.newMontantChangeAuto : ""}
+                        />
+                        <Textarea
+                            name="commentaire"
+                            value={this.state.textareaCommentaire}
+                            data-eusko="change-auto-commentaire"
+                            rows={3}
+                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-8']}
+                            label={__("Commentaire")}
+                            placeholder={__("Vous pouvez fournir un commentaire")}
+                        />
+                    </ChangeAutoForm>
+            )
+        }
+        this.setState({modalBody: modalBody, modalMode: modalMode, canSubmit: canSubmit,
+                       modalTitle: modalTitle, validateLabel: validateLabel}, this.openModal)
     },
 
     componentDidMount() {
         // Get member data
         var computeMemberData = (member) => {
-            var options_langue = _.findWhere(this.state.langs, {value: member[0].array_options.options_langue})
-            if (!options_langue) {
-                var options_langue = {label: 'Français', value: 'fr'}
+            if (Number(member[0].array_options.options_prelevement_change_montant) > Number()
+                && member[0].array_options.options_prelevement_change_periodicite) {
+                var hasChangeAuto = true
             }
+            else
+                var hasChangeAuto = false
 
-            this.setState({member: member[0],
-                           options_recevoir_actus: member[0].array_options.options_recevoir_actus == '1' ? '1' : '0',
-                           options_langue: options_langue,
-                          }, this.validateForm)
+            this.setState({
+                member: member[0],
+                montantChangeAuto: Number(member[0].array_options.options_prelevement_change_montant).toFixed(0),
+                rumChangeAuto: member[0].array_options.options_prelevement_change_rum,
+                periodiciteChangeAuto: member[0].array_options.options_prelevement_change_periodicite,
+                hasChangeAuto: hasChangeAuto,
+            })
 
         }
-        fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
+        fetchAuth(this.props.url + window.config.userName, 'GET', computeMemberData)
     },
 
-    submitForm() {
-        this.disableButton()
+    submitForm(modalMode) {
+        debugger
         // We push fields into the data object that will be passed to the server
         var data = {}
-        data.options_recevoir_actus = this.state.options_recevoir_actus
-        data.options_langue = this.state.options_langue.value
 
         var computeForm = (data) => {
             this.refs.container.success(
-                __("Les changement de vos Options ont bien été pris en compte."),
+                __("La modification de votre change automatique a bien été prise en compte."),
                 "",
                 {
                     timeOut: 3000,
@@ -122,7 +173,7 @@ const Options = React.createClass({
 
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors de la modification de vos options !"),
+                __("Une erreur s'est produite lors de la modification de votre change automatique !"),
                 "",
                 {
                     timeOut: 3000,
@@ -136,66 +187,73 @@ const Options = React.createClass({
 
 
     render() {
+
+        if (this.state.hasChangeAuto) {
+            var divContent = (
+                <div>
+                    {__('Je change mensuellement des euros en eusko grâce à un prélèvement automatique sur mon compte bancaire.')}
+                    <br/>
+                    {__('Les prélèvements sont effectués le 10 de chaque mois.')}<br/>
+                    {__('Montant de mon change automatique : ') + this.state.montantChangeAuto} eusko
+                    <br/><br/>
+                    <h4>{__('Informations sur le mandat de prélèvement')}</h4>
+                    {__('Nom du créancier :')} Association Euskal Moneta - Monnaie Locale du Pays Basque<br/>
+                    {__('Identifiant du créancier :')} FR49ZZZ663869<br/>
+                    {__('Référence Unique du Mandat :') + ' ' + this.state.rumChangeAuto}
+                    <br/><br/>
+                    <div className="row">
+                        <div className="col-md-3 col-md-offset-1">
+                            <button onClick={() => {this.getModalElements('modify')}}
+                                className="btn btn-info enable-pointer-events">
+                                {__("Modifier le montant du change automatique")} <i className="glyphicon glyphicon-pencil"></i>
+                            </button>
+                        </div>
+                        <div className="col-md-4 col-md-offset-1">
+                            <button onClick={() => {this.getModalElements('delete')}}
+                                className="btn btn-danger enable-pointer-events">
+                                {__("Arrêter le change automatique")} <i className="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            var divContent = (
+                <div>
+                    {__("Je mets en place un change mensuel d'euros en eusko grâce à un prélèvement automatique sur mon compte bancaire.")}<br/>
+                    {__("Pour cela, j'autorise Euskal Moneta à effectuer des prélèvements sur mon compte bancaire :")}<br/><br/>
+                    {__("Je remplis et signe le mandat ci-dessous et je le renvoie à Euskal Moneta avec le RIB du compte à débiter.")}<br/>
+                    {__("Documents à envoyer par mail à euskokart@euskalmoneta.org ou par courrier à :")}<br/>
+                    Euskal Moneta - 20 rue des Corderliers - 64100 Bayonne.
+                    <br/><br/>
+                    {/* TODO: Update lien mandat de prélèvement*/}
+                    <a href="">
+                        {__("Télécharger le mandat de prélèvement")}
+                        <i style={{marginLeft: 5}} className="glyphicon glyphicon-download-alt"></i>
+                    </a>
+                </div>
+            )
+        }
+
         return (
                 <div className="row">
-                    <OptionsForm ref="profil-form">
-                        <fieldset>
-                            <RadioGroup
-                                name="options_recevoir_actus"
-                                data-eusko="options-recevoir-actus"
-                                type="inline"
-                                value={this.state.options_recevoir_actus}
-                                label={__("Souhaite être informé des actualités liées à l'eusko")}
-                                help={__("Vous recevrez un à deux mails par semaine.")}
-                                options={[{value: '1', label: __('Oui')},
-                                          {value: '0', label: __('Non')}
-                                ]}
-                                onChange={this.recevoirActusOnValueChange}
-                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
-                                required
-                            />
-                            <div className="form-group row">
-                                <label
-                                    className="control-label col-sm-3"
-                                    data-required="true"
-                                    htmlFor="options-lang">
-                                    {__("Langue")}
-                                    <span className="required-symbol">&nbsp;*</span>
-                                </label>
-                                <div className="col-sm-5 options" data-eusko="options-lang">
-                                    <SimpleSelect
-                                        ref="select"
-                                        value={this.state.options_langue}
-                                        options={this.state.langs}
-                                        placeholder={__("Langue")}
-                                        autocomplete="off"
-                                        theme="bootstrap3"
-                                        onValueChange={this.langOnValueChange}
-                                        renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                        renderValue={SelectizeUtils.selectizeRenderValue}
-                                        onBlur={this.validateForm}
-                                        renderNoResultsFound={SelectizeUtils.selectizeNoResultsFound}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </fieldset>
-                        <div className="row profil-div-margin-left margin-top">
-                            <input
-                                name="submit"
-                                data-eusko="options-submit"
-                                type="submit"
-                                defaultValue={__("Enregistrer")}
-                                className="btn btn-success col-sm-offset-5"
-                                formNoValidate={true}
-                                onClick={() => this.submitForm()}
-                                disabled={!this.state.canSubmit}
-                            />
-                        </div>
-                    </OptionsForm>
+                    <br/>
+                    {divContent}
                     <ToastContainer ref="container"
                         toastMessageFactory={ToastMessageFactory}
                         className="toast-top-right toast-top-right-navbar"
+                    />
+                    <ModalEusko
+                        hideModal={this.hideModal}
+                        isModalOpen={this.state.isModalOpen}
+                        modalBody={this.state.modalBody}
+                        modalTitle={this.state.modalTitle}
+                        validateLabel={this.state.validateLabel}
+                        onValidate={() => { this.submitForm(this.state.modalMode) }}
+                        staticContent={true}
+                        btnValidateClass={this.state.modalMode == "delete" ? "btn-danger" : "btn-success"}
+                        btnValidateEnabled={this.state.canSubmit}
                     />
                 </div>
             )
@@ -204,7 +262,7 @@ const Options = React.createClass({
 )
 
 ReactDOM.render(
-    <Options url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
+    <ChangeAuto url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,
     document.getElementById('change-automatique')
 )
-document.title = __("Mon profil") + ": " + __("Options") + " - " + __("Compte en ligne") + " " + document.title
+document.title = __("Mon profil") + ": " + __("Change automatique") + " - " + __("Compte en ligne") + " " + document.title

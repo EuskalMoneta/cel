@@ -49,7 +49,6 @@ const Cotisation = React.createClass({
             displayCustomAmount: false,
             memberType: '9',
             cotisationState: false,
-            amount: undefined,
             period: {    
                 label: undefined,
                 value: undefined,
@@ -57,7 +56,12 @@ const Cotisation = React.createClass({
             canSubmit: false,
             selectedPrelevAuto: false,
             amount: undefined,
+            amountByY: 0,
             customAmount: undefined,
+            selectedOption: 0,
+            month: new Date().getMonth()+1,
+            endMonth: moment().endOf('month').lang('fr').format('Do MMM YYYY'),
+            amountValid: false,
         }
     },
 
@@ -66,16 +70,16 @@ const Cotisation = React.createClass({
             this.setState({member: member[0]})
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
-                this.setState({cotisationState: true})
+                this.setState({cotisationState: false})
             }
             if(member[0].login.toUpperCase().startsWith('Z'))
             {
                 if(member[0].type == 'Entreprise') {
-                    this.setState({memberType: '00'}) // company user
+                    this.setState({memberType: '10'}) // company user
                 }
                 else
                 {
-                    this.setState({memberType: '01'}) // association user
+                    this.setState({memberType: '11'}) // association user
                 }
             }
             else if(member[0].login.toUpperCase().startsWith('E'))
@@ -91,9 +95,10 @@ const Cotisation = React.createClass({
     },
 
     ValidationCheck() {
+        debugger
         if(this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('1'))
         {
-            if(this.state.selectedPrelevAuto && this.state.amount && this.state.period)
+            if(this.state.selectedPrelevAuto && this.state.amount && this.state.period && this.state.amountValid)
             {
                 this.setState({canSubmit: true})
             }
@@ -113,9 +118,9 @@ const Cotisation = React.createClass({
                 this.setState({canSubmit: false})
             }
         }
-        else if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('1'))
+        else if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('0'))
         {
-            if((this.state.ChoiceBoxChecked == 0 && this.state.amount && this.state.period) || (this.state.ChoiceBoxChecked == 1 && this.state.amount))
+            if((this.state.selectedOption == 0 && this.state.amount) || (this.state.selectedOption == 1 && this.state.amount))
             {
                 this.setState({canSubmit: true})
             }
@@ -124,9 +129,9 @@ const Cotisation = React.createClass({
                 this.setState({canSubmit: false})
             }
         }
-        else if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('0'))
+        else if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('1'))
         {
-            if((this.state.ChoiceBoxChecked == 0 && this.state.amount) || (this.state.ChoiceBoxChecked == 1 && this.state.amount))
+            if((this.state.selectedOption == 0 && this.state.amount && this.state.period.value && this.state.amountValid) || (this.state.selectedOption == 1 && this.state.amountByY != 0 && this.state.amountValid))
             {
                 this.setState({canSubmit: true})
             }
@@ -153,7 +158,28 @@ const Cotisation = React.createClass({
         }
         else
         {
-            this.setState({amount: value}, this.ValidationCheck)
+            this.setState({amount: value}, this.calculAmountByYears)
+        }
+    },
+
+    amountByYOnChange(event, value) {
+        var valueToTest = value.replace(',','.')
+        // update pin values
+        if(isNaN(valueToTest))
+        {
+            this.refs.container.error(
+                __("Attention, la valeur saisie pour le montant est incorrecte !"),
+                "",
+                {
+                    timeOut: 5000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        else
+        {
+            this.setState({amountByY: value, amountValid: Number(value) >= Number(60)}, this.ValidationCheck)
         }
     },
 
@@ -165,9 +191,20 @@ const Cotisation = React.createClass({
     },
     periodOnValueChange(periodValue) {
         // update pin values
-        this.setState({period:  {label: periodValue.label, value: periodValue.value} });
+        this.setState({period:  {label: periodValue.label, value: periodValue.value}}, this.calculAmountByYears)
     },
-
+    calculAmountByYears() {
+        if (this.state.amount && this.state.period.value)
+        {
+            var amountByY = this.state.amount*(12/this.state.period.value)
+            var amountValid = Number(amountByY) >= Number(60) ? true : false
+            this.setState({amountByY: amountByY, amountValid: amountValid}, this.ValidationCheck)
+        }
+        else {
+            this.setState({amountByY: 0, amountValid: false}, this.ValidationCheck)
+        }
+        
+    },
     // amount
     validateAmount(field, value) {
         this.setState({customAmount: value})
@@ -179,10 +216,107 @@ const Cotisation = React.createClass({
         }
     },
 
+    submitForm() {
+        this.setState({canSubmit: false})
+        // We push fields into the data object that will be passed to the server
+        var data = {}
+        // We need to verify whether we are in "saisie libre" or not
+        if(this.state.amount) {
+            data.options_prelevement_cotisation_montant = this.state.amount
+        }
+        else if(this.state.amountByY) {
+            data.options_prelevement_cotisation_montant = this.state.amountByY
+        }
+        if(this.state.period.value) {
+            data.options_prelevement_cotisation_periodicite = this.state.period.value
+        }
+        else{
+            data.options_prelevement_cotisation_periodicite = 1
+        }
+        if(this.state.selectedPrelevAuto) {
+            data.options_prelevement_auto_cotisation_eusko = this.state.selectedPrelevAuto
+        }
+
+        var computeForm = (data) => {
+            this.refs.container.success(
+                __("Les changement de vos associations parrainées ont bien été pris en compte."),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+
+        var promiseError = (err) => {
+            // Error during request, or parsing NOK :(
+            this.enableButton()
+
+            console.log(this.props.url, err)
+            this.refs.container.error(
+                __("Une erreur s'est produite lors de la modification de vos assocation parrainées!"),
+                "",
+                {
+                    timeOut: 3000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+    },
+
+    radioOnChange(event, value) {
+        // update pin values
+        if(this.state.memberType.toUpperCase().startsWith('0'))
+        {
+            if (event.target.value == 0)
+            {
+                this.setState({selectedOption: 0})
+                this.setState({amountByY: undefined})
+                this.setState({canSubmit: false})
+            }
+            else if (event.target.value == 1)
+            {
+                this.setState({selectedOption: 1})
+                this.setState({amountByY: undefined})
+                this.setState({amount: undefined})
+                this.setState({canSubmit: false})
+            }
+        }
+        else if(this.state.memberType.toUpperCase().startsWith('1'))
+        {
+            if (event.target.value == 0)
+            {
+                this.setState({selectedOption: 0})
+                this.setState({displayCustomAmount2: false})
+                this.setState({customAmount: undefined})
+                this.setState({canSubmit: false})
+            }
+            else if (event.target.value == 1)
+            {
+                this.setState({selectedOption: 1})
+                this.setState({displayCustomAmount: false})
+                this.setState({customAmount: undefined})
+                this.setState({canSubmit: false})
+            }
+            this.buttonResetChoice()
+        }
+    },
+
+    buttonResetChoice() {
+        this.setState({buttonBasRevenusActivated: false})
+        this.setState({buttonClassiqueActivated: false})
+        this.setState({buttonSoutienActivated: false})
+        this.setState({buttonBasRevenusActivated2: false})
+        this.setState({buttonClassiqueActivated2: false})
+        this.setState({buttonSoutienActivated2: false})
+    },
 
     render() {
         var greySimpleSelect = classNames({
-            'grey-back': this.state.otherAsso,
+            'grey-back': this.state.selectedOption,
         })
 
         var buttonBasRevenusClass = classNames({
@@ -208,6 +342,31 @@ const Cotisation = React.createClass({
             'hidden': !this.state.displayCustomAmount,
             'has-error has-feedback': this.state.amountInvalid,
         })
+
+        var buttonBasRevenusClass2 = classNames({
+            "btn": true,
+            "btn-default": !this.state.buttonBasRevenusActivated2,
+            "btn-info-inverse": this.state.buttonBasRevenusActivated2,
+        })
+
+        var buttonClassiqueClass2 = classNames({
+            "btn": true,
+            "btn-default": !this.state.buttonClassiqueActivated2,
+            "btn-info-inverse": this.state.buttonClassiqueActivated2,
+        })
+
+        var buttonSoutienClass2 = classNames({
+            "btn": true,
+            "btn-default": !this.state.buttonSoutienActivated2,
+            "btn-info-inverse": this.state.buttonSoutienActivated2,
+        })
+
+        var divCustomAmountClass2 = classNames({
+            'form-group row': true,
+            'hidden': !this.state.displayCustomAmount2,
+            'has-error has-feedback': this.state.amountInvalid,
+        })
+
         moment.locale(getCurrentLang)
         if (this.state.member) {
             var dateEndSub = moment.unix(this.state.member.datefin).format('DD MMMM YYYY');
@@ -334,7 +493,7 @@ const Cotisation = React.createClass({
                                 </label>
                                 <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
                                 <label>
-                                    {__("xxx eusko")}
+                                    {__("") + this.state.selectedOption==0 ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </label>
                                 </div>
                             </div>
@@ -423,7 +582,7 @@ const Cotisation = React.createClass({
         }
         else
         {
-            if(this.state.memberType.toUpperCase().startsWith('1')) {
+            if(this.state.memberType.toUpperCase().startsWith('0')) {
                 var auto_prelev_auto = (
                     <span>
                         <div className="row">
@@ -438,7 +597,7 @@ const Cotisation = React.createClass({
                                         <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange}/>
                                     </label>
                                 </div>
-                                <div className="col-sm-5  profilform" data-eusko="profilform-asso">
+                                <div className="col-sm-5  profilform " data-eusko="profilform-asso">
                                     {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
@@ -454,6 +613,7 @@ const Cotisation = React.createClass({
                                     <div className="col-sm-7 memberaddsubscription" data-eusko="memberaddsubscription-amount">
                                         <button
                                             className={buttonBasRevenusClass}
+                                            disabled={this.state.selectedOption == 1}
                                             onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount: false,
                                                         buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
                                             {__('5 (bas revenus)')}
@@ -461,6 +621,7 @@ const Cotisation = React.createClass({
                                         {' '}
                                         <button
                                             className={buttonClassiqueClass}
+                                            disabled={this.state.selectedOption == 1}
                                             onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount: false,
                                                        buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
                                             {__('10 (cotisation normale)')}
@@ -468,6 +629,7 @@ const Cotisation = React.createClass({
                                         {' '}
                                         <button
                                             className={buttonSoutienClass}
+                                            disabled={this.state.selectedOption == 1}
                                             onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount: true,
                                                         buttonBasRevenusActivated: false, buttonClassiqueActivated: false, buttonSoutienActivated: true})}>
                                             {__('20 ou plus (cotisation de soutien)')}
@@ -497,16 +659,14 @@ const Cotisation = React.createClass({
                                 </div>
                                 <div className="col-sm-5  profilform" data-eusko="profilform-asso">
                                     {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                    {__("Je fais un virement de ")}
-                                    {__("ajouter ici le montant calculé")}
-                                    {__("eusko correspondant à ma cotisation jusqu'au")}
-                                    {__("ajouter ici la date de fin")}
+                                    {(" Je fais un virement de ") + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
+                                    {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
                                 </div>
                             </div>
                             <div className="form-group row ">
                                 <div className="radio col-sm-1 col-md-offset-2">
                                   <label>
-                                    <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange}/>
+                                    <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
                                   </label>
                                 </div>
                                 <div className="col-sm-5  profilform" data-eusko="profilform-asso">
@@ -524,26 +684,46 @@ const Cotisation = React.createClass({
                                     </label>
                                     <div className="col-sm-7 memberaddsubscription" data-eusko="memberaddsubscription-amount">
                                         <button
-                                            className={buttonBasRevenusClass}
-                                            onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount: false,
-                                                        buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
+                                            className={buttonBasRevenusClass2}
+                                            disabled={this.state.selectedOption == 0}
+                                            onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount2: false,
+                                                        buttonBasRevenusActivated2: true, buttonClassiqueActivated2: false, buttonSoutienActivated2: false})}>
                                             {__('5 (bas revenus)')}
                                         </button>
                                         {' '}
                                         <button
-                                            className={buttonClassiqueClass}
-                                            onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount: false,
-                                                       buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
+                                            className={buttonClassiqueClass2}
+                                            disabled={this.state.selectedOption == 0}
+                                            onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount2: false,
+                                                       buttonBasRevenusActivated2: false, buttonClassiqueActivated2: true, buttonSoutienActivated2: false})}>
                                             {__('10 (cotisation normale)')}
                                         </button>
                                         {' '}
                                         <button
-                                            className={buttonSoutienClass}
-                                            onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount: true,
-                                                        buttonBasRevenusActivated: false, buttonClassiqueActivated: false, buttonSoutienActivated: true})}>
+                                            className={buttonSoutienClass2}
+                                            disabled={this.state.selectedOption == 0}
+                                            onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount2: true,
+                                                        buttonBasRevenusActivated2: false, buttonClassiqueActivated2: false, buttonSoutienActivated2: true})}>
                                             {__('20 ou plus (cotisation de soutien)')}
                                         </button>
                                     </div>
+                                    <Input
+                                        name="customAmount"
+                                        data-eusko="bank-deposit-customAmount"
+                                        value={this.state.customAmount ? this.state.customAmount : ""}
+                                        type="number"
+                                        placeholder={__("Montant de la cotisation")}
+                                        validations="isPositiveNumeric"
+                                        validationErrors={{
+                                           isPositiveNumeric: __("Montant invalide.")
+                                        }}
+                                        label={__("Montant personnalisé")}
+                                        onChange={this.validateAmount}
+                                        rowClassName={divCustomAmountClass2}
+                                        elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
+                                        required={this.state.displayCustomAmount2}
+                                        disabled={!this.state.displayCustomAmount2}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -582,7 +762,8 @@ const Cotisation = React.createClass({
                                             name="amount"
                                             data-eusko="cotisation-amount"
                                             onChange={this.amountOnChange}
-                                            value={this.state.amount}
+                                            value={this.state.selectedOption==0 ? this.state.amount : ""}
+                                            readOnly={this.state.selectedOption}
                                         />
                                 </div>
                             </div>
@@ -598,9 +779,11 @@ const Cotisation = React.createClass({
                                         ref="select"
                                         theme="bootstrap3"
                                         onValueChange={this.periodOnValueChange}
-                                        value = {this.state.period}
+                                        value={this.state.selectedOption==0 ? this.state.period : ""}
                                         renderResetButton={() => { return null }}
-                                        required
+                                        disabled={this.state.selectedOption}
+                                        required={!this.state.selectedOption}
+                                        className={greySimpleSelect}
                                     >
                                         <option value = "1">Mensuel</option>
                                         <option value = "3">Trimestriel</option>
@@ -618,7 +801,7 @@ const Cotisation = React.createClass({
                                 </label>
                                 <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
                                 <label>
-                                    {__("xxx eusko")}
+                                    {__("") + this.state.selectedOption==0 ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </label>
                                 </div>
                             </div>
@@ -627,16 +810,14 @@ const Cotisation = React.createClass({
                                     </div>
                                     <div className="col-sm-5  profilform" data-eusko="profilform-asso">
                                         {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                        {__("Je fais un virement de ")}
-                                        {__("ajouter ici le montant calculé")}
-                                        {__("eusko correspondant à ma cotisation jusqu'au")}
-                                        {__("ajouter ici la date de fin")}
+                                        {(" Je fais un virement de ") + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
+                                        {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
                                     </div>
                                 </div>
                                 <div className="form-group row ">
                                     <div className="radio col-sm-1 col-md-offset-2">
                                       <label>
-                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange}/>
+                                        <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
                                       </label>
                                     </div>
                                     <div className="col-sm-5  profilform" data-eusko="profilform-asso">
@@ -654,8 +835,9 @@ const Cotisation = React.createClass({
                                         <Input
                                             name="amount"
                                             data-eusko="cotisation-amount"
-                                            onChange={this.amountOnChange}
-                                            value={this.state.amount}
+                                            onChange={this.amountByYOnChange}
+                                            value={this.state.selectedOption==1 ? this.state.amountByY : ""}
+                                            readOnly={!this.state.selectedOption}
                                         />
                                 </div>
                             </div>

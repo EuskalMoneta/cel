@@ -12,6 +12,9 @@ const {
 Formsy.addValidationRule('isMoreThanTen', (values, value) => {
     return Number(value) >= Number(10)
 })
+Formsy.addValidationRule('isDifferentThanActualAmount', (values, value, actualAmount) => {
+    return Number(value).toFixed(0) != Number(actualAmount)
+})
 
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
@@ -51,8 +54,8 @@ const ChangeAuto = React.createClass({
             member: null,
             canSubmit: false,
             hasChangeAuto: false,
-            newMontantChangeAuto: undefined,
-            montantChangeAuto: undefined,
+            newAmountChangeAuto: undefined,
+            amountChangeAuto: undefined,
             periodiciteChangeAuto: undefined,
             rumChangeAuto: undefined,
             modalBody: undefined,
@@ -73,7 +76,11 @@ const ChangeAuto = React.createClass({
     },
 
     amountOnValueChange(event, value) {
-        this.setState({amount: value})
+        this.setState({newAmountChangeAuto: value})
+    },
+
+    commentOnValueChange(event, value) {
+        this.setState({textareaCommentaire: value})
     },
 
     openModal() {
@@ -88,7 +95,23 @@ const ChangeAuto = React.createClass({
         if (modalMode == 'delete') {
             var modalTitle = __("Arrêt du change automatique")
             var validateLabel = __("Confirmer")
-            var modalBody = <p>{__("Êtes-vous sûr de vouloir arrêter votre change automatique mensuel ?")}</p>
+            var modalBody = (
+                <ChangeAutoForm onValid={this.enableButton}>
+                    <p style={{marginBottom: 30}}>
+                        {__("Êtes-vous sûr de vouloir arrêter votre change automatique mensuel ?")}
+                    </p>
+                    <Textarea
+                        name="commentaire"
+                        value={this.state.textareaCommentaire}
+                        data-eusko="change-auto-commentaire"
+                        rows={3}
+                        onChange={this.commentOnValueChange}
+                        elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-8']}
+                        label={__("Commentaire")}
+                        placeholder={__("Vous pouvez fournir un commentaire")}
+                    />
+                </ChangeAutoForm>
+            )
             var canSubmit = true
         }
         else {
@@ -100,9 +123,10 @@ const ChangeAuto = React.createClass({
                         <Input
                             name="montant"
                             data-eusko="change-auto-amount"
-                            validations="isMoreThanTen"
+                            validations={"isMoreThanTen,isDifferentThanActualAmount:" + this.state.amountChangeAuto}
                             validationErrors={{
-                                isMoreThanTen: __("Un change automatique ne peut être en dessous de 10.")
+                                isMoreThanTen: __("Un change automatique ne peut être en dessous de 10."),
+                                isDifferentThanActualAmount: __("Veuillez choisir une autre montant que votre change actuel.")
                             }}
                             label={__("Montant")}
                             type="number"
@@ -110,13 +134,14 @@ const ChangeAuto = React.createClass({
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-8']}
                             required={true}
                             onChange={this.amountOnValueChange}
-                            value={this.state.newMontantChangeAuto ? this.state.newMontantChangeAuto : ""}
+                            value={this.state.newAmountChangeAuto ? this.state.newAmountChangeAuto : ""}
                         />
                         <Textarea
                             name="commentaire"
                             value={this.state.textareaCommentaire}
                             data-eusko="change-auto-commentaire"
                             rows={3}
+                            onChange={this.commentOnValueChange}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-8']}
                             label={__("Commentaire")}
                             placeholder={__("Vous pouvez fournir un commentaire")}
@@ -140,7 +165,7 @@ const ChangeAuto = React.createClass({
 
             this.setState({
                 member: member[0],
-                montantChangeAuto: Number(member[0].array_options.options_prelevement_change_montant).toFixed(0),
+                amountChangeAuto: Number(member[0].array_options.options_prelevement_change_montant).toFixed(0),
                 rumChangeAuto: member[0].array_options.options_prelevement_change_rum,
                 periodiciteChangeAuto: member[0].array_options.options_prelevement_change_periodicite,
                 hasChangeAuto: hasChangeAuto,
@@ -151,13 +176,21 @@ const ChangeAuto = React.createClass({
     },
 
     submitForm(modalMode) {
-        debugger
         // We push fields into the data object that will be passed to the server
         var data = {}
+        data.mode = modalMode
+        data.prelevement_change_comment = this.state.textareaCommentaire
+        if (modalMode == 'modify') {
+            data.options_prelevement_change_montant = this.state.newAmountChangeAuto
+        }
+        else {
+            data.options_prelevement_change_montant = null
+            data.options_prelevement_change_periodicite = null
+        }
 
         var computeForm = (data) => {
             this.refs.container.success(
-                __("La modification de votre change automatique a bien été prise en compte."),
+                __("Votre demande a bien été prise en compte."),
                 "",
                 {
                     timeOut: 3000,
@@ -194,7 +227,7 @@ const ChangeAuto = React.createClass({
                     {__('Je change mensuellement des euros en eusko grâce à un prélèvement automatique sur mon compte bancaire.')}
                     <br/>
                     {__('Les prélèvements sont effectués le 10 de chaque mois.')}<br/>
-                    {__('Montant de mon change automatique : ') + this.state.montantChangeAuto} eusko
+                    {__('Montant de mon change automatique : ') + this.state.amountChangeAuto} eusko
                     <br/><br/>
                     <h4>{__('Informations sur le mandat de prélèvement')}</h4>
                     {__('Nom du créancier :')} Association Euskal Moneta - Monnaie Locale du Pays Basque<br/>

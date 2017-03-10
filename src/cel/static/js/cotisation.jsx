@@ -60,7 +60,9 @@ const Cotisation = React.createClass({
             customAmount: undefined,
             selectedOption: 0,
             month: new Date().getMonth()+1,
-            endMonth: moment().endOf('month').lang('fr').format('Do MMM YYYY'),
+            year: new Date().getFullYear(),
+            endMonth: moment().endOf('month').lang('fr').format("YYYY-MM-DDThh:mm"),
+            beginYear: moment().startOf('year').lang('fr').format("YYYY-MM-DDThh:mm"),
             amountValid: false,
         }
     },
@@ -88,6 +90,15 @@ const Cotisation = React.createClass({
             }
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
+
+        var computeDebitList = (data) => {
+            var res = _.chain(data.result)
+                .map(function(item){ return item.owner.id })
+                .sortBy(function(item){ return item.label })
+                .value()
+            this.setState({debitList: res})
+        }
+        fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
     },
 
     setAmount(value) {
@@ -95,7 +106,6 @@ const Cotisation = React.createClass({
     },
 
     ValidationCheck() {
-        debugger
         if(this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('1'))
         {
             if(this.state.selectedPrelevAuto && this.state.amount && this.state.period && this.state.amountValid)
@@ -251,8 +261,6 @@ const Cotisation = React.createClass({
 
         var promiseError = (err) => {
             // Error during request, or parsing NOK :(
-            this.enableButton()
-
             console.log(this.props.url, err)
             this.refs.container.error(
                 __("Une erreur s'est produite lors de la modification de vos assocation parrainées!"),
@@ -265,6 +273,24 @@ const Cotisation = React.createClass({
             )
         }
         fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+        if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('0'))
+        {
+            var data2 = {}
+            data2.start_date = this.state.beginYear
+            data2.end_date = this.state.endMonth
+            data2.amount = this.state.amount
+            data2.label = 'Cotisation ' + this.state.year
+            fetchAuth(getAPIBaseURL + "euskokart-subscription/", 'POST', computeForm, data2, promiseError)
+        }
+        else if(!this.state.cotisationState && this.state.selectedOption == 0 && this.state.memberType.toUpperCase().startsWith('1'))
+        {
+            var data2 = {}
+            data2.start_date = this.state.beginYear
+            data2.end_date = this.state.endMonth
+            data2.amount = this.state.amountByY
+            data2.label = 'Cotisation ' + this.state.year
+            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', computeForm, data2, promiseError)
+        }
     },
 
     radioOnChange(event, value) {

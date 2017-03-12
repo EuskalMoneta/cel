@@ -224,10 +224,10 @@ const ChangeAuto = React.createClass({
         if (this.state.hasChangeAuto) {
             var divContent = (
                 <div>
-                    {__('Je change mensuellement des euros en eusko grâce à un prélèvement automatique sur mon compte bancaire.')}
+                    {__('Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.')}
                     <br/>
                     {__('Les prélèvements sont effectués le 10 de chaque mois.')}<br/>
-                    {__('Montant de mon change automatique : ') + this.state.amountChangeAuto} eusko
+                    {__('Montant de votre change automatique : ') + this.state.amountChangeAuto} eusko
                     <br/><br/>
                     <h4>{__('Informations sur le mandat de prélèvement')}</h4>
                     {__('Nom du créancier :')} Association Euskal Moneta - Monnaie Locale du Pays Basque<br/>
@@ -254,17 +254,17 @@ const ChangeAuto = React.createClass({
         else {
             var divContent = (
                 <div>
-                    {__("Je mets en place un change mensuel d'euros en eusko grâce à un prélèvement automatique sur mon compte bancaire.")}<br/>
-                    {__("Pour cela, j'autorise Euskal Moneta à effectuer des prélèvements sur mon compte bancaire :")}<br/><br/>
-                    {__("Je remplis et signe le mandat ci-dessous et je le renvoie à Euskal Moneta avec le RIB du compte à débiter.")}<br/>
-                    {__("Documents à envoyer par mail à euskokart@euskalmoneta.org ou par courrier à :")}<br/>
-                    Euskal Moneta - 20 rue des Corderliers - 64100 Bayonne.
-                    <br/><br/>
+                    {__("Vous pouvez mettre en place un change mensuel d'euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.")}<br/>
+                    {__("Pour cela, vous devez autoriser Euskal Moneta à effectuer des prélèvements sur votre compte bancaire :")}<br/>
+                    {__("remplissez et signez le mandat ci-dessous et renvoyez le à Euskal Moneta avec le RIB du compte à débiter.")}<br/><br/>
                     {/* TODO: Update lien mandat de prélèvement*/}
                     <a href="">
                         {__("Télécharger le mandat de prélèvement")}
                         <i style={{marginLeft: 5}} className="glyphicon glyphicon-download-alt"></i>
                     </a>
+                    <br/><br/>
+                    {__("Documents à envoyer par mail à euskokart@euskalmoneta.org ou par courrier à :")}<br/>
+                    Euskal Moneta - 20 rue des Corderliers - 64100 Bayonne.
                 </div>
             )
         }

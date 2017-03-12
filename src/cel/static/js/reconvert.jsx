@@ -163,7 +163,7 @@ var Ponctuel = React.createClass({
         var computeForm = (data) => {
             this.hideModal()
             this.refs.container.success(
-                __("La reconversion a bien été effectué."),
+                __("La reconversion a bien été enregistrée."),
                 "",
                 {
                     timeOut: 3000,

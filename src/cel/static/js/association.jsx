@@ -231,7 +231,7 @@ const Association = React.createClass({
 
         var computeForm = (data) => {
             this.refs.container.success(
-                __("Les changement de vos associations parrainées ont bien été pris en compte."),
+                __("Les modifications ont bien été prises en compte."),
                 "",
                 {
                     timeOut: 3000,
@@ -247,7 +247,7 @@ const Association = React.createClass({
 
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors de la modification de vos assocation parrainées!"),
+                __("Une erreur s'est produite lors de l'enregistrement."),
                 "",
                 {
                     timeOut: 3000,
@@ -291,7 +291,7 @@ const Association = React.createClass({
                                     {__("Association parrainée - 1er choix :")}
                                 </label>
                             </div>
-                            Je sélectionne une association déjà adhérente à Euskal Moneta :<br/><br/>
+                            Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :<br/><br/>
                             <div className="form-group row">
                                 <div className="radio col-sm-1">
                                   <label>
@@ -316,7 +316,7 @@ const Association = React.createClass({
                                     />
                                 </div>
                             </div>
-                            ou je choisis une autre association :<br/><br/>
+                            ou une autre association :<br/><br/>
                             <div className="form-group row">
                                 <div className="radio col-sm-1">
                                   <label>
@@ -343,7 +343,7 @@ const Association = React.createClass({
                                     {__("Association parrainée - 2nd choix :")}
                                 </label>
                             </div>
-                            Je choisis l'association qui recevra les 3% de mes changes tant que la 1ère ne remplit pas les conditions :<br/><br/>
+                            Choisissez quelle association recevra les 3% de vos changes si la 1ère ne remplit pas les conditions pour :<br/><br/>
                             <div className="form-group row">
                                 <div className="col-sm-5 col-md-offset-1 profilform" data-eusko="profilform-asso2">
                                     <SimpleSelect

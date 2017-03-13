@@ -145,7 +145,7 @@ const Options = React.createClass({
             }
             else {
                 this.refs.container.success(
-                    __("Les changements de vos options ont bien été pris en compte."),
+                    __("Les modifications ont bien été prises en compte."),
                     "",
                     {
                         timeOut: 3000,
@@ -162,7 +162,7 @@ const Options = React.createClass({
 
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors de la modification de vos options !"),
+                __("Une erreur s'est produite lors de l'enregistrement."),
                 "",
                 {
                     timeOut: 3000,
@@ -185,7 +185,7 @@ const Options = React.createClass({
                                 data-eusko="options-recevoir-actus"
                                 type="inline"
                                 value={this.state.options_recevoir_actus}
-                                label={__("Souhaite être informé des actualités liées à l'eusko")}
+                                label={__("Recevoir les actualités liées à l'Eusko")}
                                 help={__("Vous recevrez un à deux mails par semaine.")}
                                 options={[{value: '1', label: __('Oui')},
                                           {value: '0', label: __('Non')}

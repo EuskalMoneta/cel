@@ -180,20 +180,6 @@ const Options = React.createClass({
                 <div className="row">
                     <OptionsForm ref="profil-form">
                         <fieldset>
-                            <RadioGroup
-                                name="options_recevoir_actus"
-                                data-eusko="options-recevoir-actus"
-                                type="inline"
-                                value={this.state.options_recevoir_actus}
-                                label={__("Recevoir les actualités liées à l'Eusko")}
-                                help={__("Vous recevrez un à deux mails par semaine.")}
-                                options={[{value: '1', label: __('Oui')},
-                                          {value: '0', label: __('Non')}
-                                ]}
-                                onChange={this.recevoirActusOnValueChange}
-                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
-                                required
-                            />
                             <div className="form-group row">
                                 <label
                                     className="control-label col-sm-3"
@@ -219,6 +205,20 @@ const Options = React.createClass({
                                     />
                                 </div>
                             </div>
+                            <RadioGroup
+                                name="options_recevoir_actus"
+                                data-eusko="options-recevoir-actus"
+                                type="inline"
+                                value={this.state.options_recevoir_actus}
+                                label={__("Recevoir les actualités liées à l'Eusko")}
+                                help={__("Vous recevrez un à deux mails par semaine.")}
+                                options={[{value: '1', label: __('Oui')},
+                                          {value: '0', label: __('Non')}
+                                ]}
+                                onChange={this.recevoirActusOnValueChange}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
+                                required
+                            />
                         </fieldset>
                         <div className="row profil-div-margin-left margin-top">
                             <input

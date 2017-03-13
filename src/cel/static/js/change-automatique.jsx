@@ -9,9 +9,11 @@ const {
     Input,
     Textarea,
 } = FRC
+
 Formsy.addValidationRule('isMoreThanTen', (values, value) => {
     return Number(value) >= Number(10)
 })
+
 Formsy.addValidationRule('isDifferentThanActualAmount', (values, value, actualAmount) => {
     return Number(value).toFixed(0) != Number(actualAmount)
 })
@@ -53,7 +55,7 @@ const ChangeAuto = React.createClass({
         return {
             member: null,
             canSubmit: false,
-            hasChangeAuto: false,
+            hasChangeAuto: undefined,
             newAmountChangeAuto: undefined,
             amountChangeAuto: undefined,
             periodiciteChangeAuto: undefined,
@@ -88,7 +90,7 @@ const ChangeAuto = React.createClass({
     },
 
     hideModal() {
-        this.setState({isModalOpen: false})
+        this.setState({isModalOpen: false, textareaCommentaire: '', newAmountChangeAuto: undefined, modalBody: undefined})
     },
 
     getModalElements(modalMode) {
@@ -150,6 +152,7 @@ const ChangeAuto = React.createClass({
             )
         }
         this.setState({modalBody: modalBody, modalMode: modalMode, canSubmit: canSubmit,
+                       textareaCommentaire: '', newAmountChangeAuto: undefined,
                        modalTitle: modalTitle, validateLabel: validateLabel}, this.openModal)
     },
 
@@ -221,7 +224,7 @@ const ChangeAuto = React.createClass({
 
     render() {
 
-        if (this.state.hasChangeAuto) {
+        if (this.state.hasChangeAuto === true) {
             var divContent = (
                 <div>
                     {__('Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.')}
@@ -251,14 +254,13 @@ const ChangeAuto = React.createClass({
                 </div>
             )
         }
-        else {
+        else if (this.state.hasChangeAuto === false) {
             var divContent = (
                 <div>
                     {__("Vous pouvez mettre en place un change mensuel d'euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.")}<br/>
                     {__("Pour cela, vous devez autoriser Euskal Moneta à effectuer des prélèvements sur votre compte bancaire :")}<br/>
                     {__("remplissez et signez le mandat ci-dessous et renvoyez le à Euskal Moneta avec le RIB du compte à débiter.")}<br/><br/>
-                    {/* TODO: Update lien mandat de prélèvement*/}
-                    <a href="">
+                    <a href={window.config.mandatPrelevementURL} target="_blank">
                         {__("Télécharger le mandat de prélèvement")}
                         <i style={{marginLeft: 5}} className="glyphicon glyphicon-download-alt"></i>
                     </a>
@@ -267,6 +269,9 @@ const ChangeAuto = React.createClass({
                     Euskal Moneta - 20 rue des Cordeliers - 64100 Bayonne.
                 </div>
             )
+        }
+        else {
+            var divContent = null
         }
 
         return (

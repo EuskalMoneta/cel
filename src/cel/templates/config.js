@@ -9,4 +9,5 @@ config.getLoginURL = '{{ django_settings.LOGIN_URL }}';
 config.getLogoutURL = '{{ django_settings.LOGOUT_URL }}';
 config.cguParticuliersURL = '{{ django_settings.CGU_PDF_PARTICULIERS }}';
 config.cguPrestatairesURL = '{{ django_settings.CGU_PDF_PRESTATAIRES }}';
+config.mandatPrelevementURL = '{{ django_settings.MANDAT_PDF_PRELEVEMENT }}';
 window.config = config;

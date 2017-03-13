@@ -86,7 +86,8 @@ LOGOUT_URL = '/logout'
 
 # TODO: Update CGU links
 CGU_PDF_PARTICULIERS = 'http://particuliers.euskalmoneta.org/cgu.pdf'
-CGU_PDF_PRESTATAIRES = 'http://prestataires.euskalmoneta.org/cgu.pdf'
+CGU_PDF_PRESTATAIRES = 'http://particuliers.euskalmoneta.org/cgu.pdf'
+MANDAT_PDF_PRELEVEMENT = 'http://www.euskokart.org/Mandat-de-pr%C3%A9l%C3%A8vement.pdf'
 
 TEMPLATES = [
     {
@@ -111,7 +112,7 @@ TEMPLATES = [
 
 # base.context_processors.get_django_settings needs it
 TEMPLATE_VISIBLE_SETTINGS = ['API_PUBLIC_URL',
-                             'CGU_PDF_PARTICULIERS', 'CGU_PDF_PRESTATAIRES',
+                             'CGU_PDF_PARTICULIERS', 'CGU_PDF_PRESTATAIRES', 'MANDAT_PDF_PRELEVEMENT',
                              'LOGIN_REDIRECT_URL', 'LOGIN_URL', 'LOGOUT_URL']
 
 WSGI_APPLICATION = 'cel.wsgi.application'

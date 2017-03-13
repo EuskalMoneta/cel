@@ -189,7 +189,6 @@ var BeneficiairesList = React.createClass({
                     return false
                 }
                 else {
-                    debugger
                     // window.location.assign(this.props.beneficiairesUrl + row.login)
                 }
             }

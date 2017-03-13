@@ -322,8 +322,8 @@ var EuskoKartList = React.createClass({
                     value=""
                     validations="minLength:4,maxLength:4"
                     validationErrors={{
-                        minLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères."),
-                        maxLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères.")
+                        minLength: __("Le code confidentiel doit comporter exactement 4 caractères."),
+                        maxLength: __("Le code confidentiel doit comporter exactement 4 caractères.")
                     }}
                     elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                     onChange={this.getPin}
@@ -354,10 +354,10 @@ var EuskoKartList = React.createClass({
                 </div>
                 <div className="row">
                     <div className="col-md-9 col-md-offset-1 ">
-                        <div className="search-group">
+                        <div>
                             <div className="form-group row">
-                                <div className="col-sm-3">
-                                    <h4>Choisir mon code :</h4>
+                                <div className="col-sm-4">
+                                    <h2>Choix du code confidentiel</h2>
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -377,8 +377,8 @@ var EuskoKartList = React.createClass({
                                             validations="equalsField:pin2,minLength:4,maxLength:4"
                                             validationErrors={{
                                                 equalsField: __("Les codes ne correspondent pas."),
-                                                minLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères."),
-                                                maxLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères.")
+                                                minLength: __("Le code confidentiel doit comporter exactement 4 caractères."),
+                                                maxLength: __("Le code confidentiel doit comporter exactement 4 caractères.")
                                             }}
                                             elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                                             onChange={this.getPin}
@@ -393,8 +393,8 @@ var EuskoKartList = React.createClass({
                                             validations="equalsField:pin1,minLength:4,maxLength:4"
                                             validationErrors={{
                                                 equalsField: __("Les codes ne correspondent pas."),
-                                                minLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères."),
-                                                maxLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères.")
+                                                minLength: __("Le code confidentiel doit comporter exactement 4 caractères."),
+                                                maxLength: __("Le code confidentiel doit comporter exactement 4 caractères.")
                                             }}
                                             elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                                             onChange={this.getPin}

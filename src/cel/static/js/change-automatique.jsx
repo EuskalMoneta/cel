@@ -264,7 +264,7 @@ const ChangeAuto = React.createClass({
                     </a>
                     <br/><br/>
                     {__("Documents à envoyer par mail à euskokart@euskalmoneta.org ou par courrier à :")}<br/>
-                    Euskal Moneta - 20 rue des Corderliers - 64100 Bayonne.
+                    Euskal Moneta - 20 rue des Cordeliers - 64100 Bayonne.
                 </div>
             )
         }

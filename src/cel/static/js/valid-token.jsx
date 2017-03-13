@@ -206,7 +206,6 @@ class SetPasswordPage extends React.Component {
         }
 
         var promiseError = (err) => {
-            debugger
             // Error during request, or parsing NOK :(
             console.error(this.props.postURL, err)
             this.refs.container.error(

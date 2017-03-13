@@ -75,8 +75,8 @@ var Ponctuel = React.createClass({
     getModalElements(modalMode, amount=null) {
         if (modalMode == 'delete') {
             var modalBody = <p>{__("Etes-vous sûr de vouloir reconvertir ") + amount + (" eusko en € ?")}</p>
-            var modalTitle = __("Validation de la reconversion")
-            var validateLabel = __("Valider")
+            var modalTitle = __("Reconversion d'eusko en € - Confirmation")
+            var validateLabel = __("Confirmer")
         }
         this.setState({modalBody: modalBody, modalMode: modalMode,
                        modalTitle: modalTitle, validateLabel: validateLabel}, this.openModal)
@@ -204,8 +204,9 @@ var Ponctuel = React.createClass({
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <label
-                            className="control-label col-sm-5"
-                            htmlFor="virement-debit">
+                            className="control-label col-sm-2 col-md-offset-1"
+                            htmlFor="virement-debit"
+                            style={{paddingTop:10}}>
                             {__("Compte à débiter")}
                         </label>
                         <div className="col-sm-1"></div>
@@ -224,8 +225,10 @@ var Ponctuel = React.createClass({
                         <div className="col-sm-1"></div>
                         <label
                             className="control-label col-sm-2"
-                            htmlFor="virement-debit">
+                            htmlFor="virement-debit"
+                            style={{paddingTop:10}}>
                             {__("Compte à débiter")}
+                            <span className="required-symbol">&nbsp;*</span>
                         </label>
                         <div className="col-sm-1"></div>
                         <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
@@ -253,14 +256,16 @@ var Ponctuel = React.createClass({
             <div className="row">
                 <div className="col-md-10 col-md-offset-1">
                     { debitData }
-                    <div className="form-group row">
+                    <div className="form-group row" style={{marginBottom: 0}}>
                         <div className="col-sm-1"></div>
                         <label
-                            className="control-label col-sm-2"
-                            htmlFor="virement-amount">
+                            className="control-label col-sm-1 col-md-offset-1"
+                            htmlFor="virement-amount"
+                            style={{paddingTop:10}}>
                             {__("Montant")}
+                            <span className="required-symbol">&nbsp;*</span>
                         </label>
-                        <div className="col-sm-5">
+                        <div className="col-sm-3">
                             <HistoricalForm ref="historical-form">
                                 <Input
                                     name="montant"
@@ -270,18 +275,20 @@ var Ponctuel = React.createClass({
                                 />
                             </HistoricalForm>
                         </div>
-                        <div className="col-sm-1">
+                        <div className="col-sm-1" style={{paddingTop:10}}>
                         eusko
                         </div>
                     </div>
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <label
-                            className="control-label col-sm-2"
-                            htmlFor="virement-description">
+                            className="control-label col-sm-1 col-md-offset-1"
+                            htmlFor="virement-description"
+                            style={{paddingTop:10}}>
                             {__("Description")}
+                            <span className="required-symbol">&nbsp;*</span>
                         </label>
-                        <div className="col-sm-5">
+                        <div className="col-sm-3">
                             <HistoricalForm ref="historical-form">
                                 <Input
                                     name="description"
@@ -298,7 +305,7 @@ var Ponctuel = React.createClass({
                             data-eusko="one-time-transfer-form-submit"
                             type="submit"
                             defaultValue={__("Valider")}
-                            className="btn btn-success col-sm-offset-2 col-md-offset-6"
+                            className="btn btn-success col-sm-offset-2 col-md-offset-4"
                             formNoValidate={true}
                             onClick={() => this.validateReconvert(this.state.amount)}
                             disabled={!this.state.canSubmit}

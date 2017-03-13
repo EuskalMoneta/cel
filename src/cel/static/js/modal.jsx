@@ -80,7 +80,7 @@ export default class ModalEusko extends React.Component {
                     <ModalTitle>{this.props.modalTitle}</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
-                    <div>{this.props.modalBody}</div>
+                    <div>{this.state.modalBody}</div>
                 </ModalBody>
                 <ModalFooter>
                     <button className="btn btn-default" onClick={this.props.hideModal}>

@@ -2,18 +2,23 @@ import {
     fetchAuth,
     getAPIBaseURL,
     SelectizeUtils,
+    isPositiveNumeric,
 } from 'Utils'
+
+Formsy.addValidationRule('isPositiveNumeric', isPositiveNumeric)
+
+import ModalEusko from 'Modal'
 
 import {
     BootstrapTable,
     TableHeaderColumn,
 } from 'react-bootstrap-table'
+
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
+
 const {
     Input,
-    RadioGroup,
     Row,
-    Textarea,
 } = FRC
 
 import ReactSelectize from 'react-selectize'
@@ -24,7 +29,7 @@ const {
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
-const HistoricalForm = React.createClass({
+const VirementPonctuelForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
 
@@ -62,6 +67,8 @@ var Ponctuel = React.createClass({
             amount: undefined,
             description: '',
             accountList: Array(),
+            isModalOpen: false,
+            modalBody: Array(),
         }
     },
 
@@ -110,8 +117,9 @@ var Ponctuel = React.createClass({
     },
 
     amountOnValueChange(event, value) {
-        var valueToTest = value.replace(',','.')
-        if(isNaN(valueToTest))
+        var valueToTest = value.replace(',', '.')
+
+        if (isNaN(valueToTest))
         {
             this.refs.container.error(
                 __("Attention, la valeur saisie pour le montant est incorrecte !"),
@@ -131,6 +139,24 @@ var Ponctuel = React.createClass({
 
     descriptionOnValueChange(event, value) {
         this.setState({description: value}, this.validateForm)
+    },
+
+    openModal() {
+        this.setState({isModalOpen: true})
+    },
+
+    hideModal() {
+        this.setState({isModalOpen: false})
+    },
+
+    getModalElements() {
+        var modalBody = Array()
+        modalBody.push({'label': __('Compte à débiter'), order: 1, 'value': this.state.debit.label},
+                       {'label': __('Compte bénéficiaire'), order: 2, 'value': this.state.beneficiaires.label},
+                       {'label': __('Montant'), order: 3, 'value': this.state.amount},
+                       {'label': __('Description'), order: 4, 'value': this.state.description})
+
+        this.setState({modalBody: modalBody}, this.openModal)
     },
 
     enableButton() {
@@ -169,10 +195,12 @@ var Ponctuel = React.createClass({
                     closeButton:true
                 }
             )
+
+            setTimeout(() => window.location.assign("/compte/synthese"), 5000)
         }
 
         var promiseError = (err) => {
-            // Error during request, or parsing NOK :(
+            // Error during request, or parsing NOK(
             this.enableButton()
 
             console.log(this.props.url, err)
@@ -190,39 +218,37 @@ var Ponctuel = React.createClass({
     },
 
     render() {
-        if (this.state.allAccount) {
-            if (this.state.allAccount.length == 1 )
+        if (this.state.allAccount)
+        {
+            if (this.state.allAccount.length == 1)
             {
                 var debitData = (
                     <div className="form-group row">
-                        <div className="col-sm-1"></div>
                         <label
-                            className="control-label col-sm-5"
+                            className="control-label col-sm-3"
                             htmlFor="virement-debit">
                             {__("Compte à débiter")}
+                            <span className="required-symbol">&nbsp;*</span>
                         </label>
-                        <div className="col-sm-1"></div>
-                        <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
-                        <label className="control-label solde-history-label">
-                            {this.state.debit.label}
-                        </label>
+                        <div className="col-sm-3 virement-debit" data-eusko="virement-debit">
+                            <label className="control-label" style={{fontWeight: 'normal'}}>
+                                {this.state.debit.label}
+                            </label>
                         </div>
                     </div>
                 )
-
             }
             else
             {
                 var debitData = (
                     <div className="form-group row">
-                        <div className="col-sm-1"></div>
                         <label
                             className="control-label col-sm-2"
                             htmlFor="virement-debit">
                             {__("Compte à débiter")}
+                            <span className="required-symbol">&nbsp;*</span>
                         </label>
-                        <div className="col-sm-1"></div>
-                        <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
+                        <div className="col-sm-3 virement-debit" data-eusko="virement-debit">
                             <SimpleSelect
                                 ref="select"
                                 value={this.state.debit}
@@ -245,87 +271,88 @@ var Ponctuel = React.createClass({
 
         return (
             <div className="row">
-                <div className="col-md-10 col-md-offset-1">
-                    
-                         { debitData }
-                    
-                    <div className="form-group row">
-                        <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-2"
-                            htmlFor="virement-credit">
-                            {__("Compte bénéficiaire")}
-                        </label>
-                        <div className="col-sm-1"></div>
-                        <div className="col-sm-4 virement-credit" data-eusko="virement-credit">
-                            <SimpleSelect
-                                ref="select"
-                                value={this.state.beneficiaires}
-                                options={this.state.beneficiairesList}
-                                placeholder={__("Compte à créditer")}
-                                theme="bootstrap3"
-                                autocomplete="off"
-                                onValueChange={this.beneficiairesOnValueChange}
-                                renderValue={SelectizeUtils.selectizeRenderValue}
-                                renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                onBlur={this.validateForm}
-                                required
-                            >
-                            </SimpleSelect>
+                <VirementPonctuelForm ref="historical-form">
+                    <div className="col-md-12 col-md-offset-1">
+                        {debitData}
+                        <div className="form-group row">
+                            <label
+                                className="control-label col-sm-3"
+                                htmlFor="virement-credit">
+                                {__("Compte bénéficiaire")}
+                                <span className="required-symbol">&nbsp;*</span>
+                            </label>
+                            <div className="col-sm-3" data-eusko="virement-credit">
+                                <SimpleSelect
+                                    ref="select"
+                                    value={this.state.beneficiaires}
+                                    options={this.state.beneficiairesList}
+                                    placeholder={__("Compte à créditer")}
+                                    theme="bootstrap3"
+                                    autocomplete="off"
+                                    onValueChange={this.beneficiairesOnValueChange}
+                                    renderValue={SelectizeUtils.selectizeRenderValue}
+                                    renderOption={SelectizeUtils.selectizeNewRenderOption}
+                                    onBlur={this.validateForm}
+                                    required
+                                >
+                                </SimpleSelect>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-2"
-                            htmlFor="virement-amount">
-                            {__("Montant")}
-                        </label>
-                        <div className="col-sm-5">
-                            <HistoricalForm ref="historical-form">
-                                <Input
-                                    name="montant"
-                                    data-eusko="virement-amount"
-                                    onChange={this.amountOnValueChange}
-                                    value = {this.state.amount}
-                                />
-                            </HistoricalForm>
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-2"
-                            htmlFor="virement-description">
-                            {__("Description")}
-                        </label>
-                        <div className="col-sm-5">
-                            <HistoricalForm ref="historical-form">
-                                <Input
-                                    name="description"
-                                    data-eusko="virement-description"
-                                    onChange={this.descriptionOnValueChange}
-                                    value = {this.state.description}
-                                />
-                            </HistoricalForm>
-                        </div>
-                    </div>
-                    <div className="row profil-div-margin-left margin-top">
-                        <input
-                            name="submit"
-                            data-eusko="one-time-transfer-form-submit"
-                            type="submit"
-                            defaultValue={__("Valider")}
-                            className="btn btn-success col-sm-offset-5"
-                            formNoValidate={true}
-                            onClick={() => this.submitForm()}
-                            disabled={!this.state.canSubmit}
+                        <Input
+                            name="montant"
+                            data-eusko="virement-amount"
+                            onChange={this.amountOnValueChange}
+                            value={this.state.amount ? this.state.amount : ""}
+                            label={__('Montant')}
+                            type="number"
+                            placeholder={__("Montant du virement")}
+                            validations="isPositiveNumeric"
+                            validationErrors={{
+                               isPositiveNumeric: __("Montant invalide.")
+                            }}
+                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-3']}
+                            required
                         />
+                        <Input
+                            name="description"
+                            data-eusko="virement-description"
+                            onChange={this.descriptionOnValueChange}
+                            value={this.state.description}
+                            label={__('Description')}
+                            type="text"
+                            placeholder={__("Description du virement")}
+                            validations="isExisty"
+                            validationErrors={{
+                               isExisty: __("Le champ description ne peut être vide.")
+                            }}
+                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-3']}
+                            required
+                        />
+                        <Row layout="horizontal">
+                            <input
+                                name="submit"
+                                data-eusko="one-time-transfer-form-submit"
+                                type="submit"
+                                defaultValue={__("Valider")}
+                                className="btn btn-success"
+                                formNoValidate={true}
+                                onClick={this.getModalElements}
+                                disabled={!this.state.canSubmit}
+                            />
+                        </Row>
                     </div>
-                </div>
+                </VirementPonctuelForm>
                 <ToastContainer ref="container"
                     toastMessageFactory={ToastMessageFactory}
                     className="toast-top-right toast-top-right-navbar"
+                />
+                <ModalEusko hideModal={this.hideModal}
+                            isModalOpen={this.state.isModalOpen}
+                            modalBody={this.state.modalBody}
+                            modalTitle={__("Confirmation du virement")}
+                            onValidate={this.submitForm}
+                            staticContent={false}
+                            btnValidateEnabled={true}
                 />
             </div>
         )

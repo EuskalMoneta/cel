@@ -366,7 +366,7 @@ var HistoryPage = React.createClass({
 
         return (
             <div className="row">
-                <div className="search-solde-group col-md-10">
+                <div className="col-md-10">
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
                         <div className="col-sm-3">{accountData}</div>
@@ -375,20 +375,21 @@ var HistoryPage = React.createClass({
                         <div className="col-sm-1"></div>
                         <div className="col-sm-3">{balanceData}</div>
                     </div>
-                    <div className="col-md-12 col-md-offset-1">
-                        <div className="search-group">
+                    <div className="col-md-8 col-md-offset-1">
+                        <div className="search-group" style={{borderRadius: 5}}>
                             <div className="form-group row">
-                                <div className="col-sm-3">
+                                <div className="col-sm-4 col-md-offset-1">
                                     <h4>Rechercher des opérations</h4>
                                 </div>
                             </div>
-                            <div className="form-group row">
+                            <div className="form-group row col-md-offset-1" style={{marginBottom: 0}}>
                                 <label
-                                    className="control-label col-sm-2 col-md-offset-2"
-                                    htmlFor="memberhistorical-description">
+                                    className="control-label col-sm-1"
+                                    htmlFor="memberhistorical-description"
+                                    style={{paddingTop:10}}>
                                     {__("Description")}
                                 </label>
-                                <div className="col-sm-6">
+                                <div className="col-sm-3">
                                     <HistoricalForm ref="historical-form">
                                         <Input
                                             name="description"
@@ -398,14 +399,13 @@ var HistoryPage = React.createClass({
                                         />
                                     </HistoricalForm>
                                 </div>
-                            </div>
-                            <div className="form-group row">
                                 <label
-                                    className="control-label col-sm-3 col-md-offset-2"
-                                    htmlFor="memberhistorical-date-period">
+                                    className="control-label col-sm-2"
+                                    htmlFor="memberhistorical-date-period"
+                                    style={{paddingTop:10}}>
                                     {__("Période")}
                                 </label>
-                                <div className="col-sm-5 memberhistorical" data-eusko="memberhistorical-date-period">
+                                <div className="col-sm-4 memberhistorical" data-eusko="memberhistorical-date-period">
                                     <SimpleSelect
                                         ref="select"
                                         placeholder={__("Période")}
@@ -425,8 +425,12 @@ var HistoryPage = React.createClass({
                                 </div>
                                 <div className="col-sm-2"></div>
                             </div>
-                            <div className="form-group row">
-                                <label className="control-label col-sm-3 col-md-offset-2" htmlFor="memberhistorical-date-start-end">Date début / fin :</label>
+                            <div className="form-group row col-md-offset-1" style={{marginBottom: 0}}>
+                                <label className="control-label col-sm-2 col-md-offset-4" 
+                                       htmlFor="memberhistorical-date-start-end" 
+                                       style={{paddingTop:10}}>
+                                            Date début / fin
+                                </label>
                                 <div className="col-sm-2 memberhistorical" data-eusko="memberhistorical-date-start">
                                     <DatePicker
                                         name="dateSelectorBegin"
@@ -437,7 +441,6 @@ var HistoryPage = React.createClass({
                                         locale="fr"
                                     />
                                 </div>
-                                <div className="col-sm-1"></div>
                                 <div className="col-sm-2 memberhistorical" data-eusko="memberhistorical-date-end">
                                     <DatePicker
                                         name="dateSelectorEnd"

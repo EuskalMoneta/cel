@@ -71,15 +71,13 @@ const MemberShow = React.createClass({
             address: undefined,
             country: undefined,
             zip: undefined,
-            zipSearch: undefined,
+            zipSearch: '',
             zipList: undefined,
             town: undefined,
             townList: undefined,
             birth: undefined,
             phone: undefined,
             email: undefined,
-            options_recevoir_actus: false,
-            assoSaisieLibre: false,
         }
     },
 
@@ -89,15 +87,19 @@ const MemberShow = React.createClass({
             moment.locale(getCurrentLang)
 
             if (member[0].birth) {
-                var birth = moment.utc(member[0].birth)
+                var birth = moment(member[0].birth, 'X')
             }
             else {
                 var birth = undefined
             }
 
+            if (member[0].phone_mobile)
+                var phone = member[0].phone_mobile
+            else
+                var phone = member[0].phone_perso
+
             this.setState({member: member[0],
-                           options_recevoir_actus: member[0].array_options.options_recevoir_actus == "1" ? "1" : "0",
-                           address: member[0].address, phone: member[0].phone, email: member[0].email,
+                           address: member[0].address, phone: phone, email: member[0].email,
                            birth: birth,
                            zip: {label: member[0].zip + " - " + member[0].town,
                                  town: member[0].town, value: member[0].zip},
@@ -136,8 +138,7 @@ const MemberShow = React.createClass({
 
     validateForm() {
         if (this.state.birth && this.state.zip && this.state.town && this.state.country &&
-            this.state.address && this.state.email &&
-             (this.state.options_recevoir_actus == "0" || this.state.options_recevoir_actus == "1"))
+            this.state.address && this.state.email)
         {
             this.setState({validFields: true}, this.enableButton)
         }
@@ -237,16 +238,10 @@ const MemberShow = React.createClass({
         // We push fields into the data object that will be passed to the server
         var data = {birth: this.state.birth.format('DD/MM/YYYY'),
                     address: this.state.address,
-                    login: this.state.member.login,
-                    civility_id: this.state.member.civility_id,
-                    lastname: this.state.member.lastname,
-                    firstname: this.state.member.firstname,
-                    address: this.state.address,
                     zip: this.state.zip.value,
                     town: this.state.town.value,
                     country_id: this.state.country.value,
                     email: this.state.email,
-                    options_recevoir_actus: this.state.options_recevoir_actus,
         }
 
         if (this.state.phone)
@@ -285,36 +280,6 @@ const MemberShow = React.createClass({
     render() {
         moment.locale(getCurrentLang)
         if (this.state.member) {
-            var dateEndSub = moment.unix(this.state.member.datefin).format('DD MMMM YYYY');
-
-            // Whether or not, we have an up-to-date member subscription
-            if (moment.unix(this.state.member.datefin) > moment()) {
-                var memberStatus = (
-                    <div className="font-member-status">
-                        <span className="glyphicon glyphicon-ok member-status-ok"></span>
-                        <span className="member-status-text" data-eusko="profil-status">
-                            {__("À jour")}
-                        </span>
-                        <span className="member-status-date">({dateEndSub})</span>
-                    </div>
-                )
-
-                var memberStatusUpToDate = true
-            }
-            else {
-                var memberStatus = (
-                    <div className="font-member-status">
-                        <span className="glyphicon glyphicon-remove member-status-nok"></span>
-                        <span className="member-status-text" data-eusko="profil-status">
-                            {__("Pas à jour")}
-                        </span>
-                        <span className="member-status-date">({dateEndSub})</span>
-                    </div>
-                )
-
-                var memberStatusUpToDate = false
-            }
-
             // Whether or not, we have a business member or a individual
             if (this.state.member.type.toLowerCase() != 'particulier') {
                 // We have a business member
@@ -323,13 +288,6 @@ const MemberShow = React.createClass({
                         <label className="control-label col-sm-2">{__("Nom")}</label>
                         <div className="col-sm-3 profil-span">
                             <span data-eusko="profil-company">{this.state.member.company}</span>
-                        </div>
-
-                        <label className="control-label col-sm-1">{__("Dirigeant")}</label>
-                        <div className="col-sm-3 profil-span">
-                            <span data-eusko="profil-fullname">
-                                {this.state.member.firstname + " " + this.state.member.lastname}
-                            </span>
                         </div>
                     </div>
                 )
@@ -340,12 +298,9 @@ const MemberShow = React.createClass({
                     <div className="form-group row">
                         <label className="control-label col-sm-2">{__("Nom")}</label>
                         <div className="col-sm-3 profil-span">
-                            <span data-eusko="profil-lastname">{this.state.member.lastname}</span>
-                        </div>
-
-                        <label className="control-label col-sm-1">{__("Prénom")}</label>
-                        <div className="col-sm-3 profil-span">
-                            <span data-eusko="profil-firstname">{this.state.member.firstname}</span>
+                            <span data-eusko="profil-fullname">
+                                {this.state.member.lastname + " " + this.state.member.firstname}
+                            </span>
                         </div>
                     </div>
                 )
@@ -365,9 +320,6 @@ const MemberShow = React.createClass({
                             <label className="control-label col-sm-2">{__("N° Adhérent")}</label>
                             <div className="col-sm-3 profil-span">
                                 <span data-eusko="profil-login">{this.state.member.login}</span>
-                            </div>
-                            <div className="col-sm-3">
-                                {memberStatus}
                             </div>
                         </div>
                         {memberName}
@@ -431,14 +383,16 @@ const MemberShow = React.createClass({
                                     required
                                 />
                             </div>
+                        </div>
+                        <div className="form-group row">
                             <label
-                                className="control-label col-sm-1"
+                                className="control-label col-sm-2"
                                 data-required="true"
                                 htmlFor="profilform-town">
                                 {__("Ville")}
                                 <span className="required-symbol">&nbsp;*</span>
                             </label>
-                            <div className="col-sm-3 profil-town-div">
+                            <div className="col-sm-3">
                                 <div className="profilform profil-town" data-eusko="profilform-town">
                                     <SimpleSelect
                                         ref="select"
@@ -500,8 +454,9 @@ const MemberShow = React.createClass({
                                     onChange={this.onFormChange}
                                 />
                             </div>
-
-                            <label className="control-label col-sm-1">
+                        </div>
+                        <div className="form-group row">
+                            <label className="control-label col-sm-2">
                                 {__("Email")}
                                 <span className="required-symbol">&nbsp;*</span>
                             </label>

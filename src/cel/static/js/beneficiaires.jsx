@@ -159,11 +159,7 @@ var BeneficiairesList = React.createClass({
     computeBeneficiairesList() {
         var getBeneficiairesList = (data) => {
             // Get beneficiairesList
-            var beneficiairesList = _.chain(data.results)
-                                     .sortBy((item) => {return item.lastname})
-                                     .value()
-
-            this.setState({beneficiairesList: beneficiairesList}, this.hideModal)
+            this.setState({beneficiairesList: _.sortBy(data.results, 'cyclos_name')}, this.hideModal)
         }
         fetchAuth(this.props.beneficiairesUrl, 'GET', getBeneficiairesList)
     },

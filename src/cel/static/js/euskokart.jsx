@@ -322,8 +322,8 @@ var EuskoKartList = React.createClass({
                     value=""
                     validations="minLength:4,maxLength:4"
                     validationErrors={{
-                        minLength: __("Le pin de vos cartes doit comporter exactement 4 caractères."),
-                        maxLength: __("Le pin de vos cartes doit comporter exactement 4 caractères.")
+                        minLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères."),
+                        maxLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères.")
                     }}
                     elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                     onChange={this.getPin}
@@ -376,9 +376,9 @@ var EuskoKartList = React.createClass({
                                             value=""
                                             validations="equalsField:pin2,minLength:4,maxLength:4"
                                             validationErrors={{
-                                                equalsField: __("Les mots de passe ne correspondent pas."),
-                                                minLength: __("Le pin de vos cartes doit comporter exactement 4 caractères."),
-                                                maxLength: __("Le pin de vos cartes doit comporter exactement 4 caractères.")
+                                                equalsField: __("Les codes ne correspondent pas."),
+                                                minLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères."),
+                                                maxLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères.")
                                             }}
                                             elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                                             onChange={this.getPin}
@@ -392,9 +392,9 @@ var EuskoKartList = React.createClass({
                                             value=""
                                             validations="equalsField:pin1,minLength:4,maxLength:4"
                                             validationErrors={{
-                                                equalsField: __("Les mots de passe ne correspondent pas."),
-                                                minLength: __("Le pin de vos cartes doit comporter exactement 4 caractères."),
-                                                maxLength: __("Le pin de vos cartes doit comporter exactement 4 caractères.")
+                                                equalsField: __("Les codes ne correspondent pas."),
+                                                minLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères."),
+                                                maxLength: __("Le code confidentiel de vos cartes doit comporter exactement 4 caractères.")
                                             }}
                                             elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                                             onChange={this.getPin}

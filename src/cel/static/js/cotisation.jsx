@@ -72,7 +72,7 @@ const Cotisation = React.createClass({
             this.setState({member: member[0]})
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
-                this.setState({cotisationState: false})
+                this.setState({cotisationState: true})
             }
             if(member[0].login.toUpperCase().startsWith('Z'))
             {
@@ -430,7 +430,6 @@ const Cotisation = React.createClass({
             if(this.state.memberType == '10') {
                 var cotisation_info = (
                     <span> 
-                    {__("Montant de la cotisation :")}<br/><br/> 
                     {__("Entreprise de 0 salarié et de moins de 2 ans d’existence = 5 € / eusko par mois")}<br/>
                     {__("Entreprise de 0 salarié et de plus de 2 ans d’existence = de 7 à 10 € / eusko par mois")}<br/>
                     {__("Entreprise de 1 à 5 salariés inclus (équivalent temps plein) = de 7 à 10 € / eusko par mois")}<br/>
@@ -442,7 +441,7 @@ const Cotisation = React.createClass({
             {
                 var cotisation_info = (
                     <span> 
-                    {__("Montant de la cotisation annuelle :")}<br/><br/> 
+                    {__("Cotisation annuelle :")}<br/><br/> 
                     {__("de 10 à 100 € / eusko ou plus, selon les possiblités de l'association.")}<br/><br/>
                     </span>
                 ) 
@@ -451,7 +450,7 @@ const Cotisation = React.createClass({
         else {
             var cotisation_info = (
                 <span> 
-                {__("Montant de la cotisation annuelle :")}<br/><br/>
+                {__("Cotisation annuelle :")}<br/><br/>
                 {__("5 € / eusko (bas revenus)")}<br/>
                 {__("10 € / eusko (cotisation normale)")}<br/>
                 {__("20 € / eusko ou plus (cotisation de soutien)")}<br/><br/>
@@ -462,63 +461,65 @@ const Cotisation = React.createClass({
             if(this.state.memberType.toUpperCase().startsWith('1')) {
                 var auto_prelev_auto = (
                     <span>
+                        <div className="form-group row">
+                            <div className="col-sm-5">
+                                <h2>Prélèvement de la cotisation</h2>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="row">
                                 <div className="col-sm-1 col-md-offset-1">
-                                    <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange}/>
+                                    <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
                                 </div>
-                                <div className="col-sm-9 ">
-                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
+                                <div className="col-sm-9" style={{marginBottom: 15}}>
+                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier ci-dessous.")}
                                 </div>
                             </div>
-                            <div className="form-group row">
+                            <Input
+                                name="amount"
+                                data-eusko="cotisation-amount"
+                                onChange={this.amountOnChange}
+                                value={this.state.amount}
+                                label={__("Montant")}
+                                labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
+                                placeholder={__("Montant de la cotisation")}
+                            />
+                            <div className="form-group row" style={{marginBottom: 0}}>
                                 <label
-                                    className="control-label col-sm-2 col-md-offset-1"
+                                    className="control-label col-sm-2"
                                     data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
-                                    {__("Montant :")}
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:10}}>
+                                    {__("Périodicité")}
                                 </label>
-                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                        <Input
-                                            name="amount"
-                                            data-eusko="cotisation-amount"
-                                            onChange={this.amountOnChange}
-                                            value={this.state.amount}
-                                        />
+                                <div className="form-group row" style={{marginBottom: 0}}>
+                                    <div className="col-sm-4 memberaddsubscription" data-eusko="memberaddsubscription-amount">
+                                        <SimpleSelect
+                                            ref="select"
+                                            theme="bootstrap3"
+                                            onValueChange={this.periodOnValueChange}
+                                            value = {this.state.period}
+                                            renderResetButton={() => { return null }}
+                                            required
+                                        >
+                                            <option value = "1">Mensuel</option>
+                                            <option value = "3">Trimestriel</option>
+                                            <option value = "6">Semestriel</option>
+                                            <option value = "12">Annuel</option>
+                                        </SimpleSelect>
+                                    </div>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label
-                                    className="control-label col-sm-2 col-md-offset-1"
+                                    className="control-label col-sm-2"
                                     data-required="true"
                                     htmlFor="memberaddsubscription-amount">
-                                    {__("Périodicité :")}
-                                </label>
-                                <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
-                                    <SimpleSelect
-                                        ref="select"
-                                        theme="bootstrap3"
-                                        onValueChange={this.periodOnValueChange}
-                                        value = {this.state.period}
-                                        renderResetButton={() => { return null }}
-                                        required
-                                    >
-                                        <option value = "1">Mensuel</option>
-                                        <option value = "3">Trimestriel</option>
-                                        <option value = "6">Semestriel</option>
-                                        <option value = "12">Annuel</option>
-                                    </SimpleSelect>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label
-                                    className="control-label col-sm-2 col-md-offset-1"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
-                                    {__("Montant de cotisation annuelle :")}
+                                    {__("Montant de cotisation annuelle")}
                                 </label>
                                 <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
-                                <label>
+                                <label className="control-label col-sm-4" style={{textAlign: 'center'}}>
                                     {__("") + this.state.selectedOption==0 ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </label>
                                 </div>
@@ -531,20 +532,26 @@ const Cotisation = React.createClass({
             {
                 var auto_prelev_auto = (
                     <span>
+                        <div className="form-group row">
+                            <div className="col-sm-5">
+                                <h2>Prélèvement de la cotisation</h2>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="row">
                                 <div className="col-sm-1 col-md-offset-1">
-                                    <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange}/>
+                                    <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
                                 </div>
-                                <div className="col-sm-9 ">
+                                <div className="col-sm-9" style={{marginBottom: 15}}>
                                 {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label
-                                    className="control-label col-sm-3"
+                                    className="control-label col-sm-2"
                                     data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:10}}>
                                     {__("Montant")}
                                     <span className="required-symbol">&nbsp;*</span>
                                 </label>
@@ -591,10 +598,11 @@ const Cotisation = React.createClass({
                         </div>
                         <div className="form-group row">
                             <label
-                                className="control-label col-sm-2 col-md-offset-1"
+                                className="control-label col-sm-2"
                                 data-required="true"
-                                htmlFor="memberaddsubscription-amount">
-                                {__("Périodicité :")}
+                                htmlFor="memberaddsubscription-amount"
+                                style={{paddingTop:0}}>
+                                {__("Périodicité")}
                             </label>
                             <div className="col-sm-5 memberaddsubscription col-md-offset-2" data-eusko="memberaddsubscription-amount">
                                 <label>
@@ -611,28 +619,29 @@ const Cotisation = React.createClass({
             if(this.state.memberType.toUpperCase().startsWith('0')) {
                 var auto_prelev_auto = (
                     <span>
-                        <div className="row">
-                            <div className="row">
-                                <div className="col-sm-9 col-md-offset-1">
-                                {__("Je met ma cotisation à jour")}
-                                </div>
+                        <div className="form-group row">
+                            <div className="col-sm-5">
+                                <h2>Paiement de la cotisation</h2>
                             </div>
+                        </div>
+                        <div className="row">
                             <div className="form-group row ">
-                                <div className="radio col-sm-1 col-md-offset-2">
+                                <div className="radio col-sm-1">
                                     <label>
-                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange}/>
+                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
                                     </label>
                                 </div>
-                                <div className="col-sm-5  profilform " data-eusko="profilform-asso">
-                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
+                                <div className="col-sm-9" style={{marginBottom: 15}}>
+                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon un des choix de cotisation ci-dessous.")}
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="form-group row">
                                     <label
-                                        className="control-label col-sm-3"
+                                        className="control-label col-sm-2"
                                         data-required="true"
-                                        htmlFor="memberaddsubscription-amount">
+                                        htmlFor="memberaddsubscription-amount"
+                                        style={{paddingTop:10}}>
                                         {__("Montant")}
                                         <span className="required-symbol">&nbsp;*</span>
                                     </label>
@@ -675,13 +684,14 @@ const Cotisation = React.createClass({
                                     label={__("Montant personnalisé")}
                                     onChange={this.validateAmount}
                                     rowClassName={divCustomAmountClass}
+                                    labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
                                     elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
                                     required={this.state.displayCustomAmount}
                                     disabled={!this.state.displayCustomAmount}
                                 />
                             </div>
                             <div className="form-group row ">
-                                <div className="radio col-sm-1 col-md-offset-2">
+                                <div className="radio col-sm-1 col-md-offset-1">
                                 </div>
                                 <div className="col-sm-5  profilform" data-eusko="profilform-asso">
                                     {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
@@ -689,20 +699,21 @@ const Cotisation = React.createClass({
                                     {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
                                 </div>
                             </div>
+                            <hr></hr><hr></hr>
                             <div className="form-group row ">
-                                <div className="radio col-sm-1 col-md-offset-2">
+                                <div className="radio col-sm-1">
                                   <label>
                                     <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
                                   </label>
                                 </div>
-                                <div className="col-sm-5  profilform" data-eusko="profilform-asso">
-                                    {__("Je paie ma cotisation toute l'année en cours par virement depuis mon compte Eusko :")}
+                                <div className="col-sm-9  profilform" data-eusko="profilform-asso">
+                                    {__("Je paie ma cotisation toute l'année en cours par virement depuis mon compte Eusko, selon un des choix de cotisation ci-dessous.")}
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="form-group row">
                                     <label
-                                        className="control-label col-sm-3"
+                                        className="control-label col-sm-2"
                                         data-required="true"
                                         htmlFor="memberaddsubscription-amount">
                                         {__("Montant")}
@@ -733,24 +744,25 @@ const Cotisation = React.createClass({
                                             {__('20 ou plus (cotisation de soutien)')}
                                         </button>
                                     </div>
-                                    <Input
-                                        name="customAmount"
-                                        data-eusko="bank-deposit-customAmount"
-                                        value={this.state.customAmount ? this.state.customAmount : ""}
-                                        type="number"
-                                        placeholder={__("Montant de la cotisation")}
-                                        validations="isPositiveNumeric"
-                                        validationErrors={{
-                                           isPositiveNumeric: __("Montant invalide.")
-                                        }}
-                                        label={__("Montant personnalisé")}
-                                        onChange={this.validateAmount}
-                                        rowClassName={divCustomAmountClass2}
-                                        elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
-                                        required={this.state.displayCustomAmount2}
-                                        disabled={!this.state.displayCustomAmount2}
-                                    />
                                 </div>
+                                <Input
+                                    name="customAmount"
+                                    data-eusko="bank-deposit-customAmount"
+                                    value={this.state.customAmount ? this.state.customAmount : ""}
+                                    type="number"
+                                    placeholder={__("Montant de la cotisation")}
+                                    validations="isPositiveNumeric"
+                                    validationErrors={{
+                                       isPositiveNumeric: __("Montant invalide.")
+                                    }}
+                                    label={__("Montant personnalisé")}
+                                    onChange={this.validateAmount}
+                                    rowClassName={divCustomAmountClass2}
+                                    labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
+                                    elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
+                                    required={this.state.displayCustomAmount2}
+                                    disabled={!this.state.displayCustomAmount2}
+                                />
                             </div>
                         </div>
                     </span>
@@ -760,113 +772,105 @@ const Cotisation = React.createClass({
             {
                 var auto_prelev_auto = (
                     <span>
-                        <div className="row">
-                            <div className="row">
-                                <div className="col-sm-9 col-md-offset-1">
-                                {__("Je met ma cotisation à jour")}
-                                </div>
+                        <div className="form-group row">
+                            <div className="col-sm-5">
+                                <h2>Paiement de la cotisation</h2>
                             </div>
+                        </div>
+                        <div className="row">
                             <div className="form-group row ">
-                                <div className="radio col-sm-1 col-md-offset-2">
+                                <div className="radio col-sm-1">
                                     <label>
-                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange}/>
+                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
                                     </label>
                                 </div>
-                                <div className="col-sm-5  profilform" data-eusko="profilform-asso">
+                                <div className="col-sm-9" style={{marginBottom: 15}}>
                                     {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
-                            <div className="form-group row">
+                            <Input
+                                name="amount"
+                                data-eusko="cotisation-amount"
+                                onChange={this.amountOnChange}
+                                value={this.state.selectedOption==0 ? this.state.amount : ""}
+                                readOnly={this.state.selectedOption}
+                                label={__("Montant")}
+                                labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
+                                placeholder={__("Montant de la cotisation")}
+                            />
+                            <div className="form-group row" style={{marginBottom: 0}}>
                                 <label
-                                    className="control-label col-sm-2 col-md-offset-1"
+                                    className="control-label col-sm-2"
                                     data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
-                                    {__("Montant :")}
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:10}}>
+                                    {__("Périodicité")}
                                 </label>
-                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                        <Input
-                                            name="amount"
-                                            data-eusko="cotisation-amount"
-                                            onChange={this.amountOnChange}
-                                            value={this.state.selectedOption==0 ? this.state.amount : ""}
-                                            readOnly={this.state.selectedOption}
-                                        />
+                                <div className="form-group row" style={{marginBottom: 0}}>
+                                    <div className="col-sm-4 memberaddsubscription" data-eusko="memberaddsubscription-amount">
+                                        <SimpleSelect
+                                            ref="select"
+                                            theme="bootstrap3"
+                                            onValueChange={this.periodOnValueChange}
+                                            value={this.state.selectedOption==0 ? this.state.period : ""}
+                                            renderResetButton={() => { return null }}
+                                            disabled={this.state.selectedOption}
+                                            required={!this.state.selectedOption}
+                                            className={greySimpleSelect}
+                                        >
+                                            <option value = "1">Mensuel</option>
+                                            <option value = "3">Trimestriel</option>
+                                            <option value = "6">Semestriel</option>
+                                            <option value = "12">Annuel</option>
+                                        </SimpleSelect>
+                                    </div>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label
-                                    className="control-label col-sm-2 col-md-offset-1"
+                                    className="control-label col-sm-2"
                                     data-required="true"
                                     htmlFor="memberaddsubscription-amount">
-                                    {__("Périodicité :")}
+                                    {__("Montant de cotisation annuelle")}
                                 </label>
                                 <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
-                                    <SimpleSelect
-                                        ref="select"
-                                        theme="bootstrap3"
-                                        onValueChange={this.periodOnValueChange}
-                                        value={this.state.selectedOption==0 ? this.state.period : ""}
-                                        renderResetButton={() => { return null }}
-                                        disabled={this.state.selectedOption}
-                                        required={!this.state.selectedOption}
-                                        className={greySimpleSelect}
-                                    >
-                                        <option value = "1">Mensuel</option>
-                                        <option value = "3">Trimestriel</option>
-                                        <option value = "6">Semestriel</option>
-                                        <option value = "12">Annuel</option>
-                                    </SimpleSelect>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label
-                                    className="control-label col-sm-2 col-md-offset-1"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
-                                    {__("Montant de cotisation annuelle :")}
-                                </label>
-                                <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
-                                <label>
+                                <label className="control-label col-sm-4" style={{textAlign: 'center'}}>
                                     {__("") + this.state.selectedOption==0 ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </label>
                                 </div>
                             </div>
-                                <div className="form-group row ">
-                                    <div className="radio col-sm-1 col-md-offset-2">
-                                    </div>
-                                    <div className="col-sm-5  profilform" data-eusko="profilform-asso">
-                                        {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                        {(" Je fais un virement de ") + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
-                                        {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
-                                    </div>
+                            <div className="form-group row ">
+                                <div className="radio col-sm-1 col-md-offset-1">
                                 </div>
-                                <div className="form-group row ">
-                                    <div className="radio col-sm-1 col-md-offset-2">
-                                      <label>
-                                        <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
-                                      </label>
-                                    </div>
-                                    <div className="col-sm-5  profilform" data-eusko="profilform-asso">
-                                        {__("Je paie ma cotisation toute l'année en cours par virement depuis mon compte Eusko :")}
-                                    </div>
-                                </div>
-                                <div className="form-group row">
-                                <label
-                                    className="control-label col-sm-2 col-md-offset-1"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
-                                    {__("Montant :")}
-                                </label>
-                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                        <Input
-                                            name="amount"
-                                            data-eusko="cotisation-amount"
-                                            onChange={this.amountByYOnChange}
-                                            value={this.state.selectedOption==1 ? this.state.amountByY : ""}
-                                            readOnly={!this.state.selectedOption}
-                                        />
+                                <div className="col-sm-5  profilform" data-eusko="profilform-asso">
+                                    {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
+                                    {(" Je fais un virement de ") + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
+                                    {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
                                 </div>
                             </div>
+                            <hr></hr><hr></hr>
+                            <div className="form-group row ">
+                                <div className="radio col-sm-1">
+                                    <label>
+                                        <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
+                                    </label>
+                                </div>
+                                <div className="col-sm-9" style={{marginBottom: 15}}>
+                                    {__("Je paie ma cotisation toute l'année en cours par virement depuis mon compte Eusko :")}
+                                </div>
+                            </div>
+                            <Input
+                                name="amount"
+                                data-eusko="cotisation-amount"
+                                onChange={this.amountByYOnChange}
+                                value={this.state.selectedOption==1 ? this.state.amountByY : ""}
+                                label={__("Montant")}
+                                labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
+                                placeholder={__("Montant de la cotisation")}
+                                readOnly={!this.state.selectedOption}
+                            />
                         </div>
                     </span>
                 )
@@ -877,23 +881,32 @@ const Cotisation = React.createClass({
                 <CotisationForm ref="historical-form">
                     <div className="row">
                         <div className="form-group row">
-                            <div className="col-sm-3 col-md-offset-9">
+                            <div className="col-sm-3">
+                                <h2>Etat de la cotisation</h2>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-sm-3 col-md-offset-1">
                                 {memberStatus}
                             </div>
                         </div>
                     </div>
+                    <hr></hr>
                     <div className="row">
+                        <div className="form-group row">
+                            <div className="col-sm-5">
+                                <h2>Montant de la cotisation</h2>
+                            </div>
+                        </div>
                         {cotisation_info}
+                        <hr></hr>
                         {auto_prelev_auto}
+                        <hr></hr>
                         Pour qu'il n'y ait pas d'interruption dans la cotisation et dans l'accès au compte Eusko, <br/>
                         l'échéance pour une période donnée sera prélevée le 20 du mois précédent, par exemple :<br/><br/>
 
                         dans le cas d'un prélèvement annuel, la cotisation sera prélevée le 20 décembre pour l'année suivante<br/>
                         dans le cas d'un prélèvement mensuel, la cotisation sera prélevée le 20 de chaque mois pour le mois suivant<br/><br/>
-
-
-
-                        <br/><br/><br/>
                     </div>
                     <div className="row profil-div-margin-left margin-top">
                         <input

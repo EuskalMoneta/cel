@@ -259,7 +259,7 @@ const ChangeAuto = React.createClass({
                 <div>
                     {__("Vous pouvez mettre en place un change mensuel d'euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.")}<br/>
                     {__("Pour cela, vous devez autoriser Euskal Moneta à effectuer des prélèvements sur votre compte bancaire :")}<br/>
-                    {__("remplissez et signez le mandat ci-dessous et renvoyez le à Euskal Moneta avec le RIB du compte à débiter.")}<br/><br/>
+                    {__("remplissez et signez le mandat ci-dessous et renvoyez-le à Euskal Moneta avec le RIB du compte à débiter.")}<br/><br/>
                     <a href={window.config.mandatPrelevementURL} target="_blank">
                         {__("Télécharger le mandat de prélèvement")}
                         <i style={{marginLeft: 5}} className="glyphicon glyphicon-download-alt"></i>

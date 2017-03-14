@@ -299,7 +299,7 @@ const MemberShow = React.createClass({
                         <label className="control-label col-sm-2">{__("Nom")}</label>
                         <div className="col-sm-3 profil-span">
                             <span data-eusko="profil-fullname">
-                                {this.state.member.lastname + " " + this.state.member.firstname}
+                                {this.state.member.firstname + " " + this.state.member.lastname}
                             </span>
                         </div>
                     </div>

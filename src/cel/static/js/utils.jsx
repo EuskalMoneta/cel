@@ -423,7 +423,7 @@ class Navbar extends React.Component {
                           status: 'inactive', id: 0, accountMandatory: true},
                          {href: '/virements', label: __("Mes virements"),
                           status: 'inactive', id: 1, accountMandatory: true},
-                         {href: '/euskokart', label: __("Mon EuskoKart"),
+                         {href: '/euskokart', label: __("Mon euskokart"),
                           status: 'inactive', id: 2, accountMandatory: true},
                          {href: '/profil', label: __("Mon profil"),
                           status: 'inactive', id: 3, accountMandatory: false},

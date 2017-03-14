@@ -39,7 +39,7 @@ const HistoricalForm = React.createClass({
     }
 })
 
-class EuskoKartButtons extends React.Component {
+class EuskokartButtons extends React.Component {
     constructor(props) {
         super(props);
 
@@ -52,37 +52,37 @@ class EuskoKartButtons extends React.Component {
         this.setState(nextProps)
     }
 
-    blockEuskoKart(euskokart_id) {
+    blockEuskokart(euskokart_id) {
         this.props.disableButton()
 
-        var lockEuskoKartQuery = (data) => {
-            this.props.getEuskoKartList()
+        var lockEuskokartQuery = (data) => {
+            this.props.getEuskokartList()
         }
-        fetchAuth(getAPIBaseURL + "euskokart-block/?id=" + euskokart_id, 'GET', lockEuskoKartQuery)
+        fetchAuth(getAPIBaseURL + "euskokart-block/?id=" + euskokart_id, 'GET', lockEuskokartQuery)
     }
 
-    unlockEuskoKart(euskokart_id) {
+    unlockEuskokart(euskokart_id) {
         this.props.disableButton()
 
-        var unlockEuskoKartQuery = (data) => {
-            this.props.getEuskoKartList()
+        var unlockEuskokartQuery = (data) => {
+            this.props.getEuskokartList()
         }
-        fetchAuth(getAPIBaseURL + "euskokart-unblock/?id=" + euskokart_id, 'GET', unlockEuskoKartQuery)
+        fetchAuth(getAPIBaseURL + "euskokart-unblock/?id=" + euskokart_id, 'GET', unlockEuskokartQuery)
     }
 
     render() {
         if (this.props.euskokart.status === 'Active') {
             if (this.state.buttonEnabled) {
-                var buttonEuskoKart = (
-                    <button onClick={() => { this.blockEuskoKart(this.props.euskokart.id) }}
+                var buttonEuskokart = (
+                    <button onClick={() => { this.blockEuskokart(this.props.euskokart.id) }}
                             className="btn btn-warning enable-pointer-events">
                             {__("Faire opposition")} <i className="glyphicon glyphicon-lock"></i>
                     </button>
                 )
             }
             else {
-                var buttonEuskoKart = (
-                    <button onClick={() => { this.blockEuskoKart(this.props.euskokart.id) }}
+                var buttonEuskokart = (
+                    <button onClick={() => { this.blockEuskokart(this.props.euskokart.id) }}
                             disabled className="btn btn-warning enable-pointer-events">
                             {__("Faire opposition")} <i className="glyphicon glyphicon-lock"></i>
                     </button>
@@ -91,16 +91,16 @@ class EuskoKartButtons extends React.Component {
         }
         else {
             if (this.state.buttonEnabled) {
-                var buttonEuskoKart = (
-                    <button onClick={() => { this.unlockEuskoKart(this.props.euskokart.id) }}
+                var buttonEuskokart = (
+                    <button onClick={() => { this.unlockEuskokart(this.props.euskokart.id) }}
                             className="btn btn-success enable-pointer-events">
                             {__("Débloquer")} <i className="glyphicon glyphicon-ok"></i>
                     </button>
                 )
             }
             else {
-                var buttonEuskoKart = (
-                    <button onClick={() => { this.unlockEuskoKart(this.props.euskokart.id) }}
+                var buttonEuskokart = (
+                    <button onClick={() => { this.unlockEuskokart(this.props.euskokart.id) }}
                             disabled className="btn btn-success enable-pointer-events">
                             {__("Débloquer")} <i className="glyphicon glyphicon-ok"></i>
                     </button>
@@ -108,16 +108,16 @@ class EuskoKartButtons extends React.Component {
             }
         }
 
-        return buttonEuskoKart
+        return buttonEuskokart
     }
 }
 
 
-var EuskoKartList = React.createClass({
+var EuskokartList = React.createClass({
 
     getInitialState() {
         return {
-            EuskoKartList: Array(),
+            EuskokartList: Array(),
             buttonEnabled: true,
             pin1: undefined,
             pin2: undefined,
@@ -162,10 +162,10 @@ var EuskoKartList = React.createClass({
     },
 
 
-    getEuskoKartList() {
-        var getEuskoKartData = (data) => {
-            // Get getEuskoKartList
-            var EuskoKartList = _.chain(data)
+    getEuskokartList() {
+        var getEuskokartData = (data) => {
+            // Get getEuskokartList
+            var EuskokartList = _.chain(data)
                                  .map((item) => {
                                     if (item.status == 'ACTIVE')
                                         item.status = titleCase(item.status)
@@ -177,13 +177,13 @@ var EuskoKartList = React.createClass({
                                  .sortBy((item) => { return item.status })
                                  .value()
             
-            this.setState({EuskoKartList: EuskoKartList}, this.enableButton)
+            this.setState({EuskokartList: EuskokartList}, this.enableButton)
         }
-        fetchAuth(this.props.EuskoKartUrl, 'GET', getEuskoKartData)
+        fetchAuth(this.props.EuskokartUrl, 'GET', getEuskokartData)
     },
 
     componentDidMount() {
-        this.getEuskoKartList()
+        this.getEuskokartList()
 
         var pinStatus = (data) => {
             if (data == "NEVER_CREATED") {
@@ -288,7 +288,7 @@ var EuskoKartList = React.createClass({
         const options = {
             sizePerPage: 20,
             hideSizePerPage: true,
-            noDataText: __("Aucune EuskoKart enregistrée."),
+            noDataText: __("Aucune euskokart enregistrée."),
         }
 
         const selectRowProp = {
@@ -304,8 +304,8 @@ var EuskoKartList = React.createClass({
         }
 
         var buttonFormatter = (cell, row) => {
-            return <EuskoKartButtons euskokart={row}
-                                     getEuskoKartList={this.getEuskoKartList} 
+            return <EuskokartButtons euskokart={row}
+                                     getEuskokartList={this.getEuskokartList} 
                                      enableButton={this.enableButton}
                                      disableButton={this.disableButton}
                                      buttonEnabled={this.state.buttonEnabled}
@@ -340,7 +340,7 @@ var EuskoKartList = React.createClass({
             <div className="row">
                 <div className="row">
                     <div className="col-md-9 col-md-offset-1 search-results">
-                        <BootstrapTable data={this.state.EuskoKartList} striped={true} hover={true}
+                        <BootstrapTable data={this.state.EuskokartList} striped={true} hover={true}
                             selectRow={selectRowProp} options={options}
                             tableContainerClass="react-bs-table-list-euskokart"
                         >
@@ -429,7 +429,7 @@ var EuskoKartList = React.createClass({
 })
 
 ReactDOM.render(
-    <EuskoKartList EuskoKartUrl={getAPIBaseURL + "euskokart/"} />,
+    <EuskokartList EuskokartUrl={getAPIBaseURL + "euskokart/"} />,
     document.getElementById('euskokart')
 )
-document.title = __("Mes virements") + ": " + __("EuskoKart") + " - " + __("Compte en ligne") + " " + document.title
+document.title = __("Mon euskokart") + " - " + __("Compte en ligne") + " " + document.title

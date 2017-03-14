@@ -2,19 +2,17 @@ import {
     fetchAuth,
     getAPIBaseURL,
     SelectizeUtils,
+    isPositiveNumeric,
 } from 'Utils'
+
 import ModalEusko from 'Modal'
-import {
-    BootstrapTable,
-    TableHeaderColumn,
-} from 'react-bootstrap-table'
-import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
+
 const {
     Input,
-    RadioGroup,
     Row,
-    Textarea,
 } = FRC
+
+Formsy.addValidationRule('isPositiveNumeric', isPositiveNumeric)
 
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
@@ -24,7 +22,7 @@ const {
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
-const HistoricalForm = React.createClass({
+const ReconversionForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
 
@@ -74,7 +72,7 @@ var Ponctuel = React.createClass({
 
     getModalElements(modalMode, amount=null) {
         if (modalMode == 'delete') {
-            var modalBody = <p>{__("Etes-vous sûr de vouloir reconvertir ") + amount + (" eusko en € ?")}</p>
+            var modalBody = <p>{__("Etes-vous sûr de vouloir reconvertir %%%% eusko en € ?").replace('%%%%', amount)}</p>
             var modalTitle = __("Reconversion d'eusko en € - Confirmation")
             var validateLabel = __("Confirmer")
         }
@@ -83,7 +81,6 @@ var Ponctuel = React.createClass({
     },
 
     componentDidMount() {
-
         var computeDebitList = (data) => {
             var res = _.chain(data.result)
                 .map(function(item){ return {label: item.number, value:item.owner.id} })
@@ -97,8 +94,10 @@ var Ponctuel = React.createClass({
 
     setDebitData() {
         if (this.state.allAccount) {
-            if (this.state.allAccount.length == 1 ) {
-                this.setState({debit:  {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id} });
+            if (this.state.allAccount.length == 1) {
+                this.setState({debit:
+                                {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id}
+                });
             }
         }
     },
@@ -171,6 +170,8 @@ var Ponctuel = React.createClass({
                     closeButton:true
                 }
             )
+
+            setTimeout(() => window.location.assign("/compte/synthese"), 5000)
         }
 
         var promiseError = (err) => {
@@ -202,18 +203,16 @@ var Ponctuel = React.createClass({
             {
                 var debitData = (
                     <div className="form-group row">
-                        <div className="col-sm-1"></div>
                         <label
                             className="control-label col-sm-2 col-md-offset-1"
-                            htmlFor="virement-debit"
+                            htmlFor="reconversion-debit"
                             style={{paddingTop:10}}>
                             {__("Compte à débiter")}
                         </label>
-                        <div className="col-sm-1"></div>
-                        <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
-                        <label className="control-label solde-history-label">
-                            {this.state.debit.label}
-                        </label>
+                        <div className="col-sm-3 reconversion-debit" data-eusko="reconversion-debit">
+                            <label className="control-label" style={{fontWeight: 'normal'}}>
+                                {this.state.debit.label}
+                            </label>
                         </div>
                     </div>
                 )
@@ -225,13 +224,13 @@ var Ponctuel = React.createClass({
                         <div className="col-sm-1"></div>
                         <label
                             className="control-label col-sm-2"
-                            htmlFor="virement-debit"
+                            htmlFor="reconversion-debit"
                             style={{paddingTop:10}}>
                             {__("Compte à débiter")}
                             <span className="required-symbol">&nbsp;*</span>
                         </label>
                         <div className="col-sm-1"></div>
-                        <div className="col-sm-4 virement-debit" data-eusko="virement-debit">
+                        <div className="col-sm-4 reconversion-debit" data-eusko="reconversion-debit">
                             <SimpleSelect
                                 ref="select"
                                 value={this.state.debit}
@@ -255,62 +254,51 @@ var Ponctuel = React.createClass({
         return (
             <div className="row">
                 <div className="col-md-10 col-md-offset-1">
-                    { debitData }
-                    <div className="form-group row" style={{marginBottom: 0}}>
-                        <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-1 col-md-offset-1"
-                            htmlFor="virement-amount"
-                            style={{paddingTop:10}}>
-                            {__("Montant")}
-                            <span className="required-symbol">&nbsp;*</span>
-                        </label>
-                        <div className="col-sm-3">
-                            <HistoricalForm ref="historical-form">
-                                <Input
-                                    name="montant"
-                                    data-eusko="virement-amount"
-                                    onChange={this.amountOnValueChange}
-                                    value = {this.state.amount}
-                                />
-                            </HistoricalForm>
-                        </div>
-                        <div className="col-sm-1" style={{paddingTop:10}}>
-                        eusko
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-1 col-md-offset-1"
-                            htmlFor="virement-description"
-                            style={{paddingTop:10}}>
-                            {__("Description")}
-                            <span className="required-symbol">&nbsp;*</span>
-                        </label>
-                        <div className="col-sm-3">
-                            <HistoricalForm ref="historical-form">
-                                <Input
-                                    name="description"
-                                    data-eusko="virement-description"
-                                    onChange={this.descriptionOnValueChange}
-                                    value = {this.state.description}
-                                />
-                            </HistoricalForm>
-                        </div>
-                    </div>
-                    <div className="row profil-div-margin-left margin-top">
-                        <input
-                            name="submit"
-                            data-eusko="one-time-transfer-form-submit"
-                            type="submit"
-                            defaultValue={__("Valider")}
-                            className="btn btn-success col-sm-offset-2 col-md-offset-4"
-                            formNoValidate={true}
-                            onClick={() => this.validateReconvert(this.state.amount)}
-                            disabled={!this.state.canSubmit}
+                    <ReconversionForm ref="historical-form">
+                        {debitData}
+                        <Input
+                            name="montant"
+                            label={__("Montant en eusko")}
+                            placeholder={__("Montant de la reconversion")}
+                            data-eusko="reconversion-amount"
+                            onChange={this.amountOnValueChange}
+                            value = {this.state.amount}
+                            type="number"
+                            validations="isPositiveNumeric"
+                            validationErrors={{
+                               isPositiveNumeric: __("Montant invalide.")
+                            }}
+                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-3']}
+                            required
                         />
-                    </div>
+                        <Input
+                            name="description"
+                            label={__("Description")}
+                            placeholder={__("Description de la reconversion")}
+                            type="text"
+                            validations="isExisty"
+                            validationErrors={{
+                               isExisty: __("Montant invalide.")
+                            }}
+                            elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-3']}
+                            data-eusko="reconversion-description"
+                            onChange={this.descriptionOnValueChange}
+                            value = {this.state.description}
+                            required
+                        />
+                        <Row layout="horizontal">
+                            <input
+                                name="submit"
+                                data-eusko="one-time-transfer-form-submit"
+                                type="submit"
+                                defaultValue={__("Valider")}
+                                className="btn btn-success"
+                                formNoValidate={true}
+                                onClick={() => this.validateReconvert(this.state.amount)}
+                                disabled={!this.state.canSubmit}
+                            />
+                        </Row>
+                    </ReconversionForm>
                 </div>
                 <ToastContainer ref="container"
                     toastMessageFactory={ToastMessageFactory}
@@ -322,7 +310,7 @@ var Ponctuel = React.createClass({
                             modalTitle={this.state.modalTitle}
                             validateLabel={this.state.validateLabel}
                             onValidate={this.submitForm}
-                            staticContent={false}
+                            staticContent={true}
                             btnValidateClass="btn-success"
                             btnValidateEnabled={true}
                             />

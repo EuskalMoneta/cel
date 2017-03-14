@@ -341,6 +341,15 @@ class SubNavbar extends React.Component {
                         accountMandatory: true, status: 'inactive', id: 5}]},
     ]
 
+    subNavbarObjectsReconversion = (
+        {parent: '/compte',
+         accountMandatory: true,
+         listObjects: [{href: '/compte/synthese', label: __("Synthèse"), status: 'inactive', id: 0},
+                       {href: '/compte/historique', label: __("Historique"), status: 'inactive', id: 1},
+                       {href: '/compte/synthese/reconvertir', label: __("Reconversion"), status: 'inactive', id: 2}]
+        }
+    )
+
     constructor(props) {
         super(props);
 
@@ -356,7 +365,15 @@ class SubNavbar extends React.Component {
             return Array()
         }
 
-        return _.chain(this.subNavbarObjects)
+        var subNavbarObjects = this.subNavbarObjects
+
+        // We want to add a link 'Reconversion' in navbar when we are in this page
+        if (window.location.pathname.indexOf("/reconvertir") != -1) {
+            var subNavbarObjects = _.filter(this.subNavbarObjects, (item) => { return item.parent != '/compte' })
+            subNavbarObjects.push(this.subNavbarObjectsReconversion)
+        }
+
+        return _.chain(subNavbarObjects)
                 .filter((item) => { return item.parent == activeObject.href })
                 .filter((item) => {
                         if (accountEnabled)
@@ -366,7 +383,7 @@ class SubNavbar extends React.Component {
                 })
                 .map((item) => {
                     return _.map(item.listObjects, (subitem) => {
-                        if (window.location.pathname.toLowerCase().indexOf(subitem.href) != -1) {
+                        if (window.location.pathname.toLowerCase().endsWith(subitem.href)) {
                             subitem.status = 'active'
                         }
 

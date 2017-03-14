@@ -6,7 +6,7 @@ import {
 
 const {
     Input,
-    Row
+    Row,
 } = FRC
 
 import {
@@ -14,11 +14,13 @@ import {
     TableHeaderColumn,
 } from 'react-bootstrap-table'
 import 'node_modules/react-bootstrap-table/dist/react-bootstrap-table.min.css'
+
 const {
     ToastContainer,
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
-const HistoricalForm = React.createClass({
+
+const EuskokartPinForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
 
@@ -31,7 +33,7 @@ const HistoricalForm = React.createClass({
             <Formsy.Form
                 className={this.getLayoutClassName()}
                 {...this.props}
-                ref="historical-form"
+                ref="euskokart-pin-form"
             >
                 {this.props.children}
             </Formsy.Form>
@@ -320,10 +322,13 @@ var EuskokartList = React.createClass({
                     data-eusko="changepin-old_password"
                     label={__("Code précédent")}
                     value=""
-                    validations="minLength:4,maxLength:4"
+                    validations={{
+                        matchRegexp: /^\d\d\d\d$/,
+                        isLength: 4,
+                    }}
                     validationErrors={{
-                        minLength: __("Le code confidentiel doit comporter exactement 4 caractères."),
-                        maxLength: __("Le code confidentiel doit comporter exactement 4 caractères.")
+                        matchRegexp: __("Le code confidentiel doit comporter exactement 4 chiffres."),
+                        isLength: __("Le code confidentiel doit comporter exactement 4 chiffres."),
                     }}
                     elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                     onChange={this.getPin}
@@ -357,11 +362,11 @@ var EuskokartList = React.createClass({
                         <div>
                             <div className="form-group row">
                                 <div className="col-sm-4">
-                                    <h2>Choix du code confidentiel</h2>
+                                    <h2 style={{marginLeft: 10}}>Choix du code confidentiel</h2>
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <HistoricalForm
+                                <EuskokartPinForm
                                 onValidSubmit={this.submitForm}
                                 onInvalid={this.disablePinButton}
                                 onValid={this.enablePinButton}
@@ -374,11 +379,15 @@ var EuskokartList = React.createClass({
                                             data-eusko="changepin-pin1"
                                             label={__("Code (4 chiffres)")}
                                             value=""
-                                            validations="equalsField:pin2,minLength:4,maxLength:4"
+                                            validations={{
+                                                equalsField: 'pin2',
+                                                matchRegexp: /^\d\d\d\d$/,
+                                                isLength: 4,
+                                            }}
                                             validationErrors={{
                                                 equalsField: __("Les codes ne correspondent pas."),
-                                                minLength: __("Le code confidentiel doit comporter exactement 4 caractères."),
-                                                maxLength: __("Le code confidentiel doit comporter exactement 4 caractères.")
+                                                matchRegexp: __("Le code confidentiel doit comporter exactement 4 chiffres."),
+                                                isLength: __("Le code confidentiel doit comporter exactement 4 chiffres."),
                                             }}
                                             elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                                             onChange={this.getPin}
@@ -390,11 +399,15 @@ var EuskokartList = React.createClass({
                                             data-eusko="changepin-pin2"
                                             label={__("Confirmer le code")}
                                             value=""
-                                            validations="equalsField:pin1,minLength:4,maxLength:4"
+                                            validations={{
+                                                equalsField: 'pin1',
+                                                matchRegexp: /^\d\d\d\d$/,
+                                                isLength: 4,
+                                            }}
                                             validationErrors={{
                                                 equalsField: __("Les codes ne correspondent pas."),
-                                                minLength: __("Le code confidentiel doit comporter exactement 4 caractères."),
-                                                maxLength: __("Le code confidentiel doit comporter exactement 4 caractères.")
+                                                matchRegexp: __("Le code confidentiel doit comporter exactement 4 chiffres."),
+                                                isLength: __("Le code confidentiel doit comporter exactement 4 chiffres."),
                                             }}
                                             elementWrapperClassName={[{'col-sm-2': false}, 'col-sm-2']}
                                             onChange={this.getPin}
@@ -414,7 +427,7 @@ var EuskokartList = React.createClass({
                                         />
                                     </Row>
                                     </fieldset>
-                                </HistoricalForm>
+                                </EuskokartPinForm>
                             </div>
                         </div>
                     </div>

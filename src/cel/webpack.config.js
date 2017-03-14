@@ -80,7 +80,7 @@ module.exports = Object.keys(languages).map(function(language) {
             Overview: './static/js/overview',
             Beneficiaires: './static/js/beneficiaires',
             Ponctuel: './static/js/ponctuel',
-            EuskoKart: './static/js/euskokart',
+            Euskokart: './static/js/euskokart',
             Reconvert: './static/js/reconvert',
             CompteRecharger: './static/js/compte-recharger',
             AcceptCGU: './static/js/accepte-cgu',

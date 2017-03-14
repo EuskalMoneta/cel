@@ -29,12 +29,15 @@ const navbarObjects = [{data: '', id: 0}, // Clock
                        {href: '/logout', label: __("Déconnexion"), id: 2},
                        ]
 
-ReactDOM.render(
-    <TopbarRight objects={navbarObjects} />,
-    document.getElementById('topbar-main')
-)
+// We don't want navbars to be displayed on login screen
+if (window.location.pathname.indexOf("/login") === -1) {
+    ReactDOM.render(
+        <TopbarRight objects={navbarObjects} />,
+        document.getElementById('topbar-main')
+    )
 
-ReactDOM.render(
-    <Navbar />,
-    document.getElementById('navbar')
-)
+    ReactDOM.render(
+        <Navbar />,
+        document.getElementById('navbar')
+    )
+}

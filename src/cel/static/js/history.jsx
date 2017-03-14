@@ -376,7 +376,7 @@ var HistoryPage = React.createClass({
                         <div className="col-sm-3">{balanceData}</div>
                     </div>
                     <div className="col-md-8 col-md-offset-1">
-                        <div className="search-group" style={{borderRadius: 5}}>
+                        <div className="search-group" style={{borderRadius: 5, paddingBottom: 10}}>
                             <div className="form-group row">
                                 <div className="col-sm-4 col-md-offset-1">
                                     <h4>Rechercher des opérations</h4>

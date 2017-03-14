@@ -286,7 +286,7 @@ var HistoryPage = React.createClass({
 
         var balanceData = (
             <label className="control-label solde-history-label">
-                {__("Solde") + ": "}
+                {__("Solde") + " : "}
                 {currentSoldeLabel}
             </label>
         )
@@ -295,8 +295,10 @@ var HistoryPage = React.createClass({
             {
                 var accountData = (
                     <label className="control-label solde-history-label">
-                        {__("Compte") + ": "}
-                        {this.state.allAccount[0].number}
+                        {__("Compte") + " : "}
+                        <span className="solde-history-span">
+                            {this.state.allAccount[0].number}
+                        </span>
                     </label>
                 )
             }
@@ -304,21 +306,21 @@ var HistoryPage = React.createClass({
             {
                 var accountData = (
                     <div>
-                    <label className="control-label solde-history-label">
-                        {__("Compte") + ": "}
-                    </label>
-                    <SimpleSelect
-                        ref="select"
-                        theme="bootstrap3"
-                        onValueChange={this.currentAccountOnValueChange}
-                        value = {this.state.currentAccount}
-                        options={this.state.accountList}
-                        renderValue={SelectizeUtils.selectizeRenderValueLineBreak}
-                        renderOption={SelectizeUtils.selectizeNewRenderOption}
-                        required
-                    >
-                        <option value = "day">{this.state.allAccount[0].id}</option>
-                    </SimpleSelect>
+                        <label className="control-label solde-history-label">
+                            {__("Compte") + " : "}
+                        </label>
+                        <SimpleSelect
+                            ref="select"
+                            theme="bootstrap3"
+                            onValueChange={this.currentAccountOnValueChange}
+                            value = {this.state.currentAccount}
+                            options={this.state.accountList}
+                            renderValue={SelectizeUtils.selectizeRenderValueLineBreak}
+                            renderOption={SelectizeUtils.selectizeNewRenderOption}
+                            required
+                        >
+                            <option value = "day">{this.state.allAccount[0].id}</option>
+                        </SimpleSelect>
                     </div>
                 )
             }
@@ -369,11 +371,11 @@ var HistoryPage = React.createClass({
                 <div className="col-md-10">
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
-                        <div className="col-sm-3">{accountData}</div>
+                        <div className="col-sm-3" style={{paddingLeft: 25}}>{accountData}</div>
                     </div>
                     <div className="form-group row">
                         <div className="col-sm-1"></div>
-                        <div className="col-sm-3">{balanceData}</div>
+                        <div className="col-sm-3" style={{paddingLeft: 25}}>{balanceData}</div>
                     </div>
                     <div className="col-md-8 col-md-offset-1">
                         <div className="search-group" style={{borderRadius: 5, paddingBottom: 10}}>

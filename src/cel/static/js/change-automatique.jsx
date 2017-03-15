@@ -156,7 +156,7 @@ const ChangeAuto = React.createClass({
                        modalTitle: modalTitle, validateLabel: validateLabel}, this.openModal)
     },
 
-    componentDidMount() {
+    getMemberData() {
         // Get member data
         var computeMemberData = (member) => {
             if (Number(member[0].array_options.options_prelevement_change_montant) > Number()
@@ -172,10 +172,14 @@ const ChangeAuto = React.createClass({
                 rumChangeAuto: member[0].array_options.options_prelevement_change_rum,
                 periodiciteChangeAuto: member[0].array_options.options_prelevement_change_periodicite,
                 hasChangeAuto: hasChangeAuto,
-            })
+            }, this.hideModal)
 
         }
         fetchAuth(this.props.url + window.config.userName, 'GET', computeMemberData)
+    },
+
+    componentDidMount() {
+        this.getMemberData()
     },
 
     submitForm(modalMode) {
@@ -201,6 +205,11 @@ const ChangeAuto = React.createClass({
                     closeButton:true
                 }
             )
+
+            // Reload page content
+            this.getMemberData()
+            // OR, simply reload the current page, without using the cache
+            // setTimeout(() => document.location.reload(true), 5000)
         }
 
         var promiseError = (err) => {

@@ -20,7 +20,8 @@ def config_js(request):
     """
     if request.user.is_authenticated():
         response = {'user_auth': 'true',
-                    'profile': mark_safe(json.dumps(model_to_dict(request.user.profile, exclude=['id', 'user'])))}
+                    'profile': mark_safe(json.dumps(
+                        model_to_dict(request.user.profile, exclude=['id', 'user'])).replace("'", r"\'"))}
     else:
         response = {'user_auth': 'false', 'username': ''}
 

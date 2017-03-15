@@ -74,7 +74,7 @@ const Cotisation = React.createClass({
             this.setState({member: member[0]})
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
-                this.setState({cotisationState: false})
+                this.setState({cotisationState: true})
                 this.setState({selectedPrelevAuto: true})
             }
             if(member[0].login.toUpperCase().startsWith('Z'))
@@ -304,7 +304,6 @@ const Cotisation = React.createClass({
                 }
             )
         }
-        debugger
         fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
         if(!this.state.cotisationState && this.state.memberType.startsWith('0'))
         {
@@ -472,11 +471,17 @@ const Cotisation = React.createClass({
             else {
                 var memberStatus = (
                     <div className="font-member-status">
-                        <span className="glyphicon glyphicon-remove member-status-nok"></span>
-                        <span className="member-status-text" data-eusko="profil-status">
-                            {__("Pas à jour")}
-                        </span>
-                        <span className="member-status-date">({dateEndSub})</span>
+                        <div className="col-sm-3">
+                            <h2>Etat de la cotisation</h2>
+                        </div>
+                            <div className="col-sm-3 col-md-offset-1">
+                                <br></br>
+                            <span className="glyphicon glyphicon-remove member-status-nok"></span>
+                            <span className="member-status-text" data-eusko="profil-status">
+                                {__("Pas à jour")}
+                            </span>
+                            <span className="member-status-date">({dateEndSub})</span>
+                        </div>
                     </div>
                 )
 

@@ -462,6 +462,7 @@ class Navbar extends React.Component {
             objects: _.filter(this.navbarObjects, (item) => { return item.accountMandatory === false }),
             userAuth: window.config.userAuth,
             userHasAcceptedCGU: window.config.userAuth ? window.config.profile.has_accepted_cgu : false,
+            userHasValidMembership: window.config.userAuth ? window.config.profile.has_valid_membership : false,
         }
     }
 
@@ -477,7 +478,7 @@ class Navbar extends React.Component {
     }
 
     render() {
-        if (this.state.userAuth && this.state.userHasAcceptedCGU) {
+        if (this.state.userAuth && this.state.userHasAcceptedCGU && this.state.userHasValidMembership) {
             return (
                 <div>
                     <div className="navbar navbar-static-top navbar-content">

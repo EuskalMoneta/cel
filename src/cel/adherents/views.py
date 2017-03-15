@@ -105,9 +105,8 @@ def accept_cgu(request):
 
 
 @login_required
-@user_must_have_rights([CGU])
-def renew_membership(request):
-    return render(request, 'adherents/renew-membership.html')
+def manage_membership(request, menu):
+    return render(request, 'adherents/manage-membership.html')
 
 
 @login_required

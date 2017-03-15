@@ -43,14 +43,13 @@ urlpatterns = [
 
     # Special page: Accept CGU, Renew membership & Update user session
     url(r'^accepte-cgu/?$', adherents_views.accept_cgu, name='accept-cgu'),
-    url(r'^cotisation/?$', adherents_views.renew_membership, name='renew-membership'),
     url(r'^update-session/?$', adherents_views.update_session, name='update-session'),
 
     # Mon profil
     url(r'^profil/?$', adherents_views.profile_home, name='profile-home'),
     url(r'^profil/association/?$', adherents_views.association, name='association'),
     url(r'^profil/options/?$', adherents_views.options, name='options'),
-    url(r'^profil/cotisation/?$', adherents_views.renew_membership, name='manage-membership'),
+    url(r'^profil/cotisation/(?P<menu>[\w\-]+)/?$', adherents_views.manage_membership, name='manage-membership'),
     url(r'^profil/coordonnees/?$', adherents_views.profile, name='profile'),
     url(r'^profil/change-automatique/?$', adherents_views.change_automatique, name='change-automatique'),
     url(r'^profil/change-passe/?$', base_views.change_password, name='change-password'),

@@ -30,14 +30,14 @@ def user_must_have_rights(needed_rights):
             if access_granted == needed_rights:
                 return a_view(request, *args, **kwargs)
 
-            elif EUSKO_NUM not in access_granted:
+            elif VALID_MEMBERSHIP in needed_rights and VALID_MEMBERSHIP not in access_granted:
+                return redirect('manage-membership', menu='nomenu')
+
+            elif EUSKO_NUM in needed_rights and EUSKO_NUM not in access_granted:
                 return redirect('profile')
 
             elif CGU in needed_rights and CGU not in access_granted:
                 return redirect('accept-cgu')
-
-            elif VALID_MEMBERSHIP in needed_rights and VALID_MEMBERSHIP not in access_granted:
-                return redirect('renew-membership')
 
             else:
                 return redirect('logout')

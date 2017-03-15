@@ -8,6 +8,7 @@ import {
     checkStatus,
     parseJSON,
     getUrlParameter,
+    getCSRFToken,
 } from 'Utils'
     
 import classNames from 'classnames'
@@ -19,6 +20,11 @@ const {
 
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
+
+const {
+    ToastContainer
+} = ReactToastr
+const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
 Formsy.addValidationRule('isPositiveNumeric', isPositiveNumeric)
 
@@ -57,7 +63,7 @@ const Cotisation = React.createClass({
                 value: undefined,
             },
             canSubmit: false,
-            selectedPrelevAuto: false,
+            selectedPrelevAuto: true,
             amount: undefined,
             amountByY: 0,
             customAmount: undefined,
@@ -79,7 +85,6 @@ const Cotisation = React.createClass({
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
                 this.setState({cotisationState: true})
-                this.setState({selectedPrelevAuto: true})
             }
             if(member[0].login.toUpperCase().startsWith('Z'))
             {
@@ -290,20 +295,34 @@ const Cotisation = React.createClass({
             })
         }
 
-        var promiseError = (err) => {
+        var promiseError_subscription = (err) => {
             // Error during request, or parsing NOK :(
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors des modifications de paiement de votre cotisation!"),
+                __("Une erreur s'est produite lors du paiement des cotisations en retard. Le solde de votre compte ne doit pas être suffisant, Veuillez contacter Euskal Moneta!"),
                 "",
                 {
-                    timeOut: 3000,
+                    timeOut: 10000,
                     extendedTimeOut: 10000,
                     closeButton:true
                 }
             )
         }
-        var update_options_dolibarr = (data) => {
+
+        var promiseError_update = (err) => {
+            // Error during request, or parsing NOK :(
+            console.log(this.props.url, err)
+            this.refs.container.error(
+                __("Une erreur s'est produite lors des modifications de vos échances de cotisation, Veuillez contacter Euskal Moneta!"),
+                "",
+                {
+                    timeOut: 10000,
+                    extendedTimeOut: 10000,
+                    closeButton:true
+                }
+            )
+        }
+        var update_options_dolibarr = () => {
             var data = {}
             // We need to verify whether we are in "saisie libre" or not
             if(this.state.amount) {
@@ -324,7 +343,8 @@ const Cotisation = React.createClass({
             else {
                 data.options_prelevement_auto_cotisation_eusko = false
             }
-            fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+            debugger
+            fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError_update)
         }
        
         if(!this.state.cotisationState && this.state.memberType.startsWith('0'))
@@ -334,7 +354,7 @@ const Cotisation = React.createClass({
             data2.end_date = this.state.endYear
             data2.amount = this.state.amount
             data2.label = 'Cotisation ' + this.state.year
-            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError)
+            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError_subscription)
         }
         else if(!this.state.cotisationState && this.state.memberType.startsWith('1'))
         {
@@ -351,7 +371,7 @@ const Cotisation = React.createClass({
                 data2.amount = this.state.amountByY
             }
             data2.label = 'Cotisation ' + this.state.year
-            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError)
+            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError_subscription)
         }
     },
 
@@ -1009,7 +1029,11 @@ const Cotisation = React.createClass({
                         />
                     </div>
                 </CotisationForm>
+                <ToastContainer ref="container"
+                    toastMessageFactory={ToastMessageFactory}
+                    className="toast-top-right toast-top-right-navbar" />
             </div>
+
         )
         }
     }

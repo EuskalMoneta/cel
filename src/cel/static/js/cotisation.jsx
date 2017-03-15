@@ -5,8 +5,11 @@ import {
     isPositiveNumeric,
     getCurrentLang,
     SelectizeUtils,
+    checkStatus,
+    parseJSON,
+    getUrlParameter,
 } from 'Utils'
-
+    
 import classNames from 'classnames'
 
 const {
@@ -66,6 +69,7 @@ const Cotisation = React.createClass({
             lastMonth: 0, 
             beginYear: moment().startOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
             amountValid: false,
+            menu: window.location.pathname.indexOf("/nomenu") == -1 ? false : true
         }
     },
 
@@ -93,15 +97,6 @@ const Cotisation = React.createClass({
             }
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
-
-        var computeDebitList = (data) => {
-            var res = _.chain(data.result)
-                .map(function(item){ return item.owner.id })
-                .sortBy(function(item){ return item.label })
-                .value()
-            this.setState({debitList: res})
-        }
-        fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
     },
 
     setAmount(value) {
@@ -258,37 +253,41 @@ const Cotisation = React.createClass({
     submitForm() {
         this.setState({canSubmit: false})
         // We push fields into the data object that will be passed to the server
-        var data = {}
-        // We need to verify whether we are in "saisie libre" or not
-        if(this.state.amount) {
-            data.options_prelevement_cotisation_montant = this.state.amount
-        }
-        else if(this.state.amountByY) {
-            data.options_prelevement_cotisation_montant = this.state.amountByY
-        }
-        if(this.state.period.value) {
-            data.options_prelevement_cotisation_periodicite = this.state.period.value
-        }
-        else{
-            data.options_prelevement_cotisation_periodicite = 12
-        }
-        if(this.state.selectedPrelevAuto) {
-            data.options_prelevement_auto_cotisation_eusko = this.state.selectedPrelevAuto
-        }
-        else {
-            data.options_prelevement_auto_cotisation_eusko = false
-        }
         
         var computeForm = (data) => {
-            this.refs.container.success(
-                __("Les choix de paiement de votre cotisation ont bien été pris en compte."),
-                "",
-                {
-                    timeOut: 3000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
+            // Get Session data from API & update session data via Django front
+            fetch('/update-session/',
+            {
+                method: 'put',
+                credentials: 'same-origin',
+                body: JSON.stringify({'token': sessionStorage.getItem('cel-api-token-auth')}),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken,
                 }
-            )
+            })
+            .then(checkStatus)
+            .then(parseJSON)
+            .then((data) => {
+                // Redirect to profile page
+                window.location.assign('/compte/synthese/')
+            })
+            .catch((err) => {
+                // Error during request, or parsing NOK :(
+                console.error(err)
+
+                // toast
+                this.refs.container.error(
+                    __("Une erreur est survenue lors de l'enregistrement vers le serveur !"),
+                    "",
+                    {
+                        timeOut: 5000,
+                        extendedTimeOut: 10000,
+                        closeButton:true
+                    }
+                )
+            })
         }
 
         var promiseError = (err) => {
@@ -304,7 +303,30 @@ const Cotisation = React.createClass({
                 }
             )
         }
-        fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+        var update_options_dolibarr = (data) => {
+            var data = {}
+            // We need to verify whether we are in "saisie libre" or not
+            if(this.state.amount) {
+                data.options_prelevement_cotisation_montant = this.state.amount
+            }
+            else if(this.state.amountByY) {
+                data.options_prelevement_cotisation_montant = this.state.amountByY
+            }
+            if(this.state.period.value) {
+                data.options_prelevement_cotisation_periodicite = this.state.period.value
+            }
+            else{
+                data.options_prelevement_cotisation_periodicite = 12
+            }
+            if(this.state.selectedPrelevAuto) {
+                data.options_prelevement_auto_cotisation_eusko = this.state.selectedPrelevAuto
+            }
+            else {
+                data.options_prelevement_auto_cotisation_eusko = false
+            }
+            fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
+        }
+       
         if(!this.state.cotisationState && this.state.memberType.startsWith('0'))
         {
             var data2 = {}
@@ -312,7 +334,7 @@ const Cotisation = React.createClass({
             data2.end_date = this.state.endYear
             data2.amount = this.state.amount
             data2.label = 'Cotisation ' + this.state.year
-            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', computeForm, data2, promiseError)
+            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError)
         }
         else if(!this.state.cotisationState && this.state.memberType.startsWith('1'))
         {
@@ -329,7 +351,7 @@ const Cotisation = React.createClass({
                 data2.amount = this.state.amountByY
             }
             data2.label = 'Cotisation ' + this.state.year
-            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', computeForm, data2, promiseError)
+            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError)
         }
     },
 
@@ -945,11 +967,10 @@ const Cotisation = React.createClass({
             }
         }
         return (
-            <div className="row">
+            <div className="row" style={this.state.menu ? {marginTop:75} : {}}>
                 <CotisationForm ref="historical-form">
                     <div className="row">
                         <div className="form-group row">
-                            
                                 {memberStatus}
                         </div>
                         <div className="form-group row">

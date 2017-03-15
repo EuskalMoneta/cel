@@ -86,17 +86,19 @@ const MemberShow = React.createClass({
         var computeMemberData = (member) => {
             moment.locale(getCurrentLang)
 
-            if (member[0].birth) {
+            if (member[0].type == "Particulier" && member[0].birth) {
                 var birth = moment(member[0].birth, 'X')
             }
             else {
                 var birth = undefined
             }
 
-            if (member[0].phone_mobile)
-                var phone = member[0].phone_mobile
-            else
+            if (member[0].phone_perso)
                 var phone = member[0].phone_perso
+            else if (member[0].phone_mobile)
+                var phone = member[0].phone_mobile
+            else if (member[0].phone)
+                var phone = member[0].phone
 
             this.setState({member: member[0],
                            address: member[0].address, phone: phone, email: member[0].email,
@@ -137,7 +139,11 @@ const MemberShow = React.createClass({
     },
 
     validateForm() {
-        if (this.state.birth && this.state.zip && this.state.town && this.state.country &&
+        var birth = true
+        if (this.state.member.type.toLowerCase() == 'particulier')
+            var birth = this.state.birth
+
+        if (birth && this.state.zip && this.state.town && this.state.country &&
             this.state.address && this.state.email)
         {
             this.setState({validFields: true}, this.enableButton)
@@ -236,13 +242,15 @@ const MemberShow = React.createClass({
         this.disableButton()
 
         // We push fields into the data object that will be passed to the server
-        var data = {birth: this.state.birth.format('DD/MM/YYYY'),
-                    address: this.state.address,
+        var data = {address: this.state.address,
                     zip: this.state.zip.value,
                     town: this.state.town.value,
                     country_id: this.state.country.value,
                     email: this.state.email,
         }
+
+        if (this.state.member.type.toLowerCase() == 'particulier')
+            data.birth = this.state.birth.format('DD/MM/YYYY')
 
         if (this.state.phone)
             data.phone = this.state.phone
@@ -281,18 +289,7 @@ const MemberShow = React.createClass({
         moment.locale(getCurrentLang)
         if (this.state.member) {
             // Whether or not, we have a business member or a individual
-            if (this.state.member.type.toLowerCase() != 'particulier') {
-                // We have a business member
-                var memberName = (
-                    <div className="form-group row">
-                        <label className="control-label col-sm-2">{__("Nom")}</label>
-                        <div className="col-sm-3 profil-span">
-                            <span data-eusko="profil-company">{this.state.member.company}</span>
-                        </div>
-                    </div>
-                )
-            }
-            else {
+            if (this.state.member.type.toLowerCase() == 'particulier') {
                 // We have a individual member
                 var memberName = (
                     <div className="form-group row">
@@ -304,6 +301,42 @@ const MemberShow = React.createClass({
                         </div>
                     </div>
                 )
+
+                var birthField = (
+                    <div className="form-group row">
+                        <label
+                            className="control-label col-sm-2"
+                            data-required="true"
+                            htmlFor="profilform-birth">
+                            {__("Date de naissance")}
+                            <span className="required-symbol">&nbsp;*</span>
+                        </label>
+                        <div className="col-sm-3 profilform-birth" data-eusko="profilform-birth">
+                            <DatePicker
+                                name="birth"
+                                className="form-control"
+                                placeholderText={__("Date de naissance")}
+                                selected={moment(this.state.birth)}
+                                onChange={this.handleBirthChange}
+                                showYearDropdown
+                                locale="fr"
+                            />
+                        </div>
+                    </div>
+                )
+            }
+            else {
+                // We have a business member
+                var memberName = (
+                    <div className="form-group row">
+                        <label className="control-label col-sm-2">{__("Nom")}</label>
+                        <div className="col-sm-3 profil-span">
+                            <span data-eusko="profil-company">{this.state.member.company}</span>
+                        </div>
+                    </div>
+                )
+
+                var birthField = null
             }
         }
         else
@@ -323,26 +356,7 @@ const MemberShow = React.createClass({
                             </div>
                         </div>
                         {memberName}
-                        <div className="form-group row">
-                            <label
-                                className="control-label col-sm-2"
-                                data-required="true"
-                                htmlFor="profilform-birth">
-                                {__("Date de naissance")}
-                                <span className="required-symbol">&nbsp;*</span>
-                            </label>
-                            <div className="col-sm-3 profilform-birth" data-eusko="profilform-birth">
-                                <DatePicker
-                                    name="birth"
-                                    className="form-control"
-                                    placeholderText={__("Date de naissance")}
-                                    selected={moment(this.state.birth)}
-                                    onChange={this.handleBirthChange}
-                                    showYearDropdown
-                                    locale="fr"
-                                />
-                            </div>
-                        </div>
+                        {birthField}
                         <Textarea
                             name="address"
                             data-eusko="profilform-address"

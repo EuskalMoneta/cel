@@ -61,8 +61,10 @@ const Cotisation = React.createClass({
             selectedOption: 0,
             month: new Date().getMonth()+1,
             year: new Date().getFullYear(),
-            endMonth: moment().endOf('month').lang('fr').format("YYYY-MM-DDThh:mm"),
-            beginYear: moment().startOf('year').lang('fr').format("YYYY-MM-DDThh:mm"),
+            endMonth: moment().endOf('month').locale('fr').format("YYYY-MM-DDThh:mm"),
+            endYear: moment().endOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
+            lastMonth: 0, 
+            beginYear: moment().startOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
             amountValid: false,
         }
     },
@@ -72,7 +74,8 @@ const Cotisation = React.createClass({
             this.setState({member: member[0]})
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
-                this.setState({cotisationState: true})
+                this.setState({cotisationState: false})
+                this.setState({selectedPrelevAuto: true})
             }
             if(member[0].login.toUpperCase().startsWith('Z'))
             {
@@ -106,7 +109,7 @@ const Cotisation = React.createClass({
     },
 
     ValidationCheck() {
-        if(this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('1'))
+        if(this.state.cotisationState && this.state.memberType.startsWith('1'))
         {
             if(this.state.selectedPrelevAuto && this.state.amount && this.state.period && this.state.amountValid)
             {
@@ -117,7 +120,7 @@ const Cotisation = React.createClass({
                 this.setState({canSubmit: false})
             }
         }
-        else if(this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('0'))
+        else if(this.state.cotisationState && this.state.memberType.startsWith('0'))
         {
             if(this.state.selectedPrelevAuto && this.state.amount)
             {
@@ -128,7 +131,7 @@ const Cotisation = React.createClass({
                 this.setState({canSubmit: false})
             }
         }
-        else if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('0'))
+        else if(!this.state.cotisationState && this.state.memberType.startsWith('0'))
         {
             if((this.state.selectedOption == 0 && this.state.amount) || (this.state.selectedOption == 1 && this.state.amount))
             {
@@ -139,10 +142,15 @@ const Cotisation = React.createClass({
                 this.setState({canSubmit: false})
             }
         }
-        else if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('1'))
+        else if(!this.state.cotisationState && this.state.memberType.startsWith('1'))
         {
+            if(this.state.selectedOption == 0 && this.state.period.value)
+            {
+                this.calculEndDate()
+            }
             if((this.state.selectedOption == 0 && this.state.amount && this.state.period.value && this.state.amountValid) || (this.state.selectedOption == 1 && this.state.amountByY != 0 && this.state.amountValid))
             {
+
                 this.setState({canSubmit: true})
             }
             else
@@ -215,6 +223,27 @@ const Cotisation = React.createClass({
         }
         
     },
+    calculEndDate() {
+
+        if(this.state.period)
+        {
+            var intPart = this.state.month / this.state.period.value
+            var resPart = this.state.month % this.state.period.value
+            if (intPart <= 1) 
+            {
+                this.setState({lastMonth: parseInt(this.state.period.value)-1})
+            }
+            else if(resPart == 0)
+            {
+                this.setState({lastMonth: Math.floor(intPart) * parseInt(this.state.period.value)-1})
+            }
+            else
+            {
+                this.setState({lastMonth: (Math.floor(intPart)+1) * parseInt(this.state.period.value)-1})
+            }
+        }
+            
+    },
     // amount
     validateAmount(field, value) {
         this.setState({customAmount: value})
@@ -241,15 +270,18 @@ const Cotisation = React.createClass({
             data.options_prelevement_cotisation_periodicite = this.state.period.value
         }
         else{
-            data.options_prelevement_cotisation_periodicite = 1
+            data.options_prelevement_cotisation_periodicite = 12
         }
         if(this.state.selectedPrelevAuto) {
             data.options_prelevement_auto_cotisation_eusko = this.state.selectedPrelevAuto
         }
-
+        else {
+            data.options_prelevement_auto_cotisation_eusko = false
+        }
+        
         var computeForm = (data) => {
             this.refs.container.success(
-                __("Les changement de vos associations parrainées ont bien été pris en compte."),
+                __("Les choix de paiement de votre cotisation ont bien été pris en compte."),
                 "",
                 {
                     timeOut: 3000,
@@ -263,7 +295,7 @@ const Cotisation = React.createClass({
             // Error during request, or parsing NOK :(
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors de la modification de vos assocation parrainées!"),
+                __("Une erreur s'est produite lors des modifications de paiement de votre cotisation!"),
                 "",
                 {
                     timeOut: 3000,
@@ -272,22 +304,31 @@ const Cotisation = React.createClass({
                 }
             )
         }
+        debugger
         fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError)
-        if(!this.state.cotisationState && this.state.memberType.toUpperCase().startsWith('0'))
+        if(!this.state.cotisationState && this.state.memberType.startsWith('0'))
         {
             var data2 = {}
             data2.start_date = this.state.beginYear
-            data2.end_date = this.state.endMonth
+            data2.end_date = this.state.endYear
             data2.amount = this.state.amount
             data2.label = 'Cotisation ' + this.state.year
-            fetchAuth(getAPIBaseURL + "euskokart-subscription/", 'POST', computeForm, data2, promiseError)
+            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', computeForm, data2, promiseError)
         }
-        else if(!this.state.cotisationState && this.state.selectedOption == 0 && this.state.memberType.toUpperCase().startsWith('1'))
+        else if(!this.state.cotisationState && this.state.memberType.startsWith('1'))
         {
             var data2 = {}
             data2.start_date = this.state.beginYear
-            data2.end_date = this.state.endMonth
-            data2.amount = this.state.amountByY
+            if(this.state.selectedOption == 0)
+            {
+                data2.end_date = moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("YYYY-MM-DDThh:mm")
+                data2.amount = this.state.amount*Math.ceil(this.state.month/this.state.period.value)
+            }
+            else
+            {
+                data2.end_date = this.state.endYear
+                data2.amount = this.state.amountByY
+            }
             data2.label = 'Cotisation ' + this.state.year
             fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', computeForm, data2, promiseError)
         }
@@ -295,13 +336,16 @@ const Cotisation = React.createClass({
 
     radioOnChange(event, value) {
         // update pin values
-        if(this.state.memberType.toUpperCase().startsWith('0'))
+        if(this.state.memberType.startsWith('0'))
         {
             if (event.target.value == 0)
             {
                 this.setState({selectedOption: 0})
                 this.setState({amountByY: undefined})
+                this.setState({amount: undefined})
                 this.setState({canSubmit: false})
+                this.setState({selectedPrelevAuto: true})
+                this.setState({displayCustomAmount2: false})
             }
             else if (event.target.value == 1)
             {
@@ -309,9 +353,11 @@ const Cotisation = React.createClass({
                 this.setState({amountByY: undefined})
                 this.setState({amount: undefined})
                 this.setState({canSubmit: false})
+                this.setState({selectedPrelevAuto: false})
+                this.setState({displayCustomAmount: false})
             }
         }
-        else if(this.state.memberType.toUpperCase().startsWith('1'))
+        else if(this.state.memberType.startsWith('1'))
         {
             if (event.target.value == 0)
             {
@@ -319,6 +365,9 @@ const Cotisation = React.createClass({
                 this.setState({displayCustomAmount2: false})
                 this.setState({customAmount: undefined})
                 this.setState({canSubmit: false})
+                this.setState({amountByY: undefined})
+                this.setState({amount: undefined})
+                this.setState({selectedPrelevAuto: true})
             }
             else if (event.target.value == 1)
             {
@@ -326,9 +375,13 @@ const Cotisation = React.createClass({
                 this.setState({displayCustomAmount: false})
                 this.setState({customAmount: undefined})
                 this.setState({canSubmit: false})
+                this.setState({period: false})
+                this.setState({amountByY: undefined})
+                this.setState({amount: undefined})
+                this.setState({selectedPrelevAuto: false})
             }
-            this.buttonResetChoice()
         }
+        this.buttonResetChoice()
     },
 
     buttonResetChoice() {
@@ -400,11 +453,17 @@ const Cotisation = React.createClass({
             if (this.state.cotisationState) {
                 var memberStatus = (
                     <div className="font-member-status">
-                        <span className="glyphicon glyphicon-ok member-status-ok"></span>
-                        <span className="member-status-text" data-eusko="profil-status">
-                            {__("À jour")}
-                        </span>
-                        <span className="member-status-date">({dateEndSub})</span>
+                        <div className="col-sm-3">
+                            <h2>Etat de la cotisation</h2>
+                        </div>
+                        <div className="col-sm-3 col-md-offset-1">
+                            <br></br>
+                            <span className="glyphicon glyphicon-ok member-status-ok"></span>
+                            <span className="member-status-text" data-eusko="profil-status">
+                                {__("À jour")}
+                            </span>
+                            <span className="member-status-date">({dateEndSub})</span>
+                        </div>
                     </div>
                 )
 
@@ -426,7 +485,7 @@ const Cotisation = React.createClass({
         }
         else
             return null
-        if(this.state.memberType.toUpperCase().startsWith('1')) {
+        if(this.state.memberType.startsWith('1')) {
             if(this.state.memberType == '10') {
                 var cotisation_info = (
                     <span> 
@@ -458,7 +517,7 @@ const Cotisation = React.createClass({
                 ) 
         }
         if (this.state.cotisationState) {
-            if(this.state.memberType.toUpperCase().startsWith('1')) {
+            if(this.state.memberType.startsWith('1')) {
                 var auto_prelev_auto = (
                     <span>
                         <div className="form-group row">
@@ -520,7 +579,7 @@ const Cotisation = React.createClass({
                                 </label>
                                 <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
                                 <label className="control-label col-sm-4" style={{textAlign: 'center'}}>
-                                    {__("") + this.state.selectedOption==0 ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
+                                    {__("") + this.state.selectedOption==0 && this.state.amountByY ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </label>
                                 </div>
                             </div>
@@ -616,7 +675,7 @@ const Cotisation = React.createClass({
         }
         else
         {
-            if(this.state.memberType.toUpperCase().startsWith('0')) {
+            if(this.state.memberType.startsWith('0')) {
                 var auto_prelev_auto = (
                     <span>
                         <div className="form-group row">
@@ -695,8 +754,10 @@ const Cotisation = React.createClass({
                                 </div>
                                 <div className="col-sm-5  profilform" data-eusko="profilform-asso">
                                     {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                    {(" Je fais un virement de ") + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
-                                    {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
+                                    {(" Je fais un virement de ") 
+                                    + (this.state.amount && this.state.selectedOption == 0 ? this.state.amount : 0) + (" ")}
+                                    {__("eusko correspondant à ma cotisation jusqu'au ") 
+                                    + moment().set('month', 11).endOf('month').locale('fr').format("ll") + (".")}
                                 </div>
                             </div>
                             <hr></hr><hr></hr>
@@ -836,7 +897,7 @@ const Cotisation = React.createClass({
                                 </label>
                                 <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
                                 <label className="control-label col-sm-4" style={{textAlign: 'center'}}>
-                                    {__("") + this.state.selectedOption==0 ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
+                                    {__("") + this.state.selectedOption==0 && this.state.amountByY ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </label>
                                 </div>
                             </div>
@@ -845,8 +906,10 @@ const Cotisation = React.createClass({
                                 </div>
                                 <div className="col-sm-5  profilform" data-eusko="profilform-asso">
                                     {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                    {(" Je fais un virement de ") + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
-                                    {__("eusko correspondant à ma cotisation jusqu'au ") + this.state.endMonth + (".")}
+                                    {(" Je fais un virement de ") 
+                                    + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
+                                    {__("eusko correspondant à ma cotisation") 
+                                    + (this.state.lastMonth ? (" jusqu'au ") + moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("ll") : ("")) + (".")}
                                 </div>
                             </div>
                             <hr></hr><hr></hr>
@@ -881,13 +944,12 @@ const Cotisation = React.createClass({
                 <CotisationForm ref="historical-form">
                     <div className="row">
                         <div className="form-group row">
-                            <div className="col-sm-3">
-                                <h2>Etat de la cotisation</h2>
-                            </div>
+                            
+                                {memberStatus}
                         </div>
                         <div className="form-group row">
                             <div className="col-sm-3 col-md-offset-1">
-                                {memberStatus}
+                                
                             </div>
                         </div>
                     </div>

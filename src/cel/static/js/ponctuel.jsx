@@ -2,10 +2,7 @@ import {
     fetchAuth,
     getAPIBaseURL,
     SelectizeUtils,
-    isPositiveNumeric,
 } from 'Utils'
-
-Formsy.addValidationRule('isPositiveNumeric', isPositiveNumeric)
 
 import ModalEusko from 'Modal'
 
@@ -87,15 +84,19 @@ var Ponctuel = React.createClass({
                 .map(function(item){ return {label: item.number, value:item.owner.id} })
                 .sortBy(function(item){ return item.label })
                 .value()
-            this.setState({allAccount: data.result});
-            this.setState({debitList: res}, this.setDebitData)
+            this.setState({allAccount: data.result, debitList: res}, this.setDebitData)
         }
         fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
     },
+
     setDebitData() {
         if (this.state.allAccount) {
             if (this.state.allAccount.length == 1 ) {
-                this.setState({debit:  {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id} });
+                this.setState(
+                    {debit:
+                        {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id}
+                    }
+                )
             }
         }
     },
@@ -117,24 +118,8 @@ var Ponctuel = React.createClass({
     },
 
     amountOnValueChange(event, value) {
-        var valueToTest = value.replace(',', '.')
-
-        if (isNaN(valueToTest))
-        {
-            this.refs.container.error(
-                __("Attention, la valeur saisie pour le montant est incorrecte !"),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
-        }
-        else
-        {
-            this.setState({amount: value}, this.validateForm)
-        }
+        var amount = value.replace('.', ',')
+        this.setState({amount: amount}, this.validateForm)
     },
 
     descriptionOnValueChange(event, value) {
@@ -169,9 +154,7 @@ var Ponctuel = React.createClass({
 
     validateForm() {
         if (this.state.debit && this.state.beneficiaires && this.state.amount && this.state.description)
-        {
             this.enableButton()
-        }
         else
             this.disableButton()
     },
@@ -181,7 +164,7 @@ var Ponctuel = React.createClass({
         // We push fields into the data object that will be passed to the server
         var data = {beneficiaire: this.state.beneficiaires.value,
                     debit: this.state.debit.value,
-                    amount: this.state.amount,
+                    amount: this.state.amount.replace(',', '.'),
                     description: this.state.description
         }
 
@@ -304,11 +287,13 @@ var Ponctuel = React.createClass({
                             onChange={this.amountOnValueChange}
                             value={this.state.amount ? this.state.amount : ""}
                             label={__('Montant')}
-                            type="number"
+                            type="text"
                             placeholder={__("Montant du virement")}
-                            validations="isPositiveNumeric"
+                            validations={{
+                                matchRegexp: /^[0-9.,]+$/
+                            }}
                             validationErrors={{
-                               isPositiveNumeric: __("Montant invalide.")
+                                matchRegexp: __("Montant invalide.")
                             }}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-3']}
                             required

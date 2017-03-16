@@ -2,7 +2,6 @@ import {
     fetchAuth,
     getAPIBaseURL,
     SelectizeUtils,
-    isPositiveNumeric,
 } from 'Utils'
 
 import ModalEusko from 'Modal'
@@ -11,8 +10,6 @@ const {
     Input,
     Row,
 } = FRC
-
-Formsy.addValidationRule('isPositiveNumeric', isPositiveNumeric)
 
 import ReactSelectize from 'react-selectize'
 const SimpleSelect = ReactSelectize.SimpleSelect
@@ -35,7 +32,7 @@ const ReconversionForm = React.createClass({
             <Formsy.Form
                 className={this.getLayoutClassName()}
                 {...this.props}
-                ref="historical-form"
+                ref="reconversion-form"
             >
                 {this.props.children}
             </Formsy.Form>
@@ -44,22 +41,18 @@ const ReconversionForm = React.createClass({
 })
 
 var Ponctuel = React.createClass({
-
     getInitialState() {
         return {
-            allAccount: undefined,
             isModalOpen: false,
             canSubmit: false,
             debit: {    
                 label: undefined,
                 value: undefined,
             },
-            
-            debitList: undefined,
+            debitList: Array(),
             credit: undefined,
             amount: '',
             description: '',
-            accountList: Array(),
         }
     },
     openModal() {
@@ -83,51 +76,30 @@ var Ponctuel = React.createClass({
     componentDidMount() {
         var computeDebitList = (data) => {
             var res = _.chain(data.result)
-                .map(function(item){ return {label: item.number, value:item.owner.id} })
-                .sortBy(function(item){ return item.label })
+                .map((item) => { return {label: item.number, value:item.owner.id} })
+                .sortBy((item) => { return item.label })
                 .value()
-            this.setState({allAccount: data.result});
-            this.setState({debitList: res}, this.setDebitData)
+
+            if (_.isEmpty(res))
+                var state = {debitList: res}
+            else
+                var state = {debitList: res, debit: res[0]}
+
+            this.setState(state)
         }
         fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
     },
 
-    setDebitData() {
-        if (this.state.allAccount) {
-            if (this.state.allAccount.length == 1) {
-                this.setState({debit:
-                                {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id}
-                });
-            }
-        }
-    },
-
     debitOnValueChange(item) {
-        if (item) {
+        if (item)
             this.setState({debit: item})
-        }
         else
             this.setState({debit: undefined})
     },
 
     amountOnValueChange(event, value) {
-        var valueToTest = value.replace(',','.')
-        if(isNaN(valueToTest))
-        {
-            this.refs.container.error(
-                __("Attention, la valeur saisie pour le montant est incorrecte !"),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
-        }
-        else
-        {
-            this.setState({amount: value}, this.validateForm)
-        }
+        var amount = value.replace('.', ',')
+        this.setState({amount: amount}, this.validateForm)
     },
 
     descriptionOnValueChange(event, value) {
@@ -144,9 +116,7 @@ var Ponctuel = React.createClass({
 
     validateForm() {
         if (this.state.debit && this.state.amount && this.state.description)
-        {
             this.enableButton()
-        }
         else
             this.disableButton()
     },
@@ -156,7 +126,7 @@ var Ponctuel = React.createClass({
 
         // We push fields into the data object that will be passed to the server
         var data = {debit: this.state.debit.value,
-                    amount: this.state.amount,
+                    amount: this.state.amount.replace(',', '.'),
                     description: this.state.description
         }
         var computeForm = (data) => {
@@ -197,64 +167,62 @@ var Ponctuel = React.createClass({
     },
 
     render() {
-
-        if (this.state.allAccount) {
-            if (this.state.allAccount.length == 1 )
-            {
-                var debitData = (
-                    <div className="form-group row">
-                        <label
-                            className="control-label col-sm-2 col-md-offset-1"
-                            htmlFor="reconversion-debit"
-                            style={{paddingTop:10}}>
-                            {__("Compte à débiter")}
+        var debitData = null
+        if (this.state.debitList.length == 1)
+        {
+            var debitData = (
+                <div className="form-group row">
+                    <label
+                        className="control-label col-sm-2 col-md-offset-1"
+                        htmlFor="reconversion-debit"
+                        style={{paddingTop:10}}>
+                        {__("Compte à débiter")}
+                    </label>
+                    <div className="col-sm-3 reconversion-debit" data-eusko="reconversion-debit">
+                        <label className="control-label" style={{fontWeight: 'normal'}}>
+                            {this.state.debit.label}
                         </label>
-                        <div className="col-sm-3 reconversion-debit" data-eusko="reconversion-debit">
-                            <label className="control-label" style={{fontWeight: 'normal'}}>
-                                {this.state.debit.label}
-                            </label>
-                        </div>
                     </div>
-                )
-            }
-            else
-            {
-                var debitData = (
-                    <div className="form-group row">
-                        <div className="col-sm-1"></div>
-                        <label
-                            className="control-label col-sm-2"
-                            htmlFor="reconversion-debit"
-                            style={{paddingTop:10}}>
-                            {__("Compte à débiter")}
-                            <span className="required-symbol">&nbsp;*</span>
-                        </label>
-                        <div className="col-sm-1"></div>
-                        <div className="col-sm-4 reconversion-debit" data-eusko="reconversion-debit">
-                            <SimpleSelect
-                                ref="select"
-                                value={this.state.debit}
-                                options={this.state.debitList}
-                                placeholder={__("Compte à débiter")}
-                                theme="bootstrap3"
-                                autocomplete="off"
-                                onValueChange={this.debitOnValueChange}
-                                renderValue={SelectizeUtils.selectizeRenderValue}
-                                renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                onBlur={this.validateForm}
-                                required
-                            >
-                            </SimpleSelect>
-                        </div>
+                </div>
+            )
+        }
+        else if (this.state.debitList.length > 1)
+        {
+            var debitData = (
+                <div className="form-group row">
+                    <div className="col-sm-1"></div>
+                    <label
+                        className="control-label col-sm-2"
+                        htmlFor="reconversion-debit"
+                        style={{paddingTop:10}}>
+                        {__("Compte à débiter")}
+                        <span className="required-symbol">&nbsp;*</span>
+                    </label>
+                    <div className="col-sm-1"></div>
+                    <div className="col-sm-4 reconversion-debit" data-eusko="reconversion-debit">
+                        <SimpleSelect
+                            ref="select"
+                            value={this.state.debit}
+                            options={this.state.debitList}
+                            placeholder={__("Compte à débiter")}
+                            theme="bootstrap3"
+                            autocomplete="off"
+                            onValueChange={this.debitOnValueChange}
+                            renderValue={SelectizeUtils.selectizeRenderValue}
+                            renderOption={SelectizeUtils.selectizeNewRenderOption}
+                            onBlur={this.validateForm}
+                            required
+                        >
+                        </SimpleSelect>
                     </div>
-                )
-            }
+                </div>
+            )
         }
 
         return (
             <div className="row">
                 <div className="col-md-10 col-md-offset-1">
-                    <ReconversionForm ref="historical-form">
+                    <ReconversionForm ref="reconversion-form">
                         {debitData}
                         <Input
                             name="montant"
@@ -263,10 +231,12 @@ var Ponctuel = React.createClass({
                             data-eusko="reconversion-amount"
                             onChange={this.amountOnValueChange}
                             value = {this.state.amount}
-                            type="number"
-                            validations="isPositiveNumeric"
+                            type="text"
+                            validations={{
+                                matchRegexp: /^[0-9.,]+$/
+                            }}
                             validationErrors={{
-                               isPositiveNumeric: __("Montant invalide.")
+                                matchRegexp: __("Montant invalide.")
                             }}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-3']}
                             required

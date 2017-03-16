@@ -51,7 +51,6 @@ var Ponctuel = React.createClass({
 
     getInitialState() {
         return {
-            allAccount: undefined,
             beneficiaires: undefined,
             beneficiairesList: undefined,
             canSubmit: false,
@@ -59,62 +58,59 @@ var Ponctuel = React.createClass({
                 label: undefined,
                 value: undefined,
             },
-            debitList: undefined,
-            credit: undefined,
+            debitList: Array(),
             amount: undefined,
             description: '',
-            accountList: Array(),
             isModalOpen: false,
             modalBody: Array(),
         }
     },
 
-    componentDidMount() {
+    getBeneficiairesList() {
         var computeBeneficiairesList = (data) => {
             var res = _.chain(data.results)
-                .map(function(item){ return {label: item.cyclos_name + ' - ' + item.cyclos_account_number, value:item.cyclos_id} })
-                .sortBy(function(item){ return item.label })
+                .filter((item) => {
+                    // We don't want our own account to be in the beneficiairesList
+                    return this.state.debit.label != item.cyclos_account_number
+                })
+                .map((item) => { return {label: item.cyclos_name + ' - ' + item.cyclos_account_number, value:item.cyclos_id} })
+                .sortBy((item) => { return item.label })
                 .value()
+
             this.setState({beneficiairesList: res})
         }
         fetchAuth(this.props.ponctuelListUrl, 'GET', computeBeneficiairesList)
+    },
 
+    componentDidMount() {
         var computeDebitList = (data) => {
             var res = _.chain(data.result)
-                .map(function(item){ return {label: item.number, value:item.owner.id} })
-                .sortBy(function(item){ return item.label })
+                .map((item) => { return {label: item.number, value:item.owner.id} })
+                .sortBy((item) => { return item.label })
                 .value()
-            this.setState({allAccount: data.result, debitList: res}, this.setDebitData)
+
+            if (_.isEmpty(res))
+                var state = {debitList: res}
+            else
+                var state = {debitList: res, debit: res[0]}
+
+            this.setState(state, this.getBeneficiairesList)
         }
         fetchAuth(getAPIBaseURL + "account-summary-adherents/", 'GET', computeDebitList)
     },
 
-    setDebitData() {
-        if (this.state.allAccount) {
-            if (this.state.allAccount.length == 1 ) {
-                this.setState(
-                    {debit:
-                        {label:this.state.allAccount[0].number, value:this.state.allAccount[0].owner.id}
-                    }
-                )
-            }
-        }
-    },
-
     beneficiairesOnValueChange(item) {
-        if (item) {
+        if (item)
             this.setState({beneficiaires: item})
-        }
         else
             this.setState({beneficiaires: undefined})
     },
 
     debitOnValueChange(item) {
-        if (item) {
+        if (item)
             this.setState({debit: item})
-        }
         else
-            this.setState({debit: undefined})
+            this.setState({debit: {label: undefined, value: undefined} })
     },
 
     amountOnValueChange(event, value) {
@@ -201,55 +197,53 @@ var Ponctuel = React.createClass({
     },
 
     render() {
-        if (this.state.allAccount)
+        var debitData = null // if debitList is 0
+        if (this.state.debitList.length == 1)
         {
-            if (this.state.allAccount.length == 1)
-            {
-                var debitData = (
-                    <div className="form-group row">
-                        <label
-                            className="control-label col-sm-3"
-                            htmlFor="virement-debit">
-                            {__("Compte à débiter")}
-                            <span className="required-symbol">&nbsp;*</span>
+            var debitData = (
+                <div className="form-group row">
+                    <label
+                        className="control-label col-sm-3"
+                        htmlFor="virement-debit">
+                        {__("Compte à débiter")}
+                        <span className="required-symbol">&nbsp;*</span>
+                    </label>
+                    <div className="col-sm-3 virement-debit" data-eusko="virement-debit">
+                        <label className="control-label" style={{fontWeight: 'normal'}}>
+                            {this.state.debit.label}
                         </label>
-                        <div className="col-sm-3 virement-debit" data-eusko="virement-debit">
-                            <label className="control-label" style={{fontWeight: 'normal'}}>
-                                {this.state.debit.label}
-                            </label>
-                        </div>
                     </div>
-                )
-            }
-            else
-            {
-                var debitData = (
-                    <div className="form-group row">
-                        <label
-                            className="control-label col-sm-2"
-                            htmlFor="virement-debit">
-                            {__("Compte à débiter")}
-                            <span className="required-symbol">&nbsp;*</span>
-                        </label>
-                        <div className="col-sm-3 virement-debit" data-eusko="virement-debit">
-                            <SimpleSelect
-                                ref="select"
-                                value={this.state.debit}
-                                options={this.state.debitList}
-                                placeholder={__("Compte à débiter")}
-                                theme="bootstrap3"
-                                autocomplete="off"
-                                onValueChange={this.debitOnValueChange}
-                                renderValue={SelectizeUtils.selectizeRenderValue}
-                                renderOption={SelectizeUtils.selectizeNewRenderOption}
-                                onBlur={this.validateForm}
-                                required
-                            >
-                            </SimpleSelect>
-                        </div>
+                </div>
+            )
+        }
+        else if (this.state.debitList.length > 1)
+        {
+            var debitData = (
+                <div className="form-group row">
+                    <label
+                        className="control-label col-sm-2"
+                        htmlFor="virement-debit">
+                        {__("Compte à débiter")}
+                        <span className="required-symbol">&nbsp;*</span>
+                    </label>
+                    <div className="col-sm-3 virement-debit" data-eusko="virement-debit">
+                        <SimpleSelect
+                            ref="select"
+                            value={this.state.debit}
+                            options={this.state.debitList}
+                            placeholder={__("Compte à débiter")}
+                            theme="bootstrap3"
+                            autocomplete="off"
+                            onValueChange={this.debitOnValueChange}
+                            renderValue={SelectizeUtils.selectizeRenderValue}
+                            renderOption={SelectizeUtils.selectizeNewRenderOption}
+                            onBlur={this.validateForm}
+                            required
+                        >
+                        </SimpleSelect>
                     </div>
-                )
-            }
+                </div>
+            )
         }
 
         return (

@@ -352,6 +352,8 @@ var HistoryPage = React.createClass({
             noDataText: __("Pas d'historique à afficher."), 
             hideSizePerPage: true, 
             sizePerPage: 20,
+            defaultSortName: 'date',  // default sort column name
+            defaultSortOrder: 'desc',  // default sort order
         }
 
         var historyTable = (
@@ -360,7 +362,7 @@ var HistoryPage = React.createClass({
              selectRow={{mode: 'none'}} tableContainerClass="react-bs-table-account-history"
              options={options}>
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="date" dataFormat={dateFormatter}>{__("Date")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="date" dataFormat={dateFormatter} dataSort>{__("Date")}</TableHeaderColumn>
                 <TableHeaderColumn columnClassName="line-break" dataField="description">{__("Libellé")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="amount" dataFormat={debitFormatter}>{__("Débit")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="amount" dataFormat={creditFormatter}>{__("Crédit")}</TableHeaderColumn>
@@ -398,6 +400,7 @@ var HistoryPage = React.createClass({
                                             data-eusko="memberhistorical-description"
                                             onChange={this.descriptionOnValueChange}
                                             value={this.state.description}
+                                            placeholder={__("Rechercher ...")}
                                             layout="elementOnly"
                                         />
                                     </div>
@@ -461,25 +464,25 @@ var HistoryPage = React.createClass({
                     </HistoricalForm>
                 </div>
                 <div className="form-group row no-bottom-space">
-                <div className="col-md-2 col-md-offset-9">
-                    <input
-                        name="submit"
-                        data-eusko="memberhistorical-export"
-                        type="submit"
-                        defaultValue={__("Export PDF")}
-                        className="btn btn-success margin-R10"
-                        formNoValidate={true}
-                        onClick={this.getHistoryPDF}
-                    />
-                    <input
-                        name="submit"
-                        data-eusko="memberhistorical-export"
-                        type="submit"
-                        defaultValue={__("Export CSV")}
-                        className="btn btn-success "
-                        formNoValidate={true}
-                        onClick={this.getHistoryCSV}
-                    />
+                    <div className="col-md-2 col-md-offset-9" style={{paddingLeft: 10}}>
+                        <input
+                            name="submit"
+                            data-eusko="memberhistorical-export"
+                            type="submit"
+                            defaultValue={__("Export PDF")}
+                            className="btn btn-success margin-R10"
+                            formNoValidate={true}
+                            onClick={this.getHistoryPDF}
+                        />
+                        <input
+                            name="submit"
+                            data-eusko="memberhistorical-export"
+                            type="submit"
+                            defaultValue={__("Export CSV")}
+                            className="btn btn-success"
+                            formNoValidate={true}
+                            onClick={this.getHistoryCSV}
+                        />
                     </div>
                 </div>
                 <div className="col-md-10">

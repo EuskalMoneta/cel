@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^profil/?$', adherents_views.profile_home, name='profile-home'),
     url(r'^profil/association/?$', adherents_views.association, name='association'),
     url(r'^profil/options/?$', adherents_views.options, name='options'),
+    url(r'^profil/cotisation/?$', adherents_views.manage_membership, name='manage-membership'),
     url(r'^profil/cotisation/(?P<menu>[\w\-]+)/?$', adherents_views.manage_membership, name='manage-membership'),
     url(r'^profil/coordonnees/?$', adherents_views.profile, name='profile'),
     url(r'^profil/change-automatique/?$', adherents_views.change_automatique, name='change-automatique'),

@@ -105,7 +105,7 @@ def accept_cgu(request):
 
 
 @login_required
-def manage_membership(request, menu):
+def manage_membership(request, menu=None):
     return render(request, 'adherents/manage-membership.html')
 
 

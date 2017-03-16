@@ -108,6 +108,10 @@ var Overview = React.createClass({
             }
         }
 
+        var soldeFormatter = (cell, row) => {
+            return cell.replace('.', ',')
+        }
+
         var buttonFormatter = (cell, row) => {
             return (
                 <AccountButtons
@@ -124,7 +128,7 @@ var Overview = React.createClass({
                             tableContainerclassName="react-bs-table-list-account" options={{noDataText: __("Rien à afficher.")}}
             >
                 <TableHeaderColumn isKey={true} dataField="number" width="250">{__("Numéro du compte")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="solde" width="250">{__("Solde")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="solde" dataFormat={soldeFormatter} width="250">{__("Solde")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="memberName"
                                    columnClassName="disable-pointer-events"
                                    dataFormat={buttonFormatter}>{__("Actions")}</TableHeaderColumn>

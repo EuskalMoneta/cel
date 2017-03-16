@@ -137,14 +137,31 @@ var HistoryPage = React.createClass({
         {
             for (var i=0; i < historyList[0].result.pageItems.length; i++)
             {
-
                 if (historyList[0].result.pageItems[i].id == this.state.historyListWithSolde[j].id)
                 {
+                    historyList[0].result.pageItems[i].description = this.getDescriptionForPayment(historyList[0].result.pageItems[i])
                     historyList[0].result.pageItems[i].solde = this.state.historyListWithSolde[j].solde
                 }
             }
         }
         this.setState({historyList: historyList[0].result.pageItems});
+    },
+
+    getDescriptionForPayment(payment) {
+        if (payment.type.internalName.indexOf("virement_inter_adherent") == -1 &&
+            payment.type.internalName.indexOf("paiement_par_carte") == -1) {
+            return payment.description
+        }
+
+        // Detect if this payment is from our account or to our account
+        if (payment.amount < 0) {
+            var fromto = __('Vers') + ' : ' + payment.relatedAccount.owner.display
+        }
+        else {
+            var fromto = __('De') + ' : ' + payment.relatedAccount.owner.display
+        }
+
+        return payment.description + "\r\n" + fromto
     },
 
     componentDidMount() {

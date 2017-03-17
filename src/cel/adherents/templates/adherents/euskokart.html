@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+{% get_current_language as CURRENT_LANG %}
+
+{% block container %}
+    <div class="container-fluid container-eusko">
+        <div class="row">
+            <div id="euskokart"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+  {% with 'bundles/js/'|add:CURRENT_LANG|add:'.Euskokart.js' as euskokart_js_static %}
+    <script src="{% static euskokart_js_static %}"></script>
+  {% endwith %}
+{% endblock %}

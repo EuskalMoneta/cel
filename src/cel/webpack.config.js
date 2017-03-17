@@ -9,38 +9,24 @@ var languages = {
     "eu": require('./static/locales/eu.json')  // Fichier de traduction
 }
 
+// if env var NODE_ENV === 'production', it will uglify/minify our JS codebase
+// if this is anything else, it will not: and we will be in 'dev' mode (.js files will be *MUCH LARGER*)
+var isProd = (process.env.NODE_ENV === 'production')
+
 module.exports = Object.keys(languages).map(function(language) {
-    return {
-        // the base directory (absolute path) for resolving the entry option
-        context: __dirname,
 
-        // If you have a big problem on the front-side (with React, etc ...)
-        // You can activate this, its generates the .map for the bundles,
-        // and using Chrome this helps a LOT to locate where the problem is in your code exactly:
-        // ^^^               ^^^
-        // devtool: 'source-map',
+    // Conditionally return a list of plugins to use based on the current environment.
+    // Repeat this pattern for any other config key (ie: loaders, etc).
+    function getPlugins() {
+        var plugins = [];
 
-        // Liste des pages/scripts React qui composent notre application,
-        // Pour chaque fichier .jsx servant nos pages, nous devons le déclarer ici !
-        // A noter l'exception des Utils et autres dépendances que nous codons et importons nous-même
-        // Voir la section sur les alias dans ce fichier de config
-        entry: {
-            Base: './static/js/base',
-            ChangePassword: './static/js/change-password',
-            Login: './static/js/login',
-        },
-
-        // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)
-        // Ici: /assets/bundles/js/<langue>.<nom_script>.js
-        output: {
-            // where you want your compiled bundle to be stored
-            path: '/assets/bundles/',
-            // naming convention webpack should use for your files
-            filename: 'js/'+ language + '.[name].js',
-        },
-
-        // Modules externes utilisés par nos pages/scripts React
-        plugins: [
+        // Always expose NODE_ENV to webpack, you can now use `process.env.NODE_ENV`
+        // inside your code for any environment checks; UglifyJS will automatically
+        // drop any unreachable code.
+        plugins.push(
+            new webpack.EnvironmentPlugin([
+                'NODE_ENV'
+            ]),
             // makes our dependencies available in every module
             new webpack.ProvidePlugin({
                 Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
@@ -58,7 +44,63 @@ module.exports = Object.keys(languages).map(function(language) {
             new I18nPlugin(
                 languages[language]
             )
-        ],
+        );
+
+        // Conditionally add plugins for Production builds.
+        if (isProd) {
+            plugins.push(new webpack.optimize.UglifyJsPlugin());
+        }
+
+        return plugins;
+    }
+
+    return {
+        // the base directory (absolute path) for resolving the entry option
+        context: __dirname,
+
+        // If you have a big problem on the front-side (with React, etc ...)
+        // You can activate this, its generates the .map for the bundles,
+        // and using Chrome this helps a LOT to locate where the problem is in your code exactly:
+        // ^^^               ^^^
+        // devtool: 'source-map',
+
+        // Liste des pages/scripts React qui composent notre application,
+        // Pour chaque fichier .jsx servant nos pages, nous devons le déclarer ici !
+        // A noter l'exception des Utils et autres dépendances que nous codons et importons nous-même
+        // Voir la section sur les alias dans ce fichier de config
+        entry: {
+            Base: './static/js/base',
+            FirstTime: './static/js/first-time',
+            ChangePassword: './static/js/change-password',
+            LostPassword: './static/js/lost-password',
+            ValidToken: './static/js/valid-token',
+            Profil: './static/js/profil',
+            Login: './static/js/login',
+            History: './static/js/history',
+            Overview: './static/js/overview',
+            Beneficiaires: './static/js/beneficiaires',
+            Ponctuel: './static/js/ponctuel',
+            Euskokart: './static/js/euskokart',
+            Reconvert: './static/js/reconvert',
+            CompteRecharger: './static/js/compte-recharger',
+            AcceptCGU: './static/js/accepte-cgu',
+            Association: './static/js/association',
+            Options: './static/js/options',
+            ChangeAutomatique: './static/js/change-automatique',
+            Cotisation: './static/js/cotisation',
+   	},
+
+        // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)
+        // Ici: /assets/bundles/js/<langue>.<nom_script>.js
+        output: {
+            // where you want your compiled bundle to be stored
+            path: '/assets/bundles/',
+            // naming convention webpack should use for your files
+            filename: 'js/'+ language + '.[name].js',
+        },
+
+        // Modules externes utilisés par nos pages/scripts React
+        plugins: getPlugins(),
 
         // Les modules permettent à Webpack de charger d'autres types de données que le JavaScript (JSX dans notre cas)
         // Babel est le nom du compilateur utilisé par Webpack pour compiler notre JSX
@@ -129,6 +171,7 @@ module.exports = Object.keys(languages).map(function(language) {
             // Que nous pourrons importer depuis celui-ci (comme les Utils ou une modale utilisés un peu partout)
             alias: {
                 Utils: 'static/js/utils',
+                Modal: 'static/js/modal',
             },
 
             // tells webpack where to look for modules

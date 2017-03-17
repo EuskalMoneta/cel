@@ -4,8 +4,74 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
 
 /* Custom styles */
 
-.lang-select {
-  cursor: pointer;
+#wrap {
+  // TODO, fix those navbars on scroll!
+  // top: 0px !important;
+}
+
+.topbar-brand-image {
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.topbar-right li, .disable-pointer-events {
+  pointer-events: none;
+}
+
+.log-out, .enable-pointer-events {
+  pointer-events: auto !important;
+}
+
+.navbar-content {
+  height: 135px;
+  padding-top: 80px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid;
+  border-bottom-color: #c3c3c3;
+}
+
+.navbar-content a {
+  padding-top: 15px !important;
+  padding-bottom: 17px !important;
+}
+
+.navbar-content a:hover, .navbar-content a:focus, .navbar-content .active {
+  background-color: #f8f8f8 !important;
+  border-bottom: 1px solid;
+  border-bottom-color: #34d045;
+}
+
+.subnav {
+  min-height: 40px;
+  background-color: #f8f8f8;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.subnav a {
+  color: #2c3e50;
+  padding-top: 10px !important;
+  padding-bottom: 7px !important;
+}
+
+.subnav a:hover, .subnav a:focus, .subnav .active {
+  border-bottom: 0.7px solid;
+  border-bottom-color: #2c3e50;
+}
+
+#first-time, #login, #lost-password, #valid-token {
+  margin-top: 7%;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 .lang-select-flag-fr {
@@ -22,7 +88,7 @@ textarea {
 }
 
 .container-eusko {
-  margin-top: 80px;
+  margin-top: 15px;
   margin-bottom: 80px;
 }
 
@@ -47,6 +113,10 @@ textarea {
   width: 100%;
 }
 
+.plus-sign {
+  top: 2px;
+}
+
 .margin-top-ten {
   margin-top: 10px;
 }
@@ -55,8 +125,16 @@ textarea {
   margin-top: 20px;
 }
 
+.margin-top-zero {
+  margin-top: 0px;
+}
+
 .margin-right {
   margin-right: 5px;
+}
+
+.margin-left {
+  margin-left: 3px;
 }
 
 .margin-bottom {
@@ -90,6 +168,21 @@ textarea {
   background-color: white;
 }
 
+/* Beneficiaires List */
+.react-bs-table-list-beneficiaires {
+  margin-top: 10px !important;
+  margin-right: 0px !important;
+  margin-bottom: 5px !important;
+  margin-left: 0px !important;
+}
+
+.search-beneficiaire {
+  height: 40px !important;
+  font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+  font-size: 15px !important;
+  padding: 10px;
+}
+
 /* BDCShow */
 .bdc-show-panel {
   label {
@@ -111,7 +204,7 @@ textarea {
 }
 
 .bdc-status-ok {
-  color: #128f76;
+  color: #21a31f;
   vertical-align: -1px;
   margin-right: 5px;
 }
@@ -134,9 +227,8 @@ textarea {
   margin-left: 50px;
 }
 
-/* MemberAddForm */
 // Adjust size for the "birthdate" field
-.memberaddform-birth {
+.profilform-birth {
   .react-datepicker__input-container {
     display: block;
   }
@@ -147,7 +239,15 @@ textarea {
   width: 100% !important;
 }
 
-.memberaddform {
+.profil-town-div {
+  padding-left: 10px;
+}
+
+.profil-town {
+  width: 100% !important;
+}
+
+.profilform {
   .react-selectize-placeholder {
     font-size: 16px;
     font-family: $font-stack;
@@ -163,7 +263,7 @@ textarea {
   }
 }
 
-.memberaddform {
+.profilform {
   font-size: 16px;
   font-family: $font-stack;
   line-height: 1.42857143;
@@ -238,6 +338,74 @@ textarea {
   border-top-right-radius: 0;
 }
 
+.links-login {
+  margin-left: 25px;
+  margin-top: 20px;
+}
+
+.links-login {
+  .row {
+    margin-top: 10px;
+  }
+}
+
+/* profil */
+
+.profil-span {
+  padding-top: 11px;
+}
+
+.profil-div-margin-left {
+  margin-left: 50px;
+}
+
+.member-status-text {
+  margin-right: 5px;
+}
+
+.profil-panel {
+  border: 0px;
+}
+
+.profil-panel {
+  label {
+    text-align: right;
+  }
+}
+
+.member-status-text {
+  margin-right: 5px;
+}
+
+.member-status-date {
+  font-size: 15px;
+}
+
+.font-member-status {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.member-status-ok {
+  color: #21a31f;
+  vertical-align: -1px;
+  margin-right: 5px;
+}
+
+.member-status-nok {
+  color: #e74c3c;
+  vertical-align: -2px;
+  margin-right: 5px;
+}
+
+.profil-status {
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  vertical-align: middle;
+}
+
 /* search members */
 
 .search-no-results {
@@ -268,16 +436,11 @@ textarea {
 
 .react-bs-table-search-form {
   input {
-    height: 45px !important;
-    line-height: 1.42857143 !important;
-    padding-top: 10px !important;
-    padding-right: 15px !important;
-    padding-bottom: 10px !important;
-    padding-left: 15px !important;
+    height: 40px !important;
     font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif !important;
     font-size: 15px !important;
   }
-}
+ }
 
 /* manager/history */
 
@@ -300,6 +463,12 @@ textarea {
 
 .react-selectize-manager-history {
   background-color: white;
+}
+
+.memberhistorical {
+  .simple-select {
+    background-color: white;
+  }
 }
 
 .react-bs-table-list-bdc {
@@ -348,4 +517,34 @@ textarea {
 .show-dropdown-menu {
   visibility: visible;
   display: block;
+}
+
+.search-group {
+  background-color: #f9f9f9;
+  border: 0.1em #d9d9d9 solid;
+  margin-right: 15px;
+  margin-left: -3px;
+}
+
+.search-solde-group {
+  margin-bottom: 50px;
+}
+
+.no-bottom-space {
+  margin-bottom: 0px;
+}
+
+.margin-R10 {
+  margin-left:-10px;
+  margin-right: 10px;
+}
+
+.accountchoice {
+  marginLeft: 10;
+  verticalAlign: middle;
+  white-space: pre-wrap;
+}
+
+.grey-back{
+  background: #ecf0f1
 }

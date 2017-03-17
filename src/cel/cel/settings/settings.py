@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'base',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,7 @@ MIDDLEWARE_CLASSES = [
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -73,21 +75,26 @@ CSP_FONT_SRC = ["'self'", "http://fonts.gstatic.com"]
 CSP_SCRIPT_SRC = ["'self'"]
 CSP_IMG_SRC = ["'self'", "data: image:"]
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'", "http://fonts.googleapis.com", "data: blob:"]
-CSP_CONNECT_SRC = ["'self'", API_PUBLIC_URL, "http://localhost:8002", "http://localhost:8081"]
+CSP_CONNECT_SRC = ["'self'", API_PUBLIC_URL, "http://localhost:8003", "http://localhost:8081"]
 
 ROOT_URLCONF = 'cel.urls'
 
 APPEND_SLASH = False
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/compte'
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
+
+CGU_PDF_PARTICULIERS = 'http://www.euskalmoneta.org/wp-content/uploads/2017/03/CGU-Particuliers.pdf'
+CGU_PDF_PRESTATAIRES = 'http://www.euskalmoneta.org/wp-content/uploads/2017/03/CGU-Professionnels.pdf'
+MANDAT_PDF_PRELEVEMENT = 'http://www.euskokart.org/Mandat-de-pr%C3%A9l%C3%A8vement.pdf'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(os.path.dirname(BASE_DIR), 'templates'),
-                 os.path.join(os.path.dirname(BASE_DIR), 'cel', 'templates'),
-                 os.path.join(os.path.dirname(BASE_DIR), 'base', 'templates'), ],
+                 os.path.join(os.path.dirname(BASE_DIR), 'adherents', 'templates'),
+                 os.path.join(os.path.dirname(BASE_DIR), 'base', 'templates'),
+                 os.path.join(os.path.dirname(BASE_DIR), 'cel', 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,9 +110,9 @@ TEMPLATES = [
 ]
 
 # base.context_processors.get_django_settings needs it
-TEMPLATE_VISIBLE_SETTINGS = ['LOGIN_REDIRECT_URL',
-                             'LOGIN_URL', 'LOGOUT_URL',
-                             'API_PUBLIC_URL']
+TEMPLATE_VISIBLE_SETTINGS = ['API_PUBLIC_URL',
+                             'CGU_PDF_PARTICULIERS', 'CGU_PDF_PRESTATAIRES', 'MANDAT_PDF_PRELEVEMENT',
+                             'LOGIN_REDIRECT_URL', 'LOGIN_URL', 'LOGOUT_URL']
 
 WSGI_APPLICATION = 'cel.wsgi.application'
 

@@ -5,7 +5,6 @@ import {
     getUrlParameter,
     getCSRFToken,
     getAPIBaseURL,
-    NavbarTitle,
 } from 'Utils'
 
 import classNames from 'classnames'
@@ -37,9 +36,17 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props)
 
+        var nextParam = getUrlParameter('next')
+
+        if (nextParam == window.config.getLoginRedirectURL || nextParam == "" || nextParam == "/")
+            var sessionExpired = false
+        else
+            var sessionExpired = true
+
         // Default state
         this.state = {
             canSubmit: false,
+            sessionExpired: sessionExpired,
             invalidLogin: false,
             displaySpinner: false,
             username: '',
@@ -72,10 +79,10 @@ class LoginPage extends React.Component {
     handleChange = (event) => {
         // /!\ I had to use a callback function (validateForm) /!\
         // setState() does not immediately mutate this.state but creates a pending state transition
-        // See Notes: https://facebook.github.io/react/docs/component-api.html#setstate
+        // See Notes: https://facebook.github.io/react/docs/react-component.html#setstate
         this.setState({
             [event.target.name]: event.target.value,
-            invalidLogin: false
+            invalidLogin: false,
         }, this.validateForm)
     }
 
@@ -88,7 +95,7 @@ class LoginPage extends React.Component {
 
     submitForm = (data) => {
         // Trigger <ReactSpinner /> to disable login form
-        this.setState({displaySpinner: true, canSubmit: false})
+        this.setState({displaySpinner: true, sessionExpired: false, canSubmit: false})
 
         // Get api-auth-token + auth in Django
 
@@ -100,14 +107,13 @@ class LoginPage extends React.Component {
             this.setState({invalidLogin: true, displaySpinner: false, canSubmit: false})
         }
 
-        var promiseSuccessApiAuth = () => {
+        var promiseSuccessApiAuth = (data) => {
             // Auth in Django
             fetch('/login/',
                   {
                     method: 'post',
                     credentials: 'same-origin',
-                    body: JSON.stringify({'username': this.state.username,
-                                          'password': this.state.password}),
+                    body: JSON.stringify({'token': data}),
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
@@ -134,8 +140,8 @@ class LoginPage extends React.Component {
         fetchGetToken(this.state.username, this.state.password, promiseSuccessApiAuth, promiseError)
     }
 
-    render = () => {
-
+    render = () =>
+    {
         var parentDivClasses = classNames({
             'has-spinner': this.state.displaySpinner,
         })
@@ -154,6 +160,17 @@ class LoginPage extends React.Component {
         else
             var messageInvalidLogin = null
 
+        if (this.state.sessionExpired && !this.state.invalidLogin)
+            var messageSessionExpired = (
+                <div className="alert alert-info">
+                    {__("Session expirée.")}
+                    <br />
+                    {__("Veuillez vous reconnecter.")}
+                </div>
+            )
+        else
+            var messageSessionExpired = null
+
         if (this.state.displaySpinner)
             var spinner = <ReactSpinner config={this.state.spinnerConfig} />
         else
@@ -171,7 +188,7 @@ class LoginPage extends React.Component {
                                    name="username" id="username"
                                    value={this.state.username}
                                    onChange={this.handleChange}
-                                   placeholder={__('Identifiant')}
+                                   placeholder={__("Identifiant ou Email")}
                                    disabled={this.state.displaySpinner}
                                    required
                             />
@@ -186,10 +203,20 @@ class LoginPage extends React.Component {
                             />
 
                             {messageInvalidLogin}
+                            {messageSessionExpired}
 
                             <input type="submit" className="btn btn-lg btn-success btn-block"
                                    defaultValue={__("Se connecter")} formNoValidate={true}
                                    disabled={!this.state.canSubmit} />
+
+                            <div className="links-login">
+                                <div className="row">
+                                    <a href="/premiere-connexion">{__("Première connexion ?")}</a>
+                                </div>
+                                <div className="row">
+                                    <a href="/passe-perdu">{__("J'ai perdu mon mot de passe")}</a>
+                                </div>
+                            </div>
                     </LoginForm>
                 </div>
             </div>
@@ -202,8 +229,4 @@ ReactDOM.render(
     <LoginPage />,
     document.getElementById('login')
 )
-
-ReactDOM.render(
-    <NavbarTitle />,
-    document.getElementById('navbar-title')
-)
+document.title = __("Connexion") + " - " + __("Compte en ligne") + " " + document.title

@@ -1,21 +1,67 @@
 var checkStatus = (response) => {
-    if (response.status != 204 && response.status >= 200 && response.status < 300) {
+    if (response.status >= 200 && response.status <= 401) {
         return response
     }
-    else if (response.status == 204) {
-        var error = new Error("No content")
-        error.response = response
-        throw error
-    }
     else {
-        var error = new Error(response.statusText)
-        error.response = response
-        throw error
+        try {
+            // If we got a forbidden (403) response,
+            // *AND* we're not already in the login page
+            // *AND* the call we've made was for the Euskal Moneta API and *NOT* the Django front
+            // we redirect to the login page, in this page a "session expired" message will be displayed
+            if (response.statusText == "Forbidden"
+                && window.location.pathname.indexOf("/login") === -1
+                && response.url.indexOf(window.config.getAPIBaseURL) != -1) {
+                window.location.assign("/logout?next=" + window.location.pathname)
+            }
+            else {
+                var error = new Error(response.statusText)
+                error.response = response
+                throw error
+            }
+        }
+        catch(e) {
+            var error = new Error(response.statusText)
+            error.response = response
+            throw error
+        }
     }
 }
 
 var parseJSON = (response) => {
-    return response.json()
+    if (response.status == 204) {
+        return {}
+    }
+    else if (response.status == 400 || response.status == 401) {
+        var error = new Error(response.statusText)
+        error.response = response
+        throw error
+    }
+    else {
+        return response.json()
+    }
+}
+
+var parseBLOB = (response) => {
+    return response.blob()
+}
+
+var checkSession = (data) => {
+    try {
+        if (data.detail.toUpperCase().indexOf("LOGGED_OUT") != -1) {
+            window.location.assign("/logout?next=" + window.location.pathname)
+        }
+        else if (data.detail.indexOf("Exception") != -1) {
+            var error = new Error(data)
+            error.response = data
+            throw error
+        }
+        else {
+            return data
+        }
+    }
+    catch(e) {
+        return data
+    }
 }
 
 var storeToken = (data) => {
@@ -29,11 +75,15 @@ var getToken = () => {
     return sessionStorage.getItem('cel-api-token-auth')
 }
 
-var fetchCustom = (url, method, promise, token, data, promiseError=null) => {
+var fetchCustom = (url, method, promise, token, data, promiseError=null, accept=null) => {
+    if (!accept) {
+        var accept = 'application/json'
+    }
+
     var payload = {
         method: method,
         headers: {
-            'Accept': 'application/json',
+            'Accept': accept,
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + token
         }
@@ -54,7 +104,8 @@ var fetchCustom = (url, method, promise, token, data, promiseError=null) => {
 
     fetch(url, payload)
     .then(checkStatus)
-    .then(parseJSON)
+    .then(accept == 'application/json' ? parseJSON : parseBLOB)
+    .then(checkSession)
     .then(promise)
     .catch(promiseError)
 }
@@ -78,11 +129,11 @@ var fetchGetToken = (username, password, promiseSuccess, promiseError) => {
     .catch(promiseError)
 }
 
-var fetchAuth = (url, method, promise, data=null, promiseError=null) => {
+var fetchAuth = (url, method, promise, data=null, promiseError=null, accept=null) => {
     var token = getToken()
     if (token) {
         // We have a token
-        fetchCustom(url, method, promise, token, data, promiseError)
+        fetchCustom(url, method, promise, token, data, promiseError, accept)
     }
     else {
         // We need a token
@@ -93,6 +144,35 @@ var fetchAuth = (url, method, promise, data=null, promiseError=null) => {
             window.location.assign(window.config.getLoginURL)
         }
     }
+}
+
+var fetchNoAuth = (url, method, promise, data=null, promiseError=null) => {
+    var payload = {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+
+    if (method.toLowerCase() != 'get' && data != null) {
+        payload.body = JSON.stringify(data)
+    }
+
+    if (!promiseError) {
+        var promiseError = (err) => {
+            // Error during request, or parsing NOK :(
+            if (err.message != "No content") {
+                console.error(url, method, promise, data, promiseError, err)
+            }
+        }
+    }
+
+    fetch(url, payload)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(promise)
+    .catch(promiseError)
 }
 
 var getUrlParameter = (name) => {
@@ -108,7 +188,7 @@ var isMemberIdEusko = (values, value) =>
         return false
     }
 
-    if ((value.startsWith("E", 0) || value.startsWith("Z", 0)) && value.length === 6) {
+    if (value.match(/^E\d\d\d\d\d$/) || value.match(/^Z\d\d\d\d\d$/)) {
         return true
     }
     else {
@@ -122,8 +202,7 @@ var isBdcIdEusko = (values, value) =>
         return false
     }
 
-    if (value.startsWith("B", 0) && value.length === 4 &&
-        !isNaN(value[1]) && !isNaN(value[2]) && !isNaN(value[3])) {
+    if (value.match(/^B\d\d\d$/)) {
         return true
     }
     else {
@@ -156,128 +235,332 @@ var getCurrentLang = document.documentElement.lang
 var getCSRFToken = window.config.getCSRFToken
 var getAPIBaseURL = window.config.getAPIBaseURL
 
-var Flag = React.createClass({
-    render() {
-        // We want to hide the flag showing the current lang
-        if (this.props.lang != getCurrentLang) {
-            return (
-                    <li>
-                        <a className={"lang-select " + this.props.lang}
-                           href={"/i18n/setlang_custom/?lang=" + this.props.lang}>
-                            <img className={"lang-select-flag-" + this.props.lang}
-                                 alt={this.props.langname}
-                                 src={"/static/img/" + this.props.lang + ".gif"}
-                                 />
-                        </a>
-                    </li>
-            )
-        }
-        else { return null }
-    }
-})
-
-class Flags extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    render() {
-        return (
-            <ul className="nav navbar-nav pull-right">
-                <Flag lang="eu" langname="Euskara"/>
-                <Flag lang="fr" langname="Français"/>
-            </ul>
-        )
-    }
-}
-
-class NavbarTitle extends React.Component {
-    render() {
-        if (this.props.title) {
-            return <a className="navbar-brand">{this.props.title}</a>
-        }
-        else {
-            return <a className="navbar-brand">Euskal Moneta</a>
-        }
-    }
-}
 
 class NavbarItems extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            classes: props.classes ? props.classes : 'nav navbar-nav',
+            objects: props.objects ? props.objects : [],
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const isObjectsChanging = nextProps.objects !== this.props.objects
+        if (isObjectsChanging) {
+            this.setState({objects: nextProps.objects})
+        }
+
+        const isClassesChanging = nextProps.classes !== this.props.classes
+        if (isClassesChanging) {
+            this.setState({classes: nextProps.classes})
+        }
+    }
+
     render() {
-        if (window.config.userAuth) {
-            var navbarData = _.map(this.props.objects, (item) => {
-                return (
-                    <li key={item.id}>
-                        <a href={item.href}>{item.label}</a>
-                    </li>
-                )
+        if (_.isEmpty(this.state.objects)) {
+            var navbarData = undefined
+        }
+        else {
+            var navbarData = _.map(this.state.objects, (item) => {
+                if (item) {
+                    if (item.href) {
+                        if (item.href == '/logout') {
+                            return (
+                                <li key={item.id} className="log-out">
+                                    <a href={item.href}>{item.label + ' '}
+                                        <span className="glyphicon glyphicon-log-out"></span>
+                                    </a>
+                                </li>
+                            )
+                        }
+                        else {
+                            return (
+                                <li key={item.id}>
+                                    <a className={item.status == "active" ? "active" : ""} href={item.href}>{item.label}</a>
+                                </li>
+                            )
+                        }
+                    }
+                    else if (item.data) {
+                        return (
+                            <li key={item.id}>
+                                <a>{item.data}</a>
+                            </li>
+                        )
+                    }
+                    else {
+                        return (
+                            <li key={item.id}>
+                                <a className={item.status == "active" ? "active" : ""}>{item.label}</a>
+                            </li>
+                        )
+                    }
+                }
             })
         }
-        else
-            var navbarData = null
-        return (
-            <ul className="nav navbar-nav" id="navbar-items">
-                {navbarData}
-            </ul>
-        )
-    }
-}
 
-var NavbarRight = React.createClass({
-    getInitialState() {
-        return {
-            bdcName: '',
-            userAuth: window.config.userAuth,
-            showDropdown: false,
-        }
-    },
-
-    componentDidMount() {
-        // Get bdc name
-        var computeData = (data) => {
-            this.setState({bdcName: data})
-        }
-        fetchAuth(getAPIBaseURL + "bdc-name/", 'get', computeData)
-    },
-
-    toggleDropdown() {
-        this.setState({showDropdown: !this.state.showDropdown})
-    },
-
-    hideDropdown() {
-        this.setState({showDropdown: false})
-    },
-
-    render() {
-        if (this.state.userAuth)
-        {
-            if (this.state.showDropdown) {
-                var dropdownClassName = "dropdown-menu show-dropdown-menu"
-            }
-            else {
-                var dropdownClassName = "dropdown-menu"
-            }
-
+        if (navbarData) {
             return (
-                <ul className="nav navbar-nav pull-right" onBlur={() => this.toggleDropdown()}>
-                    <li className="dropdown">
-                        <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                           onClick={() => this.toggleDropdown()}>
-                            {window.config.userName + " - " + this.state.bdcName + " "}<span className="caret"></span>
-                        </a>
-                        <ul className={dropdownClassName} role="menu">
-                            <li><a href="/change-password">{__("Changer mon mot de passe")}</a></li>
-                            <li className="divider"></li>
-                            <li><a href={window.config.getLogoutURL}>{__("Me déconnecter")}</a></li>
-                        </ul>
-                    </li>
+                <ul className={this.state.classes}>
+                    {navbarData}
                 </ul>
             )
         }
-        else
-            return null
+        else return null
     }
-})
+}
+
+class SubNavbar extends React.Component {
+
+    // The 'id' fields are mandatory!
+    subNavbarObjects = [
+        {parent: '/compte',
+         accountMandatory: true,
+         listObjects: [{href: '/compte/synthese', label: __("Synthèse"), status: 'inactive', id: 0},
+                       {href: '/compte/historique', label: __("Historique"), status: 'inactive', id: 1}]},
+        {parent: '/virements',
+         accountMandatory: true,
+         listObjects: [{href: '/virements/ponctuel', label: __("Virement ponctuel"), status: 'inactive', id: 0},
+                       {href: '/virements/beneficiaires', label: __("Gestion des bénéficiaires"), status: 'inactive', id: 1}]},
+        {parent: '/euskokart', accountMandatory: true, listObjects: []},
+        {parent: '/profil',
+         accountMandatory: false,
+         listObjects: [{href: '/profil/coordonnees', label: __("Coordonnées"),
+                        accountMandatory: false, status: 'inactive', id: 0},
+                       {href: '/profil/association', label: __("Association 3%"),
+                        accountMandatory: false, status: 'inactive', id: 1},
+                       {href: '/profil/options', label: __("Options"),
+                        accountMandatory: false, status: 'inactive', id: 2},
+                       {href: '/profil/change-passe', label: __("Mot de passe"),
+                        accountMandatory: false, status: 'inactive', id: 3},
+                       {href: '/profil/change-automatique', label: __("Change automatique"),
+                        accountMandatory: true, status: 'inactive', id: 4},
+                       {href: '/profil/cotisation', label: __("Cotisation"),
+                        accountMandatory: true, status: 'inactive', id: 5}]},
+    ]
+
+    subNavbarObjectsReconversion = (
+        {parent: '/compte',
+         accountMandatory: true,
+         listObjects: [{href: '/compte/synthese', label: __("Synthèse"), status: 'inactive', id: 0},
+                       {href: '/compte/historique', label: __("Historique"), status: 'inactive', id: 1},
+                       {href: '/compte/synthese/reconvertir', label: __("Reconversion"), status: 'inactive', id: 2}]
+        }
+    )
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            objects: this.computeSubNavbarObjects(props.accountEnabled, props.activeObject[0]),
+            activeObject: props.activeObject[0],
+            accountEnabled: props.accountEnabled,
+        }
+    }
+
+    computeSubNavbarObjects(accountEnabled, activeObject) {
+        if (activeObject === undefined) {
+            return Array()
+        }
+
+        var subNavbarObjects = this.subNavbarObjects
+
+        // We want to add a link 'Reconversion' in navbar when we are in this page
+        if (window.location.pathname.indexOf("/reconvertir") != -1) {
+            var subNavbarObjects = _.filter(this.subNavbarObjects, (item) => { return item.parent != '/compte' })
+            subNavbarObjects.push(this.subNavbarObjectsReconversion)
+        }
+
+        return _.chain(subNavbarObjects)
+                .filter((item) => { return item.parent == activeObject.href })
+                .filter((item) => {
+                        if (accountEnabled)
+                            return true
+                        else
+                            return item.accountMandatory === accountEnabled
+                })
+                .map((item) => {
+                    return _.map(item.listObjects, (subitem) => {
+                        if (window.location.pathname.toLowerCase().endsWith(subitem.href)) {
+                            subitem.status = 'active'
+                        }
+
+                        return subitem
+                    })
+                })
+                .flatten(true)
+                .filter((item) => {
+                        if (accountEnabled)
+                            return true
+                        else
+                            return item.accountMandatory === accountEnabled
+                })
+                .value()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const isAccountEnabledChanging = nextProps.accountEnabled !== this.state.accountEnabled
+        if (isAccountEnabledChanging) {
+            this.setState({accountEnabled: nextProps.accountEnabled})
+        }
+
+        const isActiveObjectChanging = nextProps.activeObject[0] !== this.state.activeObject
+        if (isActiveObjectChanging) {
+            this.setState({activeObject: nextProps.activeObject[0]})
+        }
+
+        // objects aren't passed through props !
+        this.setState({objects: this.computeSubNavbarObjects(nextProps.accountEnabled, nextProps.activeObject[0])})
+    }
+
+    render() {
+        if (_.isEmpty(this.state.objects)) {
+            return null
+        }
+        else {
+            return (
+                <div className="navbar navbar-static-top subnav">
+                    <div className="container">
+                        <div className="collapse navbar-collapse">
+                            <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    }
+}
+
+class Navbar extends React.Component {
+
+    // The 'id' fields are mandatory!
+    baseNavbarObjects = [{href: '/compte', label: __("Mon compte"),
+                          status: 'inactive', id: 0, accountMandatory: true},
+                         {href: '/virements', label: __("Mes virements"),
+                          status: 'inactive', id: 1, accountMandatory: true},
+                         {href: '/euskokart', label: __("Mon euskokart"),
+                          status: 'inactive', id: 2, accountMandatory: true},
+                         {href: '/profil', label: __("Mon profil"),
+                          status: 'inactive', id: 3, accountMandatory: false},
+                         ]
+
+    navbarObjects = _.map(this.baseNavbarObjects,
+                        (item) => {
+                            if (window.location.pathname.toLowerCase().indexOf(item.href.substring(1)) != -1) {
+                                item.status = 'active'
+                            }
+
+                            return item
+                        })
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            objects: _.filter(this.navbarObjects, (item) => { return item.accountMandatory === false }),
+            userAuth: window.config.userAuth,
+            userHasAcceptedCGU: window.config.userAuth ? window.config.profile.has_accepted_cgu : false,
+            userHasValidMembership: window.config.userAuth ? window.config.profile.has_valid_membership : false,
+        }
+    }
+
+    componentDidMount() {
+        var objects = _.filter(this.navbarObjects, (item) => {
+            if (window.config.profile.has_account_eusko_numerique)
+                return true
+            else
+                return item.accountMandatory === window.config.profile.has_account_eusko_numerique
+        })
+
+        this.setState({objects: objects})
+    }
+
+    render() {
+        if (this.state.userAuth && this.state.userHasAcceptedCGU && this.state.userHasValidMembership) {
+            return (
+                <div>
+                    <div className="navbar navbar-static-top navbar-content">
+                        <div className="container">
+                            <div className="collapse navbar-collapse main-nav">
+                                <NavbarItems objects={this.state.objects} classes={'nav navbar-nav'} />
+                            </div>
+                        </div>
+                    </div>
+                    <SubNavbar
+                        accountEnabled={window.config.profile.has_account_eusko_numerique}
+                        activeObject={_.chain(this.state.objects)
+                                       .filter((item) => { return item.status == 'active' })
+                                       .flatten(true)
+                                       .value()}
+                    />
+                </div>
+            )
+        }
+        else return null
+    }
+}
+
+class TopbarRight extends React.Component {
+    constructor(props) {
+        super(props);
+
+        moment.locale(document.documentElement.lang)
+
+        this.state = {
+            memberData: window.config.userAuth ? window.config.profile.display_name : '',
+            objects: Array(),
+            userAuth: window.config.userAuth,
+        }
+    }
+
+    tick() {
+        this.setState((previousState, currentProps) => {
+            if (previousState.objects.length == 0) {
+                var objects = currentProps.objects
+            }
+            else {
+                var objects = previousState.objects
+            }
+
+            return {objects:
+                _.map(objects, (item) => {
+                    if (item) {
+                        if (item.id === 0) {
+                            item.data = moment().format('DD/MM/YYYY HH:mm:ss')
+                            return item
+                        }
+                        else if (this.state.userAuth) {
+                            if (item.id === 1 && this.state.memberData) {
+                                item.data = window.config.userName + ' - ' + this.state.memberData
+                                return item
+                            }
+
+                            return item
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    componentDidMount() {
+        setInterval(() => { this.tick() }, 1000)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps) {
+            this.setState(newProps)
+        }
+    }
+
+    render() {
+        return (
+            <NavbarItems objects={this.state.objects} classes={"nav navbar-nav navbar-right topbar-right"} />
+        )
+    }
+}
 
 class SelectizeUtils {
     // generic callback for all selectize objects
@@ -323,6 +606,13 @@ class SelectizeUtils {
                 </div>
     }
 
+    static selectizeRenderValueLineBreak (item) {
+        // When we select a value, this is how we display it
+        return    <div className="simple-value">
+                    <span className="accountchoice" >{item.label}</span>
+                </div>
+    }
+
     static selectizeNoResultsFound () {
         return    <div className="no-results-found" style={{fontSize: 15}}>
                     {__("Pas de résultat")}
@@ -334,7 +624,9 @@ class SelectizeUtils {
 module.exports = {
     checkStatus: checkStatus,
     parseJSON: parseJSON,
+    checkSession: checkSession,
     fetchAuth: fetchAuth,
+    fetchNoAuth: fetchNoAuth,
     fetchCustom: fetchCustom,
     fetchGetToken: fetchGetToken,
     getUrlParameter: getUrlParameter,
@@ -345,10 +637,9 @@ module.exports = {
     getCurrentLang: getCurrentLang,
     getCSRFToken: getCSRFToken,
     getAPIBaseURL: getAPIBaseURL,
-    NavbarTitle: NavbarTitle,
+    SubNavbar: SubNavbar,
+    Navbar: Navbar,
     NavbarItems: NavbarItems,
-    NavbarRight: NavbarRight,
-    Flags: Flags,
-    Flag: Flag,
+    TopbarRight: TopbarRight,
     SelectizeUtils: SelectizeUtils
 }

@@ -24,6 +24,9 @@ const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animati
 Formsy.addValidationRule('isMoreThan', function (values, value, otherValue) {
   return Number(value.replace(',','.')) >= Number(otherValue);
 });
+Formsy.addValidationRule('isMoreThanByYears', function (values, value, otherValue) {
+    return (value.replace(',','.')*12/otherValue.period) >= Number(otherValue.value)
+});
 const CotisationForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
@@ -60,9 +63,9 @@ const Cotisation = React.createClass({
             },
             canSubmit: false,
             selectedPrelevAuto: false,
-            amount: undefined,
+            amount: '',
             amountByY: 0,
-            customAmount: undefined,
+            customAmount: '',
             selectedOption: 0,
             month: new Date().getMonth()+1,
             year: new Date().getFullYear(),
@@ -80,7 +83,7 @@ const Cotisation = React.createClass({
             this.setState({member: member[0]})
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
-                this.setState({cotisationState: false})
+                this.setState({cotisationState: true})
             }
             var label = undefined
             switch (member[0].array_options.options_prelevement_cotisation_periodicite)
@@ -114,10 +117,10 @@ const Cotisation = React.createClass({
             }
             else if (member[0].login.toUpperCase().startsWith('E'))
             {
-                this.setState({memberType: '0'}) // single user
+                this.setState({memberType: '10'}) // single user
                 if(member[0].array_options.options_prelevement_cotisation_montant)
                 {
-                    this.setState({amount: member[0].array_options.options_prelevement_cotisation_montant})
+                    this.setState({amount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',',')})
                     if(member[0].array_options.options_prelevement_cotisation_montant<=5)
                     {
                         this.setState({buttonBasRevenusActivated: true})
@@ -128,7 +131,7 @@ const Cotisation = React.createClass({
                     }
                     else if (member[0].array_options.options_prelevement_cotisation_montant>10)
                     {
-                        this.setState({buttonSoutienActivated: true, displayCustomAmount: true, customAmount: member[0].array_options.options_prelevement_cotisation_montant})
+                        this.setState({buttonSoutienActivated: true, displayCustomAmount: true, customAmount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',',')})
                     }
                 }
             }
@@ -208,11 +211,11 @@ const Cotisation = React.createClass({
     },
 
     amountByYOnChange(event, value) {
-        if(this.state.memberType == 10)
+        if(this.state.memberType == '10')
         {
             this.setState({amountByY: value.replace('.',','), amountValid: Number(value.replace(',', '.')) >= Number(60)}, this.ValidationCheck)
         }
-        else if(this.state.memberType == 11)
+        else if(this.state.memberType == '11')
         {
             this.setState({amountByY: value.replace('.',','), amountValid: Number(value.replace(',', '.')) >= Number(10)}, this.ValidationCheck)
         }
@@ -235,11 +238,11 @@ const Cotisation = React.createClass({
         if (amount && this.state.period.value)
         {
             var amountByY = amount*(12/this.state.period.value)
-            if(this.state.memberType == 10)
+            if(this.state.memberType == '10')
             {
                 var amountValid = Number(amountByY) >= Number(60) ? true : false
             }
-            else if(this.state.memberType == 11)
+            else if(this.state.memberType == '11')
             {
                 var amountValid = Number(amountByY) >= Number(10) ? true : false
             }
@@ -279,7 +282,7 @@ const Cotisation = React.createClass({
             this.setState({amount: value}, this.ValidationCheck)
         }
         else {
-            this.setState({amount: undefined}, this.ValidationCheck)
+            this.setState({amount: ''}, this.ValidationCheck)
         }
     },
 
@@ -414,12 +417,12 @@ const Cotisation = React.createClass({
         {
             if (event.target.value == 0)
             {
-                var state = {selectedOption: 0, amountByY: undefined, amount: undefined,
+                var state = {selectedOption: 0, amountByY: '', amount: '',
                              canSubmit: false, selectedPrelevAuto: true, displayCustomAmount2: false}
             }
             else if (event.target.value == 1)
             {
-                var state = {selectedOption: 1, amountByY: undefined, amount: undefined,
+                var state = {selectedOption: 1, amountByY: '', amount: '',
                              canSubmit: false, selectedPrelevAuto: false, displayCustomAmount: false}
             }
         }
@@ -427,13 +430,13 @@ const Cotisation = React.createClass({
         {
             if (event.target.value == 0)
             {
-                var state = {selectedOption: 0, displayCustomAmount2: false, customAmount: undefined,
-                             canSubmit: false, amountByY: undefined, amount: undefined, selectedPrelevAuto: true}
+                var state = {selectedOption: 0, displayCustomAmount2: false, customAmount: '',
+                             canSubmit: false, amountByY: '', amount: '', selectedPrelevAuto: true}
             }
             else if (event.target.value == 1)
             {
-                var state = {selectedOption: 1, displayCustomAmount: false, customAmount: undefined,
-                             canSubmit: false, period: false, amountByY: undefined, amount: undefined,
+                var state = {selectedOption: 1, displayCustomAmount: false, customAmount: '',
+                             canSubmit: false, period: false, amountByY: '', amount: '',
                              selectedPrelevAuto: false}
             }
         }
@@ -583,6 +586,19 @@ const Cotisation = React.createClass({
 
         if (this.state.cotisationState) {
             if (this.state.memberType.startsWith('1')) {
+                var dataValidation = {value:'', period:this.state.period.value, month:this.state.month}
+                if(this.state.memberType == '10')
+                {
+                    dataValidation.value = '60'
+                    var validationMemberTypeByYears = ({matchRegexp: /^\d+(,\d{1,2})?$/, isMoreThanByYears:dataValidation})
+                    var validationMemberTypeErrorByYears = {matchRegexp: __("Montant invalide."),isMoreThanByYears: __("Montant annuel inférieur à 60.")}
+                }
+                else if(this.state.memberType == '11')
+                {
+                    dataValidation.value = '10'
+                    var validationMemberTypeByYears = ({matchRegexp: /^\d+(,\d{1,2})?$/, isMoreThanByYears:dataValidation})
+                    var validationMemberTypeErrorByYears = {matchRegexp: __("Montant invalide."),isMoreThanByYears: __("Montant annuel inférieur à 10.")}
+                }
                 var auto_prelev_auto = (
                     <span>
                         <div className="form-group row">
@@ -603,12 +619,8 @@ const Cotisation = React.createClass({
                                 name="amount"
                                 data-eusko="cotisation-amount"
                                 type="text"
-                                validations={{
-                                    matchRegexp: /^[0-9.,]+$/,
-                                }}
-                                validationErrors={{
-                                    matchRegexp: __("Montant invalide.")
-                                }}
+                                validations={validationMemberTypeByYears}
+                                validationErrors={validationMemberTypeErrorByYears}
                                 onChange={this.amountOnChange}
                                 value={this.state.amount}
                                 label={__("Montant")}
@@ -693,7 +705,7 @@ const Cotisation = React.createClass({
                                     <button
                                         className={buttonBasRevenusClass}
                                         disabled={!this.state.selectedPrelevAuto}
-                                        onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount: false,
+                                        onClick={() => this.setAmount({amount: '5', customAmount: '', displayCustomAmount: false,
                                                     buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
                                         {__('5 (bas revenus)')}
                                     </button>
@@ -701,7 +713,7 @@ const Cotisation = React.createClass({
                                     <button
                                         className={buttonClassiqueClass}
                                         disabled={!this.state.selectedPrelevAuto}
-                                        onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount: false,
+                                        onClick={() => this.setAmount({amount: '10', customAmount: '', displayCustomAmount: false,
                                                    buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
                                         {__('10 (cotisation normale)')}
                                     </button>
@@ -722,7 +734,7 @@ const Cotisation = React.createClass({
                                 type="text"
                                 placeholder={__("Montant de la cotisation")}
                                 validations={{
-                                    matchRegexp: /^[0-9.,]+$/, 
+                                    matchRegexp: /^\d+(,\d{1,2})?$/, 
                                     isMoreThan:20,
                                 }}
                                 validationErrors={{
@@ -791,7 +803,7 @@ const Cotisation = React.createClass({
                                         <button
                                             className={buttonBasRevenusClass}
                                             disabled={this.state.selectedOption == 1}
-                                            onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount: false,
+                                            onClick={() => this.setAmount({amount: '5', customAmount: '', displayCustomAmount: false,
                                                         buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
                                             {__('5 (bas revenus)')}
                                         </button>
@@ -799,7 +811,7 @@ const Cotisation = React.createClass({
                                         <button
                                             className={buttonClassiqueClass}
                                             disabled={this.state.selectedOption == 1}
-                                            onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount: false,
+                                            onClick={() => this.setAmount({amount: '10', customAmount: '', displayCustomAmount: false,
                                                        buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
                                             {__('10 (cotisation normale)')}
                                         </button>
@@ -820,7 +832,7 @@ const Cotisation = React.createClass({
                                     type="text"
                                     placeholder={__("Montant de la cotisation")}
                                     validations={{
-                                        matchRegexp: /^[0-9.,]+$/,
+                                        matchRegexp: /^\d+(,\d{1,2})?$/,
                                         isMoreThan:20,
                                     }}
                                     validationErrors={{
@@ -871,7 +883,7 @@ const Cotisation = React.createClass({
                                         <button
                                             className={buttonBasRevenusClass2}
                                             disabled={this.state.selectedOption == 0}
-                                            onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount2: false,
+                                            onClick={() => this.setAmount({amount: '5', customAmount: '', displayCustomAmount2: false,
                                                         buttonBasRevenusActivated2: true, buttonClassiqueActivated2: false, buttonSoutienActivated2: false})}>
                                             {__('5 (bas revenus)')}
                                         </button>
@@ -879,7 +891,7 @@ const Cotisation = React.createClass({
                                         <button
                                             className={buttonClassiqueClass2}
                                             disabled={this.state.selectedOption == 0}
-                                            onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount2: false,
+                                            onClick={() => this.setAmount({amount: '10', customAmount: '', displayCustomAmount2: false,
                                                        buttonBasRevenusActivated2: false, buttonClassiqueActivated2: true, buttonSoutienActivated2: false})}>
                                             {__('10 (cotisation normale)')}
                                         </button>
@@ -900,7 +912,7 @@ const Cotisation = React.createClass({
                                     type="text"
                                     placeholder={__("Montant de la cotisation")}
                                     validations={{
-                                        matchRegexp: /^[0-9.,]+$/,
+                                        matchRegexp: /^\d+(,\d{1,2})?$/,
                                         isMoreThan:20,
                                     }}
                                     validationErrors={{
@@ -922,15 +934,24 @@ const Cotisation = React.createClass({
             }
             else
             {
-                if(this.state.memberType == 10)
+                var dataValidation = {value:'', period:this.state.period.value, month:this.state.month}
+                if(this.state.memberType == '10')
                 {
-                    var validationMemberType = ({matchRegexp: /^[0-9.,]+$/,isMoreThan:60})
+                    dataValidation.value = '60'
+                    var validationMemberType = ({matchRegexp: /^\d+(,\d{1,2})?$/,isMoreThan:60})
                     var validationMemberTypeError = {matchRegexp: __("Montant invalide."),isMoreThan: __("Montant inférieur à 60.")}
+
+                    var validationMemberTypeByYears = ({matchRegexp: /^\d+(,\d{1,2})?$/, isMoreThanByYears:dataValidation})
+                    var validationMemberTypeErrorByYears = {matchRegexp: __("Montant invalide."),isMoreThanByYears: __("Montant annuel inférieur à 60.")}
                 }
-                else if(this.state.memberType == 11)
+                else if(this.state.memberType == '11')
                 {
-                    var validationMemberType = ({matchRegexp: /^[0-9.,]+$/, isMoreThan:10})
+                    dataValidation.value = '10'
+                    var validationMemberType = ({matchRegexp: /^\d+(,\d{1,2})?$/, isMoreThan:10})
                     var validationMemberTypeError = {matchRegexp: __("Montant invalide."),isMoreThan: __("Montant inférieur à 10.")}
+
+                    var validationMemberTypeByYears = ({matchRegexp: /^\d+(,\d{1,2})?$/, isMoreThanByYears:dataValidation})
+                    var validationMemberTypeErrorByYears = {matchRegexp: __("Montant invalide."),isMoreThanByYears: __("Montant annuel inférieur à 10.")}
                 }
                 var auto_prelev_auto = (
                     <span>
@@ -954,12 +975,8 @@ const Cotisation = React.createClass({
                                 name="amount"
                                 data-eusko="cotisation-amount"
                                 type="text"
-                                validations={{
-                                    matchRegexp: /^[0-9.,]+$/
-                                }}
-                                validationErrors={{
-                                    matchRegexp: __("Montant invalide.")
-                                }}
+                                validations={validationMemberTypeByYears}
+                                validationErrors={validationMemberTypeErrorByYears}
                                 onChange={this.amountOnChange}
                                 value={this.state.selectedOption==0 ? this.state.amount : ""}
                                 readOnly={this.state.selectedOption}

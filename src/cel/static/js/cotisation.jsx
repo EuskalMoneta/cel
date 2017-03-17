@@ -95,15 +95,28 @@ const Cotisation = React.createClass({
             else if (member[0].login.toUpperCase().startsWith('E'))
             {
                 this.setState({memberType: '0'}) // single user
+                if(member[0].array_options.options_prelevement_cotisation_montant)
+                {
+                    this.setState({amount: member[0].array_options.options_prelevement_cotisation_montant})
+                    if(member[0].array_options.options_prelevement_cotisation_montant<=5)
+                    {
+                        this.setState({buttonBasRevenusActivated: true})
+                    }
+                    else if (member[0].array_options.options_prelevement_cotisation_montant<=10)
+                    {
+                        this.setState({buttonClassiqueActivated: true})
+                    }
+                    else if (member[0].array_options.options_prelevement_cotisation_montant>10)
+                    {
+                        this.setState({buttonSoutienActivated: true, displayCustomAmount: true, customAmount: member[0].array_options.options_prelevement_cotisation_montant})
+                    }
+                }
             }
-            if(member[0].array_options.options_prelevement_auto_cotisation)
+            if(member[0].array_options.options_prelevement_auto_cotisation_eusko)
             {
                 this.setState({selectedPrelevAuto: true})
             }
-            if(member[0].array_options.options_prelevement_cotisation_montant)
-            {
-                this.setState({amount: member[0].array_options.options_prelevement_cotisation_montant})
-            }
+
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
     },
@@ -351,7 +364,11 @@ const Cotisation = React.createClass({
             }
             fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError_update)
         }
-       
+        if (this.state.cotisationState)
+        {
+            update_options_dolibarr()
+        }
+
         if (!this.state.cotisationState && this.state.memberType.startsWith('0'))
         {
             var data2 = {}

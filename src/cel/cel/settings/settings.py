@@ -84,9 +84,8 @@ LOGIN_REDIRECT_URL = '/compte'
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 
-# TODO: Update CGU links
-CGU_PDF_PARTICULIERS = 'http://particuliers.euskalmoneta.org/cgu.pdf'
-CGU_PDF_PRESTATAIRES = 'http://particuliers.euskalmoneta.org/cgu.pdf'
+CGU_PDF_PARTICULIERS = 'http://www.euskalmoneta.org/wp-content/uploads/2017/03/CGU-Particuliers.pdf'
+CGU_PDF_PRESTATAIRES = 'http://www.euskalmoneta.org/wp-content/uploads/2017/03/CGU-Professionnels.pdf'
 MANDAT_PDF_PRELEVEMENT = 'http://www.euskokart.org/Mandat-de-pr%C3%A9l%C3%A8vement.pdf'
 
 TEMPLATES = [

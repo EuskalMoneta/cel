@@ -59,7 +59,7 @@ const Cotisation = React.createClass({
                 value: undefined,
             },
             canSubmit: false,
-            selectedPrelevAuto: true,
+            selectedPrelevAuto: false,
             amount: undefined,
             amountByY: 0,
             customAmount: undefined,
@@ -95,6 +95,14 @@ const Cotisation = React.createClass({
             else if (member[0].login.toUpperCase().startsWith('E'))
             {
                 this.setState({memberType: '0'}) // single user
+            }
+            if(member[0].array_options.options_prelevement_auto_cotisation)
+            {
+                this.setState({selectedPrelevAuto: true})
+            }
+            if(member[0].array_options.options_prelevement_cotisation_montant)
+            {
+                this.setState({amount: member[0].array_options.options_prelevement_cotisation_montant})
             }
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
@@ -965,20 +973,10 @@ const Cotisation = React.createClass({
                 )
             }
         }
-        return (
-            <div className="row" style={this.state.menu ? {marginTop:75} : {}}>
-                <CotisationForm ref="historical-form">
-                    <div className="row">
-                        <div className="form-group row">
-                                {memberStatus}
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-sm-3 col-md-offset-1">
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
+        if (window.config.profile.has_account_eusko_numerique)
+        {
+            var formDisplay = (
+                <div>
                     <div className="row">
                         <div className="form-group row">
                             <div className="col-sm-5">
@@ -986,14 +984,14 @@ const Cotisation = React.createClass({
                             </div>
                         </div>
                         {cotisation_info}
-                        <hr/>
+                        <hr></hr>
                         {auto_prelev_auto}
-                        <hr/>
-                        Pour qu'il n'y ait pas d'interruption dans la cotisation et dans l'accès au compte Eusko, <br/>
-                        l'échéance pour une période donnée sera prélevée le 20 du mois précédent, par exemple :<br/><br/>
+                        <hr></hr>
+                        {__("Pour qu'il n'y ait pas d'interruption dans la cotisation et dans l'accès au compte Eusko,")} <br/>
+                        {__("l'échéance pour une période donnée sera prélevée le 20 du mois précédent, par exemple :")}<br/><br/>
 
-                        dans le cas d'un prélèvement annuel, la cotisation sera prélevée le 20 décembre pour l'année suivante<br/>
-                        dans le cas d'un prélèvement mensuel, la cotisation sera prélevée le 20 de chaque mois pour le mois suivant<br/><br/>
+                        {__("dans le cas d'un prélèvement annuel, la cotisation sera prélevée le 20 décembre pour l'année suivante")}<br/>
+                        {__("dans le cas d'un prélèvement mensuel, la cotisation sera prélevée le 20 de chaque mois pour le mois suivant")}<br/><br/>
                     </div>
                     <div className="row profil-div-margin-left margin-top">
                         <input
@@ -1007,6 +1005,42 @@ const Cotisation = React.createClass({
                             disabled={!this.state.canSubmit}
                         />
                     </div>
+                </div>
+            )
+        }
+        else
+        {
+            var formDisplay = (
+                <div>
+                    <div className="row">
+                        <div className="form-group row">
+                            <div className="col-sm-5">
+                                <h2>Montant de la cotisation</h2>
+                            </div>
+                        </div>
+                        {cotisation_info}
+                    </div>
+                    <hr></hr><br/>
+                {__("Actuellement vous ne possédez pas de compte numérique eusko. Il est donc impossible de mettre à jour votre cotisation par cette interface.")}<br/>
+                {__("Afin d'avoir un compte numérique eusko, veuillez contacter Euskal Moneta.")}
+                </div>
+            )
+        }
+        return (
+            <div className="row" style={this.state.menu ? {marginTop:75} : {}}>
+                <CotisationForm ref="historical-form">
+                    <div className="row">
+                        <div className="form-group row">
+                                {memberStatus}
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-sm-3 col-md-offset-1">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <hr></hr>
+                    {formDisplay}
                 </CotisationForm>
                 <ToastContainer ref="container"
                     toastMessageFactory={ToastMessageFactory}

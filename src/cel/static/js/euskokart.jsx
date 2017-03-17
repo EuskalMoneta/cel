@@ -351,8 +351,8 @@ var EuskokartList = React.createClass({
                         >
                             <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
                             <TableHeaderColumn dataField="value">{__("Numéro de carte")}</TableHeaderColumn>
-                            <TableHeaderColumn dataField="status" width="350">{__("Statut")}</TableHeaderColumn>
-                            <TableHeaderColumn dataField="actions" columnClassName="disable-pointer-events" width="350"
+                            <TableHeaderColumn dataField="status" width="350px">{__("Statut")}</TableHeaderColumn>
+                            <TableHeaderColumn dataField="actions" columnClassName="disable-pointer-events" width="350px"
                                                dataFormat={buttonFormatter}>{__("Action")}</TableHeaderColumn>
                         </BootstrapTable>
                     </div>

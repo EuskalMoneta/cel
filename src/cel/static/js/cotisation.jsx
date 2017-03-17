@@ -1,7 +1,6 @@
 import {
     fetchAuth,
     getAPIBaseURL,
-    isPositiveNumeric,
     getCurrentLang,
     checkStatus,
     parseJSON,
@@ -22,8 +21,9 @@ const {
 } = ReactToastr
 const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation)
 
-Formsy.addValidationRule('isPositiveNumeric', isPositiveNumeric)
-
+Formsy.addValidationRule('isMoreThan', function (values, value, otherValue) {
+  return Number(value.replace(',','.')) >= Number(otherValue);
+});
 const CotisationForm = React.createClass({
 
     mixins: [FRC.ParentContextMixin],
@@ -80,8 +80,28 @@ const Cotisation = React.createClass({
             this.setState({member: member[0]})
             moment.locale(getCurrentLang)
             if (moment.unix(member[0].datefin) > moment()) {
-                this.setState({cotisationState: true})
+                this.setState({cotisationState: false})
             }
+            var label = undefined
+            switch (member[0].array_options.options_prelevement_cotisation_periodicite)
+            {
+                case '12':
+                    label = 'Annuel'
+                break
+                case '6':
+                    label = 'Semestriel'
+                break
+                case '3':
+                    label = 'Trimestriel'
+                break
+                case '1':
+                    label = 'Mensuel'
+                break
+                default:
+                    label = ''
+                break
+            }
+            this.setState({period:{label: label, value: member[0].array_options.options_prelevement_cotisation_periodicite}})
             if (member[0].login.toUpperCase().startsWith('Z'))
             {
                 if (member[0].type == 'Entreprise') {
@@ -126,96 +146,78 @@ const Cotisation = React.createClass({
     },
 
     ValidationCheck() {
-        if (this.state.cotisationState && this.state.memberType.startsWith('1'))
-        {
-            if (this.state.selectedPrelevAuto && this.state.amount && this.state.period && this.state.amountValid)
-            {
-                this.setState({canSubmit: true})
-            }
-            else
-            {
-                this.setState({canSubmit: false})
-            }
-        }
-        else if (this.state.cotisationState && this.state.memberType.startsWith('0'))
-        {
-            if (this.state.selectedPrelevAuto && this.state.amount)
-            {
-                this.setState({canSubmit: true})
-            }
-            else
-            {
-                this.setState({canSubmit: false})
-            }
-        }
-        else if (!this.state.cotisationState && this.state.memberType.startsWith('0'))
-        {
-            if ((this.state.selectedOption == 0 && this.state.amount) || (this.state.selectedOption == 1 && this.state.amount))
-            {
-                this.setState({canSubmit: true})
-            }
-            else
-            {
-                this.setState({canSubmit: false})
-            }
-        }
-        else if (!this.state.cotisationState && this.state.memberType.startsWith('1'))
-        {
-            if (this.state.selectedOption == 0 && this.state.period.value)
-            {
-                this.calculEndDate()
-            }
-            if ((this.state.selectedOption == 0 && this.state.amount && this.state.period.value && this.state.amountValid) || (this.state.selectedOption == 1 && this.state.amountByY != 0 && this.state.amountValid))
-            {
 
-                this.setState({canSubmit: true})
+        if(this.state.memberType.startsWith('1'))
+        {
+            if (this.state.cotisationState)
+            {
+                if (this.state.selectedPrelevAuto && this.state.amount && this.state.period && this.state.amountValid)
+                {
+                    this.setState({canSubmit: true})
+                }
+                else
+                {
+                    this.setState({canSubmit: false})
+                }
             }
             else
             {
-                this.setState({canSubmit: false})
+                if (this.state.selectedOption == 0 && this.state.period.value)
+                {
+                    this.calculEndDate()
+                }
+                if ((this.state.selectedOption == 0 && this.state.amount && this.state.period.value && this.state.amountValid) || (this.state.selectedOption == 1 && this.state.amountByY != 0 && this.state.amountValid))
+                {
+
+                    this.setState({canSubmit: true})
+                }
+                else
+                {
+                    this.setState({canSubmit: false})
+                }
+            }
+        }
+        else if(this.state.memberType.startsWith('0'))
+        {
+            if (this.state.cotisationState)
+            {
+                if (this.state.selectedPrelevAuto && this.state.amount)
+                {
+                    this.setState({canSubmit: true})
+                }
+                else
+                {
+                    this.setState({canSubmit: false})
+                }
+            }
+            else
+            {
+                if ((this.state.selectedOption == 0 && this.state.amount) || (this.state.selectedOption == 1 && this.state.amount))
+                {
+                    this.setState({canSubmit: true})
+                }
+                else
+                {
+                    this.setState({canSubmit: false})
+                }
             }
         }
     },
     amountOnChange(event, value) {
-        var valueToTest = value.replace(',', '.')
-        // update pin values
-        if (isNaN(valueToTest))
-        {
-            this.refs.container.error(
-                __("Attention, la valeur saisie pour le montant est incorrecte !"),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
-        }
-        else
-        {
-            this.setState({amount: value}, this.calculAmountByYears)
-        }
+        this.setState({amount: value.replace('.', ',')}, this.calculAmountByYears)
     },
 
     amountByYOnChange(event, value) {
-        var valueToTest = value.replace(',','.')
-        // update pin values
-        if (isNaN(valueToTest))
+        if(this.state.memberType == 10)
         {
-            this.refs.container.error(
-                __("Attention, la valeur saisie pour le montant est incorrecte !"),
-                "",
-                {
-                    timeOut: 5000,
-                    extendedTimeOut: 10000,
-                    closeButton:true
-                }
-            )
+            this.setState({amountByY: value.replace('.',','), amountValid: Number(value.replace(',', '.')) >= Number(60)}, this.ValidationCheck)
         }
-        else
+        else if(this.state.memberType == 11)
         {
-            this.setState({amountByY: value, amountValid: Number(value) >= Number(60)}, this.ValidationCheck)
+            this.setState({amountByY: value.replace('.',','), amountValid: Number(value.replace(',', '.')) >= Number(10)}, this.ValidationCheck)
         }
+        
+            
     },
 
     checkboxOnChange(event, value) {
@@ -229,10 +231,18 @@ const Cotisation = React.createClass({
         this.setState({period: {label: periodValue.label, value: periodValue.value}}, this.calculAmountByYears)
     },
     calculAmountByYears() {
-        if (this.state.amount && this.state.period.value)
+        var amount = this.state.amount.replace(',','.')
+        if (amount && this.state.period.value)
         {
-            var amountByY = this.state.amount*(12/this.state.period.value)
-            var amountValid = Number(amountByY) >= Number(60) ? true : false
+            var amountByY = amount*(12/this.state.period.value)
+            if(this.state.memberType == 10)
+            {
+                var amountValid = Number(amountByY) >= Number(60) ? true : false
+            }
+            else if(this.state.memberType == 11)
+            {
+                var amountValid = Number(amountByY) >= Number(10) ? true : false
+            }
             this.setState({amountByY: amountByY, amountValid: amountValid}, this.ValidationCheck)
         }
         else {
@@ -263,7 +273,8 @@ const Cotisation = React.createClass({
     },
     // amount
     validateAmount(field, value) {
-        this.setState({customAmount: value})
+        this.setState({customAmount: value.replace('.', ',')})
+        this.setState({amount: value}, this.ValidationCheck)
         if (isPositiveNumeric(null, value) && Number(value) >= Number(20)) {
             this.setState({amount: value}, this.ValidationCheck)
         }
@@ -441,6 +452,9 @@ const Cotisation = React.createClass({
             'grey-back': this.state.selectedOption,
         })
 
+        var greySimpleSelect_noautorization = classNames({
+            'grey-back': !this.state.selectedPrelevAuto,
+        })
         var buttonBasRevenusClass = classNames({
             "btn": true,
             "btn-default": !this.state.buttonBasRevenusActivated,
@@ -588,12 +602,20 @@ const Cotisation = React.createClass({
                             <Input
                                 name="amount"
                                 data-eusko="cotisation-amount"
+                                type="text"
+                                validations={{
+                                    matchRegexp: /^[0-9.,]+$/,
+                                }}
+                                validationErrors={{
+                                    matchRegexp: __("Montant invalide.")
+                                }}
                                 onChange={this.amountOnChange}
                                 value={this.state.amount}
                                 label={__("Montant")}
                                 labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
                                 elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-4']}
                                 placeholder={__("Montant de la cotisation")}
+                                disabled={!this.state.selectedPrelevAuto}
                             />
                             <div className="form-group row" style={{marginBottom: 0}}>
                                 <label
@@ -612,6 +634,8 @@ const Cotisation = React.createClass({
                                             value = {this.state.period}
                                             renderResetButton={() => { return null }}
                                             required
+                                            disabled={!this.state.selectedPrelevAuto}
+                                            className={greySimpleSelect_noautorization}
                                         >
                                             <option value = "1">Mensuel</option>
                                             <option value = "3">Trimestriel</option>
@@ -668,6 +692,7 @@ const Cotisation = React.createClass({
                                 <div className="col-sm-7 memberaddsubscription" data-eusko="memberaddsubscription-amount">
                                     <button
                                         className={buttonBasRevenusClass}
+                                        disabled={!this.state.selectedPrelevAuto}
                                         onClick={() => this.setAmount({amount: '5', customAmount: undefined, displayCustomAmount: false,
                                                     buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
                                         {__('5 (bas revenus)')}
@@ -675,6 +700,7 @@ const Cotisation = React.createClass({
                                     {' '}
                                     <button
                                         className={buttonClassiqueClass}
+                                        disabled={!this.state.selectedPrelevAuto}
                                         onClick={() => this.setAmount({amount: '10', customAmount: undefined, displayCustomAmount: false,
                                                    buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
                                         {__('10 (cotisation normale)')}
@@ -682,6 +708,7 @@ const Cotisation = React.createClass({
                                     {' '}
                                     <button
                                         className={buttonSoutienClass}
+                                        disabled={!this.state.selectedPrelevAuto}
                                         onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount: true,
                                                     buttonBasRevenusActivated: false, buttonClassiqueActivated: false, buttonSoutienActivated: true})}>
                                         {__('20 ou plus (cotisation de soutien)')}
@@ -692,32 +719,37 @@ const Cotisation = React.createClass({
                                 name="customAmount"
                                 data-eusko="bank-deposit-customAmount"
                                 value={this.state.customAmount ? this.state.customAmount : ""}
-                                type="number"
+                                type="text"
                                 placeholder={__("Montant de la cotisation")}
-                                validations="isPositiveNumeric"
+                                validations={{
+                                    matchRegexp: /^[0-9.,]+$/, 
+                                    isMoreThan:20,
+                                }}
                                 validationErrors={{
-                                   isPositiveNumeric: __("Montant invalide.")
+                                   matchRegexp: __("Montant invalide."),
+                                   isMoreThan: __("Montant inférieur à 20."),
                                 }}
                                 label={__("Montant personnalisé")}
                                 onChange={this.validateAmount}
                                 rowClassName={divCustomAmountClass}
-                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
+                                labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
+                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
                                 required={this.state.displayCustomAmount}
-                                disabled={!this.state.displayCustomAmount}
-                            />
-                        </div>
-                        <div className="form-group row">
-                            <label
-                                className="control-label col-sm-2"
-                                data-required="true"
-                                htmlFor="memberaddsubscription-amount"
-                                style={{paddingTop:0}}>
-                                {__("Périodicité")}
-                            </label>
-                            <div className="col-sm-5 memberaddsubscription col-md-offset-2" data-eusko="memberaddsubscription-amount">
-                                <label>
-                                    {__("Annuel")}
+                                disabled={!this.state.displayCustomAmount || !this.state.selectedPrelevAuto}
+                            />                            
+                            <div className="form-group row" style={{paddingTop:8}}>
+                                <label
+                                    className="control-label col-sm-2"
+                                    data-required="true"
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:0}}>
+                                    {__("Périodicité")}
                                 </label>
+                                <div className="col-sm-5 memberaddsubscription col-md-offset-2" data-eusko="memberaddsubscription-amount">
+                                    <label>
+                                        {__("Annuel")}
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </span>
@@ -785,11 +817,15 @@ const Cotisation = React.createClass({
                                     name="customAmount"
                                     data-eusko="bank-deposit-customAmount"
                                     value={this.state.customAmount ? this.state.customAmount : ""}
-                                    type="number"
+                                    type="text"
                                     placeholder={__("Montant de la cotisation")}
-                                    validations="isPositiveNumeric"
+                                    validations={{
+                                        matchRegexp: /^[0-9.,]+$/,
+                                        isMoreThan:20,
+                                    }}
                                     validationErrors={{
-                                       isPositiveNumeric: __("Montant invalide.")
+                                       matchRegexp: __("Montant invalide."),
+                                       isMoreThan: __("Montant inférieur à 20."),
                                     }}
                                     label={__("Montant personnalisé")}
                                     onChange={this.validateAmount}
@@ -861,11 +897,15 @@ const Cotisation = React.createClass({
                                     name="customAmount"
                                     data-eusko="bank-deposit-customAmount"
                                     value={this.state.customAmount ? this.state.customAmount : ""}
-                                    type="number"
+                                    type="text"
                                     placeholder={__("Montant de la cotisation")}
-                                    validations="isPositiveNumeric"
+                                    validations={{
+                                        matchRegexp: /^[0-9.,]+$/,
+                                        isMoreThan:20,
+                                    }}
                                     validationErrors={{
-                                       isPositiveNumeric: __("Montant invalide.")
+                                       matchRegexp: __("Montant invalide."),
+                                       isMoreThan: __("Montant inférieur à 20."),
                                     }}
                                     label={__("Montant personnalisé")}
                                     onChange={this.validateAmount}
@@ -882,6 +922,16 @@ const Cotisation = React.createClass({
             }
             else
             {
+                if(this.state.memberType == 10)
+                {
+                    var validationMemberType = ({matchRegexp: /^[0-9.,]+$/,isMoreThan:60})
+                    var validationMemberTypeError = {matchRegexp: __("Montant invalide."),isMoreThan: __("Montant inférieur à 60.")}
+                }
+                else if(this.state.memberType == 11)
+                {
+                    var validationMemberType = ({matchRegexp: /^[0-9.,]+$/, isMoreThan:10})
+                    var validationMemberTypeError = {matchRegexp: __("Montant invalide."),isMoreThan: __("Montant inférieur à 10.")}
+                }
                 var auto_prelev_auto = (
                     <span>
                         <div className="form-group row">
@@ -903,6 +953,13 @@ const Cotisation = React.createClass({
                             <Input
                                 name="amount"
                                 data-eusko="cotisation-amount"
+                                type="text"
+                                validations={{
+                                    matchRegexp: /^[0-9.,]+$/
+                                }}
+                                validationErrors={{
+                                    matchRegexp: __("Montant invalide.")
+                                }}
                                 onChange={this.amountOnChange}
                                 value={this.state.selectedOption==0 ? this.state.amount : ""}
                                 readOnly={this.state.selectedOption}
@@ -958,7 +1015,7 @@ const Cotisation = React.createClass({
                                 <div className="col-sm-5  profilform" data-eusko="profilform-asso">
                                     {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
                                     {(" Je fais un virement de ") 
-                                    + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
+                                    + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount.replace(',','.')*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
                                     {__("eusko correspondant à ma cotisation") 
                                     + (this.state.lastMonth ? (" jusqu'au ") + moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("ll") : ("")) + (".")}
                                 </div>
@@ -977,6 +1034,9 @@ const Cotisation = React.createClass({
                             <Input
                                 name="amount"
                                 data-eusko="cotisation-amount"
+                                type="text"
+                                validations={validationMemberType}
+                                validationErrors={validationMemberTypeError}
                                 onChange={this.amountByYOnChange}
                                 value={this.state.selectedOption==1 ? this.state.amountByY : ""}
                                 label={__("Montant")}

@@ -11,6 +11,8 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
 
 .topbar-brand-image {
   height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .topbar-right li, .disable-pointer-events {
@@ -22,8 +24,8 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .navbar-content {
-  height: 115px;
-  padding-top: 60px;
+  height: 135px;
+  padding-top: 80px;
   padding-bottom: 0px;
   margin-bottom: 0px;
   background-color: #f8f8f8;
@@ -39,7 +41,7 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
 .navbar-content a:hover, .navbar-content a:focus, .navbar-content .active {
   background-color: #f8f8f8 !important;
   border-bottom: 1px solid;
-  border-bottom-color: #18bc9c;
+  border-bottom-color: #34d045;
 }
 
 .subnav {
@@ -202,7 +204,7 @@ textarea {
 }
 
 .bdc-status-ok {
-  color: #128f76;
+  color: #21a31f;
   vertical-align: -1px;
   margin-right: 5px;
 }
@@ -385,7 +387,7 @@ textarea {
 }
 
 .member-status-ok {
-  color: #128f76;
+  color: #21a31f;
   vertical-align: -1px;
   margin-right: 5px;
 }

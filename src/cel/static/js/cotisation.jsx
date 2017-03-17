@@ -117,7 +117,7 @@ const Cotisation = React.createClass({
             }
             else if (member[0].login.toUpperCase().startsWith('E'))
             {
-                this.setState({memberType: '10'}) // single user
+                this.setState({memberType: '0'}) // single user
                 if(member[0].array_options.options_prelevement_cotisation_montant)
                 {
                     this.setState({amount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',',')})

@@ -354,28 +354,28 @@ const Cotisation = React.createClass({
             )
         }
         var update_options_dolibarr = () => {
+            // The options in Dolibarr must be updated if:
+            // 1) the subscription is up to date (that means that the user is managing his/her options)
+            // 2) the subscription is not up to date and the user has selected the 1rst choice
+            //    ie he/she does want an automatic direct debit form his/her account.
             var data = {}
-            // We need to verify whether we are in "saisie libre" or not
-            if (this.state.amount) {
+            if (this.state.cotisationState) {
+                if (this.state.selectedPrelevAuto) {
+                    data.options_prelevement_auto_cotisation_eusko = true
+                    data.options_prelevement_cotisation_montant = this.state.amount
+                    data.options_prelevement_cotisation_periodicite = this.state.period.value
+                } else {
+                    data.options_prelevement_auto_cotisation_eusko = false
+                    data.options_prelevement_cotisation_montant = 0
+                    data.options_prelevement_cotisation_periodicite = 0
+                }
+            } else if (!this.state.cotisationState && this.state.selectedOption == 0) {
+                data.options_prelevement_auto_cotisation_eusko = true
                 data.options_prelevement_cotisation_montant = this.state.amount
-            }
-            else if (this.state.amountByY) {
-                data.options_prelevement_cotisation_montant = this.state.amountByY
-            }
-
-            if (this.state.period.value) {
-                data.options_prelevement_cotisation_periodicite = this.state.period.value
-            }
-            else{
-                data.options_prelevement_cotisation_periodicite = 12
+                // The default value for "Périodicité" is "Annuel"
+                data.options_prelevement_cotisation_periodicite = this.state.period.value > 0 ? this.state.period.value : 12
             }
 
-            if (this.state.selectedPrelevAuto) {
-                data.options_prelevement_auto_cotisation_eusko = this.state.selectedPrelevAuto
-            }
-            else {
-                data.options_prelevement_auto_cotisation_eusko = false
-            }
             fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError_update)
         }
         if (this.state.cotisationState)

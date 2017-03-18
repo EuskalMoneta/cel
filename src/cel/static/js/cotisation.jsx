@@ -234,9 +234,9 @@ const Cotisation = React.createClass({
         this.setState({period: {label: periodValue.label, value: periodValue.value}}, this.calculAmountByYears)
     },
     calculAmountByYears() {
-        var amount = this.state.amount.replace(',','.')
-        if (amount && this.state.period.value)
+        if (this.state.amount && this.state.period.value > 0)
         {
+            var amount = this.state.amount.replace(',','.')
             var amountByY = amount*(12/this.state.period.value)
             if(this.state.memberType == '10')
             {
@@ -612,7 +612,7 @@ const Cotisation = React.createClass({
                                     <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
-                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
+                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
                             <Input
@@ -657,17 +657,16 @@ const Cotisation = React.createClass({
                                     </div>
                                 </div>
                             </div>
-                            <div className="form-group row">
+                            <div className="form-group row" style={{paddingTop:8}}>
                                 <label
                                     className="control-label col-sm-2"
                                     data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:0}}>
                                     {__("Montant de cotisation annuelle")}
                                 </label>
-                                <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
-                                <label className="control-label col-sm-4" style={{textAlign: 'center'}}>
-                                    {__("") + this.state.selectedOption==0 && this.state.amountByY ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
-                                </label>
+                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
+                                    {this.state.selectedOption==0 && this.state.amountByY ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </div>
                             </div>
                         </div>
@@ -689,7 +688,7 @@ const Cotisation = React.createClass({
                                     <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
-                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
+                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -751,16 +750,14 @@ const Cotisation = React.createClass({
                             />                            
                             <div className="form-group row" style={{paddingTop:8}}>
                                 <label
-                                    className="control-label col-sm-2"
+                                    className="control-label col-md-offset-1 col-sm-1"
                                     data-required="true"
                                     htmlFor="memberaddsubscription-amount"
                                     style={{paddingTop:0}}>
                                     {__("Périodicité")}
                                 </label>
-                                <div className="col-sm-5 memberaddsubscription col-md-offset-2" data-eusko="memberaddsubscription-amount">
-                                    <label>
-                                        {__("Annuel")}
-                                    </label>
+                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
+                                    {__("Annuel")}
                                 </div>
                             </div>
                         </div>
@@ -779,11 +776,9 @@ const Cotisation = React.createClass({
                             </div>
                         </div>
                         <div className="row">
-                            <div className="form-group row ">
-                                <div className="radio col-sm-1">
-                                    <label>
-                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
-                                    </label>
+                            <div className="form-group row">
+                                <div className="col-sm-1">
+                                    <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
                                     {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
@@ -848,22 +843,26 @@ const Cotisation = React.createClass({
                                     disabled={!this.state.displayCustomAmount}
                                 />
                             </div>
-                            <div className="form-group row ">
-                                <div className="radio col-sm-1 col-md-offset-1">
-                                </div>
-                                <div className="col-sm-5  profilform" data-eusko="profilform-asso">
-                                    {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                    {(" Je fais un virement de ") 
-                                    + (this.state.amount && this.state.selectedOption == 0 ? this.state.amount : 0) + (" ")}
-                                    {__("eusko correspondant à ma cotisation jusqu'au ") 
-                                    + moment().set('month', 11).endOf('month').locale('fr').format("ll") + (".")}
+                            <div className="form-group row" style={{paddingTop:8}}>
+                                <label
+                                    className="control-label col-md-offset-1 col-sm-1"
+                                    data-required="true"
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:0}}>
+                                    {__("Périodicité")}
+                                </label>
+                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
+                                    {__("Annuel")}
                                 </div>
                             </div>
                             <div className="form-group row ">
-                                <div className="radio col-sm-1">
-                                  <label>
-                                    <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
-                                  </label>
+                                <div className="col-md-offset-1 col-sm-6 profilform" data-eusko="profilform-asso">
+                                    {__("Note : La cotisation pour l'année en cours sera prélevée immédiatement.")}
+                                </div>
+                            </div>
+                            <div className="form-group row ">
+                                <div className="col-sm-1">
+                                  <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
                                 </div>
                                 <div className="col-sm-9  profilform" data-eusko="profilform-asso">
                                     {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :")}
@@ -960,11 +959,9 @@ const Cotisation = React.createClass({
                             </div>
                         </div>
                         <div className="row">
-                            <div className="form-group row ">
-                                <div className="radio col-sm-1">
-                                    <label>
-                                        <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
-                                    </label>
+                            <div className="form-group row">
+                                <div className="col-sm-1">
+                                    <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
                                     {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
@@ -1012,38 +1009,32 @@ const Cotisation = React.createClass({
                                     </div>
                                 </div>
                             </div>
-                            <div className="form-group row">
+                            <div className="form-group row" style={{paddingTop:8}}>
                                 <label
                                     className="control-label col-sm-2"
                                     data-required="true"
-                                    htmlFor="memberaddsubscription-amount">
+                                    htmlFor="memberaddsubscription-amount"
+                                    style={{paddingTop:0}}>
                                     {__("Montant de cotisation annuelle")}
                                 </label>
-                                <div className="col-sm-5 memberaddsubscription col-md-offset-1" data-eusko="memberaddsubscription-amount">
-                                <label className="control-label col-sm-4" style={{textAlign: 'center'}}>
-                                    {__("") + this.state.selectedOption==0 && this.state.amountByY ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
-                                </label>
+                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
+                                    {this.state.selectedOption==0 && this.state.amountByY ? this.state.amountByY + (" eusko") : 0 + (" eusko")}
                                 </div>
                             </div>
                             <div className="form-group row ">
-                                <div className="radio col-sm-1 col-md-offset-1">
-                                </div>
-                                <div className="col-sm-5  profilform" data-eusko="profilform-asso">
-                                    {__("Et je m'acquitte tout de suite des échéances en retard en faisant un virement depuis mon compte Eusko.")}
-                                    {(" Je fais un virement de ") 
-                                    + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount.replace(',','.')*Math.ceil(this.state.month/this.state.period.value) : 0) + (" ")}
-                                    {__("eusko correspondant à ma cotisation") 
-                                    + (this.state.lastMonth ? (" jusqu'au ") + moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("ll") : ("")) + (".")}
+                                <div className="col-md-offset-1 col-sm-9 profilform" data-eusko="profilform-asso">
+                                    {__("et je fais un virement de ")
+                                    + (this.state.amount && this.state.month && this.state.period.value ? this.state.amount.replace(',','.')*Math.ceil(this.state.month/this.state.period.value) : ("__"))}
+                                    {__(" eusko correspondant à ma cotisation jusqu'au ") 
+                                    + (this.state.amount && this.state.lastMonth ? moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("ll") : ("______")) + (".")}
                                 </div>
                             </div>
-                            <div className="form-group row ">
-                                <div className="radio col-sm-1">
-                                    <label>
-                                        <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
-                                    </label>
+                            <div className="form-group row">
+                                <div className="col-sm-1">
+                                    <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange} style={{float:'right'}}/>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
-                                    {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :)}
+                                    {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :")}
                                 </div>
                             </div>
                             <Input

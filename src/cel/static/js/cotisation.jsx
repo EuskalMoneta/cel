@@ -612,7 +612,7 @@ const Cotisation = React.createClass({
                                     <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
-                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier ci-dessous.")}
+                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
                             <Input
@@ -786,7 +786,7 @@ const Cotisation = React.createClass({
                                     </label>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
-                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon un des choix de cotisation ci-dessous.")}
+                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
                                 </div>
                             </div>
                             <div className="row">
@@ -859,7 +859,6 @@ const Cotisation = React.createClass({
                                     + moment().set('month', 11).endOf('month').locale('fr').format("ll") + (".")}
                                 </div>
                             </div>
-                            <hr/><hr/>
                             <div className="form-group row ">
                                 <div className="radio col-sm-1">
                                   <label>
@@ -867,7 +866,7 @@ const Cotisation = React.createClass({
                                   </label>
                                 </div>
                                 <div className="col-sm-9  profilform" data-eusko="profilform-asso">
-                                    {__("Je paie ma cotisation toute l'année en cours par virement depuis mon compte Eusko, selon un des choix de cotisation ci-dessous.")}
+                                    {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :")}
                                 </div>
                             </div>
                             <div className="row">
@@ -1037,7 +1036,6 @@ const Cotisation = React.createClass({
                                     + (this.state.lastMonth ? (" jusqu'au ") + moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("ll") : ("")) + (".")}
                                 </div>
                             </div>
-                            <hr/><hr/>
                             <div className="form-group row ">
                                 <div className="radio col-sm-1">
                                     <label>
@@ -1045,7 +1043,7 @@ const Cotisation = React.createClass({
                                     </label>
                                 </div>
                                 <div className="col-sm-9" style={{marginBottom: 15}}>
-                                    {__("Je paie ma cotisation toute l'année en cours par virement depuis mon compte Eusko :")}
+                                    {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :)}
                                 </div>
                             </div>
                             <Input
@@ -1078,9 +1076,7 @@ const Cotisation = React.createClass({
                             </div>
                         </div>
                         {cotisation_info}
-                        <hr></hr>
                         {auto_prelev_auto}
-                        <hr></hr>
                         {__("Pour qu'il n'y ait pas d'interruption dans la cotisation et dans l'accès au compte Eusko,")} <br/>
                         {__("l'échéance pour une période donnée sera prélevée le 20 du mois précédent, par exemple :")}<br/><br/>
 
@@ -1114,7 +1110,7 @@ const Cotisation = React.createClass({
                         </div>
                         {cotisation_info}
                     </div>
-                    <hr></hr><br/>
+                    <br/>
                 {__("Actuellement vous ne possédez pas de compte numérique eusko. Il est donc impossible de mettre à jour votre cotisation par cette interface.")}<br/>
                 {__("Afin d'avoir un compte numérique eusko, veuillez contacter Euskal Moneta.")}
                 </div>
@@ -1133,7 +1129,6 @@ const Cotisation = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <hr></hr>
                     {formDisplay}
                 </CotisationForm>
                 <ToastContainer ref="container"

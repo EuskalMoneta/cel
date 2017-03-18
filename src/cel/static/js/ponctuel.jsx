@@ -284,7 +284,7 @@ var Ponctuel = React.createClass({
                             type="text"
                             placeholder={__("Montant du virement")}
                             validations={{
-                                matchRegexp: /^[0-9.,]+$/
+                                matchRegexp: /^\d+(,\d{1,2})?$/
                             }}
                             validationErrors={{
                                 matchRegexp: __("Montant invalide.")

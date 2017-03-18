@@ -127,8 +127,8 @@ var Overview = React.createClass({
             <BootstrapTable data={this.state.accountList} striped={true} hover={true} selectRow={selectRowProp}
                             tableContainerclassName="react-bs-table-list-account" options={{noDataText: __("Rien à afficher.")}}
             >
-                <TableHeaderColumn isKey={true} dataField="number" width="250">{__("Numéro du compte")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="solde" dataFormat={soldeFormatter} width="250">{__("Solde")}</TableHeaderColumn>
+                <TableHeaderColumn isKey={true} dataField="number" width="250px">{__("Numéro du compte")}</TableHeaderColumn>
+                <TableHeaderColumn dataField="solde" dataFormat={soldeFormatter} width="250px">{__("Solde")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="memberName"
                                    columnClassName="disable-pointer-events"
                                    dataFormat={buttonFormatter}>{__("Actions")}</TableHeaderColumn>

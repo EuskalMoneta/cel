@@ -23,9 +23,13 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   pointer-events: auto !important;
 }
 
+.navbar-right {
+  padding-top: 5px
+}
+
 .navbar-content {
-  height: 135px;
-  padding-top: 80px;
+  height: 130px;
+  padding-top: 75px;
   padding-bottom: 0px;
   margin-bottom: 0px;
   background-color: #f8f8f8;
@@ -547,4 +551,9 @@ textarea {
 
 .grey-back{
   background: #ecf0f1
+}
+
+/* cotisation */
+.form-horizontal .radio {
+  padding-top: 0;
 }

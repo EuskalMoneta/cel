@@ -94,29 +94,7 @@ const ChangeAuto = React.createClass({
     },
 
     getModalElements(modalMode) {
-        if (modalMode == 'delete') {
-            var modalTitle = __("Arrêt du change automatique")
-            var validateLabel = __("Confirmer")
-            var modalBody = (
-                <ChangeAutoForm onValid={this.enableButton}>
-                    <p style={{marginBottom: 30}}>
-                        {__("Êtes-vous sûr de vouloir arrêter votre change automatique mensuel ?")}
-                    </p>
-                    <Textarea
-                        name="commentaire"
-                        value={this.state.textareaCommentaire}
-                        data-eusko="change-auto-commentaire"
-                        rows={3}
-                        onChange={this.commentOnValueChange}
-                        elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-8']}
-                        label={__("Commentaire")}
-                        placeholder={__("Vous pouvez fournir un commentaire")}
-                    />
-                </ChangeAutoForm>
-            )
-            var canSubmit = true
-        }
-        else {
+        if (modalMode == 'modify') {
             var modalTitle = __("Modification du change automatique")
             var validateLabel = __("Confirmer")
             var canSubmit = false
@@ -190,10 +168,6 @@ const ChangeAuto = React.createClass({
         if (modalMode == 'modify') {
             data.options_prelevement_change_montant = this.state.newAmountChangeAuto
         }
-        else {
-            data.options_prelevement_change_montant = null
-            data.options_prelevement_change_periodicite = null
-        }
 
         var computeForm = (data) => {
             this.refs.container.success(
@@ -251,12 +225,6 @@ const ChangeAuto = React.createClass({
                             <button onClick={() => {this.getModalElements('modify')}}
                                 className="btn btn-info enable-pointer-events">
                                 {__("Modifier le montant du change automatique")} <i className="glyphicon glyphicon-pencil"></i>
-                            </button>
-                        </div>
-                        <div className="col-md-4 col-md-offset-1">
-                            <button onClick={() => {this.getModalElements('delete')}}
-                                className="btn btn-danger enable-pointer-events">
-                                {__("Arrêter le change automatique")} <i className="glyphicon glyphicon-trash"></i>
                             </button>
                         </div>
                     </div>

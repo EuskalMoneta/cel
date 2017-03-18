@@ -860,11 +860,11 @@ const Cotisation = React.createClass({
                                     {__("Note : La cotisation pour l'année en cours sera prélevée immédiatement.")}
                                 </div>
                             </div>
-                            <div className="form-group row ">
+                            <div className="form-group row">
                                 <div className="col-sm-1">
-                                  <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange}/>
+                                    <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange} style={{float:'right'}}/>
                                 </div>
-                                <div className="col-sm-9  profilform" data-eusko="profilform-asso">
+                                <div className="col-sm-9" style={{marginBottom: 15}}>
                                     {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :")}
                                 </div>
                             </div>

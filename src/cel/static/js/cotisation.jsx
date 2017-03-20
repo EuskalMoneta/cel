@@ -104,7 +104,9 @@ const Cotisation = React.createClass({
                     label = ''
                 break
             }
-            this.setState({period:{label: label, value: member[0].array_options.options_prelevement_cotisation_periodicite}})
+            this.setState({period:{label: label, value: member[0].array_options.options_prelevement_cotisation_periodicite}, 
+                            amount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',','),
+                            amountByY: member[0].array_options.options_prelevement_cotisation_montant*member[0].array_options.options_prelevement_cotisation_periodicite})
             if (member[0].login.toUpperCase().startsWith('Z'))
             {
                 if (member[0].type == 'Entreprise') {

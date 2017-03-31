@@ -365,7 +365,8 @@ const Cotisation = React.createClass({
                 if (this.state.selectedPrelevAuto) {
                     data.options_prelevement_auto_cotisation_eusko = true
                     data.options_prelevement_cotisation_montant = this.state.amount
-                    data.options_prelevement_cotisation_periodicite = this.state.period.value
+                    // The default value for "Périodicité" is "Annuel"
+                    data.options_prelevement_cotisation_periodicite = this.state.period.value > 0 ? this.state.period.value : 12
                 } else {
                     data.options_prelevement_auto_cotisation_eusko = false
                     data.options_prelevement_cotisation_montant = 0

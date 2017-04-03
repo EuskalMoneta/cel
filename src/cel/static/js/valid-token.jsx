@@ -348,11 +348,17 @@ class SetPasswordPage extends React.Component {
                             label={__("Nouveau mot de passe")}
                             type="password"
                             placeholder={__("Votre nouveau mot de passe")}
-                            validations="equalsField:confirmPassword,minLength:4,maxLength:12"
+                            validations={{
+                                equalsField: "confirmPassword",
+                                minLength: 4,
+                                maxLength: 12,
+                                matchRegexp: /^[a-zA-Z0-9!@#\$%\\"^\&*\)\(`"'()*+,-.\/:;<=>?[\]_{}~+=_]+$/
+                            }}
                             validationErrors={{
                                 equalsField: __("Les mots de passe ne correspondent pas."),
                                 minLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
-                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères.")
+                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
+                                matchRegexp: __("Votre mot de passe contient un caractère interdit.")
                             }}
                             onChange={this.onFormChange}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
@@ -365,11 +371,17 @@ class SetPasswordPage extends React.Component {
                             label={__("Confirmer le nouveau mot de passe")}
                             type="password"
                             placeholder={__("Confirmation de votre nouveau mot de passe")}
-                            validations="equalsField:password,minLength:4,maxLength:12"
+                            validations={{
+                                equalsField: "password",
+                                minLength: 4,
+                                maxLength: 12,
+                                matchRegexp: /^[a-zA-Z0-9!@#\$%\\"^\&*\)\(`"'()*+,-.\/:;<=>?[\]_{}~+=_]+$/
+                            }}
                             validationErrors={{
                                 equalsField: __("Les mots de passe ne correspondent pas."),
                                 minLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
-                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères.")
+                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
+                                matchRegexp: __("Votre mot de passe contient un caractère interdit.")
                             }}
                             onChange={this.onFormChange}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}

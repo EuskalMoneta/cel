@@ -380,11 +380,17 @@ class MemberChangePasswordPage extends React.Component {
                             label={__("Nouveau mot de passe")}
                             type="password"
                             placeholder={__("Votre nouveau mot de passe")}
-                            validations="equalsField:confirm_password,minLength:4,maxLength:12"
+                            validations={{
+                                equalsField: "confirm_password",
+                                minLength: 4,
+                                maxLength: 12,
+                                matchRegexp: /^[a-zA-Z0-9!@#\$%\\"^\&*\)\(`"'()*+,-.\/:;<=>?[\]_{}~+=_]+$/
+                            }}
                             validationErrors={{
                                 equalsField: __("Les mots de passe ne correspondent pas."),
                                 minLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
-                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères.")
+                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
+                                matchRegexp: __("Votre mot de passe contient un caractère interdit.")
                             }}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
                             required
@@ -396,11 +402,17 @@ class MemberChangePasswordPage extends React.Component {
                             label={__("Confirmer le nouveau mot de passe")}
                             type="password"
                             placeholder={__("Confirmation de votre nouveau mot de passe")}
-                            validations="equalsField:new_password,minLength:4,maxLength:12"
+                            validations={{
+                                equalsField: "new_password",
+                                minLength: 4,
+                                maxLength: 12,
+                                matchRegexp: /^[a-zA-Z0-9!@#\$%\\"^\&*\)\(`"'()*+,-.\/:;<=>?[\]_{}~+=_]+$/
+                            }}
                             validationErrors={{
                                 equalsField: __("Les mots de passe ne correspondent pas."),
                                 minLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
-                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères.")
+                                maxLength: __("Un mot de passe doit faire entre 4 et 12 caractères."),
+                                matchRegexp: __("Votre mot de passe contient un caractère interdit.")
                             }}
                             elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
                             required

@@ -188,7 +188,7 @@ class LoginPage extends React.Component {
                                    name="username" id="username"
                                    value={this.state.username}
                                    onChange={this.handleChange}
-                                   placeholder={__("Identifiant ou Email")}
+                                   placeholder={__("Numéro d'adhérent-e ou Email")}
                                    disabled={this.state.displaySpinner}
                                    required
                             />

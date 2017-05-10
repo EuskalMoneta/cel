@@ -233,7 +233,7 @@ var BeneficiairesList = React.createClass({
                             modalTitle={this.state.modalTitle}
                             validateLabel={this.state.validateLabel}
                             onValidate={this.submitForm}
-                            staticContent={this.state.modalMode == 'post' ? true : false}
+                            staticContent={true}
                             btnValidateClass={this.state.modalMode == 'post' ? "btn-success" : "btn-danger"}
                             btnValidateEnabled={this.state.btnValidateEnabled}
                             searchBeneficiaires={this.searchBeneficiaires}

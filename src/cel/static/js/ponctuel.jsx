@@ -63,6 +63,7 @@ var Ponctuel = React.createClass({
             description: '',
             isModalOpen: false,
             modalBody: Array(),
+            btnValidateEnabled: false,
         }
     },
 
@@ -141,11 +142,11 @@ var Ponctuel = React.createClass({
     },
 
     enableButton() {
-        this.setState({canSubmit: true})
+        this.setState({canSubmit: true, btnValidateEnabled: true})
     },
 
     disableButton() {
-        this.setState({canSubmit: false})
+        this.setState({canSubmit: false, btnValidateEnabled: false})
     },
 
     validateForm() {
@@ -331,7 +332,7 @@ var Ponctuel = React.createClass({
                             modalTitle={__("Confirmation du virement")}
                             onValidate={this.submitForm}
                             staticContent={false}
-                            btnValidateEnabled={true}
+                            btnValidateEnabled={this.state.btnValidateEnabled}
                 />
             </div>
         )

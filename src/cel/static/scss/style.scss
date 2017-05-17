@@ -299,14 +299,21 @@ textarea {
 }
 
 .carousel {
-  margin-top: 15%;
-  width: 630px;
-  height: 400px;
+  margin-top: 100px;
 }
 
-.carousel-image {
-  max-width: 330px;
-  max-height: 330px;
+@media (max-width: 700px) {
+  .carousel {
+    width: 360px;
+    height: 120px;
+  }
+}
+
+@media (min-width: 701px) {
+  .carousel {
+    width: 750px;
+    height: 250px;
+  }
 }
 
 .carousel-control {

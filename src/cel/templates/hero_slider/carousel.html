@@ -2,7 +2,7 @@
 <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/launch-carousel.js' %}"></script>
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
+<div id="myCarousel" class="carousel slide center-block" data-ride="carousel">
     <ol class="carousel-indicators">
         {% for item in slider_items %}
             <li data-target="#myCarousel" data-slide-to="{{ item.position }}" class=" {% if item.position == 1 %}{{ 'active' }}{% endif %}"></li>

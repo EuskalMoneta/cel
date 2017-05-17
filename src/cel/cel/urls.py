@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url
+from django.conf.urls import include, url
+from django.contrib import admin
 from django.core.urlresolvers import reverse_lazy
+from django.conf.urls.static import static
+from django.conf import settings
 
 from adherents import views as adherents_views
 from base import views as base_views
@@ -25,6 +28,11 @@ urlpatterns = [
     # built-in Django i18n:
     # from django.conf.urls import include, i18n
     # url(r'^i18n/', include(i18n)),
+
+    url(r'^admin/', admin.site.urls),
+
+    # Django Hero Slider
+    url(r'^hero-slider/', include('hero_slider.urls')),
 
     # JavaScript config for this Django/React app
     url(r'^config\.js$', base_views.config_js, name='config_js'),
@@ -71,4 +79,5 @@ urlpatterns = [
     url(r'^virements/ponctuel/?$', adherents_views.virements_ponctuel, name='virements-ponctuel'),
     # home
     url(r'^$', adherents_views.index, name='home'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

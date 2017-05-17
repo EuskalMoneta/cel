@@ -1,5 +1,6 @@
-django
+django==1.10.*
 django-csp
+django-hero-slider
 pytest
 pytest-django
 pytest-selenium

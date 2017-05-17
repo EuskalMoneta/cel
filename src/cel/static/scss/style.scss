@@ -66,8 +66,8 @@ $font-stack: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
   border-bottom-color: #2c3e50;
 }
 
-#first-time, #login, #lost-password, #valid-token {
-  margin-top: 7%;
+#first-time, #lost-password, #valid-token {
+  margin-top: 100px;
 }
 
 .uppercase {
@@ -296,6 +296,33 @@ textarea {
 .login-div {
   background-color: #eee;
   padding-top: 50px;
+}
+
+.carousel {
+  margin-top: 15%;
+  width: 630px;
+  height: 400px;
+}
+
+.carousel-image {
+  max-width: 330px;
+  max-height: 330px;
+}
+
+.carousel-control {
+  background-image: none !important;
+}
+
+.carousel-control span {
+  color: #C8C3B9;
+}
+
+.carousel-indicators li {
+  border: 1px solid #C8C3B9;
+}
+
+.carousel-indicators .active {
+  background-color: #C8C3B9;
 }
 
 .form-signin {

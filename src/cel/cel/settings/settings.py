@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Django Hero Slider
+    'filer',
+    'hvad',
+    'easy_thumbnails',
+    'hero_slider',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -60,6 +65,8 @@ MIDDLEWARE_CLASSES = [
 
 AUTHENTICATION_BACKENDS = [
     'cel.auth.CELAuthBackend',
+    # Needed for the superuser of the Django admin site.
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 
@@ -175,3 +182,6 @@ STATICFILES_DIRS = (
     '/assets/',
     os.path.join(os.path.dirname(BASE_DIR), 'static'),
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

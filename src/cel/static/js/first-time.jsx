@@ -146,7 +146,6 @@ class FirstTimePage extends React.Component {
                         {__("L'utilisateur existe déjà. Si vous avez perdu votre mot de passe, ")}<a href="passe-perdu/">{__("cliquez ici.")}</a>
                     </div>
                 )
-                var link = null
             }
             else
             {
@@ -154,11 +153,6 @@ class FirstTimePage extends React.Component {
                     <div className="alert alert-danger">
                         {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
                     </div>
-                )
-                var link = (
-                    <Row layout="horizontal" elementWrapperClassName="margin-top">
-                        <a href="/contact">{__("Formulaire de contact")}</a>
-                    </Row>
                 )
             }
         }
@@ -175,8 +169,6 @@ class FirstTimePage extends React.Component {
             }
             else
                 var messageData = null
-
-            var link = null
         }
 
         if (this.state.displaySpinner)
@@ -242,10 +234,9 @@ class FirstTimePage extends React.Component {
                                     disabled={!this.state.canSubmit}
                                 />
                             </Row>
-                            {link}
                         </fieldset>
                     </FirstTimeForm>
-            </div>
+                </div>
             </div>
         );
     }

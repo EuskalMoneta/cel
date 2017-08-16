@@ -138,11 +138,6 @@ class LostPasswordPage extends React.Component {
                     {__("Il n'y a pas d'adhérent-e correspondant à ce numéro et cette adresse email. Veuillez nous contacter.")}
                 </div>
             )
-            var returnToLogin = (
-                <Row layout="horizontal" elementWrapperClassName="margin-top">
-                    <a href="/contact">{__("Formulaire de contact")}</a>
-                </Row>
-            )
         }
         else {
             if (this.state.validData) {

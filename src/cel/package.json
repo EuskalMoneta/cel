@@ -40,7 +40,7 @@
     "react-modal-bootstrap": "^1.1.0",
     "react-selectize": "^2.0.3",
     "react-spinjs": "^3.0.0",
-    "react-toastr": "^2.8.0",
+    "react-toastr": "2.8.2",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "svg-url-loader": "^1.1.0",

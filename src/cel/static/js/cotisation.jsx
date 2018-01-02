@@ -11,6 +11,7 @@ import classNames from 'classnames'
 
 const {
     Input,
+    RadioGroup,
 } = FRC
 
 import ReactSelectize from 'react-selectize'
@@ -54,24 +55,30 @@ const Cotisation = React.createClass({
         return {
             memberLogin: window.config.userName,
             member: null,
-            displayCustomAmount: false,
             memberType: '9',
+            // Si cotisationState == true, cela signifie que l'adhérent est à jour de cotisation
+            // et que la page ne doit afficher que la proposition de prélèvement automatique;
+            // sinon il faut afficher le formulaire de paiement de la cotisation.
             cotisationState: false,
             period: {    
                 label: undefined,
                 value: undefined,
             },
+            periodicite: 0,
             canSubmit: false,
             selectedPrelevAuto: false,
             amount: '',
             amountByY: 0,
-            customAmount: '',
+            // selectedOption indique quel est le bouton radio sélectionné dans le formulaire de paiement de la cotisation
+            // selectedOption == 0 signifie activation du prélèvement auto
+            // selectedOption == 1 signifie paiement pour l'année en cours uniquement
             selectedOption: 0,
             month: new Date().getMonth()+1,
             year: new Date().getFullYear(),
             endMonth: moment().endOf('month').locale('fr').format("YYYY-MM-DDThh:mm"),
             endYear: moment().endOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
-            lastMonth: 0, 
+            // dernier mois = décembre par défaut (paiement par prélèvement annuel ou pour l'année en cours uniquement)
+            lastMonth: 11,
             beginYear: moment().startOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
             amountValid: false,
             menu: window.location.pathname.indexOf("/nomenu") == -1 ? false : true
@@ -104,8 +111,11 @@ const Cotisation = React.createClass({
                     label = ''
                 break
             }
-            this.setState({period:{label: label, value: member[0].array_options.options_prelevement_cotisation_periodicite}, 
-                            amount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',','),
+            var p = member[0].array_options.options_prelevement_cotisation_periodicite
+            var periodicite = (p > 0) ? p : 12
+            this.setState({period:{label: label, value: member[0].array_options.options_prelevement_cotisation_periodicite},
+                            periodicite: periodicite,
+                            amount: Number(member[0].array_options.options_prelevement_cotisation_montant) * 12 / periodicite,
                             amountByY: member[0].array_options.options_prelevement_cotisation_montant*member[0].array_options.options_prelevement_cotisation_periodicite})
             if (member[0].login.toUpperCase().startsWith('Z'))
             {
@@ -120,22 +130,6 @@ const Cotisation = React.createClass({
             else if (member[0].login.toUpperCase().startsWith('E'))
             {
                 this.setState({memberType: '0'}) // single user
-                if(member[0].array_options.options_prelevement_cotisation_montant)
-                {
-                    this.setState({amount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',',')})
-                    if(member[0].array_options.options_prelevement_cotisation_montant<=5)
-                    {
-                        this.setState({buttonBasRevenusActivated: true})
-                    }
-                    else if (member[0].array_options.options_prelevement_cotisation_montant<=10)
-                    {
-                        this.setState({buttonClassiqueActivated: true})
-                    }
-                    else if (member[0].array_options.options_prelevement_cotisation_montant>10)
-                    {
-                        this.setState({buttonSoutienActivated: true, displayCustomAmount: true, customAmount: Number(member[0].array_options.options_prelevement_cotisation_montant).toFixed(2).replace('.',',')})
-                    }
-                }
             }
             if(member[0].array_options.options_prelevement_auto_cotisation_eusko)
             {
@@ -144,10 +138,6 @@ const Cotisation = React.createClass({
 
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
-    },
-
-    setAmount(value) {
-        this.setState(value, this.ValidationCheck)
     },
 
     ValidationCheck() {
@@ -197,14 +187,10 @@ const Cotisation = React.createClass({
             }
             else
             {
-                if ((this.state.selectedOption == 0 && this.state.amount) || (this.state.selectedOption == 1 && this.state.amount))
-                {
-                    this.setState({canSubmit: true})
-                }
-                else
-                {
-                    this.setState({canSubmit: false})
-                }
+                this.calculEndDate()
+                var formIsValid = (this.state.selectedOption == 0 && this.state.amount > 0 && this.state.periodicite)
+                    || (this.state.selectedOption == 1 && this.state.amount > 0);
+                this.setState({canSubmit: formIsValid})
             }
         }
     },
@@ -255,37 +241,30 @@ const Cotisation = React.createClass({
         }
         
     },
-    calculEndDate() {
 
-        if (this.state.period)
+    calculEndDate() {
+        //FIXME
+        var periodicite = this.state.memberType.startsWith('0') ? this.state.periodicite : parseInt(this.state.period.value)
+console.log('calculEndDate()')
+console.log('periodicite='+periodicite)
+        var intPart = this.state.month / periodicite
+        var resPart = this.state.month % periodicite
+        var lastMonth
+        if (intPart <= 1) 
         {
-            var intPart = this.state.month / this.state.period.value
-            var resPart = this.state.month % this.state.period.value
-            if (intPart <= 1) 
-            {
-                this.setState({lastMonth: parseInt(this.state.period.value)-1})
-            }
-            else if (resPart == 0)
-            {
-                this.setState({lastMonth: Math.floor(intPart) * parseInt(this.state.period.value)-1})
-            }
-            else
-            {
-                this.setState({lastMonth: (Math.floor(intPart)+1) * parseInt(this.state.period.value)-1})
-            }
+            lastMonth = periodicite-1
         }
-            
-    },
-    // amount
-    validateAmount(field, value) {
-        this.setState({customAmount: value.replace('.', ',')})
-        this.setState({amount: value}, this.ValidationCheck)
-        if (isPositiveNumeric(null, value) && Number(value) >= Number(20)) {
-            this.setState({amount: value}, this.ValidationCheck)
+        else if (resPart == 0)
+        {
+            lastMonth = Math.floor(intPart) * periodicite-1
         }
-        else {
-            this.setState({amount: ''}, this.ValidationCheck)
+        else
+        {
+            lastMonth = (Math.floor(intPart)+1) * periodicite-1
         }
+console.log('lastMonth='+lastMonth)
+console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').locale('fr').format("YYYY-MM-DDThh:mm"))
+        this.setState({lastMonth: lastMonth})
     },
 
     submitForm() {
@@ -363,20 +342,32 @@ const Cotisation = React.createClass({
             var data = {}
             if (this.state.cotisationState) {
                 if (this.state.selectedPrelevAuto) {
+                    // FIXME
+                    if (this.state.memberType.startsWith('0')) {
+                        var periodicite = this.state.periodicite
+                    } else {
+                        var periodicite = this.state.period.value > 0 ? this.state.period.value : 12
+                    }
                     data.options_prelevement_auto_cotisation_eusko = true
-                    data.options_prelevement_cotisation_montant = this.state.amount
+                    data.options_prelevement_cotisation_montant = this.state.amount / 12 * periodicite
                     // The default value for "Périodicité" is "Annuel"
-                    data.options_prelevement_cotisation_periodicite = this.state.period.value > 0 ? this.state.period.value : 12
+                    data.options_prelevement_cotisation_periodicite = periodicite
                 } else {
                     data.options_prelevement_auto_cotisation_eusko = false
                     data.options_prelevement_cotisation_montant = 0
                     data.options_prelevement_cotisation_periodicite = 0
                 }
             } else if (!this.state.cotisationState && this.state.selectedOption == 0) {
+                // FIXME
+                if (this.state.memberType.startsWith('0')) {
+                    var periodicite = this.state.periodicite
+                } else {
+                    var periodicite = this.state.period.value > 0 ? this.state.period.value : 12
+                }
                 data.options_prelevement_auto_cotisation_eusko = true
-                data.options_prelevement_cotisation_montant = this.state.amount
+                data.options_prelevement_cotisation_montant = this.state.amount / 12 * periodicite
                 // The default value for "Périodicité" is "Annuel"
-                data.options_prelevement_cotisation_periodicite = this.state.period.value > 0 ? this.state.period.value : 12
+                data.options_prelevement_cotisation_periodicite = periodicite
             }
 
             fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError_update)
@@ -386,28 +377,24 @@ const Cotisation = React.createClass({
             update_options_dolibarr()
         }
 
-        if (!this.state.cotisationState && this.state.memberType.startsWith('0'))
+        // Paiement de la cotisation due depuis le début de l'année.
+        // Si mise en place d'un prélèvement mensuel, paiement de toutes les mensualités jusqu'au mois en cours.
+        // Sinon (i.e. si paiement pour l'année en cours uniquement ou mise en place d'un prélèvement annuel), paiement pour l'année entière.
+        if (!this.state.cotisationState)
         {
             var data2 = {}
             data2.start_date = this.state.beginYear
-            data2.end_date = this.state.endYear
-            data2.amount = this.state.amount
-            data2.label = 'Cotisation ' + this.state.year
-            fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError_subscription)
-        }
-        else if (!this.state.cotisationState && this.state.memberType.startsWith('1'))
-        {
-            var data2 = {}
-            data2.start_date = this.state.beginYear
-            if (this.state.selectedOption == 0)
+            //FIXME
+            var periodicite = this.state.memberType.startsWith('0') ? this.state.periodicite : this.state.period.value
+            if (this.state.selectedOption == 0 && periodicite == 1)
             {
                 data2.end_date = moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("YYYY-MM-DDThh:mm")
-                data2.amount = this.state.amount*Math.ceil(this.state.month/this.state.period.value)
+                data2.amount = this.state.amount / 12 * this.state.month
             }
             else
             {
                 data2.end_date = this.state.endYear
-                data2.amount = this.state.amountByY
+                data2.amount = this.state.amount
             }
             data2.label = 'Cotisation ' + this.state.year
             fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError_subscription)
@@ -421,12 +408,12 @@ const Cotisation = React.createClass({
             if (event.target.value == 0)
             {
                 var state = {selectedOption: 0, amountByY: '', amount: '',
-                             canSubmit: false, selectedPrelevAuto: true, displayCustomAmount2: false}
+                             canSubmit: false, selectedPrelevAuto: true}
             }
             else if (event.target.value == 1)
             {
                 var state = {selectedOption: 1, amountByY: '', amount: '',
-                             canSubmit: false, selectedPrelevAuto: false, displayCustomAmount: false}
+                             canSubmit: false, selectedPrelevAuto: false}
             }
         }
         else if (this.state.memberType.startsWith('1'))
@@ -444,13 +431,24 @@ const Cotisation = React.createClass({
             }
         }
         this.setState(state)
-        this.buttonResetChoice()
     },
 
-    buttonResetChoice() {
-        this.setState({buttonBasRevenusActivated: false, buttonClassiqueActivated: false,
-                       buttonSoutienActivated: false, buttonBasRevenusActivated2: false,
-                       buttonClassiqueActivated2: false, buttonSoutienActivated2: false})
+    radioAutorisationPrelevementChanged(name, value) {
+        if (value == '1') {
+            this.setState({periodicite: 12})
+        }
+        this.setState({selectedOption: Number(value), selectedPrelevAuto: value=='0'}, this.ValidationCheck)
+    },
+
+    amountChanged(name, value) {
+        if (value == '5') {
+            this.setState({periodicite: 12})
+        }
+        this.setState({amount: Number(value)}, this.ValidationCheck)
+    },
+
+    periodiciteChanged(name, value) {
+        this.setState({periodicite: Number(value)}, this.ValidationCheck)
     },
 
     render() {
@@ -460,53 +458,6 @@ const Cotisation = React.createClass({
 
         var greySimpleSelect_noautorization = classNames({
             'grey-back': !this.state.selectedPrelevAuto,
-        })
-        var buttonBasRevenusClass = classNames({
-            "btn": true,
-            "btn-default": !this.state.buttonBasRevenusActivated,
-            "btn-info-inverse": this.state.buttonBasRevenusActivated,
-        })
-
-        var buttonClassiqueClass = classNames({
-            "btn": true,
-            "btn-default": !this.state.buttonClassiqueActivated,
-            "btn-info-inverse": this.state.buttonClassiqueActivated,
-        })
-
-        var buttonSoutienClass = classNames({
-            "btn": true,
-            "btn-default": !this.state.buttonSoutienActivated,
-            "btn-info-inverse": this.state.buttonSoutienActivated,
-        })
-
-        var divCustomAmountClass = classNames({
-            'form-group row': true,
-            'hidden': !this.state.displayCustomAmount,
-            'has-error has-feedback': this.state.amountInvalid,
-        })
-
-        var buttonBasRevenusClass2 = classNames({
-            "btn": true,
-            "btn-default": !this.state.buttonBasRevenusActivated2,
-            "btn-info-inverse": this.state.buttonBasRevenusActivated2,
-        })
-
-        var buttonClassiqueClass2 = classNames({
-            "btn": true,
-            "btn-default": !this.state.buttonClassiqueActivated2,
-            "btn-info-inverse": this.state.buttonClassiqueActivated2,
-        })
-
-        var buttonSoutienClass2 = classNames({
-            "btn": true,
-            "btn-default": !this.state.buttonSoutienActivated2,
-            "btn-info-inverse": this.state.buttonSoutienActivated2,
-        })
-
-        var divCustomAmountClass2 = classNames({
-            'form-group row': true,
-            'hidden': !this.state.displayCustomAmount2,
-            'has-error has-feedback': this.state.amountInvalid,
         })
 
         moment.locale(getCurrentLang)
@@ -575,16 +526,6 @@ const Cotisation = React.createClass({
                     </span>
                 ) 
             }
-        }
-        else {
-            var cotisation_info = (
-                <span> 
-                {__("Cotisation annuelle :")}<br/><br/>
-                {__("5 € / eusko (bas revenus)")}<br/>
-                {__("10 € / eusko (cotisation normale)")}<br/>
-                {__("20 € / eusko ou plus (cotisation de soutien)")}<br/><br/>
-                </span>
-                ) 
         }
 
         if (this.state.cotisationState) {
@@ -676,264 +617,10 @@ const Cotisation = React.createClass({
                     </span>
                 )
             }
-            else
-            {
-                var auto_prelev_auto = (
-                    <span>
-                        <div className="form-group row">
-                            <div className="col-sm-5">
-                                <h2>Prélèvement de la cotisation</h2>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="row">
-                                <div className="col-sm-1 col-md-offset-1">
-                                    <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
-                                </div>
-                                <div className="col-sm-9" style={{marginBottom: 15}}>
-                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label
-                                    className="control-label col-sm-2"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount"
-                                    style={{paddingTop:10}}>
-                                    {__("Montant")}
-                                    <span className="required-symbol">&nbsp;*</span>
-                                </label>
-                                <div className="col-sm-7 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                    <button
-                                        className={buttonBasRevenusClass}
-                                        disabled={!this.state.selectedPrelevAuto}
-                                        onClick={() => this.setAmount({amount: '5', customAmount: '', displayCustomAmount: false,
-                                                    buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
-                                        {__('5 (bas revenus)')}
-                                    </button>
-                                    {' '}
-                                    <button
-                                        className={buttonClassiqueClass}
-                                        disabled={!this.state.selectedPrelevAuto}
-                                        onClick={() => this.setAmount({amount: '10', customAmount: '', displayCustomAmount: false,
-                                                   buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
-                                        {__('10 (cotisation normale)')}
-                                    </button>
-                                    {' '}
-                                    <button
-                                        className={buttonSoutienClass}
-                                        disabled={!this.state.selectedPrelevAuto}
-                                        onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount: true,
-                                                    buttonBasRevenusActivated: false, buttonClassiqueActivated: false, buttonSoutienActivated: true})}>
-                                        {__('20 ou plus (cotisation de soutien)')}
-                                    </button>
-                                </div>
-                            </div>
-                            <Input
-                                name="customAmount"
-                                data-eusko="bank-deposit-customAmount"
-                                value={this.state.customAmount ? this.state.customAmount : ""}
-                                type="text"
-                                placeholder={__("Montant de la cotisation")}
-                                validations={{
-                                    matchRegexp: /^\d+(,\d{1,2})?$/, 
-                                    isMoreThan:20,
-                                }}
-                                validationErrors={{
-                                   matchRegexp: __("Montant invalide."),
-                                   isMoreThan: __("Montant inférieur à 20."),
-                                }}
-                                label={__("Montant personnalisé")}
-                                onChange={this.validateAmount}
-                                rowClassName={divCustomAmountClass}
-                                labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
-                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-5']}
-                                required={this.state.displayCustomAmount}
-                                disabled={!this.state.displayCustomAmount || !this.state.selectedPrelevAuto}
-                            />                            
-                            <div className="form-group row" style={{paddingTop:8}}>
-                                <label
-                                    className="control-label col-md-offset-1 col-sm-1"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount"
-                                    style={{paddingTop:0}}>
-                                    {__("Périodicité")}
-                                </label>
-                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                    {__("Annuel")}
-                                </div>
-                            </div>
-                        </div>
-                    </span>
-                )
-            }
         }
         else
         {
-            if (this.state.memberType.startsWith('0')) {
-                var auto_prelev_auto = (
-                    <span>
-                        <div className="form-group row">
-                            <div className="col-sm-5">
-                                <h2>Paiement de la cotisation</h2>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="form-group row">
-                                <div className="col-sm-1">
-                                    <input type="radio" value="0" checked={this.state.selectedOption == 0} onChange={this.radioOnChange} style={{float:'right'}}/>
-                                </div>
-                                <div className="col-sm-9" style={{marginBottom: 15}}>
-                                    {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko, selon l'échéancier suivant :")}
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group row">
-                                    <label
-                                        className="control-label col-sm-2"
-                                        data-required="true"
-                                        htmlFor="memberaddsubscription-amount"
-                                        style={{paddingTop:10}}>
-                                        {__("Montant")}
-                                        <span className="required-symbol">&nbsp;*</span>
-                                    </label>
-                                    <div className="col-sm-7 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                        <button
-                                            className={buttonBasRevenusClass}
-                                            disabled={this.state.selectedOption == 1}
-                                            onClick={() => this.setAmount({amount: '5', customAmount: '', displayCustomAmount: false,
-                                                        buttonBasRevenusActivated: true, buttonClassiqueActivated: false, buttonSoutienActivated: false})}>
-                                            {__('5 (bas revenus)')}
-                                        </button>
-                                        {' '}
-                                        <button
-                                            className={buttonClassiqueClass}
-                                            disabled={this.state.selectedOption == 1}
-                                            onClick={() => this.setAmount({amount: '10', customAmount: '', displayCustomAmount: false,
-                                                       buttonBasRevenusActivated: false, buttonClassiqueActivated: true, buttonSoutienActivated: false})}>
-                                            {__('10 (cotisation normale)')}
-                                        </button>
-                                        {' '}
-                                        <button
-                                            className={buttonSoutienClass}
-                                            disabled={this.state.selectedOption == 1}
-                                            onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount: true,
-                                                        buttonBasRevenusActivated: false, buttonClassiqueActivated: false, buttonSoutienActivated: true})}>
-                                            {__('20 ou plus (cotisation de soutien)')}
-                                        </button>
-                                    </div>
-                                </div>
-                                <Input
-                                    name="customAmount"
-                                    data-eusko="bank-deposit-customAmount"
-                                    value={this.state.customAmount ? this.state.customAmount : ""}
-                                    type="text"
-                                    placeholder={__("Montant de la cotisation")}
-                                    validations={{
-                                        matchRegexp: /^\d+(,\d{1,2})?$/,
-                                        isMoreThan:20,
-                                    }}
-                                    validationErrors={{
-                                       matchRegexp: __("Montant invalide."),
-                                       isMoreThan: __("Montant inférieur à 20."),
-                                    }}
-                                    label={__("Montant personnalisé")}
-                                    onChange={this.validateAmount}
-                                    rowClassName={divCustomAmountClass}
-                                    labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
-                                    elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
-                                    required={this.state.displayCustomAmount}
-                                    disabled={!this.state.displayCustomAmount}
-                                />
-                            </div>
-                            <div className="form-group row" style={{paddingTop:8}}>
-                                <label
-                                    className="control-label col-md-offset-1 col-sm-1"
-                                    data-required="true"
-                                    htmlFor="memberaddsubscription-amount"
-                                    style={{paddingTop:0}}>
-                                    {__("Périodicité")}
-                                </label>
-                                <div className="col-sm-5 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                    {__("Annuel")}
-                                </div>
-                            </div>
-                            <div className="form-group row ">
-                                <div className="col-md-offset-1 col-sm-6 profilform" data-eusko="profilform-asso">
-                                    {__("Note : La cotisation pour l'année en cours sera prélevée immédiatement.")}
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <div className="col-sm-1">
-                                    <input type="radio" value="1" checked={this.state.selectedOption == 1} onChange={this.radioOnChange} style={{float:'right'}}/>
-                                </div>
-                                <div className="col-sm-9" style={{marginBottom: 15}}>
-                                    {__("Je paie ma cotisation pour l'année en cours en faisant un virement depuis mon compte Eusko :")}
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group row">
-                                    <label
-                                        className="control-label col-sm-2"
-                                        data-required="true"
-                                        htmlFor="memberaddsubscription-amount">
-                                        {__("Montant")}
-                                        <span className="required-symbol">&nbsp;*</span>
-                                    </label>
-                                    <div className="col-sm-7 memberaddsubscription" data-eusko="memberaddsubscription-amount">
-                                        <button
-                                            className={buttonBasRevenusClass2}
-                                            disabled={this.state.selectedOption == 0}
-                                            onClick={() => this.setAmount({amount: '5', customAmount: '', displayCustomAmount2: false,
-                                                        buttonBasRevenusActivated2: true, buttonClassiqueActivated2: false, buttonSoutienActivated2: false})}>
-                                            {__('5 (bas revenus)')}
-                                        </button>
-                                        {' '}
-                                        <button
-                                            className={buttonClassiqueClass2}
-                                            disabled={this.state.selectedOption == 0}
-                                            onClick={() => this.setAmount({amount: '10', customAmount: '', displayCustomAmount2: false,
-                                                       buttonBasRevenusActivated2: false, buttonClassiqueActivated2: true, buttonSoutienActivated2: false})}>
-                                            {__('10 (cotisation normale)')}
-                                        </button>
-                                        {' '}
-                                        <button
-                                            className={buttonSoutienClass2}
-                                            disabled={this.state.selectedOption == 0}
-                                            onClick={() => this.setAmount({amount: '20', customAmount: '20', displayCustomAmount2: true,
-                                                        buttonBasRevenusActivated2: false, buttonClassiqueActivated2: false, buttonSoutienActivated2: true})}>
-                                            {__('20 ou plus (cotisation de soutien)')}
-                                        </button>
-                                    </div>
-                                </div>
-                                <Input
-                                    name="customAmount"
-                                    data-eusko="bank-deposit-customAmount"
-                                    value={this.state.customAmount ? this.state.customAmount : ""}
-                                    type="text"
-                                    placeholder={__("Montant de la cotisation")}
-                                    validations={{
-                                        matchRegexp: /^\d+(,\d{1,2})?$/,
-                                        isMoreThan:20,
-                                    }}
-                                    validationErrors={{
-                                       matchRegexp: __("Montant invalide."),
-                                       isMoreThan: __("Montant inférieur à 20."),
-                                    }}
-                                    label={__("Montant personnalisé")}
-                                    onChange={this.validateAmount}
-                                    rowClassName={divCustomAmountClass2}
-                                    labelClassName={[{'col-sm-3': false}, 'col-sm-2']}
-                                    elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-6']}
-                                    required={this.state.displayCustomAmount2}
-                                    disabled={!this.state.displayCustomAmount2}
-                                />
-                            </div>
-                        </div>
-                    </span>
-                )
-            }
-            else
+            if (this.state.memberType.startsWith('1'))
             {
                 var dataValidation = {value:'', period:this.state.period.value, month:this.state.month}
                 if(this.state.memberType == '10')
@@ -1059,8 +746,11 @@ const Cotisation = React.createClass({
                 )
             }
         }
+
         if (window.config.profile.has_account_eusko_numerique)
         {
+            if (this.state.memberType.startsWith('1')) {
+            // pour les pros, on garde l'ancien code pour l'instant
             var formDisplay = (
                 <div>
                     <div className="row">
@@ -1091,6 +781,122 @@ const Cotisation = React.createClass({
                     </div>
                 </div>
             )
+            } else {
+                // pour les particuliers, nouveau code
+                var title
+                if (this.state.cotisationState) {
+                    title = __("Prélèvement de la cotisation")
+                } else {
+                    title = __("Paiement de la cotisation")
+                }
+
+                if (this.state.cotisationState) {
+                    // Sur la page de gestion de la cotisation (dans son
+                    // profil), l'adhérent a le choix entre activer ou pas
+                    // le prélèvement automatique de sa cotisation (avec une
+                    // case à cocher).
+                    var autorisation_prelevement = (
+                        <div className="form-group row">
+                            <div className="col-sm-1 col-md-offset-1">
+                                <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
+                            </div>
+                            <div className="col-sm-9" style={{marginBottom: 15}}>
+                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.")}
+                            </div>
+                        </div>
+                    )
+                } else {
+                    // Sur la page de paiement de la cotisation, l'adhérent
+                    // a le choix entre mettre en place un prélèvement et
+                    // payer uniquement la cotisation pour l'année en cours.
+                    // On lui présente ces 2 choix avec des boutons radio.
+                    var autorisation_prelevement = (
+                        <div className="form-group row">
+                            <div className="col-sm-9">
+                                <RadioGroup
+                                    name="autorisation_prelevement"
+                                    label={__("Prélèvement automatique ou paiement ponctuel")}
+                                    value={''+this.state.selectedOption}
+                                    options={[
+                                        {value: '0', label: __("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.")},
+                                        {value: '1', label: __("Je paie ma cotisation pour l'année en cours uniquement.")},
+                                    ]}
+                                    required
+                                    onChange={this.radioAutorisationPrelevementChanged}
+                                />
+                            </div>
+                        </div>
+                    )
+                }
+
+                var choix_montant = (
+                    <div className="form-group row">
+                        <div className="col-sm-9">
+                            <RadioGroup
+                                name="amount"
+                                data-eusko="memberaddsubscription-amount"
+                                value={''+this.state.amount}
+                                label={__("Montant de la cotisation")}
+                                options={[
+                                    {value: '12', label: '1 eusko par mois / 12 eusko par an'},
+                                    {value: '24', label: '2 eusko par mois / 24 eusko par an'},
+                                    {value: '36', label: '3 eusko par mois / 36 eusko par an'},
+                                    {value: '5', label: __("5 eusko par an (chômeurs, minima sociaux)")},
+                                ]}
+                                required
+                                onChange={this.amountChanged}
+                            />
+                        </div>
+                    </div>
+                )
+
+                var choix_periodicite = (
+                    <div className="form-group row">
+                        <div className="col-sm-9">
+                            <RadioGroup
+                                name="periodicite"
+                                data-eusko="memberaddsubscription-periodicite"
+                                value={''+this.state.periodicite}
+                                label={__("Périodicité du prélèvement")}
+                                options={[
+                                    {value: '12', label: __("Annuel")},
+                                    {value: '1', label: __("Mensuel (le 15 du mois)")},
+                                ]}
+                                required={this.state.selectedOption==0}
+                                disabled={(this.state.selectedOption==0 && this.state.amount==5) || this.state.selectedOption==1}
+                                onChange={this.periodiciteChanged}
+                            />
+                        </div>
+                    </div>
+                )
+
+                var formDisplay = (
+                    <div>
+                        <div className="row">
+                            <div className="form-group row">
+                                <div className="col-sm-5">
+                                    <h2>{title}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        {autorisation_prelevement}
+                        {choix_montant}
+                        {choix_periodicite}
+                        <div className="row profil-div-margin-left margin-top">
+                            <input
+                                name="submit"
+                                data-eusko="profil-form-submit"
+                                type="submit"
+                                defaultValue={__("Enregistrer")}
+                                className="btn btn-success col-sm-offset-5"
+                                formNoValidate={true}
+                                onClick={() => this.submitForm()}
+                                disabled={!this.state.canSubmit}
+                            />
+                        </div>
+                    </div>
+                )
+            }
         }
         else
         {

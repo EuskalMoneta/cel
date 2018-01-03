@@ -65,7 +65,6 @@ const Cotisation = React.createClass({
             // dernier mois = décembre par défaut (paiement par prélèvement annuel ou pour l'année en cours uniquement)
             lastMonth: 11,
             beginYear: moment().startOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
-            amountValid: false,
             menu: window.location.pathname.indexOf("/nomenu") == -1 ? false : true
         }
     },
@@ -94,10 +93,6 @@ const Cotisation = React.createClass({
     },
 
     ValidationCheck() {
-console.log("this.state.selectedPrelevAuto=<"+this.state.selectedPrelevAuto+">")
-console.log("this.state.amount=<"+this.state.amount+">")
-console.log("this.state.selectedOption=<"+this.state.selectedOption+">")
-console.log("this.state.periodicite=<"+this.state.periodicite+">")
         if (this.state.cotisationState) {
             var formIsValid = !this.state.selectedPrelevAuto || (this.state.selectedPrelevAuto && this.state.amount)
         } else {
@@ -117,8 +112,6 @@ console.log("this.state.periodicite=<"+this.state.periodicite+">")
 
     calculEndDate() {
         var periodicite = this.state.periodicite
-console.log('calculEndDate()')
-console.log('periodicite='+periodicite)
         var intPart = this.state.month / periodicite
         var resPart = this.state.month % periodicite
         var lastMonth
@@ -129,8 +122,6 @@ console.log('periodicite='+periodicite)
         } else {
             lastMonth = (Math.floor(intPart)+1) * periodicite-1
         }
-console.log('lastMonth='+lastMonth)
-console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').locale('fr').format("YYYY-MM-DDThh:mm"))
         this.setState({lastMonth: lastMonth})
     },
 
@@ -201,6 +192,7 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
                 }
             )
         }
+
         var update_options_dolibarr = () => {
             // The options in Dolibarr must be updated if:
             // 1) the subscription is up to date (that means that the user is managing his/her options)

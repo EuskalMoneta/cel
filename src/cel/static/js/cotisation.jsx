@@ -81,10 +81,10 @@ const Cotisation = React.createClass({
             var periodicite = (p > 0) ? p : 12
             var amount
             if (this.state.member.login.toUpperCase().startsWith('Z')) {
-				amount = this.state.member.array_options.options_cotisation_demandee_pour_2018
-			} else if (this.state.member.login.toUpperCase().startsWith('E')) {
-				amount = Number(this.state.member.array_options.options_prelevement_cotisation_montant) * 12 / periodicite
-			}
+                amount = this.state.member.array_options.options_cotisation_demandee_pour_2018
+            } else if (this.state.member.login.toUpperCase().startsWith('E')) {
+                amount = Number(this.state.member.array_options.options_prelevement_cotisation_montant) * 12 / periodicite
+            }
             this.setState({periodicite: periodicite,
                            amount: amount,
                            selectedPrelevAuto: this.state.member.array_options.options_prelevement_auto_cotisation_eusko},
@@ -98,17 +98,14 @@ console.log("this.state.selectedPrelevAuto=<"+this.state.selectedPrelevAuto+">")
 console.log("this.state.amount=<"+this.state.amount+">")
 console.log("this.state.selectedOption=<"+this.state.selectedOption+">")
 console.log("this.state.periodicite=<"+this.state.periodicite+">")
-		if (this.state.cotisationState)
-		{
-			var formIsValid = !this.state.selectedPrelevAuto || (this.state.selectedPrelevAuto && this.state.amount)
-		}
-		else
-		{
-			this.calculEndDate()
-			var formIsValid = (this.state.selectedOption == 0 && this.state.amount > 0 && this.state.periodicite)
-				|| (this.state.selectedOption == 1 && this.state.amount > 0)
-		}
-		this.setState({canSubmit: formIsValid})
+        if (this.state.cotisationState) {
+            var formIsValid = !this.state.selectedPrelevAuto || (this.state.selectedPrelevAuto && this.state.amount)
+        } else {
+            this.calculEndDate()
+            var formIsValid = (this.state.selectedOption == 0 && this.state.amount > 0 && this.state.periodicite)
+                || (this.state.selectedOption == 1 && this.state.amount > 0)
+        }
+        this.setState({canSubmit: formIsValid})
     },
 
     checkboxOnChange(event, value) {
@@ -125,16 +122,11 @@ console.log('periodicite='+periodicite)
         var intPart = this.state.month / periodicite
         var resPart = this.state.month % periodicite
         var lastMonth
-        if (intPart <= 1) 
-        {
+        if (intPart <= 1) {
             lastMonth = periodicite-1
-        }
-        else if (resPart == 0)
-        {
+        } else if (resPart == 0) {
             lastMonth = Math.floor(intPart) * periodicite-1
-        }
-        else
-        {
+        } else {
             lastMonth = (Math.floor(intPart)+1) * periodicite-1
         }
 console.log('lastMonth='+lastMonth)
@@ -217,7 +209,7 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
             var data = {}
             if (this.state.cotisationState) {
                 if (this.state.selectedPrelevAuto) {
-					var periodicite = this.state.periodicite
+                    var periodicite = this.state.periodicite
                     data.options_prelevement_auto_cotisation_eusko = true
                     data.options_prelevement_cotisation_montant = this.state.amount / 12 * periodicite
                     // The default value for "Périodicité" is "Annuel"
@@ -228,7 +220,7 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
                     data.options_prelevement_cotisation_periodicite = 0
                 }
             } else if (!this.state.cotisationState && this.state.selectedOption == 0) {
-				var periodicite = this.state.periodicite
+                var periodicite = this.state.periodicite
                 data.options_prelevement_auto_cotisation_eusko = true
                 data.options_prelevement_cotisation_montant = this.state.amount / 12 * periodicite
                 // The default value for "Périodicité" is "Annuel"
@@ -237,25 +229,21 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
 
             fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError_update)
         }
-        if (this.state.cotisationState)
-        {
+
+        if (this.state.cotisationState) {
             update_options_dolibarr()
         }
 
         // Paiement de la cotisation due depuis le début de l'année.
         // Si mise en place d'un prélèvement mensuel, paiement de toutes les mensualités jusqu'au mois en cours.
         // Sinon (i.e. si paiement pour l'année en cours uniquement ou mise en place d'un prélèvement annuel), paiement pour l'année entière.
-        if (!this.state.cotisationState)
-        {
+        if (!this.state.cotisationState) {
             var data2 = {}
             data2.start_date = this.state.beginYear
-            if (this.state.selectedOption == 0 && this.state.periodicite == 1)
-            {
+            if (this.state.selectedOption == 0 && this.state.periodicite == 1) {
                 data2.end_date = moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("YYYY-MM-DDThh:mm")
                 data2.amount = this.state.amount / 12 * this.state.month
-            }
-            else
-            {
+            } else {
                 data2.end_date = this.state.endYear
                 data2.amount = this.state.amount
             }
@@ -330,133 +318,130 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
         else
             return null
 
-        if (window.config.profile.has_account_eusko_numerique)
-        {
-                var title
-                if (this.state.cotisationState) {
-                    title = __("Prélèvement de la cotisation")
-                } else {
-                    title = __("Paiement de la cotisation")
-                }
+        if (window.config.profile.has_account_eusko_numerique) {
+            var title
+            if (this.state.cotisationState) {
+                title = __("Prélèvement de la cotisation")
+            } else {
+                title = __("Paiement de la cotisation")
+            }
 
-                if (this.state.cotisationState) {
-                    // Sur la page de gestion de la cotisation (dans son
-                    // profil), l'adhérent a le choix entre activer ou pas
-                    // le prélèvement automatique de sa cotisation (avec une
-                    // case à cocher).
-                    var autorisation_prelevement = (
-                        <div className="form-group row">
-                            <div className="col-sm-1 col-md-offset-1">
-                                <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
-                            </div>
-                            <div className="col-sm-9" style={{marginBottom: 15}}>
-                                {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.")}
-                            </div>
+            if (this.state.cotisationState) {
+                // Sur la page de gestion de la cotisation (dans son
+                // profil), l'adhérent a le choix entre activer ou pas
+                // le prélèvement automatique de sa cotisation (avec une
+                // case à cocher).
+                var autorisation_prelevement = (
+                    <div className="form-group row">
+                        <div className="col-sm-1 col-md-offset-1">
+                            <input type="checkbox" name="AllowSample" checked={this.state.selectedPrelevAuto} onChange={this.checkboxOnChange} style={{float:'right'}}/>
                         </div>
-                    )
-                } else {
-                    // Sur la page de paiement de la cotisation, l'adhérent
-                    // a le choix entre mettre en place un prélèvement et
-                    // payer uniquement la cotisation pour l'année en cours.
-                    // On lui présente ces 2 choix avec des boutons radio.
-                    var autorisation_prelevement = (
-						<RadioGroup
-							name="autorisation_prelevement"
-							label={__("Prélèvement automatique ou paiement ponctuel")}
-							value={''+this.state.selectedOption}
-							options={[
-								{value: '0', label: __("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko")
-									+ (this.state.member.login.toUpperCase().startsWith('Z') ? __(", une fois par an, en janvier.") : ".")},
-								{value: '1', label: __("Je paie ma cotisation pour l'année en cours uniquement.")},
-							]}
-							required
-							onChange={this.radioAutorisationPrelevementChanged}
-						/>
-                    )
-                }
-
-				// Affichage du montant (pour les pros uniquement).
-				// Pour les pros, le montant de la cotisatio est
-				// déterminé à l'avance, on doit simplement l'afficher.
-                var affichage_montant = (
-					<div className="form-group row">
-						<label className="control-label col-sm-3">
-							{__("Montant de la cotisation annuelle")}
-						</label>
-						<div className="col-sm-9 control-label text-align-left">
-							{this.state.amount + " eusko"}
-						</div>
-					</div>
-				)
-
-				// Choix du montant (pour les particuliers uniquement).
-                var choix_montant = (
-					<RadioGroup
-						name="amount"
-						data-eusko="memberaddsubscription-amount"
-						value={''+this.state.amount}
-						label={__("Montant de la cotisation")}
-						options={[
-							{value: '12', label: '1 eusko par mois / 12 eusko par an'},
-							{value: '24', label: '2 eusko par mois / 24 eusko par an'},
-							{value: '36', label: '3 eusko par mois / 36 eusko par an'},
-							{value: '5', label: __("5 eusko par an (chômeurs, minima sociaux)")},
-						]}
-						required
-						onChange={this.amountChanged}
-					/>
-                )
-
-				// Choix de la périodicité (pour les particuliers
-				// uniquement; pour les pros le prélèvement est
-				// forcément annuel, ce qui est la valeur par défaut au
-				// chargement de la page, et ce champ est masqué).
-                var choix_periodicite = (
-					<RadioGroup
-						name="periodicite"
-						data-eusko="memberaddsubscription-periodicite"
-						value={''+this.state.periodicite}
-						label={__("Périodicité du prélèvement")}
-						options={[
-							{value: '12', label: __("Annuel")},
-							{value: '1', label: __("Mensuel (le 15 du mois)")},
-						]}
-						required={this.state.selectedOption==0}
-						disabled={(this.state.selectedOption==0 && this.state.amount==5) || this.state.selectedOption==1}
-						onChange={this.periodiciteChanged}
-					/>
-                )
-
-                var formDisplay = (
-                    <div>
-                        <div className="row">
-                            <div className="form-group row">
-                                <div className="col-sm-12">
-                                    <h2>{title}</h2>
-                                </div>
-                            </div>
-                        </div>
-                        {this.state.member.login.toUpperCase().startsWith('Z') && affichage_montant}
-                        {autorisation_prelevement}
-                        {this.state.member.login.toUpperCase().startsWith('E') && choix_montant}
-                        {this.state.member.login.toUpperCase().startsWith('E') && choix_periodicite}
-                        <div className="row profil-div-margin-left margin-top">
-                            <input
-                                name="submit"
-                                data-eusko="profil-form-submit"
-                                type="submit"
-                                defaultValue={__("Enregistrer")}
-                                className="btn btn-success col-sm-offset-5"
-                                formNoValidate={true}
-                                onClick={() => this.submitForm()}
-                                disabled={!this.state.canSubmit}
-                            />
+                        <div className="col-sm-9" style={{marginBottom: 15}}>
+                            {__("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.")}
                         </div>
                     </div>
                 )
-        }
-        else
-        {
+            } else {
+                // Sur la page de paiement de la cotisation, l'adhérent
+                // a le choix entre mettre en place un prélèvement et
+                // payer uniquement la cotisation pour l'année en cours.
+                // On lui présente ces 2 choix avec des boutons radio.
+                var autorisation_prelevement = (
+                    <RadioGroup
+                        name="autorisation_prelevement"
+                        label={__("Prélèvement automatique ou paiement ponctuel")}
+                        value={''+this.state.selectedOption}
+                        options={[
+                            {value: '0', label: __("J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko")
+                                + (this.state.member.login.toUpperCase().startsWith('Z') ? __(", une fois par an, en janvier.") : ".")},
+                            {value: '1', label: __("Je paie ma cotisation pour l'année en cours uniquement.")},
+                        ]}
+                        required
+                        onChange={this.radioAutorisationPrelevementChanged}
+                    />
+                )
+            }
+
+            // Affichage du montant (pour les pros uniquement).
+            // Pour les pros, le montant de la cotisatio est
+            // déterminé à l'avance, on doit simplement l'afficher.
+            var affichage_montant = (
+                <div className="form-group row">
+                    <label className="control-label col-sm-3">
+                        {__("Montant de la cotisation annuelle")}
+                    </label>
+                    <div className="col-sm-9 control-label text-align-left">
+                        {this.state.amount + " eusko"}
+                    </div>
+                </div>
+            )
+
+            // Choix du montant (pour les particuliers uniquement).
+            var choix_montant = (
+                <RadioGroup
+                    name="amount"
+                    data-eusko="memberaddsubscription-amount"
+                    value={''+this.state.amount}
+                    label={__("Montant de la cotisation")}
+                    options={[
+                        {value: '12', label: '1 eusko par mois / 12 eusko par an'},
+                        {value: '24', label: '2 eusko par mois / 24 eusko par an'},
+                        {value: '36', label: '3 eusko par mois / 36 eusko par an'},
+                        {value: '5', label: __("5 eusko par an (chômeurs, minima sociaux)")},
+                    ]}
+                    required
+                    onChange={this.amountChanged}
+                />
+            )
+
+            // Choix de la périodicité (pour les particuliers
+            // uniquement; pour les pros le prélèvement est
+            // forcément annuel, ce qui est la valeur par défaut au
+            // chargement de la page, et ce champ est masqué).
+            var choix_periodicite = (
+                <RadioGroup
+                    name="periodicite"
+                    data-eusko="memberaddsubscription-periodicite"
+                    value={''+this.state.periodicite}
+                    label={__("Périodicité du prélèvement")}
+                    options={[
+                        {value: '12', label: __("Annuel")},
+                        {value: '1', label: __("Mensuel (le 15 du mois)")},
+                    ]}
+                    required={this.state.selectedOption==0}
+                    disabled={(this.state.selectedOption==0 && this.state.amount==5) || this.state.selectedOption==1}
+                    onChange={this.periodiciteChanged}
+                />
+            )
+
+            var formDisplay = (
+                <div>
+                    <div className="row">
+                        <div className="form-group row">
+                            <div className="col-sm-12">
+                                <h2>{title}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    {this.state.member.login.toUpperCase().startsWith('Z') && affichage_montant}
+                    {autorisation_prelevement}
+                    {this.state.member.login.toUpperCase().startsWith('E') && choix_montant}
+                    {this.state.member.login.toUpperCase().startsWith('E') && choix_periodicite}
+                    <div className="row profil-div-margin-left margin-top">
+                        <input
+                            name="submit"
+                            data-eusko="profil-form-submit"
+                            type="submit"
+                            defaultValue={__("Enregistrer")}
+                            className="btn btn-success col-sm-offset-5"
+                            formNoValidate={true}
+                            onClick={() => this.submitForm()}
+                            disabled={!this.state.canSubmit}
+                        />
+                    </div>
+                </div>
+            )
+        } else {
             var formDisplay = (
                 <div>
                 {__("Actuellement vous ne possédez pas de compte numérique eusko. Il est donc impossible de mettre à jour votre cotisation par cette interface.")}<br/>
@@ -464,6 +449,7 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
                 </div>
             )
         }
+
         return (
             <div className="row" style={this.state.menu ? {marginTop:75} : {}}>
                 <CotisationForm ref="historical-form">
@@ -483,11 +469,9 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
                     toastMessageFactory={ToastMessageFactory}
                     className="toast-top-right toast-top-right-navbar" />
             </div>
-
         )
-        }
     }
-)
+})
 
 ReactDOM.render(
     <Cotisation url={getAPIBaseURL + "members/?login="} postUrl={getAPIBaseURL + "members/"} />,

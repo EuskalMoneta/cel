@@ -14,9 +14,6 @@ const {
     RadioGroup,
 } = FRC
 
-import ReactSelectize from 'react-selectize'
-const SimpleSelect = ReactSelectize.SimpleSelect
-
 const {
     ToastContainer
 } = ReactToastr
@@ -49,20 +46,14 @@ const Cotisation = React.createClass({
         return {
             memberLogin: window.config.userName,
             member: null,
-            memberType: '9',
             // Si cotisationState == true, cela signifie que l'adhérent est à jour de cotisation
             // et que la page ne doit afficher que la proposition de prélèvement automatique;
             // sinon il faut afficher le formulaire de paiement de la cotisation.
             cotisationState: false,
-            period: {    
-                label: undefined,
-                value: undefined,
-            },
             periodicite: 0,
             canSubmit: false,
             selectedPrelevAuto: false,
             amount: '',
-            amountByY: 0,
             // selectedOption indique quel est le bouton radio sélectionné dans le formulaire de paiement de la cotisation
             // selectedOption == 0 signifie activation du prélèvement auto
             // selectedOption == 1 signifie paiement pour l'année en cours uniquement
@@ -86,25 +77,6 @@ const Cotisation = React.createClass({
             if (moment.unix(member[0].datefin) > moment()) {
                 this.setState({cotisationState: true})
             }
-            var label = undefined
-            switch (member[0].array_options.options_prelevement_cotisation_periodicite)
-            {
-                case '12':
-                    label = 'Annuel'
-                break
-                case '6':
-                    label = 'Semestriel'
-                break
-                case '3':
-                    label = 'Trimestriel'
-                break
-                case '1':
-                    label = 'Mensuel'
-                break
-                default:
-                    label = ''
-                break
-            }
             var p = member[0].array_options.options_prelevement_cotisation_periodicite
             var periodicite = (p > 0) ? p : 12
             var amount
@@ -113,26 +85,10 @@ const Cotisation = React.createClass({
 			} else if (this.state.member.login.toUpperCase().startsWith('E')) {
 				amount = Number(this.state.member.array_options.options_prelevement_cotisation_montant) * 12 / periodicite
 			}
-            this.setState({period:{label: label, value: member[0].array_options.options_prelevement_cotisation_periodicite},
-                            periodicite: periodicite,
-                            amount: amount,
-                            amountByY: member[0].array_options.options_prelevement_cotisation_montant*member[0].array_options.options_prelevement_cotisation_periodicite,
-                            selectedPrelevAuto: this.state.member.array_options.options_prelevement_auto_cotisation_eusko},
-                            this.ValidationCheck)
-            if (member[0].login.toUpperCase().startsWith('Z'))
-            {
-                if (member[0].type == 'Entreprise') {
-                    this.setState({memberType: '10'}) // company user
-                }
-                else
-                {
-                    this.setState({memberType: '11'}) // association user
-                }
-            }
-            else if (member[0].login.toUpperCase().startsWith('E'))
-            {
-                this.setState({memberType: '0'}) // single user
-            }
+            this.setState({periodicite: periodicite,
+                           amount: amount,
+                           selectedPrelevAuto: this.state.member.array_options.options_prelevement_auto_cotisation_eusko},
+                          this.ValidationCheck)
         }
         fetchAuth(this.props.url + this.state.memberLogin, 'get', computeMemberData)
     },
@@ -154,52 +110,12 @@ console.log("this.state.periodicite=<"+this.state.periodicite+">")
 		}
 		this.setState({canSubmit: formIsValid})
     },
-    amountOnChange(event, value) {
-        this.setState({amount: value.replace('.', ',')}, this.calculAmountByYears)
-    },
-
-    amountByYOnChange(event, value) {
-        if(this.state.memberType == '10')
-        {
-            this.setState({amountByY: value.replace('.',','), amountValid: Number(value.replace(',', '.')) >= Number(60)}, this.ValidationCheck)
-        }
-        else if(this.state.memberType == '11')
-        {
-            this.setState({amountByY: value.replace('.',','), amountValid: Number(value.replace(',', '.')) >= Number(10)}, this.ValidationCheck)
-        }
-        
-            
-    },
 
     checkboxOnChange(event, value) {
         // update pin values
         if (event.target.name == 'AllowSample') {
             this.setState({selectedPrelevAuto: event.target.checked}, this.ValidationCheck)
         }
-    },
-    periodOnValueChange(periodValue) {
-        // update pin values
-        this.setState({period: {label: periodValue.label, value: periodValue.value}}, this.calculAmountByYears)
-    },
-    calculAmountByYears() {
-        if (this.state.amount && this.state.period.value > 0)
-        {
-            var amount = this.state.amount.replace(',','.')
-            var amountByY = amount*(12/this.state.period.value)
-            if(this.state.memberType == '10')
-            {
-                var amountValid = Number(amountByY) >= Number(60) ? true : false
-            }
-            else if(this.state.memberType == '11')
-            {
-                var amountValid = Number(amountByY) >= Number(10) ? true : false
-            }
-            this.setState({amountByY: amountByY, amountValid: amountValid}, this.ValidationCheck)
-        }
-        else {
-            this.setState({amountByY: 0, amountValid: false}, this.ValidationCheck)
-        }
-        
     },
 
     calculEndDate() {
@@ -346,38 +262,6 @@ console.log('data2.end_date ='+moment().set('month', lastMonth).endOf('month').l
             data2.label = 'Cotisation ' + this.state.year
             fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError_subscription)
         }
-    },
-
-    radioOnChange(event, value) {
-        // update pin values
-        if (this.state.memberType.startsWith('0'))
-        {
-            if (event.target.value == 0)
-            {
-                var state = {selectedOption: 0, amountByY: '', amount: '',
-                             canSubmit: false, selectedPrelevAuto: true}
-            }
-            else if (event.target.value == 1)
-            {
-                var state = {selectedOption: 1, amountByY: '', amount: '',
-                             canSubmit: false, selectedPrelevAuto: false}
-            }
-        }
-        else if (this.state.memberType.startsWith('1'))
-        {
-            if (event.target.value == 0)
-            {
-                var state = {selectedOption: 0, displayCustomAmount2: false, customAmount: '',
-                             canSubmit: false, amountByY: '', amount: '', selectedPrelevAuto: true}
-            }
-            else if (event.target.value == 1)
-            {
-                var state = {selectedOption: 1, displayCustomAmount: false, customAmount: '',
-                             canSubmit: false, period: false, amountByY: '', amount: '',
-                             selectedPrelevAuto: false}
-            }
-        }
-        this.setState(state)
     },
 
     radioAutorisationPrelevementChanged(name, value) {

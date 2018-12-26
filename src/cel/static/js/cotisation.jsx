@@ -80,7 +80,7 @@ const Cotisation = React.createClass({
             var periodicite = (p > 0) ? p : 12
             var amount
             if (this.state.member.login.toUpperCase().startsWith('Z')) {
-                amount = this.state.member.array_options.options_cotisation_demandee_pour_2018
+                amount = this.state.member.array_options.options_montant_cotisation_annuelle
             } else if (this.state.member.login.toUpperCase().startsWith('E')) {
                 amount = Number(this.state.member.array_options.options_prelevement_cotisation_montant) * 12 / periodicite
             }

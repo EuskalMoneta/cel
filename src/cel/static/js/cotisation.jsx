@@ -58,13 +58,6 @@ const Cotisation = React.createClass({
             // selectedOption == 0 signifie activation du prélèvement auto
             // selectedOption == 1 signifie paiement pour l'année en cours uniquement
             selectedOption: 0,
-            month: new Date().getMonth()+1,
-            year: new Date().getFullYear(),
-            endMonth: moment().endOf('month').locale('fr').format("YYYY-MM-DDThh:mm"),
-            endYear: moment().endOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
-            // dernier mois = décembre par défaut (paiement par prélèvement annuel ou pour l'année en cours uniquement)
-            lastMonth: 11,
-            beginYear: moment().startOf('year').locale('fr').format("YYYY-MM-DDThh:mm"),
             menu: window.location.pathname.indexOf("/nomenu") == -1 ? false : true
         }
     },
@@ -96,7 +89,6 @@ const Cotisation = React.createClass({
         if (this.state.cotisationState) {
             var formIsValid = !this.state.selectedPrelevAuto || (this.state.selectedPrelevAuto && this.state.amount)
         } else {
-            this.calculEndDate()
             var formIsValid = (this.state.selectedOption == 0 && this.state.amount > 0 && this.state.periodicite)
                 || (this.state.selectedOption == 1 && this.state.amount > 0)
         }
@@ -108,21 +100,6 @@ const Cotisation = React.createClass({
         if (event.target.name == 'AllowSample') {
             this.setState({selectedPrelevAuto: event.target.checked}, this.ValidationCheck)
         }
-    },
-
-    calculEndDate() {
-        var periodicite = this.state.periodicite
-        var intPart = this.state.month / periodicite
-        var resPart = this.state.month % periodicite
-        var lastMonth
-        if (intPart <= 1) {
-            lastMonth = periodicite-1
-        } else if (resPart == 0) {
-            lastMonth = Math.floor(intPart) * periodicite-1
-        } else {
-            lastMonth = (Math.floor(intPart)+1) * periodicite-1
-        }
-        this.setState({lastMonth: lastMonth})
     },
 
     submitForm() {
@@ -201,22 +178,18 @@ const Cotisation = React.createClass({
             var data = {}
             if (this.state.cotisationState) {
                 if (this.state.selectedPrelevAuto) {
-                    var periodicite = this.state.periodicite
                     data.options_prelevement_auto_cotisation_eusko = true
-                    data.options_prelevement_cotisation_montant = this.state.amount / 12 * periodicite
-                    // The default value for "Périodicité" is "Annuel"
-                    data.options_prelevement_cotisation_periodicite = periodicite
+                    data.options_prelevement_cotisation_montant = this.state.amount * this.state.periodicite / 12
+                    data.options_prelevement_cotisation_periodicite = this.state.periodicite
                 } else {
                     data.options_prelevement_auto_cotisation_eusko = false
                     data.options_prelevement_cotisation_montant = 0
                     data.options_prelevement_cotisation_periodicite = 0
                 }
             } else if (!this.state.cotisationState && this.state.selectedOption == 0) {
-                var periodicite = this.state.periodicite
                 data.options_prelevement_auto_cotisation_eusko = true
-                data.options_prelevement_cotisation_montant = this.state.amount / 12 * periodicite
-                // The default value for "Périodicité" is "Annuel"
-                data.options_prelevement_cotisation_periodicite = periodicite
+                data.options_prelevement_cotisation_montant = this.state.amount * this.state.periodicite / 12
+                data.options_prelevement_cotisation_periodicite = this.state.periodicite
             }
 
             fetchAuth(getAPIBaseURL + "members/" + this.state.member.id + "/", 'PATCH', computeForm, data, promiseError_update)
@@ -226,20 +199,21 @@ const Cotisation = React.createClass({
             update_options_dolibarr()
         }
 
-        // Paiement de la cotisation due depuis le début de l'année.
-        // Si mise en place d'un prélèvement mensuel, paiement de toutes les mensualités jusqu'au mois en cours.
+        // Paiement de la cotisation.
+        // Si mise en place d'un prélèvement mensuel, paiement pour le mois en cours.
         // Sinon (i.e. si paiement pour l'année en cours uniquement ou mise en place d'un prélèvement annuel), paiement pour l'année entière.
         if (!this.state.cotisationState) {
             var data2 = {}
-            data2.start_date = this.state.beginYear
+            // date de début = maintenant
+            data2.start_date = moment().format("YYYY-MM-DDThh:mm")
             if (this.state.selectedOption == 0 && this.state.periodicite == 1) {
-                data2.end_date = moment().set('month', this.state.lastMonth).endOf('month').locale('fr').format("YYYY-MM-DDThh:mm")
-                data2.amount = this.state.amount / 12 * this.state.month
+                data2.end_date = moment().endOf('month').format("YYYY-MM-DDThh:mm")
+                data2.amount = this.state.amount / 12
             } else {
-                data2.end_date = this.state.endYear
+                data2.end_date = moment().endOf('year').format("YYYY-MM-DDThh:mm")
                 data2.amount = this.state.amount
             }
-            data2.label = 'Cotisation ' + this.state.year
+            data2.label = 'Cotisation ' + moment().year()
             fetchAuth(getAPIBaseURL + "member-cel-subscription/", 'POST', update_options_dolibarr, data2, promiseError_subscription)
         }
     },

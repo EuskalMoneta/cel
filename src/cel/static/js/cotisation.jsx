@@ -337,7 +337,7 @@ const Cotisation = React.createClass({
                         {__("Montant de la cotisation annuelle")}
                     </label>
                     <div className="col-sm-9 control-label text-align-left">
-                        {this.state.amount + " eusko"}
+                        {Number(this.state.amount).toFixed(2).replace('.', ',') + " eusko"}
                     </div>
                 </div>
             )

@@ -146,7 +146,7 @@ const Cotisation = React.createClass({
             // Error during request, or parsing NOK :(
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors du paiement des cotisations en retard. Le solde de votre compte ne doit pas être suffisant, Veuillez contacter Euskal Moneta!"),
+                __("Une erreur s'est produite lors du paiement de la cotisation. Le solde de votre compte n'est peut-être pas être suffisant. Veuillez contacter Euskal Moneta."),
                 "",
                 {
                     timeOut: 10000,
@@ -160,7 +160,7 @@ const Cotisation = React.createClass({
             // Error during request, or parsing NOK :(
             console.log(this.props.url, err)
             this.refs.container.error(
-                __("Une erreur s'est produite lors des modifications de vos échances de cotisation, Veuillez contacter Euskal Moneta!"),
+                __("Une erreur s'est produite lors de la modification de vos échéances de cotisation. Veuillez contacter Euskal Moneta."),
                 "",
                 {
                     timeOut: 10000,
@@ -337,7 +337,7 @@ const Cotisation = React.createClass({
                         {__("Montant de la cotisation annuelle")}
                     </label>
                     <div className="col-sm-9 control-label text-align-left">
-                        {this.state.amount + " eusko"}
+                        {Number(this.state.amount).toFixed(2).replace('.', ',') + " eusko"}
                     </div>
                 </div>
             )

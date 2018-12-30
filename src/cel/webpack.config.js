@@ -87,7 +87,7 @@ module.exports = Object.keys(languages).map(function(language) {
             Association: './static/js/association',
             Options: './static/js/options',
             ChangeAutomatique: './static/js/change-automatique',
-            Cotisation2: './static/js/cotisation',
+            Cotisation3: './static/js/cotisation',
    	},
 
         // Où vont se situer le résultat de la compilation effectuée par Webpack (nos bundles utilisés par notre navigateur)

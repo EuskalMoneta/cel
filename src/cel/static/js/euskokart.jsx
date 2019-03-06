@@ -358,7 +358,7 @@ var EuskokartList = React.createClass({
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-9 col-md-offset-1 ">
+                    <div className="col-md-9 col-md-offset-1 reduce-width">
                         <div>
                             <div className="form-group row">
                                 <div className="col-sm-4">

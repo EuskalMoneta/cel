@@ -325,7 +325,7 @@ var HistoryPage = React.createClass({
         var dateFormatter = (cell, row) => {
             // Force moment i18n
             moment.locale(getCurrentLang)
-            return moment(cell).format('LLLL')
+            return moment(cell).format('DD/MM/YY')
         }
 
         var debitFormatter = (cell, row) => {

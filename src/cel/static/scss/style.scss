@@ -695,11 +695,17 @@ textarea {
   h2, .h2 {
     font-size: 25px;
   }
+  h4, .h4 {
+    font-size: 14px;
+  }
   .profilform {
     font-size: 12px;
   }
   .show-large {
     display: none;
+  }
+  .display-date {
+    width: 80px !important;
   }
 }
 @media (min-width:768px) {

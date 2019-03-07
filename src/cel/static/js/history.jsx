@@ -325,7 +325,7 @@ var HistoryPage = React.createClass({
         var dateFormatter = (cell, row) => {
             // Force moment i18n
             moment.locale(getCurrentLang)
-            return moment(cell).format('DD/MM/YY')
+            return moment(cell).format('L')
         }
 
         var debitFormatter = (cell, row) => {
@@ -362,7 +362,7 @@ var HistoryPage = React.createClass({
              selectRow={{mode: 'none'}} tableContainerClass="react-bs-table-account-history"
              options={options}>
                 <TableHeaderColumn isKey={true} hidden={true} dataField="id">{__("ID")}</TableHeaderColumn>
-                <TableHeaderColumn dataField="date" dataFormat={dateFormatter} dataSort>{__("Date")}</TableHeaderColumn>
+                <TableHeaderColumn columnClassName="display-date" dataField="date" dataFormat={dateFormatter} dataSort>{__("Date")}</TableHeaderColumn>
                 <TableHeaderColumn columnClassName="line-break" dataField="description">{__("Libellé")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="amount" dataFormat={debitFormatter}>{__("Débit")}</TableHeaderColumn>
                 <TableHeaderColumn dataField="amount" dataFormat={creditFormatter}>{__("Crédit")}</TableHeaderColumn>

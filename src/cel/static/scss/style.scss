@@ -707,6 +707,14 @@ textarea {
   .display-date {
     width: 80px !important;
   }
+  .profil-div-margin-left {
+      margin-left: 50px;
+      margin: 0 auto;
+      width: 20%;
+  }
+  .subnav a {
+    display: inline-block !important;
+  }
 }
 @media (min-width:768px) {
   .show-mini {

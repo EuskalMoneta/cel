@@ -35,7 +35,7 @@ class AccountButtons extends React.Component {
                     <div className="show-mini">
                         <button
                             onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
-                            className="btn btn-default enable-pointer-events">RIB</button>
+                            className="btn btn-default enable-pointer-events">RIE</button>
                         {/*
                         <button
                             onClick={() => this.props.rechargerCompte(this.props.data.number)}
@@ -65,7 +65,7 @@ class AccountButtons extends React.Component {
                     <div className="show-mini">
                         <button
                             onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
-                            className="btn btn-default enable-pointer-events">RIB</button> 
+                            className="btn btn-default enable-pointer-events">RIE</button>
                         {/*
                         <button
                             onClick={() => this.props.rechargerCompte(this.props.data.number)}

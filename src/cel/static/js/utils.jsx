@@ -281,6 +281,9 @@ class NavbarItems extends React.Component {
                             )
                         }
                     }
+                    else if (item.class == 'navbar-li') {
+
+                    }
                     else if (item.data) {
                         return (
                             <li key={item.id}>

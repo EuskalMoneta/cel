@@ -587,3 +587,137 @@ textarea {
   background: #ecf0f1
 }
 
+@media (max-width:767px) {
+  body {
+    font-size: 12px;
+  }
+  .navbar-collapse.collapse{
+    display:block !important;
+    height:auto !important;
+    padding-bottom:0;
+    overflow:visible !important;
+  }
+  .container > .navbar-collapse{
+    margin-right: 0;
+    margin-left:0;
+  }
+  .container > .navbar-li {
+    display: none;
+  }
+  .navbar-nav {
+    font-size: 12px;
+  }
+  .navbar-header {
+    float: left;
+  }
+  .container {
+    padding-left:25px;
+  }
+  .topbar-right > li {
+    display: block !important;
+  }
+  .nav > li > a {
+    display: unset;
+    padding-right: 2%;
+    padding-left:0;
+  }
+  .nav > li {
+    display: inline;
+  }
+  .topbar-right {
+    text-align: right;
+  }
+  .react-bs-table table {
+    table-layout: auto;
+  }
+  .col-md-2.col-md-offset-9 {
+      padding-left: 115px !important;
+  }
+  .col-md-9.col-md-offset-1 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .search-group {
+    background-color: #f9f9f9;
+    border: 0.1em #d9d9d9 solid;
+    margin-right: 15px;
+    margin-left: -3px;
+    margin-bottom: 2px;
+    padding: 2px;
+  }
+  .form-horizontal {
+    margin-right: 5px;
+  }
+  #beneficiaires {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #ponctuel {
+    margin-left: 5px;
+  }
+  #cotisation {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #change-password {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  #euskokart {
+      margin-left: 20px;
+      margin-right: 20px;
+  }
+  .col-sm-2.memberhistorical {
+      width: 47%;
+      display: inline-block;
+  }
+  .control-label.col-sm-2.col-md-offset-5 {
+    width: 100%;
+  }
+  col {
+    width: 30% !important;
+  }
+  .btn {
+    font-size: 12px;
+  }
+  .react-bs-table.react-bs-table-list-euskokart 
+  {
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+  .col-md-9.col-md-offset-1.reduce-width {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+  .form-control {
+    font-size: 12px;
+  }
+  h2, .h2 {
+    font-size: 25px;
+  }
+  h4, .h4 {
+    font-size: 14px;
+  }
+  .profilform {
+    font-size: 12px;
+  }
+  .show-large {
+    display: none;
+  }
+  .display-date {
+    width: 80px !important;
+  }
+  .profil-div-margin-left {
+      margin-left: 50px;
+      margin: 0 auto;
+      width: 20%;
+  }
+  .subnav a {
+    display: inline-block !important;
+  }
+}
+@media (min-width:768px) {
+  .show-mini {
+    display: none;
+  }
+}

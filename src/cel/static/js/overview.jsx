@@ -18,32 +18,60 @@ class AccountButtons extends React.Component {
         if (this.props.data.memberName.toUpperCase().startsWith('Z')) {
             return (
                 <div>
-                    <button
-                        onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
-                        className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
-                    {/*
-                    <button
-                        onClick={() => this.props.rechargerCompte(this.props.data.number)}
-                        className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
-                    */}
-                    {' '}
-                    <button
-                        onClick={() => this.props.reconvertirEusko(this.props.data.number)}
-                        className="btn btn-default enable-pointer-events">{__("Reconvertir des eusko en €")}</button>
+                    <div className="show-large">
+                        <button
+                            onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
+                        {/*
+                        <button
+                            onClick={() => this.props.rechargerCompte(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
+                        */}
+                        {' '}
+                        <button
+                            onClick={() => this.props.reconvertirEusko(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Reconvertir des eusko en €")}</button>
+                    </div>
+                    <div className="show-mini">
+                        <button
+                            onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">RIE</button>
+                        {/*
+                        <button
+                            onClick={() => this.props.rechargerCompte(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
+                        */}
+                        {' '}
+                        <button
+                            onClick={() => this.props.reconvertirEusko(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Reconvertir des eusko en €")}</button>
+                    </div>
                 </div>
             )
         }
         else {
             return (
                 <div>
-                    <button
-                        onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
-                        className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
-                    {/*
-                    <button
-                        onClick={() => this.props.rechargerCompte(this.props.data.number)}
-                        className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
-                    */}
+                    <div className="show-large">
+                        <button
+                            onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Télécharger le Relevé d'Identité Eusko")}</button>
+                        {/*
+                        <button
+                            onClick={() => this.props.rechargerCompte(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
+                        */}
+                    </div>
+                    <div className="show-mini">
+                        <button
+                            onClick={() => this.props.downloadReleveIdentite(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">RIE</button>
+                        {/*
+                        <button
+                            onClick={() => this.props.rechargerCompte(this.props.data.number)}
+                            className="btn btn-default enable-pointer-events">{__("Recharger le compte")}</button>
+                        */}
+                    </div>
                 </div>
             )
         }

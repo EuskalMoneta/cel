@@ -1,29 +1,21 @@
-*.pyc
-__pycache__/
-*.db
-.~lock*
-.cache/
 
-data/
-log/
-old/
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
 
-db.sqlite3
-eusko.sublime-project
-eusko.sublime-workspace
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
 
-# NodeJS / npm
-npm-debug.log
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
 
-## webpack & bundles
-bundles/
-webpack-stats.json
-
-## Dependency directories
-node_modules/
-
-## Optional npm cache directory
-.npm/
-
-media/
-
+/.idea/

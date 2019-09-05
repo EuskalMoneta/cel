@@ -25,3 +25,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    admin.promotion:
+        class: App\Admin\PromotionAdmin
+        arguments: [~, App\Entity\Promotion, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Promotion }
+        public: true

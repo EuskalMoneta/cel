@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <div class="row">
+                    <div class="col"><h3 class="secondary-color mb-4"> Ajout bénéficiaire </h3></div>
+                    <div class="col-4 text-right"><a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-slim btn-outline-primary"> Retour</a></div>
+
+                </div>
+
+                <div class=" mb-4">
+                    <form class="form" method="post">
+                    <div class="form-group">
+                        <label class="col-form-label col-form-label" for="recherche">Rechercher par n° de compte</label>
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-search"></i> </span>
+                            </div>
+                            <select type="text" class="form-control basicAutoComplete" name="recherche" id="recherche" placeholder="rechercher">
+                            </select>
+                        </div>
+                    </div>
+                        <input type="submit" class="btn btn-outline-success" value="Ajouter le bénéficiaire" />
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+    {% block js %}
+        <script type="text/javascript">
+            $('.basicAutoComplete').autoComplete({
+                resolverSettings: {
+                    url: '{{ path('app_beneficiaire_ajout_search') }}'
+                }
+            });
+
+        </script>
+    {% endblock %}

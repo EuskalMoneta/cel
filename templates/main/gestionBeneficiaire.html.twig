@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <div class="row">
+                    <div class="col"><h3 class="secondary-color mb-4"> Gestion bénéficiaires </h3></div>
+                    <div class="col-4 text-right"><a href="{{ path('app_beneficiaire_ajout') }}" class="btn btn-slim btn-info "> Ajout</a></div>
+
+                </div>
+
+                {% if beneficiaires | length > 10 %}
+                <div class="text-center mb-4">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-search"></i> </span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="rechercher">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% for beneficiaire in beneficiaires %}
+                    <div class="row mb-4">
+                        <div class="col-2">
+                        <span class="fa-stack" style="vertical-align: top;">
+                          <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fal fa-user fa-stack-1x fa-inverse"></i>
+                        </span>
+                        </div>
+                        <div class="col-7">
+                            <div class="main-color text-semi-bold"> {{ beneficiaire.cyclos_name }}</div>
+                            <div class="secondary-color"> {{ beneficiaire.cyclos_account_number }}</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="float-right ">
+                                <a href="#" class="btn btn-danger btn-slim"><i class="far fa-trash-alt"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

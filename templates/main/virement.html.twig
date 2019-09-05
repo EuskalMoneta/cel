@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <h3 class="secondary-color mb-2"> Nouveau virement </h3>
+
+                <div class="mb-4">
+                    {{ form_start(form) }}
+                    {% if  form_errors(form) != '' %}
+                        <div class="alert alert-dismissible alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="destinataire" class="required">Destinataire</label>
+                                <select id="" name="destinataire" class="form-control basicAutoComplete">
+                                    {% if destinataire != '' %}
+                                        <option value="{{ destinataire }}"> {{ destinataire }}</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.montant) }}
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+
+                <div class="before-footer fixed-bottom">
+                    <hr>
+                    <div class="text-center mb-4">
+                        <a href="{{ path('app_beneficiaire_gestion') }}"><i class="fal fa-users main-color" style="font-size: 50px;"></i><br /></a>
+                        <a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-outline-primary btn-slim main-color"> Gestion des bénéficiaires </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Confirmation paiement</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-outline-success btn-slim" id="modal-valid">Valider</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $('.basicAutoComplete').autoComplete({
+            resolverSettings: {
+                url: '{{ path('app_beneficiaire_search') }}'
+            }
+        });
+        /*$('#form-virement').submit(function (e){
+            if ($(this).valid()) {
+                $('#confirm-modal').modal('show');
+                e.preventDefault();
+            } else {
+                return true;
+            }
+        });
+        $('#modal-valid').click(function (e){
+            $('#confirm-modal').modal('hide');
+            $("#form_submit").unbind('click').click();
+            //$('#form-virement').submit();
+        });*/
+    </script>
+{% endblock %}

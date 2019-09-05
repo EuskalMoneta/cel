@@ -1,12 +1,98 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="fr">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eusko CEL</title>
+
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"  type='text/css'>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"  type='text/css'>
+    <link href="{{ asset('css/all.min.css') }}" rel="stylesheet"  type='text/css'>
+
+
+</head>
+
+<body>
+
+<header>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+            <div class="navbar-right">
+
+                <a href="#">
+                    <i class="fas fa-question-circle cel-menu-icon"></i>
+                    <br /> Aide
+                </a>
+
+                <a href="#">
+                    <i class="fas fa-user cel-menu-icon"></i>
+                    <br /> Profil
+                </a>
+
+                {#<a href="#">
+                    <i class="fas fa-sign-out cel-menu-icon"></i>
+                    <br /> Déconnexion
+                </a>#}
+            </div>
+        </div>
+    </nav>
+
+</header>
+<main>
+    <!-- Page Content -->
+    {% block body %}
+
+    {% endblock %}
+</main>
+
+<footer class="footer fixed-bottom mt-auto pt-2">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-3">
+                <a href="{{ path('app_homepage') }}">
+                    <i class="fal fa-home"></i>
+                    <br /> Accueil
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="{{ path('app_virement') }}">
+                    <img src="{{ asset('images/virement.png') }}">
+                    <br /> Virement
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="#">
+                    <img src="{{ asset('images/change.png') }}">
+                    <br /> Change
+                </a>
+            </div>
+            <div class="col-3">
+                <a href="#">
+                    <i class="fal fa-percent"></i>
+                    <br /> Asso 3%
+                </a>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.2.2/dist/latest/bootstrap-autocomplete.min.js"></script>
+
+{% block js %}
+
+{% endblock %}
+</body>
+
 </html>

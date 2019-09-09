@@ -23,35 +23,67 @@ class APIToolbox extends AbstractController
     public function curlRequest($method, $link, $data = '')
     {
         $user = $this->getUser();
-        $token = $user->getToken();
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->base_url.$link);
-        curl_setopt($curl, CURLOPT_COOKIESESSION, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        if($user){
+            $token = $user->getToken();
 
-        if($method == 'POST' or $method == 'PUT'){
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $this->base_url.$link);
+            curl_setopt($curl, CURLOPT_COOKIESESSION, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+
+            if($method == 'POST' or $method == 'PUT'){
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/json',
+                        'Authorization: Token ' . $token,
+                        'Content-Length: ' . strlen(json_encode($data)))
+                );
+            } else {
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/json',
+                        'Authorization: Token ' . $token)
+                );
+            }
+
+            $return = curl_exec($curl);
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+
+            return ['data' => json_decode($return), 'httpcode' => $http_status];
+        }
+        return ['data' => '', 'httpcode' => 200];
+    }
+
+    public function curlGetPDF($method, $link, $data = '')
+    {
+        $user = $this->getUser();
+
+        if($user){
+            $token = $user->getToken();
+
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $this->base_url.$link);
+            curl_setopt($curl, CURLOPT_COOKIESESSION, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Authorization: Token ' . $token,
-                    'Content-Length: ' . strlen(json_encode($data)))
-            );
-        } else {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
+                    'Content-Type: application/pdf',
                     'Authorization: Token ' . $token)
             );
+
+            $return = curl_exec($curl);
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+
+            return ['data' => $return, 'httpcode' => $http_status];
         }
-
-        $return = curl_exec($curl);
-        $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        return ['data' => json_decode($return), 'httpcode' => $http_status];
+        return ['data' => 'nouser', 'httpcode' => 200];
     }
 
 

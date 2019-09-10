@@ -40,14 +40,14 @@
                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                         {% endif %}
 
-                        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+                        <h1 class="h3 mb-3 font-weight-normal">{% trans %}Se connecter{% endtrans %}</h1>
                         <div class="form-group">
-                            <label for="inputUsername" class=" " >N° Adhérent</label>
-                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+                            <label for="inputUsername" class=" " >{{ "N° Adhérent" | trans }}</label>
+                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="{{ "N° Adhérent" | trans }}" required autofocus>
                         </div>
                         <div class="form-group">
-                            <label for="inputPassword" class="">Mot de passe</label>
-                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                            <label for="inputPassword" class="">{% trans %}Mot de passe{% endtrans %}</label>
+                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{% trans %}Mot de passe{% endtrans %}" required>
                         </div>
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
@@ -64,9 +64,12 @@
                         #}
 
                         <button class="btn  btn-info" type="submit">
-                            Se connecter
+                            {% trans %}Se connecter{% endtrans %}
                         </button>
                     </form>
+
+                    <a href="{{ path('app_first_login') }}"> Première connexion</a>
+                    <a href=""> Mot de passe oublié</a>
                 </div>
             </div>
         </div>

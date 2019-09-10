@@ -5,8 +5,8 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-curl": "*",
-        "ext-json": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "knplabs/knp-paginator-bundle": "^4.0",
         "knplabs/knp-snappy-bundle": "dev-master",
         "liip/imagine-bundle": "^2.1",
@@ -32,7 +32,8 @@
         "symfony/twig-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
         "symfony/web-link": "4.3.*",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "4.3.*",
+        "twig/extensions": "^1.5"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

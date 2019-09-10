@@ -33,6 +33,10 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/valide/premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/valide-passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
 

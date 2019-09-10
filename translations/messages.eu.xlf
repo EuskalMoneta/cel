@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="eu" target-language="eu" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="CsPSyzA" resname="Se connecter">
+        <source>Se connecter</source>
+        <target>hasi saioa</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="7zR0Pox" resname="N° Adhérent">
+        <source>N° Adhérent</source>
+        <target>__N° Adhérent</target>
+      </trans-unit>
+      <trans-unit id=".5yLjAZ" resname="Mot de passe">
+        <source>Mot de passe</source>
+        <target>__Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="dgTlt.e" resname="Rechercher une opération">
+        <source>Rechercher une opération</source>
+        <target>__Rechercher une opération</target>
+      </trans-unit>
+      <trans-unit id="dRSyQ47" resname="Periode">
+        <source>Periode</source>
+        <target>__Période</target>
+      </trans-unit>
+      <trans-unit id="kigKoXg" resname="Le mois dernier">
+        <source>Le mois dernier</source>
+        <target>__Le mois dernier</target>
+      </trans-unit>
+      <trans-unit id="XIKWKPm" resname="Date debut">
+        <source>Date debut</source>
+        <target>__Date début</target>
+      </trans-unit>
+      <trans-unit id="I4Kmk6." resname="Date fin">
+        <source>Date fin</source>
+        <target>__Date fin</target>
+      </trans-unit>
+      <trans-unit id="34MNj3q" resname="Motscles">
+        <source>Motscles</source>
+        <target>__Mots cles</target>
+      </trans-unit>
+      <trans-unit id="cz0cdCZ" resname="Rechercher">
+        <source>Rechercher</source>
+        <target>__Rechercher</target>
+      </trans-unit>
+      <trans-unit id="lHzAfis" resname="Montant">
+        <source>Montant</source>
+        <target>__Montant</target>
+      </trans-unit>
+      <trans-unit id="fhBKLKW" resname="libellé de l'opération">
+        <source>libellé de l'opération</source>
+        <target>__libellé de l'opération </target>
+      </trans-unit>
+      <trans-unit id="YmunqJ." resname="Valider">
+        <source>Valider</source>
+        <target>__Valider</target>
+      </trans-unit>
+      <trans-unit id="BGulXiO" resname="Destinataire">
+        <source>Destinataire</source>
+        <target>__Destinataire</target>
+      </trans-unit>
+      <trans-unit id="KQ4_65w" resname="Nouveau virement">
+        <source>Nouveau virement</source>
+        <target>__Nouveau virement</target>
+      </trans-unit>
+      <trans-unit id="Zd6PsmH" resname="Gestion des bénéficiaires">
+        <source>Gestion des bénéficiaires</source>
+        <target>__Gestion des bénéficiaires</target>
+      </trans-unit>
+      <trans-unit id="NfB_iiZ" resname="Ajout">
+        <source>Ajout</source>
+        <target>__Ajout</target>
+      </trans-unit>
+      <trans-unit id="ZEYcavF" resname="Ajout bénéficiaire">
+        <source>Ajout bénéficiaire</source>
+        <target>__Ajout bénéficiaire</target>
+      </trans-unit>
+      <trans-unit id="7yOllAJ" resname="Retour">
+        <source>Retour</source>
+        <target>__Retour</target>
+      </trans-unit>
+      <trans-unit id="KSkm37Y" resname="Rechercher par n° de compte">
+        <source>Rechercher par n° de compte</source>
+        <target>__Rechercher par n° de compte</target>
+      </trans-unit>
+      <trans-unit id="L_BX65B" resname="rechercher">
+        <source>rechercher</source>
+        <target>__rechercher</target>
+      </trans-unit>
+      <trans-unit id="aK9Clqb" resname="Ajouter le bénéficiaire">
+        <source>Ajouter le bénéficiaire</source>
+        <target>__Ajouter le bénéficiaire</target>
+      </trans-unit>
+      <trans-unit id="hFtKVyp" resname="Première connexion">
+        <source>Première connexion</source>
+        <target>__Première connexion</target>
+      </trans-unit>
+      <trans-unit id="TI9sLOh" resname="Ajouter un nouveau bénéficiaire">
+        <source>Ajouter un nouveau bénéficiaire</source>
+        <target>__Ajouter un nouveau bénéficiaire</target>
+      </trans-unit>
+      <trans-unit id="d6_vddM" resname="Format: E12345">
+        <source>Format: E12345</source>
+        <target>__Format: E12345</target>
+      </trans-unit>
+      <trans-unit id="kHuspkh" resname="Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko">
+        <source>Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko</source>
+        <target>__Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko</target>
+      </trans-unit>
+      <trans-unit id="i5cUDhL" resname="Votre mot de passe">
+        <source>Votre mot de passe</source>
+        <target>__Votre mot de passe</target>
+      </trans-unit>
+      <trans-unit id="UP95_pK" resname="Votre question secrète">
+        <source>Votre question secrète</source>
+        <target>__Votre question secrète</target>
+      </trans-unit>
+      <trans-unit id="o9ZcpWl" resname="Nouveau mot de passe">
+        <source>Nouveau mot de passe</source>
+        <target>__Nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="iD6_.__" resname="Confirmer le nouveau mot de passe">
+        <source>Confirmer le nouveau mot de passe</source>
+        <target>__Confirmer le nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="oKgULux" resname="Votre question personnalisée">
+        <source>Votre question personnalisée</source>
+        <target>__Votre question personnalisée</target>
+      </trans-unit>
+      <trans-unit id="mAcwM1b" resname="Reponse">
+        <source>Reponse</source>
+        <target>__Réponse</target>
+      </trans-unit>
+      <trans-unit id="6ZbykUm" resname="autre">
+        <source>autre</source>
+        <target>__autre</target>
+      </trans-unit>
+      <trans-unit id="YGJCCXP" resname="Question secrète">
+        <source>Question secrète</source>
+        <target>__Question secrète</target>
+      </trans-unit>
+      <trans-unit id="iblAykt" resname="Si vous avez oublié la réponse à la question secrète, merci de nous contacter.">
+        <source>Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</source>
+        <target>__Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</target>
+      </trans-unit>
+      <trans-unit id="NFl6O4g" resname="Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.">
+        <source>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</source>
+        <target>__Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
@@ -66,7 +67,11 @@ class MainController extends AbstractController
         $operations = [];
 
         $form = $this->createFormBuilder()
-            ->add('periode', ChoiceType::class, ['choices' => ['Le mois dernier' =>'1', '2' => '3'], 'required' => false])
+            ->add('periode', ChoiceType::class,
+                ['choices' => ['Le mois dernier' =>'1', 'Le mois dernier' => '3'],
+                'required' => false
+                ]
+            )
             ->add('dateDebut', DateType::class, ['widget' => 'single_text', 'required' => false])
             ->add('dateFin', DateType::class, ['widget' => 'single_text', 'required' => false])
             ->add('motscles', TextType::class, ['required' => false])

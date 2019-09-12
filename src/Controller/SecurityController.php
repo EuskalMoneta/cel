@@ -77,7 +77,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/firstLogin.html.twig', ['form' => $form->createView()]);
+        return $this->render('security/firstLogin.html.twig', ['title' => "Première connexion", 'form' => $form->createView()]);
     }
 
     /**
@@ -153,7 +153,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/passe-perdu", name="app_first_login")
+     * @Route("/passe-perdu", name="app_lost_password")
      */
     public function lostPassword(Request $request, APIToolbox $APIToolbox): Response
     {
@@ -189,7 +189,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/firstLogin.html.twig', ['form' => $form->createView()]);
+        return $this->render('security/firstLogin.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
     }
 
     /**

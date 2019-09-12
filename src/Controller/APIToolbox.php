@@ -2,13 +2,22 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 
 class APIToolbox extends AbstractController
 {
 
     private $base_url = "http://localhost:8000";
+
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * Makes a cUrl request
@@ -20,7 +29,7 @@ class APIToolbox extends AbstractController
      *
      * @return array
      */
-    public function curlRequest($method, $link, $data = '')
+    public function curlRequest($method, $link,  $data = '')
     {
         $user = $this->getUser();
 
@@ -53,6 +62,10 @@ class APIToolbox extends AbstractController
             $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             curl_close($curl);
 
+            if($http_status == 403){
+                $this->logger->emergency('Req a renvoyé'.$http_status);
+                throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
+            }
             return ['data' => json_decode($return), 'httpcode' => $http_status];
         }
         return ['data' => '', 'httpcode' => 500];

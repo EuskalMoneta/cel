@@ -11,7 +11,7 @@
         "knplabs/knp-snappy-bundle": "dev-master",
         "liip/imagine-bundle": "^2.1",
         "sensio/framework-extra-bundle": "^5.1",
-        "sonata-project/admin-bundle": "^3.51",
+        "sonata-project/admin-bundle": "^3.53",
         "sonata-project/doctrine-orm-admin-bundle": "^3.10",
         "symfony/asset": "4.3.*",
         "symfony/console": "4.3.*",

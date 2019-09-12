@@ -12,7 +12,27 @@ class User implements UserInterface
 
     private $compte;
 
+    /** @var \DateTime $last_login */
+    private $last_login;
+
     private $roles = [];
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastLogin(): \DateTime
+    {
+        return $this->last_login;
+    }
+
+    /**
+     * @param \DateTime $last_login
+     */
+    public function setLastLogin(\DateTime $last_login): void
+    {
+        $this->last_login = $last_login;
+    }
+
 
     public function getCompte(): string
     {

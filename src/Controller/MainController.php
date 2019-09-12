@@ -62,7 +62,7 @@ class MainController extends AbstractController
     /**
      * @Route("/recherche", name="app_search")
      */
-    public function search(Request $request)
+    public function search(Request $request, APIToolbox $APIToolbox)
     {
         $operations = [];
 
@@ -81,7 +81,7 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $operations = $data;
+            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin=2018-08-11T12:00&end=2019-09-11T02:47');
         }
 
         return $this->render('main/search.html.twig', ['form' => $form->createView(), 'operations' => $operations]);

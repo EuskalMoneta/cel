@@ -3,17 +3,17 @@
         <div class="row mb-4">
             <div class="col-2">
                         <span class="fa-stack" style="vertical-align: top;">
-                          <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fal fa-money-bill fa-stack-1x fa-inverse"></i>
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fal fa-money-bill fa-stack-1x fa-inverse" style="color: #A8ADB3;"></i>
                         </span>
             </div>
-            <div class="col-7">
+            <div class="col-6">
                 <div class="main-color text-semi-bold"> Change automatique</div>
-                <div class="secondary-color"> 18 juin 2019</div>
+                <div class="secondary-color">{{ "now"|localizeddate('long', 'none', app.request.getLocale()) }}</div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="float-right ">
-                    <div class="prix green"> + 30,00 E</div>
+                    <div class="prix green text-right"> + 30,00 </div>
                 </div>
             </div>
         </div>
@@ -21,17 +21,17 @@
     <div class="row mb-4">
         <div class="col-2">
                         <span class="fa-stack" style="vertical-align: top;">
-                          <i class="fas fa-circle fa-stack-2x"></i>
-                          <i class="fal fa-utensils fa-stack-1x fa-inverse"></i>
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            {#<i class="fal fa-money-bill fa-stack-1x fa-inverse"></i>#}
                         </span>
         </div>
         <div class="col-7">
             <div class="main-color text-semi-bold"> Café des pyrénées</div>
-            <div class="secondary-color"> 18 juin 2019</div>
+            <div class="secondary-color"> {{ "now"|localizeddate('long', 'none', app.request.getLocale()) }}</div>
         </div>
         <div class="col-3">
             <div class="float-right ">
-                <div class="prix"> - 15,00 E</div>
+                <div class="prix text-right"> - 15,00 </div>
             </div>
         </div>
     </div>

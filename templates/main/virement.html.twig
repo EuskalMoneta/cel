@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
-                <h3 class="secondary-color mb-2"> Nouveau virement </h3>
+                <h3 class="secondary-color mb-2"> {{ "Nouveau virement" | trans }} </h3>
 
                 <div class="mb-4">
                     {{ form_start(form) }}
@@ -19,12 +19,15 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="destinataire" class="required">Destinataire</label>
+                                <label for="destinataire" class="required">{{ "Destinataire" | trans }}</label>
                                 <select id="" name="destinataire" class="form-control basicAutoComplete">
                                     {% if destinataire != '' %}
                                         <option value="{{ destinataire }}"> {{ destinataire }}</option>
                                     {% endif %}
                                 </select>
+                            </div>
+                            <div class="float-right">
+                                <a href="{{ path('app_beneficiaire_ajout') }}" class=""> {{"Ajouter un nouveau bénéficiaire" | trans}}</a>
                             </div>
 
                         </div>
@@ -42,7 +45,7 @@
                     <hr>
                     <div class="text-center mb-4">
                         <a href="{{ path('app_beneficiaire_gestion') }}"><i class="fal fa-users main-color" style="font-size: 50px;"></i><br /></a>
-                        <a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-outline-primary btn-slim main-color"> Gestion des bénéficiaires </a>
+                        <a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-outline-primary btn-slim main-color">{{ "Gestion des bénéficiaires" | trans }}  </a>
                     </div>
                 </div>
             </div>

@@ -71,6 +71,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         $user = new User();
         $user->setUsername($credentials['username']);
+        $user->setLastLogin(new \DateTime());
         $user->setToken($token);
 
         return $user;

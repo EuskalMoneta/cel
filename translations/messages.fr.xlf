@@ -141,6 +141,10 @@
         <source>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</source>
         <target>__Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
       </trans-unit>
+      <trans-unit id="N986O4g" resname="Mot de passe oublié">
+        <source>Mot de passe oublié</source>
+        <target>Mot de passe oublié</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

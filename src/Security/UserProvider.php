@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Controller\APIToolbox;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,10 +12,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserProvider implements UserProviderInterface
 {
     private $apiToolBox;
+    private $logger;
 
-    public function __construct(APIToolbox $APIToolbox)
+    public function __construct(APIToolbox $APIToolbox, LoggerInterface $logger)
     {
         $this->apiToolBox = $APIToolbox;
+        $this->logger = $logger;
     }
 
 
@@ -58,12 +61,8 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
-        $response = $this->apiToolBox->curlRequest('GET', '/account-summary-adherents/');
-
-        if ($user && $response['httpcode'] != 200 && $response['data'] != null) {
-            // fail authentication with a custom error
-            throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
-        }
+        // fail authentication with a custom error
+        //throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
 
         return $user;
     }

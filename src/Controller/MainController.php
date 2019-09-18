@@ -23,6 +23,8 @@ class MainController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox)
     {
+        $operations = [];
+
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
             $infosUser = [
@@ -34,9 +36,18 @@ class MainController extends AbstractController
             $user = $this->getUser();
             $user->setCompte($response['data']->result[0]->number);
 
-            return $this->render('main/index.html.twig', ['infosUser' => $infosUser]);
+
+            $dateEnd = (new \DateTime("now"));
+            $dateStart = (new \DateTime("now"))->modify("-3 month");
+
+            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateStart->format('Y-m-d').'T00:00&end='.$dateEnd->format('Y-m-d').'T23:50');
+
+            if($response['httpcode'] == 200) {
+                $operations = $response['data'][0]->result->pageItems;
+            }
+            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations]);
         } else {
-            return new Response();
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -81,7 +92,13 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin=2018-08-11T12:00&end=2019-09-11T02:47');
+
+
+            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$data['dateDebut']->format('Y-m-d').'T00:00&end='.$data['dateFin']->format('Y-m-d').'T23:50');
+
+            if($response['httpcode'] == 200) {
+                $operations = $response['data'][0]->result->pageItems;
+            }
         }
 
         return $this->render('main/search.html.twig', ['form' => $form->createView(), 'operations' => $operations]);

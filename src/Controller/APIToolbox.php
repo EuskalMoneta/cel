@@ -44,7 +44,7 @@ class APIToolbox extends AbstractController
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
 
-            if($method == 'POST' or $method == 'PUT'){
+            if($method == 'POST' or $method == 'PUT' or $method == 'PATCH'){
                 curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
                 curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                         'Content-Type: application/json',

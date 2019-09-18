@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="eu" target-language="fr" datatype="plaintext" original="file.ext">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="file.ext">
     <header>
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
@@ -141,10 +141,42 @@
         <source>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</source>
         <target>__Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
       </trans-unit>
-      <trans-unit id="N986O4g" resname="Mot de passe oublié">
+      <trans-unit id="RULWH19" resname="Mot de passe oublié">
         <source>Mot de passe oublié</source>
         <target>Mot de passe oublié</target>
       </trans-unit>
+      <trans-unit id="4mfTQ4I" resname="Profil">
+        <source>Profil</source>
+        <target>Profil</target>
+      </trans-unit>
+      <trans-unit id="95gi2nU" resname="Modifier la langue">
+        <source>Modifier la langue</source>
+        <target>Modifier la langue</target>
+      </trans-unit>
+      <trans-unit id="95ai2nU" resname="Langue">
+        <source>Langue</source>
+        <target>Langue</target>
+      </trans-unit>
+      <trans-unit id="YmunqJa" resname="Enregistrer">
+        <source>Enregistrer</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="9aai2nU" resname="Langue mise à jour.">
+          <source>Langue mise à jour.</source>
+          <target>Langue mise à jour.</target>
+        </trans-unit>
+        <trans-unit id="9aai297" resname="Le changement de langue n'a pas pu être effectué">
+          <source>Le changement de langue n'a pas pu être effectué</source>
+          <target>Le changement de langue n'a pas pu être effectué</target>
+        </trans-unit>
+        <trans-unit id="9aaa297" resname="Le changement de langue n'a pas pu être effectué">
+            <source>Le changement de langue n'a pas pu être effectué</source>
+            <target>__Le changement de langue n'a pas pu être effectué</target>
+          </trans-unit>
+          <trans-unit id="9aabb97" resname="La modification n'a pas pu être effectuée">
+            <source>La modification n'a pas pu être effectuée</source>
+            <target>La modification n'a pas pu être effectuée</target>
+          </trans-unit>
     </body>
   </file>
 </xliff>

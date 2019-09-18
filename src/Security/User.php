@@ -12,6 +12,8 @@ class User implements UserInterface
 
     private $compte;
 
+    private $locale;
+
     /** @var \DateTime $last_login */
     private $last_login;
 
@@ -75,6 +77,22 @@ class User implements UserInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param mixed $locale
+     */
+    public function setLocale($locale): void
+    {
+        $this->locale = $locale;
+    }
+
+    /**
      * @see UserInterface
      */
     public function getRoles(): array
@@ -117,4 +135,5 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
 }

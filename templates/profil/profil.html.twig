@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
+                <div class="text-center mb-5">
+
+                    <i class="fal fa-user-circle" style="font-size: 72px;"></i>
+                    <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
+                    <h2 class="secondary-color" >Compte n° {{ infosUser.compte }}</h2>
+                    <p style="font-size: 14px">Cotisation : <i class="fa fa-check green" style="font-size: 18px;"></i> À jour ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})</p>
+                </div>
+
+                {{ dump(membre) }}
+                <h2 class="secondary-color mt-5">Sécurité</h2>
+                <table class="table">
+                    <tr>
+                        <td><p class="main-color text-semi-bold"> Mot de passe</p></td>
+                        <td class="text-right"><a href="" class="btn btn-primary"> Modifier</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold">Question secrète</span></td>
+                        <td class="text-right"><a href="" class="btn btn-primary btn-md"> Modifier</a> </td>
+                    </tr>
+                </table>
+
+                <h2 class="secondary-color mt-5">Coordonnées</h2>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <p class="main-color text-semi-bold">
+                                {{ infosUser.nom }}<br />
+                                {{ membre.address }}<br />
+                                {{ membre.zip }} {{ membre.town }}<br /><br />
+                                {{ membre.phone_mobile }}<br />
+                                {{ membre.email }}
+                            </p>
+                        </td>
+                        <td class="text-right"><a href="{{ path('app_profil_coordonnees') }}" class="btn btn-primary btn-md"> Modifier</a> </td>
+                    </tr>
+                </table>
+
+                <h2 class="secondary-color mt-5">Cotisation</h2>
+                <table class="table">
+                    <tr>
+                        <td><p class="main-color text-semi-bold"> {{ membre.last_subscription_amount | round(2) }} EUS / mois</p></td>
+                        <td class="text-right"><a href="" class="btn btn-primary"> Modifier</a> </td>
+                    </tr>
+                </table>
+
+                <h2 class="secondary-color mt-5">Autres paramètres</h2>
+                <table class="table">
+                    <tr>
+                        <td><p class="main-color text-semi-bold"> Langue</p></td>
+                        <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> Modifier</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold">Newsletter</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> Modifier</a> </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

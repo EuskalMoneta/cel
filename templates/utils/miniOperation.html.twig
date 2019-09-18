@@ -1,3 +1,26 @@
+{% for operation in operations %}
+    <div class="row mb-4">
+        <div class="col-2">
+                        <span class="fa-stack" style="vertical-align: top;">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            {#<i class="fal fa-money-bill fa-stack-1x fa-inverse"></i>#}
+                        </span>
+        </div>
+        <div class="col-7">
+            <div class="main-color text-semi-bold"> {{ operation.description }}</div>
+            <div class="secondary-color"> {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}</div>
+        </div>
+        <div class="col-3">
+            <div class="float-right ">
+                {% if operation.transactionNature == 'PAYMENT' %}
+                    <div class="prix text-right green">+ {{ operation.amount }}</div>
+                {% else %}
+                    <div class="prix text-right">- {{ operation.amount }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
 {% for i in 0..12 %}
     {% if i is divisible by(4) %}
         <div class="row mb-4">

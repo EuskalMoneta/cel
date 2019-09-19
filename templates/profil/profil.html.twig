@@ -12,16 +12,15 @@
                     <p style="font-size: 14px">Cotisation : <i class="fa fa-check green" style="font-size: 18px;"></i> À jour ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})</p>
                 </div>
 
-                {{ dump(membre) }}
                 <h2 class="secondary-color mt-5">Sécurité</h2>
                 <table class="table">
                     <tr>
                         <td><p class="main-color text-semi-bold"> Mot de passe</p></td>
-                        <td class="text-right"><a href="" class="btn btn-primary"> Modifier</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_password') }}" class="btn btn-primary"> Modifier</a> </td>
                     </tr>
                     <tr>
                         <td><span class="main-color text-semi-bold">Question secrète</span></td>
-                        <td class="text-right"><a href="" class="btn btn-primary btn-md"> Modifier</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> Modifier</a> </td>
                     </tr>
                 </table>
 

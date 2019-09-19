@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilController extends AbstractController
@@ -38,6 +42,123 @@ class ProfilController extends AbstractController
             $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
 
             return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMembre['data'][0]]);
+        } else {
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
+    /**
+     * @Route("/profil/password", name="app_profil_password")
+     */
+    public function password(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMembre['httpcode'] == 200) {
+
+            $membre = $responseMembre['data'][0];
+
+            $form = $this->createFormBuilder()
+                ->add('old_password', PasswordType::class)
+                ->add('new_password', RepeatedType::class, [
+                    'first_options'  => ['label' => 'Nouveau mot de passe'],
+                    'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 4, 'max'=> 12]),
+                    ],
+                    'type' => PasswordType::class,
+                    'options' => ['attr' => ['class' => 'password-field']],
+                    'required' => true,
+                ])
+                ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                ->getForm();
+
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $data['confirm_password'] = $data['new_password'];
+                $data['cyclos_mode'] = 'cel';
+
+                $responseProfile = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+
+                if($responseProfile['httpcode'] == 200) {
+                    $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                } else {
+                    $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                }
+            }
+
+            return $this->render('profil/password.html.twig', ['form' => $form->createView()]);
+
+        } else {
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
+    /**
+     * @Route("/profil/question", name="app_profil_question")
+     */
+    public function question(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMembre['httpcode'] == 200) {
+
+            $membre = $responseMembre['data'][0];
+
+            $questions = ['' => '','autre' => 'autre'];
+            $response = $APIToolbox->curlWithoutToken('GET', '/securityqa/');
+
+            if($response['httpcode'] == 200){
+
+                foreach ($response['data'] as $question){
+                    $questions[$question->question]=$question->id;
+                }
+
+                $form = $this->createFormBuilder()
+                    ->add('questionSecrete', ChoiceType::class, [
+                        'label' => 'Votre question secrète',
+                        'required' => true,
+                        'choices' => $questions
+                    ])
+                    ->add('questionPerso', TextType::class, ['label' => 'Votre question personnalisée', 'required' => false])
+                    ->add('reponse', TextType::class, [
+                        'label' => 'Reponse',
+                        'required' => true,
+                        'help' => "Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko",
+                        'constraints' => [
+                            new NotBlank()
+                        ]
+                    ])
+                    ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                    ->getForm();
+
+
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $data = $form->getData();
+
+                    $parameters['answer'] = $data['reponse'];
+                    if($data['questionSecrete'] == 'autre'){
+                        $parameters['question_id'] = 0;
+                        $parameters['question_text'] = $data['questionPerso'];
+                    } else {
+                        $parameters['question_id'] = $data['questionSecrete'];
+                    }
+
+                    $responseProfile = $APIToolbox->curlRequest('POST', '/securityqa/', $parameters);
+
+
+                    if($responseProfile['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    } else {
+                        $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                    }
+                }
+            }
+
+            return $this->render('profil/question.html.twig', ['form' => $form->createView()]);
+
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
@@ -71,7 +192,7 @@ class ProfilController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $data['birth'] = $data['birth']->format('d/m/Y');
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/939/', $data);
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
 
                 dump(json_encode($data));
@@ -99,7 +220,8 @@ class ProfilController extends AbstractController
         $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMembre['httpcode'] == 200) {
 
-            $langue = $responseMembre['data'][0]->array_options->options_langue;
+            $membre = $responseMembre['data'][0];
+            $langue = $membre->array_options->options_langue;
 
             $form = $this->createFormBuilder()
                 ->add('langue', ChoiceType::class,
@@ -114,7 +236,7 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/939/', ['options_langue' => $data['langue']]);
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_langue' => $data['langue']]);
 
                 if($responseLang['httpcode'] == 200) {
                     $session->set('_locale', $data['langue']);
@@ -140,7 +262,8 @@ class ProfilController extends AbstractController
         $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMembre['httpcode'] == 200) {
 
-            $booleanNewsletter = $responseMembre['data'][0]->array_options->options_recevoir_actus;
+            $membre = $responseMembre['data'][0];
+            $booleanNewsletter = $membre->array_options->options_recevoir_actus;
 
             $form = $this->createFormBuilder()
                 ->add('news', ChoiceType::class,
@@ -156,7 +279,7 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/939/', ['options_recevoir_actus' => $data['news']]);
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
 
                 if($responseLang['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));

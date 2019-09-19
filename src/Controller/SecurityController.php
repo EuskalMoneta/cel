@@ -137,7 +137,7 @@ class SecurityController extends AbstractController
                     $parameters['question_id'] = 0;
                     $parameters['question_text'] = $data['questionPerso'];
                 } else {
-                    $parameters['question_id'] = ['questionSecrete'];
+                    $parameters['question_id'] = $data['questionSecrete'];
                 }
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 

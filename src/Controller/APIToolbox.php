@@ -21,13 +21,12 @@ class APIToolbox extends AbstractController
 
     /**
      * Makes a cUrl request
-     *
+     * 
+     * @param $method
      * @param $link
-     * @param $token
-     * @param $data
-     * @param string $method
-     *
-     * @return array
+     * @param string $data
+     * @param string $token
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function curlRequest($method, $link,  $data = '', $token ='')
     {
@@ -69,6 +68,7 @@ class APIToolbox extends AbstractController
 
         if($http_status == 403){
             $this->logger->emergency('Req a renvoyé'.$http_status);
+            return $this->redirectToRoute('app_logout');
             throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
         }
         return ['data' => json_decode($return), 'httpcode' => $http_status];

@@ -26,15 +26,28 @@
             <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
             <div class="navbar-right">
 
+                {% if app.user %}
+                <a href="{{ path('app_homepage') }}">
+                    <i class="fal fa-home cel-menu-icon"></i>
+                    <br /> Accueil
+                </a>
+
                 <a href="#">
-                    <i class="fas fa-question-circle cel-menu-icon"></i>
+                    <i class="fal fa-question-circle cel-menu-icon"></i>
                     <br /> Aide
                 </a>
 
                 <a href="{{ path('app_profil') }}">
-                    <i class="fas fa-user cel-menu-icon"></i>
+                    <i class="fal fa-user cel-menu-icon"></i>
                     <br /> Profil
                 </a>
+
+                <a href="{{ path('app_profil') }}">
+                    <i class="fal fa-bell cel-menu-icon"></i>
+                    <br />
+                    <span class="badge badge-danger">4</span>
+                </a>
+                {% endif %}
 
                 {#<a href="#">
                     <i class="fas fa-sign-out cel-menu-icon"></i>
@@ -51,7 +64,8 @@
             <div class="col-12 col-md-6 offset-md-3 mt-4">
                 {% for label, messages in app.flashes() %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ label }}">
+                        <div class="alert alert-dismissible alert-{{ label }}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
                             {{ message }}
                         </div>
                     {% endfor %}
@@ -66,16 +80,11 @@
     {% endblock %}
 </main>
 
+{% if app.user %}
 <footer class="footer fixed-bottom mt-auto pt-2">
     <div class="container">
 
         <div class="row">
-            <div class="col-3">
-                <a href="{{ path('app_homepage') }}">
-                    <i class="fal fa-home"></i>
-                    <br /> Accueil
-                </a>
-            </div>
             <div class="col-3">
                 <a href="{{ path('app_virement') }}">
                     <img src="{{ asset('images/virement.png') }}">
@@ -89,6 +98,12 @@
                 </a>
             </div>
             <div class="col-3">
+                <a href="{{ path('app_homepage') }}">
+                    <i class="fal fa-list"></i>
+                    <br /> Mandats
+                </a>
+            </div>
+            <div class="col-3">
                 <a href="#">
                     <i class="fal fa-percent"></i>
                     <br /> Asso 3%
@@ -98,6 +113,7 @@
 
     </div>
 </footer>
+{% endif %}
 
 <!-- Bootstrap core JavaScript -->
 <script src="{{ asset('js/jquery.min.js') }}"></script>

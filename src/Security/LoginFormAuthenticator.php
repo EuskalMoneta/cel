@@ -75,7 +75,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user->setToken($token);
 
         //get Locale
-        $responseMembre = $this->apiToolBox->curlRequest('GET', '/members/?login='.$user->getUsername());
+        $responseMembre = $this->apiToolBox->curlRequest('GET', '/members/?login='.$credentials['username'], '', $token);
         if($responseMembre['httpcode'] == 200) {
             $user->setLocale($responseMembre['data'][0]->array_options->options_langue);
         }

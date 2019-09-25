@@ -148,3 +148,9 @@ label.required:before {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     border-top: 0;
 }
+.form-check-label.required::before {
+    content: "";
+}
+.form-check {
+    padding-top: 20px;
+}

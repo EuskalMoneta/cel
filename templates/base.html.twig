@@ -47,6 +47,17 @@
                     <br />
                     <span class="badge badge-danger">4</span>
                 </a>
+                {% else %}
+                    <a href="{{ path('app_anon_lang', {'locale': 'eu'}) }}">
+                        <i class="fal fa-flag cel-menu-icon"></i>
+                        <br /> EU
+                    </a>
+                    <a href="{{ path('app_anon_lang', {'locale': 'fr'}) }}">
+                        <i class="fal fa-flag cel-menu-icon"></i>
+                        <br /> FR
+                    </a>
+
+
                 {% endif %}
 
                 {#<a href="#">
@@ -104,7 +115,7 @@
                 </a>
             </div>
             <div class="col-3">
-                <a href="#">
+                <a href="{{ path('app_asso') }}">
                     <i class="fal fa-percent"></i>
                     <br /> Asso 3%
                 </a>

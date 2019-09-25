@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -96,6 +97,84 @@ class ProfilController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/profil/cotisation", name="app_profil_cotisation")
+     */
+    public function cotisation(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMembre['httpcode'] == 200) {
+
+            $membre = $responseMembre['data'][0];
+
+            if($membre->array_options->options_prelevement_cotisation_periodicite == 1){
+                $defaultData = $membre->array_options->options_prelevement_cotisation_montant * 12;
+            } else {
+                $defaultData = $membre->array_options->options_prelevement_cotisation_montant;
+            }
+
+
+            dump($membre->array_options->options_prelevement_cotisation_periodicite);
+            $form = $this->createFormBuilder()
+                ->add('options_prelevement_cotisation_montant', ChoiceType::class, [
+                    'label' => 'Montant de la cotisation',
+                    'attr' => ['class' => 'chk'],
+                    'required' => true,
+                    'multiple' => false,
+                    'expanded' => true,
+                    'choices' => [
+                        '1 eusko par mois / 12 eusko par an' => '12',
+                        '2 eusko par mois / 24 eusko par an' => '24',
+                        '3 eusko par mois / 36 eusko par an' => '36',
+                        '5 eusko par an (chômeurs, minima sociaux)' => '5'
+                    ],
+                    'data' => round($defaultData, 0)
+                ])
+                ->add('options_prelevement_cotisation_periodicite', ChoiceType::class, [
+                    'label' => 'Périodicité du prélèvement',
+                    'required' => true,
+                    'multiple' => false,
+                    'expanded' => true,
+                    'choices' => [
+                        'Annuel' => '12',
+                        'Mensuel (le 15 du mois)' => '1',
+                    ],
+                    'data' => round($membre->array_options->options_prelevement_cotisation_periodicite, 0)
+                ])
+                ->add('options_prelevement_auto_cotisation_eusko', CheckboxType::class, [
+                    'label' => '* J\'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.',
+                ])
+                ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                ->getForm();
+
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+
+                if($data['options_prelevement_cotisation_periodicite'] == 1){
+                    //To get the amount per month and not annualy
+                    $data['options_prelevement_cotisation_montant'] = $data['options_prelevement_cotisation_montant'] / 12;
+                }
+                if(!($data['options_prelevement_cotisation_periodicite'] == 1 && $data['options_prelevement_cotisation_montant'] == 5)){
+                    $responseProfile = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+
+                    if($responseProfile['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    } else {
+                        $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                    }
+                }
+            }
+
+            return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
+
+        } else {
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
     /**
      * @Route("/profil/question", name="app_profil_question")
      */
@@ -107,12 +186,12 @@ class ProfilController extends AbstractController
             $membre = $responseMembre['data'][0];
 
             $questions = ['' => '','autre' => 'autre'];
-            $response = $APIToolbox->curlWithoutToken('GET', '/securityqa/');
+            $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/');
 
             if($response['httpcode'] == 200){
 
                 foreach ($response['data'] as $question){
-                    $questions[$question->question]=$question->id;
+                    $questions[$question->question]=$question->question;
                 }
 
                 $form = $this->createFormBuilder()
@@ -140,10 +219,9 @@ class ProfilController extends AbstractController
 
                     $parameters['answer'] = $data['reponse'];
                     if($data['questionSecrete'] == 'autre'){
-                        $parameters['question_id'] = 0;
-                        $parameters['question_text'] = $data['questionPerso'];
+                        $parameters['question'] = $data['questionPerso'];
                     } else {
-                        $parameters['question_id'] = $data['questionSecrete'];
+                        $parameters['question'] = $data['questionSecrete'];
                     }
 
                     $responseProfile = $APIToolbox->curlRequest('POST', '/securityqa/', $parameters);
@@ -155,13 +233,12 @@ class ProfilController extends AbstractController
                         $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
                     }
                 }
+
+                return $this->render('profil/question.html.twig', ['form' => $form->createView()]);
             }
-
-            return $this->render('profil/question.html.twig', ['form' => $form->createView()]);
-
-        } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
+        return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+
     }
 
     /**

@@ -68,7 +68,7 @@ class APIToolbox extends AbstractController
 
         if($http_status == 403){
             $this->logger->emergency('Req a renvoyé'.$http_status);
-            return $this->redirectToRoute('app_logout');
+            //return $this->redirectToRoute('app_logout');
             throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
         }
         return ['data' => json_decode($return), 'httpcode' => $http_status];
@@ -111,7 +111,7 @@ class APIToolbox extends AbstractController
     public function curlGetToken($username, $password)
     {
 
-        $lien = 'http://localhost:8000/api-token-auth/';
+        $lien = $this->base_url.'/api-token-auth/';
         $data_string = json_encode(["username" => $username, "password" => $password]);
 
         $curl = curl_init();

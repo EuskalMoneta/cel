@@ -11,15 +11,20 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends AbstractController
 {
+    use TargetPathTrait;
+
     /**
      * @Route("/login", name="app_login")
      */
@@ -38,6 +43,16 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'promotions' => $promotions]);
+    }
+
+    /**
+     * @Route("/anon/language/{locale}", name="app_anon_lang")
+     */
+    public function changeLanguage($locale, Request $request): Response
+    {
+        $request->getSession()->set('_locale', $locale);
+        $targetPath = $this->getTargetPath($request->getSession(), 'main');
+        return new RedirectResponse($targetPath);
     }
 
     /**
@@ -81,17 +96,17 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/valide/premiere/connexion", name="app_valide_first_login")
+     * @Route("/valide-premiere-connexion", name="app_valide_first_login")
      */
     public function validateFirstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
         $questions = ['' => '','autre' => 'autre'];
-        $response = $APIToolbox->curlWithoutToken('GET', '/securityqa/');
+        $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/');
 
         if($response['httpcode'] == 200){
 
             foreach ($response['data'] as $question){
-                $questions[$question->question]=$question->id;
+                $questions[$question->question]=$question->question;
             }
 
             $form = $this->createFormBuilder()
@@ -134,10 +149,9 @@ class SecurityController extends AbstractController
                     ];
 
                 if($data['questionSecrete'] == 'autre'){
-                    $parameters['question_id'] = 0;
-                    $parameters['question_text'] = $data['questionPerso'];
+                    $parameters['question'] = $data['questionPerso'];
                 } else {
-                    $parameters['question_id'] = $data['questionSecrete'];
+                    $parameters['question'] = $data['questionSecrete'];
                 }
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 

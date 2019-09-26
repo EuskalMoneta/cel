@@ -101,7 +101,7 @@ class SecurityController extends AbstractController
     public function validateFirstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
         $questions = ['' => '','autre' => 'autre'];
-        $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/');
+        $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getSession()->get('_locale'));
 
         if($response['httpcode'] == 200){
 

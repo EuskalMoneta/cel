@@ -186,7 +186,7 @@ class ProfilController extends AbstractController
             $membre = $responseMembre['data'][0];
 
             $questions = ['' => '','autre' => 'autre'];
-            $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/');
+            $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getSession()->get('_locale'));
 
             if($response['httpcode'] == 200){
 

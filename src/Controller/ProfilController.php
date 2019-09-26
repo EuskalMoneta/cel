@@ -204,7 +204,6 @@ class ProfilController extends AbstractController
                     ->add('reponse', TextType::class, [
                         'label' => 'Reponse',
                         'required' => true,
-                        'help' => "Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko",
                         'constraints' => [
                             new NotBlank()
                         ]
@@ -224,8 +223,7 @@ class ProfilController extends AbstractController
                         $parameters['question'] = $data['questionSecrete'];
                     }
 
-                    $responseProfile = $APIToolbox->curlRequest('POST', '/securityqa/', $parameters);
-
+                    $responseProfile = $APIToolbox->curlRequest('PATCH', '/securityqa/me/', $parameters);
 
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));

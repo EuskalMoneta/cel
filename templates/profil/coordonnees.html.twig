@@ -13,3 +13,24 @@
         </div>
     </div>
 {% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+        $('.basicAutoComplete').autoComplete({
+            resolverSettings: {
+                url: '{{ path('app_ajex_zipcode_search') }}'
+            }
+        });
+
+        $('.basicAutoComplete').bind('autocomplete.select', function() {
+            var ziptown = $("[name='form[zip]']").val().split('+');
+            $(this).val(ziptown[0]);
+            $('#form_town').val(ziptown[1]);
+        });
+
+
+        
+    </script>
+{% endblock %}

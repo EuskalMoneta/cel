@@ -37,7 +37,7 @@ class APIToolbox extends AbstractController
         } elseif ($user) {
             $token = $user->getToken();
         } else {
-            return ['data' => '', 'httpcode' => 505];
+            return ['data' => 'NO TOKEN', 'httpcode' => 505];
         }
 
         $curl = curl_init();

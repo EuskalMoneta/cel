@@ -240,14 +240,39 @@ class ProfilController extends AbstractController
     }
 
     /**
+     * @Route("/ajax/zipcode/search", name="app_ajex_zipcode_search")
+     */
+    public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
+    {
+        $response = $APIToolbox->curlRequest('GET', '/towns/?zipcode='.$request->get('q'));
+        $tabBenef = [];
+
+        if($response['httpcode'] == 200){
+            foreach ($response['data'] as $zip){
+                $tabBenef[] = ['value' => $zip->zip.'+'.$zip->town, 'text'=> $zip->zip.' '.$zip->town];
+            }
+            return new JsonResponse($tabBenef);
+        } else {
+            throw new NotFoundHttpException("Methode non disponible ou erreur RQ");
+        }
+
+    }
+
+    /**
      * @Route("/profil/coordonnees", name="app_profil_coordonnees")
      */
     public function coordonnees(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMembre['httpcode'] == 200) {
-
             $membre = $responseMembre['data'][0];
+
+            $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
+            $tabCountries = [];
+            foreach ($responseCountries['data'] as $country){
+                $tabCountries[$country->label] = $country->id;
+            }
+
             $form = $this->createFormBuilder()
                 ->add('birth', DateType::class, [
                     'widget' => 'single_text',
@@ -255,9 +280,9 @@ class ProfilController extends AbstractController
                     'data' => (new \DateTime())->setTimestamp($membre->birth)
                 ])
                 ->add('address', TextareaType::class, ['required' => true, 'data' => $membre->address])
-                ->add('zip', NumberType::class, ['required' => true, 'data' => $membre->zip])
+                ->add('zip', ChoiceType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
                 ->add('town', TextType::class, ['required' => true, 'data' => $membre->town])
-                ->add('country_code', CountryType::class, ['required' => true, 'data' => $membre->country_code])
+                ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $membre->country_id])
                 ->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile])
                 ->add('email', TextType::class, ['required' => true, 'data' => $membre->email])
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])

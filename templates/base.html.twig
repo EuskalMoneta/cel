@@ -14,7 +14,6 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet"  type='text/css'>
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet"  type='text/css'>
 
-
 </head>
 
 <body>
@@ -103,7 +102,7 @@
                 </a>
             </div>
             <div class="col-3">
-                <a href="#">
+                <a href="{{ path('app_change') }}">
                     <img src="{{ asset('images/change.png') }}">
                     <br /> Change
                 </a>
@@ -111,7 +110,7 @@
             <div class="col-3">
                 <a href="{{ path('app_homepage') }}">
                     <i class="fal fa-list"></i>
-                    <br /> Mandats
+                    <br /> Prélèvements
                 </a>
             </div>
             <div class="col-3">

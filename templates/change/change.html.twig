@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <h2 class="secondary-color mb-2"> {{ "Change automatique" | trans }} </h2>
+
+                <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(2) }} EUS / {{ "mois" | trans }}</div>
+
+                <a class="btn btn-outline-primary mb-4" href="{{ path('app_search') }}">{{ "modifier" | trans }} </a>
+
+                <h2 class="secondary-color mt-4 mb-2"> {{ "Change manuel" | trans }} </h2>
+                <div class="mb-4">
+
+                    <ul class="nav nav-pills nav-tabs-btn pills-btn-brand mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                                <i class="fal fa-anchor"></i><br />
+                                Virement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                <i class="fas fa-university"></i><br />
+                                Bureau de change
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">
+                                <i class="fal fa-globe"></i><br />
+                                En ligne
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <h3>Par virement</h3>
+                            <p>Vous faites directement, depuis votre compte bancaire en euros, un virement à Euskal Moneta. Une fois votre virement reçu, nous créditons votre compte eusko le lendemain matin. Il faut donc compter généralement deux jours ouvrés entre le moment où vous faites votre virement et le moment où votre compte eusko est crédité.</p>
+
+                            <ul>
+                                <li>Coordonnées du compte d’Euskal Moneta pour l’ajouter à la liste de vos bénéficiaires&nbsp;:
+                                    <ul>
+                                        <li>IBAN:<strong> FR76 4255 9100 0008 0147 3341 751</strong></li>
+                                        <li>BIC :<strong> CCOPFRPPXXX</strong> (Crédit Coopératif)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>Surtout <strong>n’oubliez pas de préciser dans l’intitulé de votre virement</strong> la mention «&nbsp;Change&nbsp;» et votre numéro d’adhérent. Exemple&nbsp;: Change E00058.</li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <h3>Le bureau de change</h3>
+                            <p>Dans n’importe quel bureau de change, vous pouvez faire un chèque ou donner des espèces pour créditer votre compte numérique. Le crédit est immédiat&nbsp;!</p>
+                        </div>
+                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">CCC</div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

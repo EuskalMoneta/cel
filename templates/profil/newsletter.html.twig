@@ -6,9 +6,24 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
-                <h2 class="secondary-color mb-2">{{ 'Profil' | trans }} >  {{ 'Newsletter' | trans }}</h2>
+                <h2 class="secondary-color mb-4">{{ 'Profil' | trans }} >  {{ 'Notifications' | trans }}</h2>
 
-                {{ form(form) }}
+
+                <h3 class="secondary-color mt-4-2 mb-2"> {{ 'Newsletter' | trans }} </h3>
+
+                {{ form_start(form) }}
+
+                {{ form_row(form.news) }}
+
+
+                <h3 class="secondary-color mt-4 mb-2"> {{ 'Notifications' | trans }} </h3>
+
+                {{ form_row(form.virement_recu) }}
+
+                {{ form_row(form.prelevement_recu) }}
+
+                {{ form_rest(form) }}
+
             </div>
         </div>
     </div>

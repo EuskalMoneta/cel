@@ -373,6 +373,35 @@ class ProfilController extends AbstractController
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
                         'data' => $booleanNewsletter
                     ])
+                ->add('virement_recu', ChoiceType::class,
+                    [
+                        'label' => 'Nouveau virement',
+                        'help' => 'Vous recevrez un email pour chaque virement reçu.',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('prelevement_recu', ChoiceType::class,
+                    [
+                        'label' => 'Nouveau prélèvement sur votre compte',
+                        'help' => 'Vous recevrez un email pour chaque prélèvement effectué sur votre compte.',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('mandat_accepte', ChoiceType::class,
+                    [
+                        'label' => 'Mandat accepté',
+                        'help' => 'Vous recevrez un email lorsque votre débiteur accepte un mandat.',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('mandat_refuse', ChoiceType::class,
+                    [
+                        'label' => 'Mandat refusé',
+                        'help' => 'Vous recevrez un email lorsque votre débiteur annule ou refuse un mandat.',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
                 ->getForm();
 

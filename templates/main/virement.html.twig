@@ -20,10 +20,11 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="destinataire" class="required">{{ "Destinataire" | trans }}</label>
-                                <select id="" name="destinataire" class="form-control basicAutoComplete">
-                                    {% if destinataire != '' %}
+
+                                <select id="" name="destinataire" data-url="{{ path('app_beneficiaire_search') }}" class="form-control basicAutoSelect"  autocomplete="off">
+                                    {# if destinataire != '' %}
                                         <option value="{{ destinataire }}"> {{ destinataire }}</option>
-                                    {% endif %}
+                                    {% endif #}
                                 </select>
                             </div>
                             <div class="float-right">
@@ -80,11 +81,9 @@
 
 {% block js %}
     <script type="text/javascript">
-        $('.basicAutoComplete').autoComplete({
-            resolverSettings: {
-                url: '{{ path('app_beneficiaire_search') }}'
-            }
-        });
+
+        $('.basicAutoSelect').autoComplete();
+
         /*$('#form-virement').submit(function (e){
             if ($(this).valid()) {
                 $('#confirm-modal').modal('show');

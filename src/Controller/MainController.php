@@ -107,8 +107,9 @@ class MainController extends AbstractController
     /**
      * @Route("/virement", name="app_virement")
      */
-    public function virement(Request $request)
+    public function virement(Request $request, APIToolbox $APIToolbox)
     {
+
         $destinataire ='';
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
             ->add('montant', NumberType::class, ['required' => true])
@@ -120,7 +121,7 @@ class MainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $destinataire = $request->get('destinataire');
-            //dump($data);
+
         }
 
         return $this->render('main/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire]);
@@ -153,6 +154,9 @@ class MainController extends AbstractController
             if($request->isMethod('POST')){
                 $params = explode('!', $request->get('recherche'));
                 $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => 'E00098']);
+
+                $this->addFlash('success', 'Bénéficiaire ajouté');
+                return $this->redirectToRoute('app_beneficiaire_gestion');
             }
 
             return $this->render('main/ajoutBeneficiaire.html.twig', ['beneficiaires' => $response['data']->results]);
@@ -165,9 +169,20 @@ class MainController extends AbstractController
     /**
      * @Route("/ajax/beneficiaire/search", name="app_beneficiaire_search")
      */
-    public function jsonBeneficiaire(Request $request)
+    public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
     {
-        return new JsonResponse([['value' => 'E00098', 'text' => 'E00098']]);
+        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
+        $tabBenef = [];
+
+        if($response['httpcode'] == 200){
+            foreach ($response['data']->results as $benef){
+                $tabBenef[] = ['value' => $benef->cyclos_account_number, 'text'=> $benef->cyclos_name];
+            }
+            return new JsonResponse($tabBenef);
+        } else {
+            throw new NotFoundHttpException("Methode non disponible ou erreur RQ");
+        }
+
     }
 
     /**
@@ -180,7 +195,7 @@ class MainController extends AbstractController
         if($response['httpcode'] == 200 && $request->isXmlHttpRequest()){
             return new JsonResponse([['value' => $response['data']->id.'!'.$request->get('q').'!'.$response['data']->label, 'text' => $response['data']->label]]);
         } else {
-            throw new NotFoundHttpException("Methode non disponible");
+            throw new NotFoundHttpException("Methode non disponible ou erreur RQ");
         }
     }
 

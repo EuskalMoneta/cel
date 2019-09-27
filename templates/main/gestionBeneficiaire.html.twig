@@ -3,33 +3,35 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
-                <div class="row">
-                    <div class="col"><h3 class="secondary-color mb-4"> {{ "Gestion des bénéficiaires" | trans }} </h3></div>
-                    <div class="col-4 text-right"><a href="{{ path('app_beneficiaire_ajout') }}" class="btn btn-slim btn-info "> {{ "Ajout" | trans }} </a></div>
-
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+                <div class="row mb-2">
+                    <div class="col"><h2 class="secondary-color"> {{ "Gestion des bénéficiaires" | trans }} </h2></div>
                 </div>
+
+
+
+                <div class="text-center mb-4"><a href="{{ path('app_beneficiaire_ajout') }}" class="btn btn-outline-primary btn-slim main-color" > {{ "Ajouter un nouveau bénéficiaire" | trans }} </a></div>
+
+                <h3 class="main-color mb-4"> {{ "Vos bénéficiaires" | trans }} </h3>
+
 
                 {% if beneficiaires | length > 10 %}
-                <div class="text-center mb-4">
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-search"></i> </span>
+                    <div class="text-center mb-4">
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fal fa-search"></i> </span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="{{ "Rechercher" | trans }}">
                             </div>
-                            <input type="text" class="form-control" placeholder="{{ "Rechercher" | trans }}">
                         </div>
                     </div>
-                </div>
                 {% endif %}
 
                 {% for beneficiaire in beneficiaires %}
                     <div class="row mb-4">
-                        <div class="col-2">
-                        <span class="fa-stack" style="vertical-align: top;">
-                          <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fal fa-user fa-stack-1x fa-inverse"></i>
-                        </span>
+                        <div class="col-2 text-center">
+                            <i class="fal fa-user-circle" style="font-size: 35px;"></i>
                         </div>
                         <div class="col-7">
                             <div class="main-color text-semi-bold"> {{ beneficiaire.cyclos_name }}</div>

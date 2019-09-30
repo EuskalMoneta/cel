@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -249,7 +252,7 @@ class ProfilController extends AbstractController
 
         if($response['httpcode'] == 200){
             foreach ($response['data'] as $zip){
-                $tabBenef[] = ['value' => $zip->zip.'+'.$zip->town, 'text'=> $zip->zip.' '.$zip->town];
+                $tabBenef[] = [$zip->zip.' -- '.$zip->town];
             }
             return new JsonResponse($tabBenef);
         } else {
@@ -273,20 +276,20 @@ class ProfilController extends AbstractController
                 $tabCountries[$country->label] = $country->id;
             }
 
-            $form = $this->createFormBuilder()
+            $builder = $this->createFormBuilder()
                 ->add('birth', DateType::class, [
                     'widget' => 'single_text',
                     'required' => true,
                     'data' => (new \DateTime())->setTimestamp($membre->birth)
                 ])
                 ->add('address', TextareaType::class, ['required' => true, 'data' => $membre->address])
-                ->add('zip', ChoiceType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
+                ->add('zip', TextType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
                 ->add('town', TextType::class, ['required' => true, 'data' => $membre->town])
                 ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $membre->country_id])
                 ->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile])
                 ->add('email', TextType::class, ['required' => true, 'data' => $membre->email])
-                ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
-                ->getForm();
+                ->add('submit', SubmitType::class, ['label' => 'Enregistrer']);
+                $form= $builder->getForm();
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {

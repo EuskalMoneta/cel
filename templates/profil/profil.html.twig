@@ -8,23 +8,27 @@
 
                     <i class="fal fa-user-circle" style="font-size: 72px;"></i>
                     <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
-                    <h2 class="secondary-color" >Compte n° {{ infosUser.compte }}</h2>
+                    <h2 class="secondary-color" >{{ "Compte n°" | trans }} {{ infosUser.compte | number_format(null,null,' ') }}</h2>
                     <p style="font-size: 14px">Cotisation : <i class="fa fa-check green" style="font-size: 18px;"></i> À jour ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})</p>
                 </div>
 
-                <h2 class="secondary-color mt-5">Sécurité</h2>
+                <h2 class="secondary-color mt-5">{{ "Sécurité" | trans }}</h2>
                 <table class="table">
                     <tr>
-                        <td><p class="main-color text-semi-bold"> Mot de passe</p></td>
-                        <td class="text-right"><a href="{{ path('app_profil_password') }}" class="btn btn-primary"> Modifier</a> </td>
+                        <td><p class="main-color text-semi-bold">{{ " Mot de passe" | trans }}</p></td>
+                        <td class="text-right"><a href="{{ path('app_profil_password') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
-                        <td><span class="main-color text-semi-bold">Question secrète</span></td>
-                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> Modifier</a> </td>
+                        <td><span class="main-color text-semi-bold">{{ "Question secrète" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold">{{ "Changer mon code PIN" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
-                <h2 class="secondary-color mt-5">Coordonnées</h2>
+                <h2 class="secondary-color mt-5">{{ "Coordonnées" | trans }}</h2>
                 <table class="table">
                     <tr>
                         <td>
@@ -36,7 +40,7 @@
                                 {{ membre.email }}
                             </p>
                         </td>
-                        <td class="text-right"><a href="{{ path('app_profil_coordonnees') }}" class="btn btn-primary btn-md"> Modifier</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_coordonnees') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
@@ -44,7 +48,7 @@
                 <table class="table">
                     <tr>
                         <td><p class="main-color text-semi-bold"> {{ membre.last_subscription_amount | round(2) }} EUS / mois</p></td>
-                        <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="btn btn-primary"> Modifier</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
@@ -52,11 +56,11 @@
                 <table class="table">
                     <tr>
                         <td><p class="main-color text-semi-bold"> Langue</p></td>
-                        <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> Modifier</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
                         <td><span class="main-color text-semi-bold">Notifications / Newsletter</span></td>
-                        <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> Modifier</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 

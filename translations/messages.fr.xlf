@@ -131,15 +131,15 @@
       </trans-unit>
       <trans-unit id="YGJCCXP" resname="Question secrète">
         <source>Question secrète</source>
-        <target>__Question secrète</target>
+        <target>Question secrète</target>
       </trans-unit>
       <trans-unit id="iblAykt" resname="Si vous avez oublié la réponse à la question secrète, merci de nous contacter.">
         <source>Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</source>
-        <target>__Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</target>
+        <target>Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</target>
       </trans-unit>
       <trans-unit id="NFl6O4g" resname="Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.">
         <source>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</source>
-        <target>__Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
+        <target>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
       </trans-unit>
       <trans-unit id="RULWH19" resname="Mot de passe oublié">
         <source>Mot de passe oublié</source>
@@ -153,30 +153,102 @@
         <source>Modifier la langue</source>
         <target>Modifier la langue</target>
       </trans-unit>
-      <trans-unit id="95ai2nU" resname="Langue">
+      <trans-unit id="X2uqtNv" resname="Langue">
         <source>Langue</source>
         <target>Langue</target>
       </trans-unit>
-      <trans-unit id="YmunqJa" resname="Enregistrer">
+      <trans-unit id="cdx0hz4" resname="Enregistrer">
         <source>Enregistrer</source>
         <target>Enregistrer</target>
       </trans-unit>
-      <trans-unit id="9aai2nU" resname="Langue mise à jour.">
-          <source>Langue mise à jour.</source>
-          <target>Langue mise à jour.</target>
-        </trans-unit>
-        <trans-unit id="9aai297" resname="Le changement de langue n'a pas pu être effectué">
-          <source>Le changement de langue n'a pas pu être effectué</source>
-          <target>Le changement de langue n'a pas pu être effectué</target>
-        </trans-unit>
-        <trans-unit id="9aaa297" resname="Le changement de langue n'a pas pu être effectué">
-            <source>Le changement de langue n'a pas pu être effectué</source>
-            <target>__Le changement de langue n'a pas pu être effectué</target>
-          </trans-unit>
-          <trans-unit id="9aabb97" resname="La modification n'a pas pu être effectuée">
-            <source>La modification n'a pas pu être effectuée</source>
-            <target>La modification n'a pas pu être effectuée</target>
-          </trans-unit>
+      <trans-unit id="maFavQy" resname="Langue mise à jour.">
+        <source>Langue mise à jour.</source>
+        <target>Langue mise à jour.</target>
+      </trans-unit>
+      <trans-unit id="J7r7KEk" resname="Le changement de langue n'a pas pu être effectué">
+        <source>Le changement de langue n'a pas pu être effectué</source>
+        <target>Le changement de langue n'a pas pu être effectué</target>
+      </trans-unit>
+      <trans-unit id="l.Fr090" resname="La modification n'a pas pu être effectuée">
+        <source>La modification n'a pas pu être effectuée</source>
+        <target>La modification n'a pas pu être effectuée</target>
+      </trans-unit>
+      <trans-unit id="RA42efs" resname="Les modifications ont bien été prises en compte">
+        <source>Les modifications ont bien été prises en compte</source>
+        <target>Les modifications ont bien été prises en compte</target>
+      </trans-unit>
+      <trans-unit id=".HQYHs6" resname="ou">
+        <source>ou</source>
+        <target>ou</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="IhQHL54" resname="Compte n°">
+        <source>Compte n°</source>
+        <target>Compte n°</target>
+      </trans-unit>
+      <trans-unit id="4gqGWh." resname="Sécurité">
+        <source>Sécurité</source>
+        <target>Sécurité</target>
+      </trans-unit>
+      <trans-unit id="QuN2BLY" resname="Modifier">
+        <source>Modifier</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="su_.4Gv" resname="Changer mon code PIN">
+        <source>Changer mon code PIN</source>
+        <target>Changer mon code PIN</target>
+      </trans-unit>
+      <trans-unit id="IUbRpkc" resname="Coordonnées">
+        <source>Coordonnées</source>
+        <target>Coordonnées</target>
+      </trans-unit>
+      <trans-unit id="eIARgzp" resname="Notifications">
+        <source>Notifications</source>
+        <target>Notifications</target>
+      </trans-unit>
+      <trans-unit id="_Eyi53F" resname="Newsletter">
+        <source>Newsletter</source>
+        <target>Newsletter</target>
+      </trans-unit>
+      <trans-unit id="FXJP8R7" resname="Cotisation">
+        <source>Cotisation</source>
+        <target>Cotisation</target>
+      </trans-unit>
+      <trans-unit id="QGdf5pO" resname="Vos bénéficiaires">
+        <source>Vos bénéficiaires</source>
+        <target>Vos bénéficiaires</target>
+      </trans-unit>
+      <trans-unit id="aUVszdD" resname="Obtenir un relevé de compte">
+        <source>Obtenir un relevé de compte</source>
+        <target>Obtenir un relevé de compte</target>
+      </trans-unit>
+      <trans-unit id="Id7QvzY" resname="Change automatique">
+        <source>Change automatique</source>
+        <target>Change automatique</target>
+      </trans-unit>
+      <trans-unit id="XvUjrEf" resname="mois">
+        <source>mois</source>
+        <target>mois</target>
+      </trans-unit>
+      <trans-unit id="xwYQJiS" resname="modifier">
+        <source>modifier</source>
+        <target>modifier</target>
+      </trans-unit>
+      <trans-unit id="TUALl6J" resname="Change manuel">
+        <source>Change manuel</source>
+        <target>Change manuel</target>
+      </trans-unit>
+      <trans-unit id="kigadXg" resname="Ce mois ci">
+        <source>Ce mois ci</source>
+        <target>Ce mois ci</target>
+      </trans-unit>
+      <trans-unit id="tggadXg" resname="Les 7 derniers jours">
+        <source>Les 7 derniers jours</source>
+        <target>Les 7 derniers jours</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

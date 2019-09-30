@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
-                <h2 class="secondary-color mb-2">{% trans %}Rechercher une opération{% endtrans %} </h2>
+                <h2 class="secondary-color mb-2">{{ "Obtenir un relevé de compte" | trans }} </h2>
 
                 <div class="mb-4">
                     {{ form_start(form) }}
@@ -33,13 +33,13 @@
                 </div>
 
 
-                {% if operations is not empty %}
+                {% if operations is not empty and operations != 'empty' %}
                     <div class="row mt-2">
                         <div class="col-6 text-center">
-                            <button type="button" class="btn btn-info">Exporter en CSV</button>
+                            <a href="{{ path('app_export_releve', {'type': 'csv', 'dateS': dateS, 'dateE': dateE}) }}" class="btn btn-info">Exporter en CSV</a>
                         </div>
                         <div class="col-6 text-center">
-                            <button type="button" class="btn btn-info">Exporter en PDF</button>
+                            <a href="{{ path('app_export_releve', {'type': 'pdf', 'dateS': dateS, 'dateE': dateE}) }}" class="btn btn-info">Exporter en PDF</a>
                         </div>
                     </div>
 
@@ -48,9 +48,23 @@
                             {% include 'utils/miniOperation.html.twig' with {'operations':operations} %}
                         </div>
                     </div>
+                {% elseif operations is empty  %}
+                    <div class="p-4 text-center">
+                        <h3>{{ "Aucun résultat pour les dates sélectionnées." | trans }}</h3>
+                    </div>
                 {% endif %}
 
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $('select').on('change', function() {
+            var dates = this.value.split('#');
+            $('#form_dateDebut').val(dates[1]);
+            $('#form_dateFin').val(dates[0]);
+        });
+    </script>
 {% endblock %}

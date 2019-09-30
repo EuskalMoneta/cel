@@ -25,7 +25,8 @@
         });
 
         $('.basicAutoComplete').bind('autocomplete.select', function() {
-            var ziptown = $("[name='form[zip]']").val().split('+');
+            var ziptown = $("#form_zip").val().split('--');
+            $("form_zip").val(ziptown[0]);
             $(this).val(ziptown[0]);
             $('#form_town').val(ziptown[1]);
         });

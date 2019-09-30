@@ -69,39 +69,87 @@ class MainController extends AbstractController
             throw new NotFoundHttpException('RIE non disponible');
         }
     }
+    
+    /**
+     * @Route("/export/releve/{type}/{dateS}/{dateE}", name="app_export_releve")
+     */
+    public function exportReleve( $dateS, $dateE, APIToolbox $APIToolbox, $type = 'pdf')
+    {
+        $response = $APIToolbox->curlGetPDF('GET', '/export-history-adherent/?begin='.$dateS.'T00:00&end='.$dateE.'T23:59&description=&mode='.$type);
+        if($response['httpcode'] == 200) {
+            if($type == 'pdf'){
+                return new Response($response['data'],200,
+                    [
+                        'Content-Type'        => 'application/pdf',
+                        'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.pdf'),
+                    ]
+                );
+            } else {
+                dump($response['data']);
+                dump(json_decode(str_replace ('\"','"',$response['data']), true));
+                dump(substr($response['data'], 2));
+                dump(json_decode('{'.substr($response['data'], 2)));
+                dump(json_last_error_msg());
+                /*dump($this->jsonToCsv($response['data']));*/
+                return $this->render('base.html.twig');
+                /*return new Response($response['data'],200,
+                    [
+                        'Content-Type'        => 'text/csv',
+                        'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.csv'),
+                    ]
+                );*/
+            }
+        } else {
+            throw new NotFoundHttpException('Releve non disponible');
+        }
+    }
 
     /**
      * @Route("/recherche", name="app_search")
      */
     public function search(Request $request, APIToolbox $APIToolbox)
     {
-        $operations = [];
+        //Init vars
+        $operations = 'empty';
+        $dateS = 'empty';
+        $dateE = 'empty';
 
+        //Set dates for the periode select
+        $now = (new \DateTime("now"))->format('Y-m-d');
+        $startOfWeek = (new \DateTime("now"))->modify('-1 week')->format('Y-m-d');
+        $startOfMonth = (new \DateTime("now"))->modify('first day of this month')->format('Y-m-d');
+        $startOfLastMonth = (new \DateTime("now"))->modify('first day of last month')->format('Y-m-d');
+        $endOfLastMonth = (new \DateTime("now"))->modify('last day of last month')->format('Y-m-d');
+
+        //form generation
         $form = $this->createFormBuilder()
             ->add('periode', ChoiceType::class,
-                ['choices' => ['Le mois dernier' =>'1', 'Le mois dernier' => '3'],
-                'required' => false
+                ['choices' => ['Les 7 derniers jours' => $now.'#'.$startOfWeek, 'Ce mois ci' => $now.'#'.$startOfMonth, 'Le mois dernier' => $endOfLastMonth.'#'.$startOfLastMonth],
+                    'required' => false
                 ]
             )
-            ->add('dateDebut', DateType::class, ['widget' => 'single_text', 'required' => false])
-            ->add('dateFin', DateType::class, ['widget' => 'single_text', 'required' => false])
-            ->add('motscles', TextType::class, ['required' => false])
-            ->add('submit', SubmitType::class, ['label' => 'Rechercher'])
+            ->add('dateDebut', DateType::class, ['widget' => 'single_text', 'required' => true])
+            ->add('dateFin', DateType::class, ['widget' => 'single_text', 'required' => true])
+            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
             ->getForm();
 
+        //Form process
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            //store and sent to the view for the export btns
+            $dateS = $data['dateDebut']->format('Y-m-d');
+            $dateE = $data['dateFin']->format('Y-m-d');
 
-            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$data['dateDebut']->format('Y-m-d').'T00:00&end='.$data['dateFin']->format('Y-m-d').'T23:50');
+            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateS.'T00:00&end='.$dateE.'T23:59');
 
             if($response['httpcode'] == 200) {
                 $operations = $response['data'][0]->result->pageItems;
             }
         }
 
-        return $this->render('main/search.html.twig', ['form' => $form->createView(), 'operations' => $operations]);
+        return $this->render('main/search.html.twig', ['form' => $form->createView(), 'operations' => $operations, 'dateS' => $dateS, 'dateE' => $dateE]);
     }
 
     /**

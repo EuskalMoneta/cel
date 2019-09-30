@@ -194,3 +194,7 @@ label.required:before {
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
+.btn-success {
+    color: #fff;
+    background-color: #41A528;
+}

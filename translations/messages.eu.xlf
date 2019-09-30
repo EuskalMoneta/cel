@@ -33,6 +33,15 @@
         <source>Le mois dernier</source>
         <target>__Le mois dernier</target>
       </trans-unit>
+      <trans-unit id="kigadXg" resname="Ce mois ci">
+        <source>Ce mois ci</source>
+        <target>__Ce mois ci</target>
+      </trans-unit>
+      <trans-unit id="tggadXg" resname="Les 7 derniers jours">
+        <source>Les 7 derniers jours</source>
+        <target>__Les 7 derniers jours</target>
+      </trans-unit>
+
       <trans-unit id="XIKWKPm" resname="Date debut">
         <source>Date debut</source>
         <target>__Date début</target>
@@ -61,10 +70,10 @@
         <source>Valider</source>
         <target>__Valider</target>
       </trans-unit>
-      <trans-unit id="YmunqJa" resname="Enregistrer">
-          <source>Enregistrer</source>
-          <target>erregistro</target>
-        </trans-unit>
+      <trans-unit id="cdx0hz4" resname="Enregistrer">
+        <source>Enregistrer</source>
+        <target>erregistro</target>
+      </trans-unit>
       <trans-unit id="BGulXiO" resname="Destinataire">
         <source>Destinataire</source>
         <target>__Destinataire</target>
@@ -169,27 +178,86 @@
         <source>Modifier la langue</source>
         <target>Hizkuntza aldatu</target>
       </trans-unit>
-      <trans-unit id="95ai2nU" resname="Langue">
+      <trans-unit id="X2uqtNv" resname="Langue">
         <source>Langue</source>
         <target>hizkuntza</target>
       </trans-unit>
-      <trans-unit id="9aai2nU" resname="Langue mise à jour.">
+      <trans-unit id="maFavQy" resname="Langue mise à jour.">
         <source>Langue mise à jour.</source>
         <target>__Langue mise à jour.</target>
       </trans-unit>
-      <trans-unit id="9aai297" resname="Le changement de langue n'a pas pu être effectué">
+      <trans-unit id="J7r7KEk" resname="Le changement de langue n'a pas pu être effectué">
         <source>Le changement de langue n'a pas pu être effectué</source>
         <target>__Le changement de langue n'a pas pu être effectué</target>
       </trans-unit>
-      <trans-unit id="9aaa297" resname="Le changement de langue n'a pas pu être effectué">
-        <source>Le changement de langue n'a pas pu être effectué</source>
-        <target>__Le changement de langue n'a pas pu être effectué</target>
+      <trans-unit id="l.Fr090" resname="La modification n'a pas pu être effectuée">
+        <source>La modification n'a pas pu être effectuée</source>
+        <target>__La modification n'a pas pu être effectuée</target>
       </trans-unit>
-      <trans-unit id="9aabb97" resname="La modification n'a pas pu être effectuée">
-          <source>La modification n'a pas pu être effectuée</source>
-          <target>__La modification n'a pas pu être effectuée</target>
-        </trans-unit>
-
+      <trans-unit id="RA42efs" resname="Les modifications ont bien été prises en compte">
+        <source>Les modifications ont bien été prises en compte</source>
+        <target>__Les modifications ont bien été prises en compte</target>
+      </trans-unit>
+      <trans-unit id=".HQYHs6" resname="ou">
+        <source>ou</source>
+        <target>__ou</target>
+      </trans-unit>
+      <trans-unit id="IhQHL54" resname="Compte n°">
+        <source>Compte n°</source>
+        <target>__Compte n°</target>
+      </trans-unit>
+      <trans-unit id="4gqGWh." resname="Sécurité">
+        <source>Sécurité</source>
+        <target>__Sécurité</target>
+      </trans-unit>
+      <trans-unit id="QuN2BLY" resname="Modifier">
+        <source>Modifier</source>
+        <target>__Modifier</target>
+      </trans-unit>
+      <trans-unit id="su_.4Gv" resname="Changer mon code PIN">
+        <source>Changer mon code PIN</source>
+        <target>__Changer mon code PIN</target>
+      </trans-unit>
+      <trans-unit id="IUbRpkc" resname="Coordonnées">
+        <source>Coordonnées</source>
+        <target>__Coordonnées</target>
+      </trans-unit>
+      <trans-unit id="eIARgzp" resname="Notifications">
+        <source>Notifications</source>
+        <target>__Notifications</target>
+      </trans-unit>
+      <trans-unit id="_Eyi53F" resname="Newsletter">
+        <source>Newsletter</source>
+        <target>__Newsletter</target>
+      </trans-unit>
+      <trans-unit id="FXJP8R7" resname="Cotisation">
+        <source>Cotisation</source>
+        <target>__Cotisation</target>
+      </trans-unit>
+      <trans-unit id="QGdf5pO" resname="Vos bénéficiaires">
+        <source>Vos bénéficiaires</source>
+        <target>__Vos bénéficiaires</target>
+      </trans-unit>
+      <trans-unit id="aUVszdD" resname="Obtenir un relevé de compte">
+        <source>Obtenir un relevé de compte</source>
+        <target>__Obtenir un relevé de compte</target>
+      </trans-unit>
+      <trans-unit id="Id7QvzY" resname="Change automatique">
+        <source>Change automatique</source>
+        <target>__Change automatique</target>
+      </trans-unit>
+      <trans-unit id="XvUjrEf" resname="mois">
+        <source>mois</source>
+        <target>__mois</target>
+      </trans-unit>
+      <trans-unit id="xwYQJiS" resname="modifier">
+        <source>modifier</source>
+        <target>__modifier</target>
+      </trans-unit>
+      <trans-unit id="TUALl6J" resname="Change manuel">
+        <source>Change manuel</source>
+        <target>__Change manuel</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

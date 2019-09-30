@@ -9,13 +9,13 @@
                     <i class="fal fa-user-circle" style="font-size: 72px;"></i>
                     <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
                     <h2 class="secondary-color" >{{ "Compte n°" | trans }} {{ infosUser.compte | number_format(null,null,' ') }}</h2>
-                    <p style="font-size: 14px">Cotisation : <i class="fa fa-check green" style="font-size: 18px;"></i> À jour ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})</p>
+                    <p style="font-size: 14px">{{"Cotisation" | trans }} : <i class="fa fa-check green" style="font-size: 18px;"></i> {{"À jour" | trans }} ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})</p>
                 </div>
 
                 <h2 class="secondary-color mt-5">{{ "Sécurité" | trans }}</h2>
                 <table class="table">
                     <tr>
-                        <td><p class="main-color text-semi-bold">{{ " Mot de passe" | trans }}</p></td>
+                        <td><p class="main-color text-semi-bold">{{ "Mot de passe" | trans }}</p></td>
                         <td class="text-right"><a href="{{ path('app_profil_password') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
@@ -24,7 +24,7 @@
                     </tr>
                     <tr>
                         <td><span class="main-color text-semi-bold">{{ "Changer mon code PIN" | trans }}</span></td>
-                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_pin') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
@@ -44,23 +44,27 @@
                     </tr>
                 </table>
 
-                <h2 class="secondary-color mt-5">Cotisation</h2>
+                <h2 class="secondary-color mt-5">{{"Cotisation" | trans}}</h2>
                 <table class="table">
                     <tr>
-                        <td><p class="main-color text-semi-bold"> {{ membre.last_subscription_amount | round(2) }} EUS / mois</p></td>
+                        <td><p class="main-color text-semi-bold"> {{ membre.last_subscription_amount | round(2) }} eusko / {{"mois" | trans }}</p></td>
                         <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
-                <h2 class="secondary-color mt-5">Autres paramètres</h2>
+                <h2 class="secondary-color mt-5">{{"Autres paramètres" | trans }}</h2>
                 <table class="table">
                     <tr>
-                        <td><p class="main-color text-semi-bold"> Langue</p></td>
+                        <td><p class="main-color text-semi-bold"> {{"Langue" | trans }}</p></td>
                         <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
-                        <td><span class="main-color text-semi-bold">Notifications / Newsletter</span></td>
+                        <td><span class="main-color text-semi-bold"> {{ "Newsletter" | trans }}</span></td>
                         <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold">{{ "Notifications" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_notifications') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 

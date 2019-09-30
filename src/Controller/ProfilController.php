@@ -62,7 +62,7 @@ class ProfilController extends AbstractController
             $membre = $responseMembre['data'][0];
 
             $form = $this->createFormBuilder()
-                ->add('old_password', PasswordType::class)
+                ->add('old_password', PasswordType::class, ['label' => 'Ancien mot de passe'])
                 ->add('new_password', RepeatedType::class, [
                     'first_options'  => ['label' => 'Nouveau mot de passe'],
                     'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
@@ -89,11 +89,95 @@ class ProfilController extends AbstractController
                 if($responseProfile['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                 } else {
-                    $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                    $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
             }
 
             return $this->render('profil/password.html.twig', ['form' => $form->createView()]);
+
+        } else {
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
+    /**
+     * @Route("/profil/pin", name="app_profil_pin")
+     */
+    public function pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
+        if($responsePin['httpcode'] == 200) {
+
+            // If the pin code is already defined
+            if($responsePin['data'] == 'ACTIVE'){
+                $form = $this->createFormBuilder()
+                    ->add('ex_pin', PasswordType::class, ['label' => 'Code précédent', 'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 4, 'max'=> 4]),
+                    ]])
+                    ->add('pin1', RepeatedType::class, [
+                        'first_options'  => ['label' => 'Nouveau code pin (4 chiffres)'],
+                        'second_options' => ['label' => 'Confirmer le nouveau code pin'],
+                        'constraints' => [
+                            new NotBlank(),
+                            new Length(['min' => 4, 'max'=> 4]),
+                        ],
+                        'type' => PasswordType::class,
+                        'options' => ['attr' => ['class' => 'password-field']],
+                        'required' => true,
+                    ])
+                    ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                    ->getForm();
+
+
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $data = $form->getData();
+                    $data['pin2'] = $data['pin1'];
+
+                    $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
+
+                    if($responseProfile['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    } else {
+                        $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
+                    }
+                }
+            } else {
+                // If there isn't a PIN code yet, don't ask for the old one
+                $form = $this->createFormBuilder()
+                    ->add('pin1', RepeatedType::class, [
+                        'first_options'  => ['label' => 'Code pin (4 chiffres)'],
+                        'second_options' => ['label' => 'Confirmer le code'],
+                        'constraints' => [
+                            new NotBlank(),
+                            new Length(['min' => 4, 'max'=> 4]),
+                        ],
+                        'type' => PasswordType::class,
+                        'options' => ['attr' => ['class' => 'password-field']],
+                        'required' => true,
+                    ])
+                    ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                    ->getForm();
+
+
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $data = $form->getData();
+                    $data['pin2'] = $data['pin1'];
+
+                    $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
+
+                    if($responseProfile['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    } else {
+                        $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
+                    }
+                }
+
+            }
+
+            return $this->render('profil/pin.html.twig', ['form' => $form->createView()]);
 
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -166,7 +250,7 @@ class ProfilController extends AbstractController
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                     } else {
-                        $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                        $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
                 }
             }
@@ -231,7 +315,7 @@ class ProfilController extends AbstractController
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                     } else {
-                        $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                        $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
                 }
 
@@ -289,7 +373,7 @@ class ProfilController extends AbstractController
                 ->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile])
                 ->add('email', TextType::class, ['required' => true, 'data' => $membre->email])
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer']);
-                $form= $builder->getForm();
+            $form= $builder->getForm();
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -303,7 +387,7 @@ class ProfilController extends AbstractController
                 if($responseLang['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                 } else {
-                    $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                    $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
             }
 
@@ -376,35 +460,6 @@ class ProfilController extends AbstractController
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
                         'data' => $booleanNewsletter
                     ])
-                ->add('virement_recu', ChoiceType::class,
-                    [
-                        'label' => 'Nouveau virement',
-                        'help' => 'Vous recevrez un email pour chaque virement reçu.',
-                        'choices' => ['Oui' =>'1', 'Non' => '0'],
-                        'data' => $booleanNewsletter
-                    ])
-                ->add('prelevement_recu', ChoiceType::class,
-                    [
-                        'label' => 'Nouveau prélèvement sur votre compte',
-                        'help' => 'Vous recevrez un email pour chaque prélèvement effectué sur votre compte.',
-                        'choices' => ['Oui' =>'1', 'Non' => '0'],
-                        'data' => $booleanNewsletter
-                    ])
-                ->add('mandat_accepte', ChoiceType::class,
-                    [
-                        'label' => 'Mandat accepté',
-                        'help' => 'Vous recevrez un email lorsque votre débiteur accepte un mandat.',
-                        'choices' => ['Oui' =>'1', 'Non' => '0'],
-                        'data' => $booleanNewsletter
-                    ])
-                ->add('mandat_refuse', ChoiceType::class,
-                    [
-                        'label' => 'Mandat refusé',
-                        'help' => 'Vous recevrez un email lorsque votre débiteur annule ou refuse un mandat.',
-                        'choices' => ['Oui' =>'1', 'Non' => '0'],
-                        'data' => $booleanNewsletter
-                    ])
-
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
                 ->getForm();
 
@@ -416,11 +471,59 @@ class ProfilController extends AbstractController
                 if($responseLang['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                 } else {
-                    $this->addFlash('danger', $translator->trans('La modification n\'a pas pu être effectuée'));
+                    $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
             }
 
             return $this->render('profil/newsletter.html.twig', ['form' => $form->createView()]);
+
+        } else {
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
+    /**
+     * @Route("/profil/notifications", name="app_profil_notifications")
+     */
+    public function notifications(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMembre['httpcode'] == 200) {
+
+            $membre = $responseMembre['data'][0];
+            $booleanNewsletter = $membre->array_options->options_recevoir_actus;
+
+            $form = $this->createFormBuilder()
+                ->add('virement_recu', ChoiceType::class,
+                    [
+                        'label' => 'Virement reçu',
+                        'help' => 'Vous recevrez un email pour chaque virement reçu.',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('prelevement_recu', ChoiceType::class,
+                    [
+                        'label' => 'Prélèvement effectué sur votre compte',
+                        'help' => 'Vous recevrez un email pour chaque prélèvement effectué sur votre compte.',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+
+                if($responseLang['httpcode'] == 200) {
+                    $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                } else {
+                    $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
+                }
+            }
+
+            return $this->render('profil/notifications.html.twig', ['form' => $form->createView()]);
 
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

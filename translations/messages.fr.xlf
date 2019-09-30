@@ -109,6 +109,10 @@
         <source>Votre question secrète</source>
         <target>Votre question secrète</target>
       </trans-unit>
+      <trans-unit id="XFVRV7B" resname="Ancien mot de passe">
+        <source>Ancien mot de passe</source>
+        <target>Ancien mot de passe</target>
+      </trans-unit>
       <trans-unit id="o9ZcpWl" resname="Nouveau mot de passe">
         <source>Nouveau mot de passe</source>
         <target>Nouveau mot de passe</target>
@@ -241,13 +245,145 @@
         <source>Change manuel</source>
         <target>Change manuel</target>
       </trans-unit>
-      <trans-unit id="kigadXg" resname="Ce mois ci">
+      <trans-unit id="VvJNEhb" resname="Ce mois ci">
         <source>Ce mois ci</source>
         <target>Ce mois ci</target>
       </trans-unit>
-      <trans-unit id="tggadXg" resname="Les 7 derniers jours">
+      <trans-unit id="GeCE9FZ" resname="Les 7 derniers jours">
         <source>Les 7 derniers jours</source>
         <target>Les 7 derniers jours</target>
+      </trans-unit>
+      <trans-unit id="PvV1cs_" resname="Choix du code pin">
+        <source>Choix du code pin</source>
+        <target>Choix du code pin</target>
+      </trans-unit>
+      <trans-unit id="iFgBhya" resname="Aucun résultat pour les dates sélectionnées.">
+        <source>Aucun résultat pour les dates sélectionnées.</source>
+        <target>Aucun résultat pour les dates sélectionnées.</target>
+      </trans-unit>
+      <trans-unit id="SUyXryy" resname="Code précédent">
+        <source>Code précédent</source>
+        <target>Code précédent</target>
+      </trans-unit>
+      <trans-unit id="9ytImW7" resname="Nouveau code pin (4 chiffres)">
+        <source>Nouveau code pin (4 chiffres)</source>
+        <target>Nouveau code pin (4 chiffres)</target>
+      </trans-unit>
+      <trans-unit id="ub1oCM1" resname="Confirmer le nouveau code pin">
+        <source>Confirmer le nouveau code pin</source>
+        <target>Confirmer le nouveau code pin</target>
+      </trans-unit>
+      <trans-unit id="iOWrLAs" resname="Code pin (4 chiffres)">
+        <source>Code pin (4 chiffres)</source>
+        <target>Code pin (4 chiffres)</target>
+      </trans-unit>
+      <trans-unit id="o45LraB" resname="Confirmer le code">
+        <source>Confirmer le code</source>
+        <target>Confirmer le code</target>
+      </trans-unit>
+      <trans-unit id="UNs9HuJ" resname="À jour">
+        <source>À jour</source>
+        <target>À jour</target>
+      </trans-unit>
+      <trans-unit id="eyGxk9O" resname="Autres paramètres">
+        <source>Autres paramètres</source>
+        <target>Autres paramètres</target>
+      </trans-unit>
+      <trans-unit id="Murrb4B" resname="Birth">
+        <source>Birth</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="Vu_PIJV" resname="Address">
+        <source>Address</source>
+        <target>Addresse</target>
+      </trans-unit>
+      <trans-unit id="e8iOu20" resname="Zip">
+        <source>Zip</source>
+        <target>Code postal</target>
+      </trans-unit>
+      <trans-unit id="OQ8lE0u" resname="Town">
+        <source>Town</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="PXV_XpD" resname="Country id">
+        <source>Country id</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="9x4K2dK" resname="Phone mobile">
+        <source>Phone mobile</source>
+        <target>Téléphone</target>
+      </trans-unit>
+      <trans-unit id="EQNxKHP" resname="Montant de la cotisation">
+        <source>Montant de la cotisation</source>
+        <target>Montant de la cotisation</target>
+      </trans-unit>
+      <trans-unit id="XDage3y" resname="1 eusko par mois / 12 eusko par an">
+        <source>1 eusko par mois / 12 eusko par an</source>
+        <target>1 eusko par mois / 12 eusko par an</target>
+      </trans-unit>
+      <trans-unit id="ZkUMQ53" resname="2 eusko par mois / 24 eusko par an">
+        <source>2 eusko par mois / 24 eusko par an</source>
+        <target>2 eusko par mois / 24 eusko par an</target>
+      </trans-unit>
+      <trans-unit id="ykTdITV" resname="3 eusko par mois / 36 eusko par an">
+        <source>3 eusko par mois / 36 eusko par an</source>
+        <target>3 eusko par mois / 36 eusko par an</target>
+      </trans-unit>
+      <trans-unit id="zqUAM.q" resname="5 eusko par an (chômeurs, minima sociaux)">
+        <source>5 eusko par an (chômeurs, minima sociaux)</source>
+        <target>5 eusko par an (chômeurs, minima sociaux)</target>
+      </trans-unit>
+      <trans-unit id="tIa6Q4o" resname="Périodicité du prélèvement">
+        <source>Périodicité du prélèvement</source>
+        <target>Périodicité du prélèvement</target>
+      </trans-unit>
+      <trans-unit id="ov6OmZ4" resname="Annuel">
+        <source>Annuel</source>
+        <target>Annuel</target>
+      </trans-unit>
+      <trans-unit id="eqxMbaV" resname="Mensuel (le 15 du mois)">
+        <source>Mensuel (le 15 du mois)</source>
+        <target>Mensuel (le 15 du mois)</target>
+      </trans-unit>
+      <trans-unit id="2F9Q2tT" resname="J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.">
+        <source>J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.</source>
+        <target>J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.</target>
+      </trans-unit>
+      <trans-unit id="Oz3gVJa" resname="Recevoir les actualités liées à l'Eusko">
+        <source>Recevoir les actualités liées à l'Eusko</source>
+        <target>Recevoir les actualités liées à l'Eusko</target>
+      </trans-unit>
+      <trans-unit id="6Dys69N" resname="Vous recevrez un à deux mails par semaine.">
+        <source>Vous recevrez un à deux mails par semaine.</source>
+        <target>Vous recevrez un à deux mails par semaine.</target>
+      </trans-unit>
+      <trans-unit id="RSfVoFs" resname="Virement reçu">
+        <source>Virement reçu</source>
+        <target>Virement reçu</target>
+      </trans-unit>
+      <trans-unit id="x.rDjcp" resname="Vous recevrez un email pour chaque virement reçu.">
+        <source>Vous recevrez un email pour chaque virement reçu.</source>
+        <target>Vous recevrez un email pour chaque virement reçu.</target>
+      </trans-unit>
+      <trans-unit id="aGXfOD2" resname="Prélèvement effectué sur votre compte">
+        <source>Prélèvement effectué sur votre compte</source>
+        <target>Prélèvement effectué sur votre compte</target>
+      </trans-unit>
+      <trans-unit id="AhQy8Sp" resname="Vous recevrez un email pour chaque prélèvement effectué sur votre compte.">
+        <source>Vous recevrez un email pour chaque prélèvement effectué sur votre compte.</source>
+        <target>Vous recevrez un email pour chaque prélèvement effectué sur votre compte.</target>
+      </trans-unit>
+      <trans-unit id="nZ7fwPa" resname="Mon solde">
+        <source>Mon solde</source>
+        <target>Mon solde</target>
+      </trans-unit>
+      <trans-unit id="hl3zMkr" resname="Historique">
+        <source>Historique</source>
+        <target>Historique</target>
+      </trans-unit>
+      <trans-unit id="WGBDFRh" resname="Relevés de compte">
+        <source>Relevés de compte</source>
+        <target>Relevés de compte</target>
       </trans-unit>
     </body>
   </file>

@@ -6,37 +6,11 @@
         </div>
         <div class="col-4">
             <div class="float-right ">
-                {% if operation.transactionNature == 'PAYMENT' %}
+                {% if operation.amount > 0 %}
                     <div class="prix text-right green">+ {{ operation.amount | number_format(2, ',') }}</div>
                 {% else %}
-                    <div class="prix text-right">- {{ operation.amount | number_format(2, ',') }}</div>
+                    <div class="prix text-right">{{ operation.amount | number_format(2, ',') }}</div>
                 {% endif %}
-            </div>
-        </div>
-    </div>
-{% endfor %}
-{% for i in 0..12 %}
-    {% if i is divisible by(4) %}
-        <div class="row pt-4 pb-4 pl-2 pr-2 " {% if i is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
-            <div class="col-8">
-                <div class="main-color text-semi-bold"> Change automatique</div>
-                <div class="secondary-color">{{ "now"|localizeddate('long', 'none', app.request.getLocale()) }}</div>
-            </div>
-            <div class="col-4">
-                <div class="float-right ">
-                    <div class="prix green text-right"> + 30,00 </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <div class="row pt-4 pb-4 pl-2 pr-2 " {% if i is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
-        <div class="col-8">
-            <div class="main-color text-semi-bold"> Café des pyrénées</div>
-            <div class="secondary-color"> {{ "now"|localizeddate('long', 'none', app.request.getLocale()) }}</div>
-        </div>
-        <div class="col-4">
-            <div class="float-right ">
-                <div class="prix text-right"> - 15,00 </div>
             </div>
         </div>
     </div>

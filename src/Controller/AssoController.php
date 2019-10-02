@@ -23,9 +23,9 @@ class AssoController extends AbstractController
                 'solde' => $response['data']->result[0]->status->balance
             ];
 
-            $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+            $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
 
-            return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMembre['data'][0]]);
+            return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMember['data'][0]]);
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }

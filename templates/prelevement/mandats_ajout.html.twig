@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+
+                <div class="row">
+                    <div class="col-8">
+                        <h2 class="secondary-color mb-4"> {{ "Ajouter des mandats" | trans }} </h2>
+                    </div>
+                    <div class="col-4 text-right">
+                        <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-slim btn-outline-dark">Retour</a>
+                    </div>
+                </div>
+
+
+
+                <h3 class="main-color">{{ "Un seul mandat" | trans }} </h3>
+                <div class="mb-4">
+                    {{ form(form) }}
+                </div>
+
+                <h3 class="main-color pt-4">  {{ "Plusieurs mandats" | trans }} </h3>
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

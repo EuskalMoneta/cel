@@ -101,7 +101,7 @@ class APIToolbox extends AbstractController
 
             return ['data' => $return, 'httpcode' => $http_status];
         }
-        return ['data' => 'nouser', 'httpcode' => 200];
+        return ['data' => 'nouser', 'httpcode' => 500];
     }
 
 

@@ -43,9 +43,9 @@ class ProfilController extends AbstractController
                 'solde' => $response['data']->result[0]->status->balance
             ];
 
-            $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+            $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
 
-            return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMembre['data'][0]]);
+            return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMember['data'][0]]);
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
@@ -56,10 +56,10 @@ class ProfilController extends AbstractController
      */
     public function password(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
 
             $form = $this->createFormBuilder()
                 ->add('old_password', PasswordType::class, ['label' => 'Ancien mot de passe'])
@@ -190,10 +190,10 @@ class ProfilController extends AbstractController
      */
     public function cotisation(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
 
             if($membre->array_options->options_prelevement_cotisation_periodicite == 1){
                 $defaultData = $membre->array_options->options_prelevement_cotisation_montant * 12;
@@ -267,10 +267,10 @@ class ProfilController extends AbstractController
      */
     public function question(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
 
             $questions = ['' => '','autre' => 'autre'];
             $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getSession()->get('_locale'));
@@ -350,9 +350,9 @@ class ProfilController extends AbstractController
      */
     public function coordonnees(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
-            $membre = $responseMembre['data'][0];
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
+            $membre = $responseMember['data'][0];
 
             $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
             $tabCountries = [];
@@ -404,10 +404,10 @@ class ProfilController extends AbstractController
      */
     public function langue(Request $request, APIToolbox $APIToolbox, SessionInterface $session, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
             $langue = $membre->array_options->options_langue;
 
             $form = $this->createFormBuilder()
@@ -446,10 +446,10 @@ class ProfilController extends AbstractController
      */
     public function newsletter(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
             $booleanNewsletter = $membre->array_options->options_recevoir_actus;
 
             $form = $this->createFormBuilder()
@@ -487,10 +487,10 @@ class ProfilController extends AbstractController
      */
     public function notifications(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
             $booleanNewsletter = $membre->array_options->options_recevoir_actus;
 
             $form = $this->createFormBuilder()

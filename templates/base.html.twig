@@ -11,8 +11,8 @@
     <title>Eusko CEL</title>
 
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"  type='text/css'>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet"  type='text/css'>
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet"  type='text/css'>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"  type='text/css'>
 
 </head>
 
@@ -74,7 +74,7 @@
                     {% for message in messages %}
                         <div class="alert alert-dismissible alert-{{ label }}">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ message }}
+                            {{ message | raw }}
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -106,7 +106,7 @@
                 </a>
             </div>
             <div class="col-3">
-                <a href="{{ path('app_homepage') }}">
+                <a href="{{ path('app_prelevement') }}">
                     <i class="fal fa-list"></i>
                     <br /> Prélèvements
                 </a>

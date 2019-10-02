@@ -14,10 +14,10 @@ class ChangeController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox)
     {
-        $responseMembre = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMembre['httpcode'] == 200) {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
 
-            $membre = $responseMembre['data'][0];
+            $membre = $responseMember['data'][0];
 
             return $this->render('change/change.html.twig', ['membre' => $membre]);
 

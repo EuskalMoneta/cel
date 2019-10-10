@@ -74,6 +74,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user->setLastLogin(new \DateTime());
         $user->setToken($token);
 
+        //User Roles
+        if($user->getUsername()[0] == 'E'){
+            $user->setRoles(['ROLE_CLIENT']);
+        } elseif($user->getUsername()[0] == 'Z') {
+            $user->setRoles(['ROLE_PARTENAIRE']);
+        }
+
         //get Locale
         $responseMember = $this->apiToolBox->curlRequest('GET', '/members/?login='.$credentials['username'], '', $token);
         if($responseMember['httpcode'] == 200) {

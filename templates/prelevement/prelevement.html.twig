@@ -18,6 +18,8 @@
                     </div>
                 </div>
 
+
+                {% if is_granted('ROLE_USER') %}
                 <h3 class="main-color mt-4"><i class="fas fa-money-bill"></i>  {{ "Je prélève quelqu'un" | trans }} </h3>
                 <div class="ml-4 mr-2 mb-4">
                     <div class="text-center mt-4">
@@ -26,9 +28,8 @@
                     <div class="text-center mt-4">
                         <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-outline-primary">{{ "Consulter ou ajouter des mandats" | trans }}</a>
                     </div>
-
-
                 </div>
+                {% endif %}
 
 
             </div>

@@ -3,6 +3,10 @@
     src: url("../webfonts/Montserrat-Regular.ttf") format("truetype");
 }
 @font-face {
+    font-family: "Montserrat-light";
+    src: url("../webfonts/Montserrat-Light.ttf") format("truetype");
+}
+@font-face {
     font-family: "Montserrat-bold";
     src: url("../webfonts/Montserrat-Bold.ttf") format("truetype");
 }
@@ -53,6 +57,7 @@ h3 {
 }
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
 .text-semi-bold { font-family: 'Montserrat-semi-bold', Arial, sans-serif;}
+.text-light { font-family: 'Montserrat-light', Arial, sans-serif;}
 .big-solde{
     font-size:34px;
     font-family: 'Montserrat-bold', Arial, sans-serif;
@@ -61,6 +66,28 @@ h3 {
 .secondary-color { color: #969FAA; }
 .main-color { color: #47525E; }
 .green { color: #41A528; }
+.threeper {
+    background-color: #41A528;
+    color: white;
+}
+.threepermain {
+    font-size: 22px;
+    color: white;
+}
+.threepersecond {
+    font-size: 16px;
+    color: white;
+}
+.btn-outline-white {
+    color: #fff;
+    background-color: transparent;
+    border-color: #fff;
+}
+.btn-outline-white:hover {
+    color: #000;
+    background-color: #fff;
+    border-color: #fff;
+}
 .eusko-cart{
     width: auto;
     max-width: 380px;
@@ -111,7 +138,7 @@ main{
 }
 .footer i{
     font-size: 24px;
-    color: #C0CCDA;
+    color: #31506C;
 }
 .footer img{
     width: 30px;

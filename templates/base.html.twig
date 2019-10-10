@@ -26,10 +26,10 @@
             <div class="navbar-right">
 
                 {% if app.user %}
-                <a href="{{ path('app_homepage') }}">
+                {#<a href="{{ path('app_homepage') }}">
                     <i class="fal fa-home cel-menu-icon"></i>
                     <br /> Accueil
-                </a>
+                </a>#}
 
                 <a href="#">
                     <i class="fal fa-question-circle cel-menu-icon"></i>
@@ -42,10 +42,15 @@
                 </a>
 
                 <a href="{{ path('app_profil') }}">
+                    <i class="fal fa-sign-out cel-menu-icon"></i>
+                    <br /> Quitter
+                </a>
+
+                {#<a href="{{ path('app_profil') }}">
                     <i class="fal fa-bell cel-menu-icon"></i>
                     <br />
                     <span class="badge badge-danger">4</span>
-                </a>
+                </a>#}
                 {% else %}
                     <a href="{{ path('app_anon_lang', {'locale': 'eu'}) }}" style="font-size: 16px;">
                         EUS
@@ -67,9 +72,10 @@
 
 </header>
 <main>
+
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-6 offset-md-3 mt-4">
+            <div class="col-12 col-md-6 offset-md-3 mt-2">
                 {% for label, messages in app.flashes() %}
                     {% for message in messages %}
                         <div class="alert alert-dismissible alert-{{ label }}">
@@ -82,6 +88,7 @@
         </div>
     </div>
 
+
     <!-- Page Content -->
     {% block body %}
 
@@ -93,6 +100,12 @@
     <div class="container">
 
         <div class="row">
+            <div class="col-3">
+                <a href="{{ path('app_homepage') }}">
+                    <i class="fal fa-home"></i>
+                    <br /> Accueil
+                </a>
+            </div>
             <div class="col-3">
                 <a href="{{ path('app_virement') }}">
                     <img src="{{ asset('images/virement.png') }}">
@@ -109,12 +122,6 @@
                 <a href="{{ path('app_prelevement') }}">
                     <i class="fal fa-list"></i>
                     <br /> Prélèvements
-                </a>
-            </div>
-            <div class="col-3">
-                <a href="{{ path('app_asso') }}">
-                    <i class="fal fa-percent"></i>
-                    <br /> Asso 3%
                 </a>
             </div>
         </div>

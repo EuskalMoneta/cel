@@ -229,9 +229,6 @@ class ProfilController extends AbstractController
                     ],
                     'data' => round($membre->array_options->options_prelevement_cotisation_periodicite, 0)
                 ])
-                ->add('options_prelevement_auto_cotisation_eusko', CheckboxType::class, [
-                    'label' => '* J\'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.',
-                ])
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
                 ->getForm();
 

@@ -76,7 +76,7 @@ class APIToolbox extends AbstractController
 
     }
 
-    public function curlGetPDF($method, $link, $data = '')
+    public function curlGetPDF($method, $link, $type = 'pdf')
     {
         $user = $this->getUser();
 
@@ -90,10 +90,18 @@ class APIToolbox extends AbstractController
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/pdf',
-                    'Authorization: Token ' . $token)
-            );
+            if($type == 'pdf'){
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/pdf',
+                        'Authorization: Token ' . $token)
+                );
+            } elseif($type == 'csv'){
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                        'Accept: text/csv',
+                        'Authorization: Token ' . $token)
+                );
+            }
+
 
             $return = curl_exec($curl);
             $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -103,6 +111,7 @@ class APIToolbox extends AbstractController
         }
         return ['data' => 'nouser', 'httpcode' => 500];
     }
+
 
 
     /**

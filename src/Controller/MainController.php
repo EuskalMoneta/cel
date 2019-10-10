@@ -71,7 +71,7 @@ class MainController extends AbstractController
      */
     public function exportReleve( $dateS, $dateE, APIToolbox $APIToolbox, $type = 'pdf')
     {
-        $response = $APIToolbox->curlGetPDF('GET', '/export-history-adherent/?begin='.$dateS.'T00:00&end='.$dateE.'T23:59&description=&mode='.$type);
+        $response = $APIToolbox->curlGetPDF('GET', '/export-history-adherent/?begin='.$dateS.'&end='.$dateE.'&description=', $type);
         if($response['httpcode'] == 200) {
             if($type == 'pdf'){
                 return new Response($response['data'],200,
@@ -81,19 +81,20 @@ class MainController extends AbstractController
                     ]
                 );
             } else {
-                dump($response['data']);
-                dump(json_decode(str_replace ('\"','"',$response['data']), true));
+                /*dump($response['data']);
+                dump(json_decode('{'.str_replace ('\'','\"',$response['data']).'}', true));
+                dump(json_last_error_msg());
                 dump(substr($response['data'], 2));
                 dump(json_decode('{'.substr($response['data'], 2)));
                 dump(json_last_error_msg());
-                /*dump($this->jsonToCsv($response['data']));*/
-                return $this->render('base.html.twig');
-                /*return new Response($response['data'],200,
+A
+                return $this->render('base.html.twig');*/
+                return new Response($response['data'],200,
                     [
                         'Content-Type'        => 'text/csv',
                         'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.csv'),
                     ]
-                );*/
+                );
             }
         } else {
             throw new NotFoundHttpException('Releve non disponible');

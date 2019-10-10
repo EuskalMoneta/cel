@@ -44,7 +44,7 @@
                     <div class="col-8 col-md-6">
                         <div class="float-right float-md-none">
                             <h2 class="threepersecond mb-0 text-light"> {{ "Mon don 3% Eusko" | trans }}</h2>
-                            <div class="threepermain text-semi-bold"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
+                            <div class="threepermain text-semi-bold"> {{ montant_don | number_format(2, ',') }} eusko</div>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,14 @@
                     </div>
                 </div>
 
-                {% include 'utils/miniOperation.html.twig' with {'operations' : operations } %}
+                {% if operations is not empty%}
+                    {% include 'utils/miniOperation.html.twig' with {'operations' : operations } %}
+                {% else %}
+                    <div class="text-center mt-4">
+                        <h3 class="mt-4">Votre historique est vide</h3>
+                        <img src="{{ asset('images/no-data.png') }}" width="30%"/>
+                    </div>
+                {% endif %}
 
             </div>
         </div>

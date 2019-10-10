@@ -19,7 +19,9 @@ class MainController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox)
     {
+        //init vars
         $operations = [];
+        $montant_don = 0;
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
@@ -36,12 +38,20 @@ class MainController extends AbstractController
             $dateEnd = (new \DateTime("now"));
             $dateStart = (new \DateTime("now"))->modify("-3 month");
 
+            // GET account history, debit and credit
             $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateStart->format('Y-m-d').'T00:00&end='.$dateEnd->format('Y-m-d').'T23:50');
-
             if($response['httpcode'] == 200) {
                 $operations = $response['data'][0]->result->pageItems;
             }
-            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations]);
+
+            //GET montant du don 3%
+            $response = $APIToolbox->curlRequest('GET', '/montant-don/');
+            if($response['httpcode'] == 200) {
+                $montant_don = $response['data']->montant_don;
+            }
+
+
+            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don]);
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }

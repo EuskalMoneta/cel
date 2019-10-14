@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ "Conditions Générales d'Utilisation" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+                <div class="mt-4">
+                    <form method="post">
+
+                        <h1 class="h3 mb-3 font-weight-normal">{{ "Lire les conditions générales d'Utilisation" | trans }}</h1>
+
+                        <h2>CGU</h2>
+                        <p> vokvveok</p>
+                        <p> vokvveok</p>
+                        <p> vokvveok</p>
+                        <p> vokvveok</p>
+                        {{ form(form) }}
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

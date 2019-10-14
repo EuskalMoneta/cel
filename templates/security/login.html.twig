@@ -49,7 +49,7 @@
                             <label for="inputPassword" class="">{% trans %}Mot de passe{% endtrans %}</label>
                             <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{% trans %}Mot de passe{% endtrans %}" required>
                             <div class="text-right">
-                                <a href="{{ path('app_lost_password') }}"> Mot de passe oublié ?</a>
+                                <a href="{{ path('app_lost_password') }}" class="text-bold"> Mot de passe oublié ?</a>
                             </div>
                         </div>
 
@@ -83,7 +83,7 @@
 
                 <hr>
                 <div class="text-center p-2">
-                    <a href="{{ path('app_first_login') }}">C'est votre première connexion ?</a>
+                    <a href="{{ path('app_first_login') }}" class="text-semi-bold">C'est votre première connexion ?</a>
                     <br/>
                     <br/>
                     <a href="{{ path('app_first_login') }}" class="btn btn-info btn-slim" >Activer votre compte</a>

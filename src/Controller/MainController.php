@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -19,11 +20,18 @@ class MainController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox)
     {
+        //Check if CGU are accepted, redirect otherwise
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if(! $responseMember['data'][0]->array_options->options_accepte_cgu_eusko_numerique){
+            return $this->redirectToRoute('app_accept_cgu');
+        }
+
         //init vars
         $operations = [];
         $montant_don = 0;
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
+
         if($response['httpcode'] == 200) {
             $infosUser = [
                 'compte' => $response['data']->result[0]->number,
@@ -56,6 +64,8 @@ class MainController extends AbstractController
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
+
+
 
     /**
      * @Route("/export/rie", name="app_export_rie")

@@ -91,7 +91,7 @@ h3 {
 .eusko-cart{
     width: auto;
     max-width: 380px;
-    height: 150px;
+    /*height: 150px;*/
     border: 1px solid #969FAA;
     border-radius: 15px;
 }

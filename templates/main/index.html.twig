@@ -21,15 +21,10 @@
                 <div class="main-color big-solde"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
 
                 <div class="eusko-cart p-3 mt-4">
-                    <div class="row ">
-                        <div class="col-8 mb-2 text-semi-bold">
-                            {{ infosUser.nom }} <br/>
-                            {{ "Compte n°" | trans }} {{ infosUser.compte | number_format(null,null,' ') }}
+                    <div class="row">
+                        <div class="col-6 ml-0 text-semi-bold">{{ infosUser.nom }} <br/>
+                            {{ "Compte n°" | trans }} <br /> {{ infosUser.compte | number_format(null,null,' ') }}
                         </div>
-
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-6 ml-0"><img src="{{ asset('images/euskocart-puce.png') }}" style="width: 70px;"></div>
                         <div class="col-6 text-right"><a class="btn btn-outline-primary eusko-btn" href="{{ path('app_export_rie') }}"> <i class="far fa-download mr-1"></i>RIB eusko</a> </div>
                     </div>
                 </div>

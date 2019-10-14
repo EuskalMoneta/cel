@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -84,7 +85,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getSession()->get('_locale')]);
+            $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
 
             if($response['httpcode'] == 200 && $response['data']->member == 'OK'){
                 $this->addFlash('success', 'Veuillez vérifier vos emails. Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.');
@@ -101,7 +102,7 @@ class SecurityController extends AbstractController
     public function validateFirstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
         $questions = ['' => '','autre' => 'autre'];
-        $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getSession()->get('_locale'));
+        $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
 
         if($response['httpcode'] == 200){
 
@@ -268,5 +269,55 @@ class SecurityController extends AbstractController
     public function logout()
     {
         throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
+    }
+
+    /**
+     * @Route("/valide/cgu", name="app_accept_cgu")
+     */
+    public function valideCGU(APIToolbox $APIToolbox, Request $request)
+    {
+        //form generation
+        $form = $this->createFormBuilder()
+            ->add('valide', CheckboxType::class, ['label' => "J'ai lu et je valide les CGU", 'required' => true])
+            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $accept = $form->getData()['valide'];
+            if($accept){
+                $response = $APIToolbox->curlRequest('POST', '/accept-cgu/', []);
+                if($response['httpcode'] == 200 && $response['data']->status == 'OK'){
+                    $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
+                    return $this->redirectToRoute('app_homepage');
+                }
+            }
+        }
+        return $this->render('security/valideCGU.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/valide/cotisation", name="app_accept_cgu")
+     */
+    public function valideCotisation(APIToolbox $APIToolbox, Request $request)
+    {
+        //form generation
+        $form = $this->createFormBuilder()
+            ->add('valide', CheckboxType::class, ['label' => "J'ai lu et je valide les CGU", 'required' => true])
+            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $accept = $form->getData()['valide'];
+            if($accept){
+                $response = $APIToolbox->curlRequest('POST', '/accept-cgu/', []);
+                if($response['httpcode'] == 200 && $response['data']->status == 'OK'){
+                    $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
+                    return $this->redirectToRoute('app_homepage');
+                }
+            }
+        }
+        return $this->render('security/valideCGU.html.twig', ['form' => $form->createView()]);
     }
 }

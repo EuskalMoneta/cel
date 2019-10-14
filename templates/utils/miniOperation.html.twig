@@ -1,8 +1,14 @@
 {% for operation in operations %}
     <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
         <div class="col-8">
-            <div class="main-color text-semi-bold"> {{ operation.description }}</div>
-            <div class="secondary-color"> {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}</div>
+            <div class="main-color text-semi-bold">
+                {{ operation.description }}
+
+            </div>
+            <div class="secondary-color"> {% if operation.relatedAccount.owner.display is defined %}
+
+                    {{ operation.relatedAccount.owner.display }} -
+                {% endif %} {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}</div>
         </div>
         <div class="col-4">
             <div class="float-right ">

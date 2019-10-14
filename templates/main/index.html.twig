@@ -30,6 +30,7 @@
                 </div>
 
 
+                {% if is_granted('ROLE_CLIENT') %}
                 <div class="row mt-4 mb-4 threeper p-4">
                     <div class="col-4 col-md-5">
                         <div class="float-none float-md-right mt-2">
@@ -43,6 +44,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
 
                 <div class="row mt-5 mb-2">
                     <div class="col-4">

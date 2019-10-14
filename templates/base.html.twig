@@ -118,12 +118,23 @@
                     <br /> Change
                 </a>
             </div>
+            {% if is_granted("ROLE_CLIENT") %}
             <div class="col-3">
-                <a href="{{ path('app_prelevement') }}">
+                <a href="{{ path('app_prelevement_autorisation') }}">
                     <i class="fal fa-list"></i>
                     <br /> Prélèvements
                 </a>
             </div>
+            {% elseif is_granted("ROLE_PARTENAIRE") %}
+                <div class="col-3">
+                    <a href="{{ path('app_prelevement') }}">
+                        <i class="fal fa-list"></i>
+                        <br /> Prélèvements
+                    </a>
+                </div>
+
+            {% endif %}
+
         </div>
 
     </div>

@@ -27,13 +27,13 @@
                                 </span>
                             </div>
                             <div class="col-4">
-                                <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
-                                <div class="secondary-color"> {# operation.date|localizeddate('long', 'none', app.request.getLocale()) #}</div>
+                                <div class="main-color text-semi-bold"> {{ mandat.nom_crediteur }}</div>
+                                <div class="secondary-color">{{ "Créé le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}</div>
                             </div>
                             <div class="col-6">
                                 <div class="float-right ">
                                     <a class="btn btn-outline-danger" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'refuser'}) }}"> <i class="far fa-trash-alt"></i> </a>
-                                    <a class="btn btn-outline-success" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'valider'}) }}"> <i class="far fa-thumbs-up"></i> </a>
+                                    <a class="btn btn-outline-success" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'valider'}) }}"> <i class="far fa-check"></i> </a>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
-                                <div class="secondary-color"> {# operation.date|localizeddate('long', 'none', app.request.getLocale()) #}</div>
+                                <div class="secondary-color"> {{ "Validé le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}{# operation.date|localizeddate('long', 'none', app.request.getLocale()) #}</div>
                             </div>
                             <div class="col-4">
                                 <div class="float-right ">

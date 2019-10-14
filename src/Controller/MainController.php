@@ -12,13 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MainController extends AbstractController
 {
     /**
      * @Route("/", name="app_homepage")
      */
-    public function index(APIToolbox $APIToolbox)
+    public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker)
     {
         //Check if CGU are accepted, redirect otherwise
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -30,39 +31,43 @@ class MainController extends AbstractController
         $operations = [];
         $montant_don = 0;
 
-        $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
-        if($response['httpcode'] == 200) {
-            $infosUser = [
-                'compte' => $response['data']->result[0]->number,
-                'nom' => $response['data']->result[0]->owner->display,
-                'solde' => $response['data']->result[0]->status->balance
-            ];
-            /** @var User $user */
-            $user = $this->getUser();
-            $user->setCompte($response['data']->result[0]->number);
+            $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
+            $responseRight = $APIToolbox->curlRequest('GET', '/user-rights/');
+            dump($responseRight);
 
-
-            $dateEnd = (new \DateTime("now"));
-            $dateStart = (new \DateTime("now"))->modify("-3 month");
-
-            // GET account history, debit and credit
-            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateStart->format('Y-m-d').'T00:00&end='.$dateEnd->format('Y-m-d').'T23:50');
             if($response['httpcode'] == 200) {
-                $operations = $response['data'][0]->result->pageItems;
+                $infosUser = [
+                    'compte' => $response['data']->result[0]->number,
+                    'nom' => $response['data']->result[0]->owner->display,
+                    'solde' => $response['data']->result[0]->status->balance
+                ];
+                /** @var User $user */
+                $user = $this->getUser();
+                $user->setCompte($response['data']->result[0]->number);
+
+
+                $dateEnd = (new \DateTime("now"));
+                $dateStart = (new \DateTime("now"))->modify("-3 month");
+
+                // GET account history, debit and credit
+                $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateStart->format('Y-m-d').'T00:00&end='.$dateEnd->format('Y-m-d').'T23:50');
+                if($response['httpcode'] == 200) {
+                    $operations = $response['data'][0]->result->pageItems;
+                }
+
+                //GET montant du don 3%
+                $response = $APIToolbox->curlRequest('GET', '/montant-don/');
+                if($response['httpcode'] == 200) {
+                    $montant_don = $response['data']->montant_don;
+                }
+
+
+                return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don]);
+
+            } else {
+                return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
             }
-
-            //GET montant du don 3%
-            $response = $APIToolbox->curlRequest('GET', '/montant-don/');
-            if($response['httpcode'] == 200) {
-                $montant_don = $response['data']->montant_don;
-            }
-
-
-            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don]);
-        } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
-        }
     }
 
 

@@ -3,19 +3,30 @@
 namespace App\Controller;
 
 use App\Security\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactoryBuilder;
+use Symfony\Component\Form\FormFactoryBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PrelevementController extends AbstractController
 {
     /**
+     * Page accueil des prélèvements pour les PROS / prestataires
      * @Route("/prelevements", name="app_prelevement")
+     * @IsGranted("ROLE_PARTENAIRE")
      */
     public function prelevement(APIToolbox $APIToolbox)
     {
@@ -98,6 +109,7 @@ class PrelevementController extends AbstractController
 
         //Get Mandats from API
         $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur');
+        dump($responseMandats);
         if($responseMandats['httpcode'] == 200) {
 
             $mandats = $responseMandats['data']->results;
@@ -127,21 +139,69 @@ class PrelevementController extends AbstractController
     {
         //Create form with acount number
         $form = $this->createFormBuilder()
-            ->add('numero_compte_debiteur', NumberType::class, ['required' => true, 'label' => "N° de compte"])
+            ->add('numero_compte_debiteur', NumberType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new Length(['min' => 9, 'max'=> 9]),
+                    ],
+                    'label' => "N° de compte"
+                ]
+            )
+            ->add('tableur', FileType::class, [
+                'label' => 'Import tableur (Fichier CSV)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2024k',
+                        'mimeTypes' => [
+                            'text/csv',
+                            'text/plain',
+                        ],
+                        'mimeTypesMessage' => 'Le fichier n\'est pas au format csv',
+                    ])
+                ],
+            ])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+        if($request->isMethod('POST')){
 
-            $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
+            $listSuccess = '<br /><br/><ul>';
+            $listFail = '<br /><br/><ul>';
 
-            if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
-                $this->addFlash('success',$translator->trans('Mandat ajouté').'<br /><br/><ul><li>'.$responseMandat['data']->nom_debiteur.'</li></ul> ');
-            } else {
-                $this->addFlash('danger', $translator->trans("Erreur lors de l'ajout du mandat"));
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $file = $form['tableur']->getData();                 
+
+                if(!empty($file)) {
+                    if (($handle = fopen($file, "r")) !== FALSE) {
+                        while(($row = fgetcsv($handle)) !== FALSE) {
+                            dump($row);
+                        }
+                    }
+
+                }
+
+
+
+
+
             }
+
+
+            /*foreach ($comptes as $data){
+                $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
+                if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
+                    $listSuccess .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
+                } else {
+                    $listFail .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
+                }
+                $this->addFlash('success',$translator->trans('Mandat ajouté').$listSuccess.'</ul> ');
+                $this->addFlash('success',$translator->trans('Erreur lors de l\'ajout du mandat').$listFail.'</ul> ');
+            }*/
+
 
         }
         return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form->createView()]);

@@ -7,7 +7,7 @@
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
                 <h2 class="secondary-color mb-4"> {{ "Prélèvement" | trans }} </h2>
 
-
+                {% if is_granted('ROLE_CLIENT') %}
                 <h3 class="main-color"><i class="fas fa-check"></i> {{ "Je me fais prélever" | trans }} </h3>
                 <div class="ml-4 mr-2 mb-4">
                     <p class="text-justify">Je consulte la liste des autorisations de prélèvement. <br />
@@ -17,6 +17,7 @@
                         <a href="{{ path('app_prelevement_autorisation') }}" class="btn btn-outline-primary">{{ "Consulter" | trans }}</a>
                     </div>
                 </div>
+                {% endif %}
 
 
                 {% if is_granted('ROLE_USER') %}

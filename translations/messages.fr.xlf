@@ -203,7 +203,7 @@
       </trans-unit>
       <trans-unit id="su_.4Gv" resname="Changer mon code PIN">
         <source>Changer mon code PIN</source>
-        <target>Changer mon code PIN</target>
+        <target>Code PIN</target>
       </trans-unit>
       <trans-unit id="IUbRpkc" resname="Coordonnées">
         <source>Coordonnées</source>

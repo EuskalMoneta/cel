@@ -84,7 +84,7 @@ class ProfilController extends AbstractController
                 $data['confirm_password'] = $data['new_password'];
                 $data['cyclos_mode'] = 'cel';
 
-                $responseProfile = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                $responseProfile = $APIToolbox->curlRequest('POST', '/change-password/', $data);
 
                 if($responseProfile['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
@@ -136,7 +136,6 @@ class ProfilController extends AbstractController
                     $data['pin2'] = $data['pin1'];
 
                     $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
-
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                     } else {
@@ -167,7 +166,6 @@ class ProfilController extends AbstractController
                     $data['pin2'] = $data['pin1'];
 
                     $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
-
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                     } else {
@@ -201,8 +199,6 @@ class ProfilController extends AbstractController
                 $defaultData = $membre->array_options->options_prelevement_cotisation_montant;
             }
 
-
-            dump($membre->array_options->options_prelevement_cotisation_periodicite);
             $form = $this->createFormBuilder()
                 ->add('options_prelevement_cotisation_montant', ChoiceType::class, [
                     'label' => 'Montant de la cotisation',
@@ -236,7 +232,7 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-
+                $data['options_prelevement_auto_cotisation_eusko'] = 1;
                 if($data['options_prelevement_cotisation_periodicite'] == 1){
                     //To get the amount per month and not annualy
                     $data['options_prelevement_cotisation_montant'] = $data['options_prelevement_cotisation_montant'] / 12;

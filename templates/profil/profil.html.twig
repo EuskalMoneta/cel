@@ -44,13 +44,25 @@
                     </tr>
                 </table>
 
+                {% if is_granted('ROLE_CLIENT') %}
                 <h2 class="secondary-color mt-5">{{"Cotisation" | trans}}</h2>
                 <table class="table">
                     <tr>
-                        <td><p class="main-color text-semi-bold"> {{ membre.last_subscription_amount | round(2) }} eusko / {{"mois" | trans }}</p></td>
+                        <td>
+                            <p class="main-color text-semi-bold"> {% if membre.need_subscription %} {% endif %}
+
+                                {{ membre.array_options.options_prelevement_cotisation_montant | round(2) }} eusko /
+                                {% if membre.array_options.options_prelevement_cotisation_periodicite == 12 %}
+                                    {{"an" | trans }}
+                                {% else %}
+                                    {{"mois" | trans }}
+                                {% endif %}
+                            </p>
+                        </td>
                         <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
+                {% endif %}
 
                 <h2 class="secondary-color mt-5">{{"Autres paramètres" | trans }}</h2>
                 <table class="table">

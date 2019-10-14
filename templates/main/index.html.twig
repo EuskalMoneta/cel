@@ -61,7 +61,7 @@
                     {% include 'utils/miniOperation.html.twig' with {'operations' : operations } %}
                 {% else %}
                     <div class="text-center mt-4">
-                        <h3 class="mt-4">Votre historique est vide</h3>
+                        <h3 class="mt-4">{{"Votre historique est vide" | trans }}</h3>
                         <img src="{{ asset('images/no-data.png') }}" width="30%"/>
                     </div>
                 {% endif %}

@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
     <div class="container">
@@ -18,9 +17,32 @@
 
 
 
-                <h3 class="main-color mt-4">{{ "Un seul mandat" | trans }} </h3>
+                {#<h3 class="main-color mt-4">{{ "Un seul mandat" | trans }} </h3>#}
                 <div class="mb-4">
-                    {{ form(form) }}
+                    {{ form_start(form) }}
+
+                    <div class="row">
+                        <div class="col mt-4">
+
+                            <h5>{{ form_label(form.numero_compte_debiteur) }}</h5>
+                            {{ form_widget(form.numero_compte_debiteur, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col mt-4">
+                            <h5>{{ form_label(form.tableur) }}</h5>
+                            {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col mt-4">
+                            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
                 </div>
 
 

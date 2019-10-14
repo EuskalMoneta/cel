@@ -109,7 +109,6 @@ class PrelevementController extends AbstractController
 
         //Get Mandats from API
         $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur');
-        dump($responseMandats);
         if($responseMandats['httpcode'] == 200) {
 
             $mandats = $responseMandats['data']->results;
@@ -144,11 +143,11 @@ class PrelevementController extends AbstractController
                     'constraints' => [
                         new Length(['min' => 9, 'max'=> 9]),
                     ],
-                    'label' => "N° de compte"
+                    'label' => "Rentrer un numéro de compte (9 chiffres)"
                 ]
             )
             ->add('tableur', FileType::class, [
-                'label' => 'Import tableur (Fichier CSV)',
+                'label' => 'Ou importer un tableur (Fichier CSV)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -167,40 +166,45 @@ class PrelevementController extends AbstractController
 
         if($request->isMethod('POST')){
 
-            $listSuccess = '<br /><br/><ul>';
-            $listFail = '<br /><br/><ul>';
+            $listSuccess = '';
+            $listFail = '';
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $file = $form['tableur']->getData();                 
+                $file = $form['tableur']->getData();
+                if($form['numero_compte_debiteur']->getData() != null){
+                    $comptes = [['numero_compte_debiteur' => (int)$form['numero_compte_debiteur']->getData()]];
+                }
 
                 if(!empty($file)) {
                     if (($handle = fopen($file, "r")) !== FALSE) {
                         while(($row = fgetcsv($handle)) !== FALSE) {
-                            dump($row);
+                            if(sizeof($row) == 1){
+                                $comptes[] = ['numero_compte_debiteur' => (int)$row[0]];
+                            }
                         }
                     }
 
                 }
-
-
-
-
-
             }
 
 
-            /*foreach ($comptes as $data){
+            foreach ($comptes as $data){
                 $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
                 if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
                     $listSuccess .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
                 } else {
-                    $listFail .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
+                    $listFail .= '<li>'.$data['numero_compte_debiteur'].'</li>';
                 }
-                $this->addFlash('success',$translator->trans('Mandat ajouté').$listSuccess.'</ul> ');
-                $this->addFlash('success',$translator->trans('Erreur lors de l\'ajout du mandat').$listFail.'</ul> ');
-            }*/
+            }
+
+            if($listSuccess != ''){
+                $this->addFlash('success',$translator->trans('Mandat ajouté').'<ul>'.$listSuccess.'</ul> ');
+            }
+            if($listFail != '') {
+                $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout du mandat') .'<ul>'. $listFail . '</ul> ');
+            }
 
 
         }

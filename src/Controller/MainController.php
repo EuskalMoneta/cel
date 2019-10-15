@@ -31,43 +31,40 @@ class MainController extends AbstractController
         $operations = [];
         $montant_don = 0;
 
+        $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
-            $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
-            $responseRight = $APIToolbox->curlRequest('GET', '/user-rights/');
-            dump($responseRight);
+        if($response['httpcode'] == 200) {
+            $infosUser = [
+                'compte' => $response['data']->result[0]->number,
+                'nom' => $response['data']->result[0]->owner->display,
+                'solde' => $response['data']->result[0]->status->balance
+            ];
+            /** @var User $user */
+            $user = $this->getUser();
+            $user->setCompte($response['data']->result[0]->number);
 
+
+            $dateEnd = (new \DateTime("now"));
+            $dateStart = (new \DateTime("now"))->modify("-3 month");
+
+            // GET account history, debit and credit
+            $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateStart->format('Y-m-d').'T00:00&end='.$dateEnd->format('Y-m-d').'T23:50');
             if($response['httpcode'] == 200) {
-                $infosUser = [
-                    'compte' => $response['data']->result[0]->number,
-                    'nom' => $response['data']->result[0]->owner->display,
-                    'solde' => $response['data']->result[0]->status->balance
-                ];
-                /** @var User $user */
-                $user = $this->getUser();
-                $user->setCompte($response['data']->result[0]->number);
-
-
-                $dateEnd = (new \DateTime("now"));
-                $dateStart = (new \DateTime("now"))->modify("-3 month");
-
-                // GET account history, debit and credit
-                $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateStart->format('Y-m-d').'T00:00&end='.$dateEnd->format('Y-m-d').'T23:50');
-                if($response['httpcode'] == 200) {
-                    $operations = $response['data'][0]->result->pageItems;
-                }
-
-                //GET montant du don 3%
-                $response = $APIToolbox->curlRequest('GET', '/montant-don/');
-                if($response['httpcode'] == 200) {
-                    $montant_don = $response['data']->montant_don;
-                }
-
-
-                return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don]);
-
-            } else {
-                return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+                $operations = $response['data'][0]->result->pageItems;
             }
+
+            //GET montant du don 3%
+            $response = $APIToolbox->curlRequest('GET', '/montant-don/');
+            if($response['httpcode'] == 200) {
+                $montant_don = $response['data']->montant_don;
+            }
+
+
+            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don]);
+
+        } else {
+            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
     }
 
 
@@ -77,7 +74,7 @@ class MainController extends AbstractController
      */
     public function exportRIE(APIToolbox $APIToolbox)
     {
-        $response = $APIToolbox->curlGetPDF('GET', '/export-rie-adherent/?account=284688694');
+        $response = $APIToolbox->curlGetPDF('GET', '/export-rie-adherent/?account='.$this->getUser()->getCompte());
 
         if($response['httpcode'] == 200) {
             return new Response($response['data'],200,
@@ -106,14 +103,6 @@ class MainController extends AbstractController
                     ]
                 );
             } else {
-                /*dump($response['data']);
-                dump(json_decode('{'.str_replace ('\'','\"',$response['data']).'}', true));
-                dump(json_last_error_msg());
-                dump(substr($response['data'], 2));
-                dump(json_decode('{'.substr($response['data'], 2)));
-                dump(json_last_error_msg());
-A
-                return $this->render('base.html.twig');*/
                 return new Response($response['data'],200,
                     [
                         'Content-Type'        => 'text/csv',
@@ -122,7 +111,7 @@ A
                 );
             }
         } else {
-            throw new NotFoundHttpException('Releve non disponible');
+            throw new NotFoundHttpException('Relevé non disponible');
         }
     }
 

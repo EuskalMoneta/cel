@@ -5,10 +5,12 @@
                 {{ operation.description }}
 
             </div>
-            <div class="secondary-color"> {% if operation.relatedAccount.owner.display is defined %}
-
-                    {{ operation.relatedAccount.owner.display }} -
-                {% endif %} {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}</div>
+            <div class="secondary-color">
+                {% if operation.relatedAccount.owner.display is defined %}
+                    <span class="text-semi-bold"> {{ operation.relatedAccount.owner.display }}</span><br />
+                {% endif %}
+                {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}
+            </div>
         </div>
         <div class="col-4">
             <div class="float-right ">

@@ -36,10 +36,10 @@
                 {% if operations is not empty and operations != 'empty' %}
                     <div class="row mt-2">
                         <div class="col-6 text-center">
-                            <a href="{{ path('app_export_releve', {'type': 'csv', 'dateS': dateS, 'dateE': dateE}) }}" class="btn btn-info">Exporter en CSV</a>
+                            <a href="{{ path('app_export_releve', {'type': 'csv', 'dateS': dateS, 'dateE': dateE}) }}" class="btn btn-info">{{ "Télécharger en CSV" | trans }}</a>
                         </div>
                         <div class="col-6 text-center">
-                            <a href="{{ path('app_export_releve', {'type': 'pdf', 'dateS': dateS, 'dateE': dateE}) }}" class="btn btn-info">Exporter en PDF</a>
+                            <a href="{{ path('app_export_releve', {'type': 'pdf', 'dateS': dateS, 'dateE': dateE}) }}" class="btn btn-info">{{ "Télécharger en PDF" | trans }}</a>
                         </div>
                     </div>
 

@@ -21,6 +21,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -275,7 +276,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/valide/cgu", name="app_accept_cgu")
      */
-    public function valideCGU(APIToolbox $APIToolbox, Request $request)
+    public function valideCGU(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
         //form generation
         $form = $this->createFormBuilder()
@@ -289,7 +290,7 @@ class SecurityController extends AbstractController
             if($accept){
                 $response = $APIToolbox->curlRequest('POST', '/accept-cgu/', []);
                 if($response['httpcode'] == 200 && $response['data']->status == 'OK'){
-                    $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
+                    $this->addFlash('success', $translator->trans('Merci d\'avoir accepté les CGU'));
                     return $this->redirectToRoute('app_homepage');
                 }
             }

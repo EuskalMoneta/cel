@@ -32,8 +32,8 @@
                             </div>
                             <div class="col-6">
                                 <div class="float-right ">
-                                    <a class="btn btn-outline-danger" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'refuser'}) }}"> <i class="far fa-trash-alt"></i> </a>
-                                    <a class="btn btn-outline-success" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'valider'}) }}"> <i class="far fa-check"></i> </a>
+                                    <a class="btn btn-outline-danger btn-guard btn-refuser" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'refuser'}) }}"> <i class="far fa-trash-alt"></i> </a>
+                                    <a class="btn btn-outline-success btn-guard btn-valider" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'valider'}) }}"> <i class="far fa-check"></i> </a>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="float-right ">
-                                    <a class="btn btn-outline-danger" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'revoquer'}) }}"> <i class="far fa-trash-alt"></i> </a>
+                                    <a class="btn btn-outline-danger btn-guard btn-revoquer" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'revoquer'}) }}"> <i class="far fa-trash-alt"></i> </a>
                                 </div>
                             </div>
                         </div>
@@ -70,10 +70,55 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{"Êtes vous sur de vouloir supprimer ce mandat ?" | trans }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a href="#" class="btn btn-outline-success" id="modal-valid">Valider</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript">
 
+        var titleModalValider = '{{"Nouvelle autorisation" | trans }}';
+        var titleModalRefuser = '{{"Suppression" | trans }}';
+        var titleModalRevoquer = '{{"Révoquer une autorisation" | trans }}';
+        var bodyModalValider = '{{"Êtes vous sur de valider cette autorisation de prélèvement ?" | trans }}';
+        var bodyModalRefuser = '{{"Êtes vous sur de vouloir supprimer cette demande ?" | trans }}';
+        var bodyModalRevoquer = '{{"Êtes vous sur de vouloir révoquer cette autorisation ?" | trans }}';
+        /*$('.btn-refuser').click(function (e){
+        $('.btn-valider').click(function (e){
+        $('.btn-revoquer').click(function (e){*/
+        $('.btn-guard').click(function (e){
+            if($(this).hasClass('btn-valider')){
+                $('#modalLongTitle').html(titleModalValider);
+                $('.modal-body').html(bodyModalValider);
+            } else if($(this).hasClass('btn-refuser')){
+                $('#modalLongTitle').html(titleModalRefuser);
+                $('.modal-body').html(bodyModalRefuser);
+            }else if($(this).hasClass('btn-revoquer')){
+                $('#modalLongTitle').html(titleModalRevoquer);
+                $('.modal-body').html(bodyModalRevoquer);
+            }
+            $('#confirm-modal').modal('show');
+            e.preventDefault();
+            $('#modal-valid').attr('href', $(this).attr('href'));
+        });
     </script>
 {% endblock %}

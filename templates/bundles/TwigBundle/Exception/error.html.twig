@@ -6,9 +6,13 @@
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
                 <h1>Erreur</h1>
 
+                <p class="lead">
+                    {{ status_code }}
+                    {{ status_text }}
+                </p>
                 <p>
-                    The requested page couldn't be located. Checkout for any URL
-                    misspelling or <a href="{{ path('app_homepage') }}">return to the homepage</a>.
+                    La page que vous avez demandé n'a pas pu être chargée.<br /><br />
+                     <a class="btn btn-outline-primary" href="{{ path('app_homepage') }}">Retourner à la page d'accueil</a>.
                 </p>
             </div>
         </div>

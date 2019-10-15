@@ -11,7 +11,7 @@
                         <h2 class="secondary-color mb-4"> {{ "Ajouter des mandats" | trans }} </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-slim btn-outline-dark">Retour</a>
+                        <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
                     </div>
                 </div>
 
@@ -28,11 +28,18 @@
                             {{ form_widget(form.numero_compte_debiteur, {'attr': {'class': 'form-control'}}) }}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col mt-4 mb-4">
+                            <button type="submit" id="form_submit" name="form[submit]" class="btn btn-primary">Valider</button>
+                        </div>
+                    </div>
+
 
                     <div class="row">
                         <div class="col mt-4">
                             <h5>{{ form_label(form.tableur) }}</h5>
                             {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
+                            <p class="text-semi-bold">{{"Une seule colonne avec les numéros de compte, sans titre" | trans }}</p>
                         </div>
                     </div>
 

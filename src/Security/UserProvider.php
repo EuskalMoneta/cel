@@ -61,6 +61,15 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
+
+        /* Petit trick pour éviter une redirection loop au login lorsque refresh user est appelée avant qu'on ait l'objet user.*/
+        if(method_exists($user, 'getLastLogin') && $user->getLastLogin() > (new \DateTime("now")) ){
+            $responseMember = $this->apiToolBox->curlRequest('GET', '/members/?login='.$user->getUsername());
+            if($responseMember['httpcode'] != 200){
+                throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
+            }
+        }
+
         // fail authentication with a custom error
         //throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
 

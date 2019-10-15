@@ -47,7 +47,7 @@ class ProfilController extends AbstractController
 
             return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMember['data'][0]]);
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -96,7 +96,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/password.html.twig', ['form' => $form->createView()]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -178,7 +178,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/pin.html.twig', ['form' => $form->createView()]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -251,7 +251,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -315,7 +315,7 @@ class ProfilController extends AbstractController
                 return $this->render('profil/question.html.twig', ['form' => $form->createView()]);
             }
         }
-        return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
 
     }
 
@@ -387,7 +387,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/coordonnees.html.twig', ['form' => $form->createView()]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -430,7 +430,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/langue.html.twig', ['form' => $form->createView()]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -471,7 +471,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/newsletter.html.twig', ['form' => $form->createView()]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
@@ -519,7 +519,7 @@ class ProfilController extends AbstractController
             return $this->render('profil/notifications.html.twig', ['form' => $form->createView()]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 

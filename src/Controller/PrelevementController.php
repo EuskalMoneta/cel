@@ -63,7 +63,7 @@ class PrelevementController extends AbstractController
             return $this->render('prelevement/autorisation.html.twig', ['mandatsEnATT' => $mandatsEnATT, 'mandatsValide' => $mandatsValide, 'mandatsRev' => $mandatsRev]);
 
         }
-        return new NotFoundHttpException("Impossible de récupérer les informations de mandats");
+        throw new NotFoundHttpException("Impossible de récupérer les informations de mandats");
     }
 
     /**
@@ -72,20 +72,30 @@ class PrelevementController extends AbstractController
     public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/'.$id.'/'.$type.'/');
-
         if($responseMandat['httpcode'] == 204 ) {
             if($type == 'valider'){
                 $this->addFlash('success', $translator->trans('Le mandat a été validé'));
             } elseif($type == 'refuser'){
                 $this->addFlash('success', $translator->trans('Le mandat a été refusé'));
-            } elseif($type == 'valider'){
-                $this->addFlash('revoquer', $translator->trans('Le mandat a été révoqué'));
-            } elseif($type == 'supprimer'){
-                $this->addFlash('revoquer', $translator->trans('Le mandat a été supprimé'));
+            } elseif($type == 'revoquer'){
+                $this->addFlash('success', $translator->trans('Le mandat a été révoqué'));
             }
             return $this->redirectToRoute('app_prelevement_autorisation');
         }
-        return $this->render('base.html.twig');
+        throw new NotFoundHttpException("Opération impossible.");
+    }
+
+    /**
+     * @Route("/delete/prelevements/{id}", name="app_prelevement_autorisation_delete")
+     */
+    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMandat = $APIToolbox->curlRequest('DELETE', '/mandats/'.$id.'/');
+        if($responseMandat['httpcode'] == 204 ) {
+            $this->addFlash('success', $translator->trans('Le mandat a été supprimé'));
+            return $this->redirectToRoute('app_prelevement_mandats');
+        }
+        throw new NotFoundHttpException("Opération de suppression impossible.");
     }
 
     /**
@@ -102,7 +112,7 @@ class PrelevementController extends AbstractController
 
         }
 
-        return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
 
     }
 
@@ -136,7 +146,7 @@ class PrelevementController extends AbstractController
             return $this->render('prelevement/mandats.html.twig', ['mandatsEnATT' => $mandatsEnATT, 'mandatsValide' => $mandatsValide, 'mandatsRev' => $mandatsRev]);
         }
 
-        return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
 
     }
 

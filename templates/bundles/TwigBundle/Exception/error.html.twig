@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+                <h1>Erreur</h1>
+
+                <p>
+                    The requested page couldn't be located. Checkout for any URL
+                    misspelling or <a href="{{ path('app_homepage') }}">return to the homepage</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -75,7 +75,7 @@ class MainController extends AbstractController
             return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don, 'boolMandatATT' =>$boolMandatATT]);
 
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 

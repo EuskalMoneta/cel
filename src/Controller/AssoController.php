@@ -27,7 +27,7 @@ class AssoController extends AbstractController
 
             return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMember['data'][0]]);
         } else {
-            return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 

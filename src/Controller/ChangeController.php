@@ -23,7 +23,7 @@ class ChangeController extends AbstractController
 
         }
 
-        return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
 
     }
 

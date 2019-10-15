@@ -8,11 +8,13 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
@@ -124,6 +126,48 @@ class MainController extends AbstractController
             }
         } else {
             throw new NotFoundHttpException('Relevé non disponible');
+        }
+    }
+
+    /**
+     * @Route("/reconvertir/eusko", name="app_reconvertir")
+     */
+    public function reconvertir(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
+
+        if($response['httpcode'] == 200) {
+            $infosUser = [
+                'compte' => $response['data']->result[0]->number,
+                'nom' => $response['data']->result[0]->owner->display,
+                'solde' => $response['data']->result[0]->status->balance
+            ];
+
+            //form generation
+            $form = $this->createFormBuilder()
+                ->add('amount', TextType::class, ['label' => 'Montant', 'required' => true])
+                ->add('desciption', TextType::class, ['label' => 'Description', 'required' => true])
+                ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
+                ->getForm();
+
+            //Form process
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $data['debit'] = $response['data']->result[0]->id;
+
+                $responseReconversion = $APIToolbox->curlRequest('POST', '/reconvert-eusko/', $data);
+                if($responseReconversion['httpcode'] == 201 || $responseReconversion['httpcode'] == 200) {
+                    $this->addFlash('success', $translator->trans('Reconversion réussie.'));
+                } else {
+                    $this->addFlash('danger', $translator->trans('Erreur : vérifier le solde de votre compte.'));
+                }
+            }
+
+            return $this->render('main/reconvertir.html.twig', ['form' => $form->createView(), 'infosUser' => $infosUser]);
+
+        } else {
+            throw new NotFoundHttpException('Informations adhérent non disponible');
         }
     }
 

@@ -30,6 +30,7 @@ class MainController extends AbstractController
         //init vars
         $operations = [];
         $montant_don = 0;
+        $boolMandatATT = false;
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
@@ -53,6 +54,17 @@ class MainController extends AbstractController
                 $operations = $response['data'][0]->result->pageItems;
             }
 
+            // GET mandats en attente
+            $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=debiteur');
+            if($responseMandats['httpcode'] == 200) {
+                $mandats = $responseMandats['data']->results;
+                foreach ($mandats as $mandat) {
+                    if ($mandat->statut == 'ATT') {
+                        $boolMandatATT = true;
+                    }
+                }
+            }
+
             //GET montant du don 3%
             $response = $APIToolbox->curlRequest('GET', '/montant-don/');
             if($response['httpcode'] == 200) {
@@ -60,7 +72,7 @@ class MainController extends AbstractController
             }
 
 
-            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don]);
+            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don, 'boolMandatATT' =>$boolMandatATT]);
 
         } else {
             return new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -113,6 +125,15 @@ class MainController extends AbstractController
         } else {
             throw new NotFoundHttpException('Relevé non disponible');
         }
+    }
+
+    /**
+     * @Route("/aide", name="app_aide")
+     */
+    public function aide(Request $request, APIToolbox $APIToolbox)
+    {
+        return $this->render('main/aide.html.twig');
+
     }
 
     /**

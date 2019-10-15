@@ -55,7 +55,7 @@ class PrelevementController extends AbstractController
                     $mandatsEnATT[] = $mandat;
                 } elseif($mandat->statut == 'REV'){
                     $mandatsRev[] = $mandat;
-                } else {
+                } elseif($mandat->statut == 'VAL'){
                     $mandatsValide[] = $mandat;
                 }
             }
@@ -147,7 +147,7 @@ class PrelevementController extends AbstractController
     {
         //Create form with acount number
         $form = $this->createFormBuilder()
-            ->add('numero_compte_debiteur', NumberType::class, [
+            ->add('numero_compte_debiteur', TextType::class, [
                     'required' => false,
                     'constraints' => [
                         new Length(['min' => 9, 'max'=> 9]),
@@ -175,30 +175,32 @@ class PrelevementController extends AbstractController
 
         if($request->isMethod('POST')){
 
+            $comptes = [];
             $listSuccess = '';
             $listFail = '';
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $file = $form['tableur']->getData();
+                //Si on ne rentre qu'un seul numéro de compte
                 if($form['numero_compte_debiteur']->getData() != null){
-                    $comptes = [['numero_compte_debiteur' => (int)$form['numero_compte_debiteur']->getData()]];
+                    $comptes = [['numero_compte_debiteur' => $form['numero_compte_debiteur']->getData()]];
                 }
 
+                //Si on charge un fichier csv
+                $file = $form['tableur']->getData();
                 if(!empty($file)) {
                     if (($handle = fopen($file, "r")) !== FALSE) {
                         while(($row = fgetcsv($handle)) !== FALSE) {
                             if(sizeof($row) == 1){
-                                $comptes[] = ['numero_compte_debiteur' => (int)$row[0]];
+                                $comptes[] = ['numero_compte_debiteur' => $row[0]];
                             }
                         }
                     }
-
                 }
             }
 
-
+            //On fait appel à l'API pour les mandats et on sauvegarde le résultat dans des listes
             foreach ($comptes as $data){
                 $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
                 if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
@@ -208,13 +210,13 @@ class PrelevementController extends AbstractController
                 }
             }
 
+            //Préparation du feedback pour l'utilisateur
             if($listSuccess != ''){
                 $this->addFlash('success',$translator->trans('Mandat ajouté').'<ul>'.$listSuccess.'</ul> ');
             }
             if($listFail != '') {
                 $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout du mandat') .'<ul>'. $listFail . '</ul> ');
             }
-
 
         }
         return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form->createView()]);

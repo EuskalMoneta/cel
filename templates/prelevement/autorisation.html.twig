@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="main-color text-semi-bold"> {{ mandat.nom_crediteur }}</div>
-                                <div class="secondary-color">{{ "Créé le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}</div>
+                                <div class="secondary-color">{{ "Créée le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}</div>
                             </div>
                             <div class="col-6">
                                 <div class="float-right ">
@@ -53,8 +53,8 @@
                                 </span>
                             </div>
                             <div class="col-6">
-                                <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
-                                <div class="secondary-color"> {{ "Validé le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}{# operation.date|localizeddate('long', 'none', app.request.getLocale()) #}</div>
+                                <div class="main-color text-semi-bold"> {{ mandat.nom_crediteur }}</div>
+                                <div class="secondary-color"> {{ "Validée le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}{# operation.date|localizeddate('long', 'none', app.request.getLocale()) #}</div>
                             </div>
                             <div class="col-4">
                                 <div class="float-right ">

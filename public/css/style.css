@@ -51,6 +51,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 h2 {
     font-size: 18px;
+    text-transform: uppercase;
 }
 h3 {
     font-size: 15px;
@@ -63,7 +64,7 @@ h3 {
     font-family: 'Montserrat-bold', Arial, sans-serif;
     margin-top: -5px;
 }
-.secondary-color { color: #969FAA; }
+.secondary-color { color: #6A7179; }
 .main-color { color: #47525E; }
 .green { color: #41A528; }
 .threeper {

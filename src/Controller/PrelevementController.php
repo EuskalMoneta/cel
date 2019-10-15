@@ -69,12 +69,21 @@ class PrelevementController extends AbstractController
     /**
      * @Route("/prelevements/autorisations/{type}/{id}", name="app_prelevement_autorisation_change_state")
      */
-    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox)
+    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/'.$id.'/'.$type.'/');
 
         if($responseMandat['httpcode'] == 204 ) {
-
+            if($type == 'valider'){
+                $this->addFlash('success', $translator->trans('Le mandat a été validé'));
+            } elseif($type == 'refuser'){
+                $this->addFlash('success', $translator->trans('Le mandat a été refusé'));
+            } elseif($type == 'valider'){
+                $this->addFlash('revoquer', $translator->trans('Le mandat a été révoqué'));
+            } elseif($type == 'supprimer'){
+                $this->addFlash('revoquer', $translator->trans('Le mandat a été supprimé'));
+            }
+            return $this->redirectToRoute('app_prelevement_autorisation');
         }
         return $this->render('base.html.twig');
     }

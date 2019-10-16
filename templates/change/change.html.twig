@@ -18,7 +18,7 @@
 
                     <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} eusko / {{ "mois" | trans }}</div>
 
-                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_search') }}">{{ "modifier" | trans }} </a>
+                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_change_modifier') }}">{{ "modifier" | trans }} </a>
 
 
 
@@ -29,9 +29,9 @@
                             Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte. </p>
 
                         {% if app.request.getLocale() == 'eu' %}
-                            <a href="http://www.euskalmoneta.org/aldaguneak/?lang=eu"> {{"Bureaux de change" | trans }}</a>
+                            <a href="http://www.euskalmoneta.org/aldaguneak/?lang=eu" class="btn btn-outline-info"> {{"Bureaux de change" | trans }}</a>
                         {% else %}
-                            <a href="http://www.euskalmoneta.org/bureaux-de-change/"> {{"Bureaux de change" | trans }}</a>
+                            <a href="http://www.euskalmoneta.org/bureaux-de-change/"  class="btn btn-outline-info"> {{"Bureaux de change" | trans }}</a>
                         {% endif %}
 
 

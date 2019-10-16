@@ -22,15 +22,6 @@
                 <h2 class="secondary-color mb-0"> {{ "Mon solde" | trans }}</h2>
                 <div class="main-color big-solde"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
 
-                {% if is_granted('ROLE_PARTENAIRE') %}
-
-                    <div class="mt-2">
-
-                    </div>
-
-
-                {% endif %}
-
                 <div class="eusko-cart p-3 mt-4">
                     <div class="row">
                         <div class="col-6 ml-0 text-semi-bold">{{ infosUser.nom }} <br/>

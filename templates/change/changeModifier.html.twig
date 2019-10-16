@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+
+                <h2 class="main-color mb-2"> {{ "Modifier mon change automatique" | trans }} </h2>
+
+                <p>
+                    {{ "Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire." | trans }}<br />
+                    {{ "Les prélèvements sont effectués le 10 de chaque mois." | trans }}
+                </p>
+                Montant de votre change automatique :  <span class="main-color text-semi-bold"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} eusko / {{ "mois" | trans }}</span>
+
+                <h3 class="mt-4"> {{"Informations sur le mandat de prélèvement" | trans }}</h3>
+                <p>
+                    {{"Nom du créancier" | trans }} : Association Euskal Moneta - Monnaie Locale du Pays Basque <br />
+                    {{"Identifiant du créancier" | trans }} : FR49ZZZ663869<br />
+                    {{"Référence Unique du Mandat" | trans }} : null<br />
+                </p>
+
+
+                <h3 class="mt-4"> {{"Modifier le montant du change automatique" | trans }}</h3>
+
+                {{ form(form) }}
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

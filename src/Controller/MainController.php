@@ -29,6 +29,11 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_accept_cgu');
         }
 
+        //Que pour les particuliers
+        // check last_subscription_date_end
+        //déclencher paiement
+
+
         //init vars
         $operations = [];
         $montant_don = 0;

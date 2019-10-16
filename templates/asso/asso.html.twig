@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+
+{% block css %}
+    <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet"  type='text/css'>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <div class="row">
+                    <div class="col"><h2 class="secondary-color mb-4"> {{"Mon Association 3%" | trans }} </h2></div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <h2 class="secondary-color mb-0"> {{ "Mon solde" | trans }}</h2>
+                        <div class="main-color big-solde"> {{ montant_don | number_format(2, ',') }} eusko</div>
+
+                        <a class="btn btn-outline-primary mb-4" href="{{ path('app_search') }}">{{ "modifier" | trans }} </a>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

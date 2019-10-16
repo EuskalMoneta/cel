@@ -19,39 +19,23 @@ class AssoController extends AbstractController
      */
     public function asso(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
-        //Init vars
-        $optionsAsso = [];
-
         //GET member for default options
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMember['httpcode'] == 200) {
             $membre = $responseMember['data'][0];
 
-            //Get asso list for select
-            $response = $APIToolbox->curlRequest('GET', '/associations/');
+            $response = $APIToolbox->curlRequest('GET', '/associations/?id='.$membre->fk_asso);
             if($response['httpcode'] == 200) {
                 $optionsAsso = $response['data'];
             }
 
-            if($request->isMethod('POST')){
-                $data['fk_asso2'] = '';
-
-                //If asso existante
-                if($request->get('radiostar')[0] == 'asso'){
-                    $data['fk_asso'] = $request->get('fk_asso');
-                    $data['options_asso_saisie_libre'] = '';
-                } else {
-                    $data['fk_asso'] = '';
-                    $data['options_asso_saisie_libre'] = $request->get('options_asso_saisie_libre');
-                }
-
-                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
-                if($response['httpcode'] == 200) {
-                    return $this->redirectToRoute('app_asso_second');
-                }
+            //GET montant du don 3%
+            $response = $APIToolbox->curlRequest('GET', '/montant-don/');
+            if($response['httpcode'] == 200) {
+                $montant_don = $response['data']->montant_don;
             }
 
-            return $this->render('asso/asso.html.twig', ['optionsAsso' => $optionsAsso, 'membre' => $membre]);
+            return $this->render('asso/asso.html.twig', ['membre' => $membre, 'montant_don' => $montant_don]);
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
@@ -116,7 +100,6 @@ class AssoController extends AbstractController
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMember['httpcode'] == 200) {
             $membre = $responseMember['data'][0];
-            dump($membre);
 
             //Get APPROVED asso list
             $response = $APIToolbox->curlRequest('GET', '/associations/?approved=yes');

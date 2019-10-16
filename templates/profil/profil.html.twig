@@ -8,7 +8,7 @@
 
                     <i class="fal fa-user-circle" style="font-size: 72px;"></i>
                     <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
-                    <h2 class="secondary-color" >{{ "N° d'adhérent" | trans }} {{ app.user }} </h2>
+                    <h3 class="secondary-color" >{{ "N° d'adhérent" | trans }} {{ app.user }} </h3>
                     <h3 class="secondary-color" >{{ "Compte n°" | trans }} {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %} </h3>
                     <p style="font-size: 14px">{{"Cotisation" | trans }} : <i class="fa fa-check green" style="font-size: 18px;"></i> {{"À jour" | trans }} ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})</p>
                 </div>

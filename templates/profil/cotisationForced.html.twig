@@ -3,6 +3,27 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 
+ {% block menu_top %}
+     <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+         <div class="container">
+             <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+             <div class="navbar-right">
+
+                 {% if app.user %}
+                     <a href="{{ path('app_logout') }}">
+                         <i class="fal fa-sign-out cel-menu-icon"></i>
+                         <br /> Quitter
+                     </a>
+                 {% endif %}
+             </div>
+         </div>
+     </nav>
+ {% endblock %}
+
+{% block menu_footer %}
+{% endblock %}
+
+
 {% block body %}
     <div class="container">
         <div class="row">
@@ -27,7 +48,7 @@
                 $("#form_options_prelevement_cotisation_periodicite_1").attr("disabled", true);
                 $("#form_options_prelevement_cotisation_periodicite_1").prop("checked", false);
                 $("#form_options_prelevement_cotisation_periodicite_0").prop("checked", true);
-                
+
             }
             if($("#form_options_prelevement_cotisation_montant_3").prop("checked") == true){
                 disableMonthly();

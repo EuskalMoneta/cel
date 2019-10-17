@@ -40,6 +40,7 @@ class VirementController extends AbstractController
                 $data['debit'] = $response['data']->result[0]->owner->id;
             }
 
+            //str_replace('.', ',',$data['debit']);
 
             $responseVirement = $APIToolbox->curlRequest('POST', '/one-time-transfer/', $data);
 

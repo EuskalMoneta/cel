@@ -23,6 +23,7 @@
 
 <header>
     <!-- Navigation -->
+    {% block menu_top %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
@@ -33,7 +34,6 @@
                     <i class="fal fa-home cel-menu-icon"></i>
                     <br /> Accueil
                 </a>#}
-
                 <a href="{{ path('app_aide') }}">
                     <i class="fal fa-question-circle cel-menu-icon"></i>
                     <br /> Aide
@@ -48,12 +48,6 @@
                     <i class="fal fa-sign-out cel-menu-icon"></i>
                     <br /> Quitter
                 </a>
-
-                {#<a href="{{ path('app_profil') }}">
-                    <i class="fal fa-bell cel-menu-icon"></i>
-                    <br />
-                    <span class="badge badge-danger">4</span>
-                </a>#}
                 {% else %}
                     <a href="{{ path('app_anon_lang', {'locale': 'eu'}) }}" style="font-size: 16px;">
                         EUS
@@ -61,17 +55,11 @@
                     <a href="{{ path('app_anon_lang', {'locale': 'fr'}) }}" style="font-size: 16px;">
                         FR
                     </a>
-
-
                 {% endif %}
-
-                {#<a href="#">
-                    <i class="fas fa-sign-out cel-menu-icon"></i>
-                    <br /> Déconnexion
-                </a>#}
             </div>
         </div>
     </nav>
+    {% endblock %}
 
 </header>
 <main>
@@ -98,6 +86,7 @@
     {% endblock %}
 </main>
 
+{% block menu_footer %}
 {% if app.user %}
 <footer class="footer fixed-bottom mt-auto pt-2">
     <div class="container">
@@ -143,6 +132,8 @@
     </div>
 </footer>
 {% endif %}
+{% endblock %}
+
 
 <!-- Bootstrap core JavaScript -->
 <script src="{{ asset('js/jquery.min.js') }}"></script>

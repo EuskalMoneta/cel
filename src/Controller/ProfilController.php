@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -136,7 +137,7 @@ class ProfilController extends AbstractController
                     $data['pin2'] = $data['pin1'];
 
                     $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
-                    if($responseProfile['httpcode'] == 200) {
+                    if($responseProfile['httpcode'] == 200 or $responseProfile['httpcode'] == 202) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
@@ -166,7 +167,8 @@ class ProfilController extends AbstractController
                     $data['pin2'] = $data['pin1'];
 
                     $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
-                    if($responseProfile['httpcode'] == 200) {
+
+                    if($responseProfile['httpcode'] == 200 or $responseProfile['httpcode'] == 202) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
@@ -186,12 +188,18 @@ class ProfilController extends AbstractController
     /**
      * @Route("/profil/cotisation", name="app_profil_cotisation")
      */
-    public function cotisation(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function cotisation(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, AuthorizationCheckerInterface $authChecker)
     {
+        $forcedCotisation = false;
+
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMember['httpcode'] == 200) {
 
             $membre = $responseMember['data'][0];
+
+            if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+                $forcedCotisation = true;
+            }
 
             if($membre->array_options->options_prelevement_cotisation_periodicite == 1){
                 $defaultData = $membre->array_options->options_prelevement_cotisation_montant * 12;
@@ -242,13 +250,24 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                        if($forcedCotisation){
+                            return $this->redirectToRoute('app_homepage');
+                        }
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
                 }
+
             }
 
-            return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
+            //QUICK FIX to remove menus from the vue is user has no cotisation and is forced to get one
+            //Couldn't be done in one layout as {% Block %} can't be conditionned by {% if %}
+            if($forcedCotisation){
+                return $this->render('profil/cotisationForced.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
+            } else {
+                return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
+            }
+
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -487,14 +506,14 @@ class ProfilController extends AbstractController
             $booleanNewsletter = $membre->array_options->options_recevoir_actus;
 
             $form = $this->createFormBuilder()
-                ->add('virement_recu', ChoiceType::class,
+                ->add('options_notifications_virements', ChoiceType::class,
                     [
                         'label' => 'Virement reçu',
                         'help' => 'Vous recevrez un email pour chaque virement reçu.',
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
                         'data' => $booleanNewsletter
                     ])
-                ->add('prelevement_recu', ChoiceType::class,
+                ->add('options_notifications_prelevements', ChoiceType::class,
                     [
                         'label' => 'Prélèvement effectué sur votre compte',
                         'help' => 'Vous recevrez un email pour chaque prélèvement effectué sur votre compte.',
@@ -507,7 +526,7 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
                 if($responseLang['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));

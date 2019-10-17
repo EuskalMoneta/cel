@@ -25,6 +25,12 @@
                         <div class="col mt-4">
 
                             <h5>{{ form_label(form.numero_compte_debiteur) }}</h5>
+                            {% if form_errors(form.numero_compte_debiteur) != '' %}
+                            <span class="invalid-feedback d-block"><span class="d-block">
+                                <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.numero_compte_debiteur) }}</span>
+                            </span></span>
+                            {% endif %}
+
                             {{ form_widget(form.numero_compte_debiteur, {'attr': {'class': 'form-control'}}) }}
                         </div>
                     </div>
@@ -38,6 +44,11 @@
                     <div class="row">
                         <div class="col mt-4">
                             <h5>{{ form_label(form.tableur) }}</h5>
+                            {% if form_errors(form.tableur) != '' %}
+                                <span class="invalid-feedback d-block"><span class="d-block">
+                                <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.tableur) }}</span>
+                            </span></span>
+                            {% endif %}
                             {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
                             <p class="text-semi-bold">{{"Une seule colonne avec les numéros de compte, sans titre" | trans }}</p>
                         </div>

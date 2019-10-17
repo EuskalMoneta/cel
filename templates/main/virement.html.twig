@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
-                <h2 class="secondary-color mb-2"> {{ "Nouveau virement" | trans }} </h2>
+                <h2 class="secondary-color mb-2"> {{ "Faire un virement" | trans }} </h2>
 
                 <div class="mb-4">
                     {{ form_start(form) }}
@@ -28,7 +28,7 @@
                                 </select>
                             </div>
                             <div class="float-right">
-                                <a href="{{ path('app_beneficiaire_ajout') }}" class=""> {{"Ajouter un nouveau bénéficiaire" | trans}}</a>
+                                <a href="{{ path('app_beneficiaire_ajout') }}" class="btn btn-outline-primary btn-slim"> {{"Ajouter un nouveau bénéficiaire" | trans}}</a>
                             </div>
 
                         </div>
@@ -42,7 +42,15 @@
                 </div>
 
 
-                <div class="before-footer fixed-bottom">
+                <div class="d-block d-sm-none">
+                    <hr>
+                    <div class="text-center mb-4">
+                        <a href="{{ path('app_beneficiaire_gestion') }}"><i class="fal fa-users main-color" style="font-size: 50px;"></i><br /></a>
+                        <a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-outline-primary btn-slim main-color">{{ "Gestion des bénéficiaires" | trans }}  </a>
+                    </div>
+                </div>
+
+                <div class="before-footer fixed-bottom d-none d-md-block">
                     <hr>
                     <div class="text-center mb-4">
                         <a href="{{ path('app_beneficiaire_gestion') }}"><i class="fal fa-users main-color" style="font-size: 50px;"></i><br /></a>

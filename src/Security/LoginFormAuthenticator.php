@@ -85,6 +85,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $responseMember = $this->apiToolBox->curlRequest('GET', '/members/?login='.$credentials['username'], '', $token);
         if($responseMember['httpcode'] == 200) {
             $user->setLocale($responseMember['data'][0]->array_options->options_langue);
+            if($responseMember['data'][0]->type == 'Régie publique de recettes'){
+                $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
+            }
         }
 
         return $user;

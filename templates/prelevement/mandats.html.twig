@@ -8,6 +8,12 @@
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
                 <h2 class="secondary-color mb-4"> {{ "Mandats" | trans }} </h2>
 
+                {% if mandatsEnATT is empty and mandatsValide is empty and mandatsRev is empty and mandatsRef is empty %}
+                    <div class="text-center mt-4">
+                        <h3 class="mt-4">{{"Aucun mandat" | trans }}</h3>
+                        <img src="{{ asset('images/no-data.png') }}" width="30%"/>
+                    </div>
+                {% endif %}
 
                 {% if mandatsEnATT is not empty %}
                     <h3 class="main-color">{{ "En attente de validation" | trans }} </h3>
@@ -71,6 +77,29 @@
                             <div class="col-6">
                                 <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
                                 <div class="secondary-color"> {{ "Révoqué le " | trans }}{{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="float-right ">
+                                    <a class="btn btn-outline-danger btn-guard" href="{{ path('app_prelevement_autorisation_delete', {'id': mandat.id}) }}"> <i class="far fa-trash-alt"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if mandatsRef is not empty %}
+                    <h3 class="main-color mt-4">  {{ "Réfusés" | trans }} </h3>
+                    {% for mandat in mandatsRef %}
+                        <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
+                            <div class="col-2 text-right">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-times fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
+                                <div class="secondary-color"> {{ "Refusé le " | trans }}{{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}</div>
                             </div>
                             <div class="col-4">
                                 <div class="float-right ">

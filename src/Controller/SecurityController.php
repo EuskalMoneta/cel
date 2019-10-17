@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -298,28 +299,4 @@ class SecurityController extends AbstractController
         return $this->render('security/valideCGU.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/valide/cotisation", name="app_cotisation")
-     */
-    public function valideCotisation(APIToolbox $APIToolbox, Request $request)
-    {
-        //form generation
-        $form = $this->createFormBuilder()
-            ->add('valide', CheckboxType::class, ['label' => "J'ai lu et je valide les CGU", 'required' => true])
-            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
-            ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $accept = $form->getData()['valide'];
-            if($accept){
-                $response = $APIToolbox->curlRequest('POST', '/accept-cgu/', []);
-                if($response['httpcode'] == 200 && $response['data']->status == 'OK'){
-                    $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
-                    return $this->redirectToRoute('app_homepage');
-                }
-            }
-        }
-        return $this->render('security/valideCGU.html.twig', ['form' => $form->createView()]);
-    }
 }

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,14 +26,15 @@ class MainController extends AbstractController
     {
         //Check if CGU are accepted, redirect otherwise
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if(! $responseMember['data'][0]->array_options->options_accepte_cgu_eusko_numerique){
+        $membre = $responseMember['data'][0];
+        if(! $membre->array_options->options_accepte_cgu_eusko_numerique){
             return $this->redirectToRoute('app_accept_cgu');
         }
 
-        //Que pour les particuliers
-        // check last_subscription_date_end
-        //déclencher paiement
-
+        // check last_subscription_date_end to redirect to costisation
+        if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+            return $this->redirectToRoute('app_profil_cotisation');
+        }
 
         //init vars
         $operations = [];
@@ -150,7 +152,7 @@ class MainController extends AbstractController
 
             //form generation
             $form = $this->createFormBuilder()
-                ->add('amount', TextType::class, ['label' => 'Montant', 'required' => true])
+                ->add('amount', NumberType::class, ['label' => 'Montant', 'required' => true])
                 ->add('description', TextType::class, ['label' => 'Description', 'required' => true])
                 ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
                 ->getForm();
@@ -161,6 +163,7 @@ class MainController extends AbstractController
                 $data = $form->getData();
                 $data['debit'] = $response['data']->result[0]->id;
 
+                //str_replace('.', ',',$data['debit']);
                 $responseReconversion = $APIToolbox->curlRequest('POST', '/reconvert-eusko/', $data);
                 if($responseReconversion['httpcode'] == 201 || $responseReconversion['httpcode'] == 200) {
                     $this->addFlash('success', $translator->trans('Reconversion réussie.'));
@@ -188,7 +191,7 @@ class MainController extends AbstractController
     /**
      * @Route("/recherche", name="app_search")
      */
-    public function search(Request $request, APIToolbox $APIToolbox)
+    public function search(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         //Init vars
         $operations = 'empty';
@@ -201,11 +204,17 @@ class MainController extends AbstractController
         $startOfMonth = (new \DateTime("now"))->modify('first day of this month')->format('Y-m-d');
         $startOfLastMonth = (new \DateTime("now"))->modify('first day of last month')->format('Y-m-d');
         $endOfLastMonth = (new \DateTime("now"))->modify('last day of last month')->format('Y-m-d');
+        $startOfThisYear = (new \DateTime("now"))->modify('first day of January')->format('Y-m-d');
+        $endOfThisYear = (new \DateTime("now"))->modify('last day of December')->format('Y-m-d');
 
         //form generation
         $form = $this->createFormBuilder()
             ->add('periode', ChoiceType::class,
-                ['choices' => ['Les 7 derniers jours' => $now.'#'.$startOfWeek, 'Ce mois ci' => $now.'#'.$startOfMonth, 'Le mois dernier' => $endOfLastMonth.'#'.$startOfLastMonth],
+                ['choices' => [
+                    //'Les 7 derniers jours' => $now.'#'.$startOfWeek,
+                    'Ce mois ci' => $now.'#'.$startOfMonth,
+                    'Le mois dernier' => $endOfLastMonth.'#'.$startOfLastMonth,
+                    $translator->trans('Cette année') => $endOfThisYear.'#'.$startOfThisYear,],
                     'required' => false
                 ]
             )

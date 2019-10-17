@@ -4,6 +4,23 @@
 
 {% block title %}{{ "Conditions Générales d'Utilisation" | trans }}{% endblock %}
 
+
+{% block menu_top %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+            <div class="navbar-right">
+
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}">
+                        <i class="fal fa-sign-out cel-menu-icon"></i>
+                        <br /> Quitter
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
@@ -14,11 +31,13 @@
 
                         <h1 class="h3 mb-3 font-weight-normal">{{ "Lire les conditions générales d'Utilisation" | trans }}</h1>
 
-                        <h2>CGU</h2>
-                        <p> vokvveok</p>
-                        <p> vokvveok</p>
-                        <p> vokvveok</p>
-                        <p> vokvveok</p>
+                        <div class="text-center">
+                            {% if is_granted('ROLE_PARTENAIRE') %}
+                                <a href="{{ asset('images/CGU-Professionnels.pdf') }}" target="_blank" class="link"> CGU Professionnels</a>
+                            {% else %}
+                                <a href="{{ asset('images/CGU-Particuliers.pdf') }}" target="_blank" class="btn btn-outline-info"> CGU Particuliers</a>
+                            {% endif %}
+                        </div>
                         {{ form(form) }}
 
 
@@ -27,4 +46,7 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block menu_footer %}
 {% endblock %}

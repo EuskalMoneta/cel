@@ -125,6 +125,7 @@ class PrelevementController extends AbstractController
         $mandatsEnATT = [];
         $mandatsValide = [];
         $mandatsRev = [];
+        $mandatsRef = [];
 
         //Get Mandats from API
         $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur');
@@ -138,12 +139,14 @@ class PrelevementController extends AbstractController
                     $mandatsEnATT[] = $mandat;
                 } elseif($mandat->statut == 'REV'){
                     $mandatsRev[] = $mandat;
-                } else {
+                } elseif($mandat->statut == 'REF'){
+                    $mandatsRef[] = $mandat;
+                } elseif($mandat->statut == 'VAL'){
                     $mandatsValide[] = $mandat;
                 }
             }
 
-            return $this->render('prelevement/mandats.html.twig', ['mandatsEnATT' => $mandatsEnATT, 'mandatsValide' => $mandatsValide, 'mandatsRev' => $mandatsRev]);
+            return $this->render('prelevement/mandats.html.twig', ['mandatsEnATT' => $mandatsEnATT, 'mandatsValide' => $mandatsValide, 'mandatsRev' => $mandatsRev, 'mandatsRef' => $mandatsRef]);
         }
 
         throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

@@ -56,7 +56,7 @@ class ChangeController extends AbstractController
                         ],
                     ]
                 )
-                ->add('prelevement_change_comment', TextType::class, ['required' => true, 'label' => "Commentaire"])
+                ->add('prelevement_change_comment', TextType::class, ['required' => false, 'label' => "Commentaire"])
                 ->add('submit', SubmitType::class, ['label' => 'Valider'])
                 ->getForm();
 
@@ -64,6 +64,7 @@ class ChangeController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $data['mode'] = 'modify';
+                str_replace(',', ',',$data['options_prelevement_change_montant']);
 
                 $responseChange = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
                 if($responseChange['httpcode'] == 200) {

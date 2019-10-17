@@ -23,14 +23,21 @@ Vérifier les permissions des dossiers var/cache var/log et public/uploads \
 ## Traductions
 
 ### Cas général
-Pour tous les textes traduits dans les templates twig `{{ "texte" | trans }}` 
+Pour tous les textes traduits dans les templates twig `{{ "texte" | trans }}` ou dans les controleurs par `$translator->trans('texte');`
 
 1. Générer les traductions manquantes :
 `php bin/console translation:update --dump-messages --force eu`
 `php bin/console translation:update --dump-messages --force fr`
 2. Modifier le fichier /translations/messages.eu.xlf pour apporter les traductions manquantes.
+
+`<trans-unit id="VFSc1BP" resname="Bureaux de change">
+    <source>Bureaux de change</source>
+    <target>Traduction en euskara</target>
+    </trans-unit>`
+    
+L'identifiant id= doit être unique, et resname == source. 
+On peut ajouter des blocs à la main, mais c'est plus simple de le faire générer par Symfony !
  
 ### Dans les formulaires
-Les traductions des formulaires ne sont pas générées automatiquement, on peut cependant en obtenir la liste via la barre
-de debug en mode dev. Il suffit ensuite de faire un copier-coller d'un bloc xlf en changeant les paramètres.
+Bien penser à effectuer la traduction dans le controleur avec `$translator->trans('texte');`
  

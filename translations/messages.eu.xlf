@@ -397,6 +397,394 @@
         <source>Relevés de compte</source>
         <target>__Relevés de compte</target>
       </trans-unit>
+      <trans-unit id="4K8dbNg" resname="Votre saisie est vide !">
+        <source>Votre saisie est vide !</source>
+        <target>__Votre saisie est vide !</target>
+      </trans-unit>
+      <trans-unit id="8mvF1sf" resname="Association ajoutée !">
+        <source>Association ajoutée !</source>
+        <target>__Association ajoutée !</target>
+      </trans-unit>
+      <trans-unit id="g9fwcTs" resname="Veuillez sélectionner une association dans la liste">
+        <source>Veuillez sélectionner une association dans la liste</source>
+        <target>__Veuillez sélectionner une association dans la liste</target>
+      </trans-unit>
+      <trans-unit id="l3MzLhS" resname="Vos associations ont bien été enregistrées.">
+        <source>Vos associations ont bien été enregistrées.</source>
+        <target>__Vos associations ont bien été enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="pV2Rx35" resname="Votre demande a bien été prise en compte">
+        <source>Votre demande a bien été prise en compte</source>
+        <target>__Votre demande a bien été prise en compte</target>
+      </trans-unit>
+      <trans-unit id="YlyQRfk" resname="Erreur lors de la demande.">
+        <source>Erreur lors de la demande.</source>
+        <target>__Erreur lors de la demande.</target>
+      </trans-unit>
+      <trans-unit id="hnKPQKS" resname="Reconversion réussie.">
+        <source>Reconversion réussie.</source>
+        <target>__Reconversion réussie.</target>
+      </trans-unit>
+      <trans-unit id="_t0WxXP" resname="Erreur : vérifier le solde de votre compte.">
+        <source>Erreur : vérifier le solde de votre compte.</source>
+        <target>__Erreur : vérifier le solde de votre compte.</target>
+      </trans-unit>
+      <trans-unit id="SSLiLHY" resname="Cette année">
+        <source>Cette année</source>
+        <target>__Cette année</target>
+      </trans-unit>
+      <trans-unit id="giNP4Sg" resname="Le mandat a été validé">
+        <source>Le mandat a été validé</source>
+        <target>__Le mandat a été validé</target>
+      </trans-unit>
+      <trans-unit id="ghcOGTL" resname="Le mandat a été refusé">
+        <source>Le mandat a été refusé</source>
+        <target>__Le mandat a été refusé</target>
+      </trans-unit>
+      <trans-unit id="OfOQuDx" resname="Le mandat a été révoqué">
+        <source>Le mandat a été révoqué</source>
+        <target>__Le mandat a été révoqué</target>
+      </trans-unit>
+      <trans-unit id="ZVAxqBv" resname="Le mandat a été supprimé">
+        <source>Le mandat a été supprimé</source>
+        <target>__Le mandat a été supprimé</target>
+      </trans-unit>
+      <trans-unit id="KWc4XXj" resname="Mandat ajouté">
+        <source>Mandat ajouté</source>
+        <target>__Mandat ajouté</target>
+      </trans-unit>
+      <trans-unit id="iFUXRfF" resname="Erreur lors de l'ajout du mandat">
+        <source>Erreur lors de l'ajout du mandat</source>
+        <target>__Erreur lors de l'ajout du mandat</target>
+      </trans-unit>
+      <trans-unit id="rpGS6HK" resname="Merci d'avoir accepté les CGU">
+        <source>Merci d'avoir accepté les CGU</source>
+        <target>__Merci d'avoir accepté les CGU</target>
+      </trans-unit>
+      <trans-unit id="BJHAmFP" resname="Virement effectué">
+        <source>Virement effectué</source>
+        <target>__Virement effectué</target>
+      </trans-unit>
+      <trans-unit id="aL9wfk6" resname="Le virement n'a pas pu être effectué">
+        <source>Le virement n'a pas pu être effectué</source>
+        <target>__Le virement n'a pas pu être effectué</target>
+      </trans-unit>
+      <trans-unit id=".uJPLux" resname="Autorisations de prélèvement">
+        <source>Autorisations de prélèvement</source>
+        <target>__Autorisations de prélèvement</target>
+      </trans-unit>
+      <trans-unit id="wumw623" resname="Aucune autorisation de prélèvement">
+        <source>Aucune autorisation de prélèvement</source>
+        <target>__Aucune autorisation de prélèvement</target>
+      </trans-unit>
+      <trans-unit id="L2yEd_k" resname="En attente">
+        <source>En attente</source>
+        <target>__En attente</target>
+      </trans-unit>
+      <trans-unit id="fqtLUXN" resname="Créée le">
+        <source>Créée le</source>
+        <target>__Créée le</target>
+      </trans-unit>
+      <trans-unit id="RdZOdU." resname="Autorisations validées">
+        <source>Autorisations validées</source>
+        <target>__Autorisations validées</target>
+      </trans-unit>
+      <trans-unit id="N1Ql7iN" resname="Validée le">
+        <source>Validée le</source>
+        <target>__Validée le</target>
+      </trans-unit>
+      <trans-unit id="cRIOsX6" resname="Êtes vous sur de vouloir supprimer ce mandat ?">
+        <source>Êtes vous sur de vouloir supprimer ce mandat ?</source>
+        <target>__Êtes vous sur de vouloir supprimer ce mandat ?</target>
+      </trans-unit>
+      <trans-unit id="2y3.0Ga" resname="Nouvelle autorisation">
+        <source>Nouvelle autorisation</source>
+        <target>__Nouvelle autorisation</target>
+      </trans-unit>
+      <trans-unit id="hYyEe3Q" resname="Suppression">
+        <source>Suppression</source>
+        <target>__Suppression</target>
+      </trans-unit>
+      <trans-unit id="985v0vN" resname="Révoquer une autorisation">
+        <source>Révoquer une autorisation</source>
+        <target>__Révoquer une autorisation</target>
+      </trans-unit>
+      <trans-unit id="tOztW9f" resname="Êtes vous sur de valider cette autorisation de prélèvement ?">
+        <source>Êtes vous sur de valider cette autorisation de prélèvement ?</source>
+        <target>__Êtes vous sur de valider cette autorisation de prélèvement ?</target>
+      </trans-unit>
+      <trans-unit id="q_KdiJk" resname="Êtes vous sur de vouloir supprimer cette demande ?">
+        <source>Êtes vous sur de vouloir supprimer cette demande ?</source>
+        <target>__Êtes vous sur de vouloir supprimer cette demande ?</target>
+      </trans-unit>
+      <trans-unit id="iwyGAK5" resname="Êtes vous sur de vouloir révoquer cette autorisation ?">
+        <source>Êtes vous sur de vouloir révoquer cette autorisation ?</source>
+        <target>__Êtes vous sur de vouloir révoquer cette autorisation ?</target>
+      </trans-unit>
+      <trans-unit id="vy4rTSU" resname="Prélèvements">
+        <source>Prélèvements</source>
+        <target>__Prélèvements</target>
+      </trans-unit>
+      <trans-unit id="t.MTVCf" resname="Prélèvements sur mon compte">
+        <source>Prélèvements sur mon compte</source>
+        <target>__Prélèvements sur mon compte</target>
+      </trans-unit>
+      <trans-unit id="rsVWMGQ" resname="Gérer les autorisations">
+        <source>Gérer les autorisations</source>
+        <target>__Gérer les autorisations</target>
+      </trans-unit>
+      <trans-unit id="i4ZcOYW" resname="Faire des prélèvements">
+        <source>Faire des prélèvements</source>
+        <target>__Faire des prélèvements</target>
+      </trans-unit>
+      <trans-unit id="7n_v7XH" resname="Exécuter des prélèvements">
+        <source>Exécuter des prélèvements</source>
+        <target>__Exécuter des prélèvements</target>
+      </trans-unit>
+      <trans-unit id="VdBzb4." resname="Ajouter des mandats">
+        <source>Ajouter des mandats</source>
+        <target>__Ajouter des mandats</target>
+      </trans-unit>
+      <trans-unit id="Bds2sDp" resname="Une seule colonne avec les numéros de compte, sans titre">
+        <source>Une seule colonne avec les numéros de compte, sans titre</source>
+        <target>__Une seule colonne avec les numéros de compte, sans titre</target>
+      </trans-unit>
+      <trans-unit id="v5X4sMU" resname="Mandats">
+        <source>Mandats</source>
+        <target>__Mandats</target>
+      </trans-unit>
+      <trans-unit id="pXdfcCt" resname="Aucun mandat">
+        <source>Aucun mandat</source>
+        <target>__Aucun mandat</target>
+      </trans-unit>
+      <trans-unit id="8VpJepu" resname="En attente de validation">
+        <source>En attente de validation</source>
+        <target>__En attente de validation</target>
+      </trans-unit>
+      <trans-unit id="PkAxAvZ" resname="Créé le">
+        <source>Créé le</source>
+        <target>__Créé le</target>
+      </trans-unit>
+      <trans-unit id="yJN36oH" resname="Validés">
+        <source>Validés</source>
+        <target>__Validés</target>
+      </trans-unit>
+      <trans-unit id="kU2ctJe" resname="Validé le">
+        <source>Validé le</source>
+        <target>__Validé le</target>
+      </trans-unit>
+      <trans-unit id="_FPR0fc" resname="Révoqués">
+        <source>Révoqués</source>
+        <target>__Révoqués</target>
+      </trans-unit>
+      <trans-unit id="8RM6EnL" resname="Révoqué le">
+        <source>Révoqué le</source>
+        <target>__Révoqué le</target>
+      </trans-unit>
+      <trans-unit id="0IBddQa" resname="Réfusés">
+        <source>Réfusés</source>
+        <target>__Réfusés</target>
+      </trans-unit>
+      <trans-unit id="rkg6t8g" resname="Refusé le">
+        <source>Refusé le</source>
+        <target>__Refusé le</target>
+      </trans-unit>
+      <trans-unit id="cJGeRf2" resname="Supprimer un mandat">
+        <source>Supprimer un mandat</source>
+        <target>__Supprimer un mandat</target>
+      </trans-unit>
+      <trans-unit id="Xb47_k6" resname="J’ai oublié mon mot de passe">
+        <source>J’ai oublié mon mot de passe</source>
+        <target>__J’ai oublié mon mot de passe</target>
+      </trans-unit>
+      <trans-unit id="7T1kxVt" resname="C'est votre première connexion">
+        <source>C'est votre première connexion</source>
+        <target>__C'est votre première connexion</target>
+      </trans-unit>
+      <trans-unit id="6FEu59A" resname="Conditions Générales d'Utilisation">
+        <source>Conditions Générales d'Utilisation</source>
+        <target>__Conditions Générales d'Utilisation</target>
+      </trans-unit>
+      <trans-unit id="hmfH.he" resname="Lire les conditions générales d'Utilisation">
+        <source>Lire les conditions générales d'Utilisation</source>
+        <target>__Lire les conditions générales d'Utilisation</target>
+      </trans-unit>
+      <trans-unit id="_M5HfI_" resname="N° d'adhérent">
+        <source>N° d'adhérent</source>
+        <target>__N° d'adhérent</target>
+      </trans-unit>
+      <trans-unit id="zYxbDID" resname="Accès à mon compte">
+        <source>Accès à mon compte</source>
+        <target>__Accès à mon compte</target>
+      </trans-unit>
+      <trans-unit id="4mli900" resname="Mon euskokart">
+        <source>Mon euskokart</source>
+        <target>__Mon euskokart</target>
+      </trans-unit>
+      <trans-unit id="MmNTfah" resname="Mon code PIN">
+        <source>Mon code PIN</source>
+        <target>__Mon code PIN</target>
+      </trans-unit>
+      <trans-unit id="6jJddh_" resname="an">
+        <source>an</source>
+        <target>__an</target>
+      </trans-unit>
+      <trans-unit id="TA7Pgeb" resname="Cotisation offerte">
+        <source>Cotisation offerte</source>
+        <target>__Cotisation offerte</target>
+      </trans-unit>
+      <trans-unit id="QBNF22j" resname="Pas de prélèvement automatique de la cotisation">
+        <source>Pas de prélèvement automatique de la cotisation</source>
+        <target>__Pas de prélèvement automatique de la cotisation</target>
+      </trans-unit>
+      <trans-unit id="fz4fpIO" resname="Non à jour">
+        <source>Non à jour</source>
+        <target>__Non à jour</target>
+      </trans-unit>
+      <trans-unit id="1IzjBXf" resname="Association second choix">
+        <source>Association second choix</source>
+        <target>__Association second choix</target>
+      </trans-unit>
+      <trans-unit id="INSoU_z" resname="Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions.">
+        <source>Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions.</source>
+        <target>__Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions.</target>
+      </trans-unit>
+      <trans-unit id="EtptXk1" resname="Modifier Association 3%">
+        <source>Modifier Association 3%</source>
+        <target>__Modifier Association 3%</target>
+      </trans-unit>
+      <trans-unit id="rOhVjBn" resname="Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :">
+        <source>Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :</source>
+        <target>__Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :</target>
+      </trans-unit>
+      <trans-unit id="KyG0R0o" resname="Association ...">
+        <source>Association ...</source>
+        <target>__Association ...</target>
+      </trans-unit>
+      <trans-unit id="PZ2RmIL" resname="ou saisie libre d'une autre association :">
+        <source>ou saisie libre d'une autre association :</source>
+        <target>__ou saisie libre d'une autre association :</target>
+      </trans-unit>
+      <trans-unit id="7NcMaPM" resname="Mon don 3% Eusko">
+        <source>Mon don 3% Eusko</source>
+        <target>__Mon don 3% Eusko</target>
+      </trans-unit>
+      <trans-unit id="Mqg0olA" resname="L'association que je parraine">
+        <source>L'association que je parraine</source>
+        <target>__L'association que je parraine</target>
+      </trans-unit>
+      <trans-unit id="5YAK4Br" resname="L'association qui bénéficie de mon 3%">
+        <source>L'association qui bénéficie de mon 3%</source>
+        <target>__L'association qui bénéficie de mon 3%</target>
+      </trans-unit>
+      <trans-unit id="PJz.H5F" resname="modifier mon association">
+        <source>modifier mon association</source>
+        <target>__modifier mon association</target>
+      </trans-unit>
+      <trans-unit id="ccg9Wqj" resname="3% de votre change reversé">
+        <source>3% de votre change reversé</source>
+        <target>__3% de votre change reversé</target>
+      </trans-unit>
+      <trans-unit id="hTnKXJQ" resname="Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.">
+        <source>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</source>
+        <target>__Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</target>
+      </trans-unit>
+      <trans-unit id="GJdfIa2" resname="Versements annuels">
+        <source>Versements annuels</source>
+        <target>__Versements annuels</target>
+      </trans-unit>
+      <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
+        <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
+        <target>__Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</target>
+      </trans-unit>
+      <trans-unit id="rBh_I.y" resname="Changement d'association">
+        <source>Changement d'association</source>
+        <target>__Changement d'association</target>
+      </trans-unit>
+      <trans-unit id="9DwMTcu" resname="Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)">
+        <source>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</source>
+        <target>__Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</target>
+      </trans-unit>
+      <trans-unit id="a4yUVm1" resname="Reconvertir des eusko en €">
+        <source>Reconvertir des eusko en €</source>
+        <target>__Reconvertir des eusko en €</target>
+      </trans-unit>
+      <trans-unit id="fkTAWHe" resname="Télécharger en CSV">
+        <source>Télécharger en CSV</source>
+        <target>__Télécharger en CSV</target>
+      </trans-unit>
+      <trans-unit id="bE3HQ63" resname="Télécharger en PDF">
+        <source>Télécharger en PDF</source>
+        <target>__Télécharger en PDF</target>
+      </trans-unit>
+      <trans-unit id="AN7EuNk" resname="+ d'infos">
+        <source>+ d'infos</source>
+        <target>__+ d'infos</target>
+      </trans-unit>
+      <trans-unit id="0L1wgYs" resname="Votre historique est vide">
+        <source>Votre historique est vide</source>
+        <target>__Votre historique est vide</target>
+      </trans-unit>
+      <trans-unit id="nqoak7n" resname="Faire un virement">
+        <source>Faire un virement</source>
+        <target>__Faire un virement</target>
+      </trans-unit>
+      <trans-unit id="CHFHj_C" resname="Selectionner dans la liste ...">
+        <source>Selectionner dans la liste ...</source>
+        <target>__Selectionner dans la liste ...</target>
+      </trans-unit>
+      <trans-unit id="LjBU4S." resname="Aide">
+        <source>Aide</source>
+        <target>__Aide</target>
+      </trans-unit>
+      <trans-unit id="zMhvWDq" resname="Modifier mon change automatique">
+        <source>Modifier mon change automatique</source>
+        <target>__Modifier mon change automatique</target>
+      </trans-unit>
+      <trans-unit id="r1.B4uC" resname="Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.">
+        <source>Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.</source>
+        <target>__Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.</target>
+      </trans-unit>
+      <trans-unit id="0phfZFc" resname="Les prélèvements sont effectués le 10 de chaque mois.">
+        <source>Les prélèvements sont effectués le 10 de chaque mois.</source>
+        <target>__Les prélèvements sont effectués le 10 de chaque mois.</target>
+      </trans-unit>
+      <trans-unit id="U8UnXQ0" resname="Informations sur le mandat de prélèvement">
+        <source>Informations sur le mandat de prélèvement</source>
+        <target>__Informations sur le mandat de prélèvement</target>
+      </trans-unit>
+      <trans-unit id="FnvkPms" resname="Nom du créancier">
+        <source>Nom du créancier</source>
+        <target>__Nom du créancier</target>
+      </trans-unit>
+      <trans-unit id="WOnr9oT" resname="Identifiant du créancier">
+        <source>Identifiant du créancier</source>
+        <target>__Identifiant du créancier</target>
+      </trans-unit>
+      <trans-unit id="OUxfKzu" resname="Référence Unique du Mandat">
+        <source>Référence Unique du Mandat</source>
+        <target>__Référence Unique du Mandat</target>
+      </trans-unit>
+      <trans-unit id="9Uc_lDV" resname="Modifier le montant du change automatique">
+        <source>Modifier le montant du change automatique</source>
+        <target>__Modifier le montant du change automatique</target>
+      </trans-unit>
+      <trans-unit id="b5IVanQ" resname="Créditer mon compte">
+        <source>Créditer mon compte</source>
+        <target>__Créditer mon compte</target>
+      </trans-unit>
+      <trans-unit id="z4tnY_a" resname="Change en ligne via hello asso">
+        <source>Change en ligne via hello asso</source>
+        <target>__Change en ligne via hello asso</target>
+      </trans-unit>
+      <trans-unit id="S_MhFjG" resname="Bon à savoir">
+        <source>Bon à savoir</source>
+        <target>__Bon à savoir</target>
+      </trans-unit>
+      <trans-unit id="VFSc1BP" resname="Bureaux de change">
+        <source>Bureaux de change</source>
+        <target>__Bureaux de change</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

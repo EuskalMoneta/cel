@@ -79,16 +79,7 @@ h3 {
     font-size: 16px;
     color: white;
 }
-.btn-outline-white {
-    color: #fff;
-    background-color: transparent;
-    border-color: #fff;
-}
-.btn-outline-white:hover {
-    color: #000;
-    background-color: #fff;
-    border-color: #fff;
-}
+
 .eusko-cart{
     width: auto;
     max-width: 380px;
@@ -101,7 +92,47 @@ h3 {
     text-transform: none;
     padding: 0.5rem 1.5rem;
 }
-
+.btn-slim{
+    padding: 0.5rem 1.5rem;
+    line-height: 0.5rem;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #47525E;
+    border-color: #47525E;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #2e3742;
+    border-color: #2e3742;
+}
+.btn-outline-white {
+    color: #fff;
+    background-color: transparent;
+    border-color: #fff;
+}
+.btn-outline-white:hover {
+    color: #000;
+    background-color: #fff;
+    border-color: #fff;
+}
+.btn-outline-primary {
+    color: #47525E;
+    background-color: #fff;
+    border-color: #47525E;
+}.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #47525E;
+    border-color: #47525E;
+}
+button.btn-primary{
+    color: #fff;
+    background-color: #41A528;
+}
+button.btn-primary:hover{
+    color: #fff;
+    background-color: #29871b;
+}
 [class*="btn-outline-"] {
     border-width: 1px;
 }
@@ -159,20 +190,7 @@ label.required:before {
 .before-footer{
     margin-bottom: 60px;
 }
-.btn-slim{
-    padding: 0.5rem 1.5rem;
-    line-height: 0.5rem;
-}
-.btn-primary {
-    color: #fff;
-    background-color: #47525E;
-    border-color: #47525E;
-}
-.btn-primary:hover {
-    color: #fff;
-    background-color: #2e3742;
-    border-color: #2e3742;
-}
+
 .table th, .table td {
     padding: 0.75rem;
     vertical-align: middle;

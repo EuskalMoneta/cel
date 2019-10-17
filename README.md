@@ -41,3 +41,5 @@ On peut ajouter des blocs à la main, mais c'est plus simple de le faire génér
 ### Dans les formulaires
 Bien penser à effectuer la traduction dans le controleur avec `$translator->trans('texte');`
  
+ 
+ https://marmelab.com/blog/2019/07/25/quixo-avec-symfo-framework-php.html

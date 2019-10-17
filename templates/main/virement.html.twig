@@ -2,14 +2,20 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
+
+{% block css %}
+    <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet"  type='text/css'>
+{% endblock %}
+
 {% block body %}
+    {{ form_start(form) }}
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
                 <h2 class="secondary-color mb-2"> {{ "Faire un virement" | trans }} </h2>
 
                 <div class="mb-4">
-                    {{ form_start(form) }}
+
                     {% if  form_errors(form) != '' %}
                         <div class="alert alert-dismissible alert-danger">
                             <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
@@ -21,10 +27,11 @@
                             <div class="form-group">
                                 <label for="destinataire" class="required">{{ "Destinataire" | trans }}</label>
 
-                                <select id="" name="destinataire" data-url="{{ path('app_beneficiaire_search') }}" class="form-control basicAutoSelect"  autocomplete="off">
-                                    {# if destinataire != '' %}
-                                        <option value="{{ destinataire }}"> {{ destinataire }}</option>
-                                    {% endif #}
+                                <select id="" name="destinataire" class="form-control chosen-select" data-placeholder="{{ "Selectionner dans la liste ..." | trans }}" >
+                                    <option value=""></option>
+                                    {% for beneficiaire in beneficiaires %}
+                                    <option value="{{ beneficiaire.cyclos_id }}">{{ beneficiaire.cyclos_name }} </option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="float-right">
@@ -38,7 +45,19 @@
                             {{ form_row(form.amount) }}
                         </div>
                     </div>
-                    {{ form_end(form) }}
+
+                    <div class="row">
+                        <div class="col">
+                            {{ form_row(form.description) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.submit) }}
+                        </div>
+                    </div>
+
                 </div>
 
 
@@ -76,11 +95,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-outline-success btn-slim" id="modal-valid">Valider</button>
+                    <input  type="submit" class="btn btn-outline-success btn-slim" id="modal-valid" value="Valider" />
                 </div>
             </div>
         </div>
     </div>
+
+    {{ form_end(form) }}
 
 
 
@@ -88,22 +109,25 @@
 {% endblock %}
 
 {% block js %}
+    <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
     <script type="text/javascript">
 
-        $('.basicAutoSelect').autoComplete();
+        $(".chosen-select").chosen();
 
-        /*$('#form-virement').submit(function (e){
-            if ($(this).valid()) {
+        $('#form-virement').submit(function (e){
+            if($('#confirm-modal').hasClass('fade')){
                 $('#confirm-modal').modal('show');
                 e.preventDefault();
+
             } else {
-                return true;
+                $("#form_submit").unbind('click').click();
+                $(this).submit();
             }
+
         });
         $('#modal-valid').click(function (e){
-            $('#confirm-modal').modal('hide');
-            $("#form_submit").unbind('click').click();
-            //$('#form-virement').submit();
-        });*/
+            $('form').unbind('submit').submit();
+            $("#form_submit").submit();
+        });
     </script>
 {% endblock %}

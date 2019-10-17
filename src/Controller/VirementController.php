@@ -21,7 +21,13 @@ class VirementController extends AbstractController
      */
     public function virement(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
+        //GET beneficiaires
+        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
+        if($response['httpcode'] == 200){
+            $beneficiaires = $response['data']->results;
+        }
 
+        //Form generation
         $destinataire ='';
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
             ->add('amount', NumberType::class, ['required' => true, 'label' => "Montant"])
@@ -31,28 +37,23 @@ class VirementController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //prepare payload
             $data = $form->getData();
             $data['beneficiaire'] = $request->get('destinataire');
 
-
-            $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
-            if($response['httpcode'] == 200) {
-                $data['debit'] = $response['data']->result[0]->owner->id;
-            }
-
-            //str_replace('.', ',',$data['debit']);
-
+            //API CALL
             $responseVirement = $APIToolbox->curlRequest('POST', '/one-time-transfer/', $data);
-
             if($responseVirement['httpcode'] == 200) {
                 $this->addFlash('success',$translator->trans('Virement effectué'));
+                return $this->redirectToRoute('app_virement');
             } else {
                 $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
             }
 
         }
 
-        return $this->render('main/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire]);
+        return $this->render('main/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
     }
 
     /**
@@ -118,7 +119,7 @@ class VirementController extends AbstractController
      */
     public function jsonBeneficiaireAjout(Request $request, APIToolbox $APIToolbox)
     {
-        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/search/?number='.$request->get('q'));
+        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/search/?number='.str_replace(' ', '', $request->get('q')));
 
         if($response['httpcode'] == 200 && $request->isXmlHttpRequest()){
             return new JsonResponse([['value' => $response['data']->id.'!'.$request->get('q').'!'.$response['data']->label, 'text' => $response['data']->label]]);

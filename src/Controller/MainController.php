@@ -161,9 +161,8 @@ class MainController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $data['debit'] = $response['data']->result[0]->id;
+                //$data['debit'] = $response['data']->result[0]->id;
 
-                //str_replace('.', ',',$data['debit']);
                 $responseReconversion = $APIToolbox->curlRequest('POST', '/reconvert-eusko/', $data);
                 if($responseReconversion['httpcode'] == 201 || $responseReconversion['httpcode'] == 200) {
                     $this->addFlash('success', $translator->trans('Reconversion réussie.'));

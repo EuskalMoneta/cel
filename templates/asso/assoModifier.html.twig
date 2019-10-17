@@ -25,7 +25,7 @@
                                 <div class="row">
                                     <div class="col-md-2"><input id="radioAsso" name="radiostar[]" type="radio" value="asso" class="form-control" /></div>
                                     <div class="col-md-10">
-                                        <select name="fk_asso" id="fk_asso" class="chosen-select form-control" data-placeholder="{{ "Association ..." }}">
+                                        <select name="fk_asso" id="fk_asso" class="chosen-select form-control" data-placeholder="{{ "Association ..." | trans }}">
                                             <option></option>
                                             {% for asso in optionsAsso %}
                                                 <option value="{{ asso.id }}" {% if membre.fk_asso == asso.id %}selected{% endif %}>{{ asso.nom }} - {{ asso.nb_parrains }}  </option>

@@ -82,7 +82,7 @@ class VirementController extends AbstractController
 
             if($request->isMethod('POST')){
                 $params = explode('!', $request->get('recherche'));
-                $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => 'E00098']);
+                $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => $this->getUser()->getUsername()]);
 
                 $this->addFlash('success', 'Bénéficiaire ajouté');
                 return $this->redirectToRoute('app_beneficiaire_gestion');

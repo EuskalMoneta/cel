@@ -503,7 +503,8 @@ class ProfilController extends AbstractController
         if($responseMember['httpcode'] == 200) {
 
             $membre = $responseMember['data'][0];
-            $booleanNewsletter = $membre->array_options->options_recevoir_actus;
+            $options_notifications_virements = $membre->array_options->options_notifications_virements;
+            $options_notifications_prelevements = $membre->array_options->options_notifications_prelevements;
 
             $form = $this->createFormBuilder()
                 ->add('options_notifications_virements', ChoiceType::class,
@@ -511,14 +512,14 @@ class ProfilController extends AbstractController
                         'label' => 'Virement reçu',
                         'help' => 'Vous recevrez un email pour chaque virement reçu.',
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
-                        'data' => $booleanNewsletter
+                        'data' => $options_notifications_virements
                     ])
                 ->add('options_notifications_prelevements', ChoiceType::class,
                     [
                         'label' => 'Prélèvement effectué sur votre compte',
                         'help' => 'Vous recevrez un email pour chaque prélèvement effectué sur votre compte.',
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
-                        'data' => $booleanNewsletter
+                        'data' => $options_notifications_prelevements
                     ])
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
                 ->getForm();

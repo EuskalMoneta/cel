@@ -191,6 +191,12 @@ label.required:before {
     margin-bottom: 60px;
 }
 
+.table-success td, .table-success th{
+    color: #000;
+}
+.table-danger td, .table-danger th{
+    color: #000;
+}
 .table th, .table td {
     padding: 0.75rem;
     vertical-align: middle;

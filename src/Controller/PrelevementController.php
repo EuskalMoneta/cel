@@ -100,20 +100,74 @@ class PrelevementController extends AbstractController
 
     /**
      * @Route("/prelevements/executions", name="app_prelevement_execution")
+     * @IsGranted("ROLE_PARTENAIRE")
      */
-    public function executions(APIToolbox $APIToolbox)
+    public function executions(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
-        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-        if($responseMember['httpcode'] == 200) {
+        //init vars
+        $comptes = [];
+        $listSuccess = [];
+        $listFail = [];
 
-            $membre = $responseMember['data'][0];
+        //Create form with acount number
+        $form = $this->createFormBuilder()
+            ->add('tableur', FileType::class, [
+                'label' => $translator->trans('Importer un tableur (Fichier CSV)'),
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2024k',
+                        'mimeTypes' => [
+                            'text/csv',
+                            'text/plain',
+                        ],
+                        'mimeTypesMessage' => 'Le fichier n\'est pas au format csv',
+                    ])
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans('Valider')])
+            ->getForm();
 
-            return $this->render('prelevement/autorisation.html.twig', ['membre' => $membre]);
+        if($request->isMethod('POST')){
 
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                //On charge le fichier csv
+                $file = $form['tableur']->getData();
+                if(!empty($file)) {
+                    if (($handle = fopen($file, "r")) !== FALSE) {
+                        while(($row = fgetcsv($handle)) !== FALSE) {
+                            if(sizeof($row) == 3){
+                                $comptes[] = [
+                                    'account' => $row[0],
+                                    'amount' => $row[1],
+                                    'description' => $row[2]
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevement/', json_encode($comptes));
+            if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
+                $data = $responsePrelevements['data'];
+                //$data = json_decode('[{"account":"123156564","status":"0","description":"toto"},{"account":"999999999","status":"1","description":"tutu"}, {"account":"999999999","status":"1","description":"tutu"}]');
+                foreach ($data as $prelevement){
+                    if($prelevement->status){
+                        $listSuccess[] = $prelevement;
+                    } else {
+                        $listFail[] = $prelevement;
+                    }
+                }
+            } else {
+                $this->addFlash('danger', $translator->trans('Erreur lors de la demande.'));
+            }
         }
 
-        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
-
+        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form->createView(), 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
     }
 
     /**

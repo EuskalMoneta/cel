@@ -117,7 +117,7 @@
         <source>Nouveau mot de passe</source>
         <target>Nouveau mot de passe</target>
       </trans-unit>
-      <trans-unit id="iD6_." resname="Confirmer le nouveau mot de passe">
+      <trans-unit id="iD6_.__" resname="Confirmer le nouveau mot de passe">
         <source>Confirmer le nouveau mot de passe</source>
         <target>Confirmer le nouveau mot de passe</target>
       </trans-unit>
@@ -772,6 +772,92 @@
       <trans-unit id="VFSc1BP" resname="Bureaux de change">
         <source>Bureaux de change</source>
         <target>Bureaux de change</target>
+      </trans-unit>
+      <trans-unit id="SXQWHdh" resname="Quitter">
+        <source>Quitter</source>
+        <target>__Quitter</target>
+      </trans-unit>
+      <trans-unit id="UzFhc1Y" resname="Accueil">
+        <source>Accueil</source>
+        <target>__Accueil</target>
+      </trans-unit>
+      <trans-unit id="5Y8P_g5" resname="Virement">
+        <source>Virement</source>
+        <target>__Virement</target>
+      </trans-unit>
+      <trans-unit id="wL91vXi" resname="Change">
+        <source>Change</source>
+        <target>__Change</target>
+      </trans-unit>
+      <trans-unit id="lLQfHN3" resname="Confirmation paiement">
+        <source>Confirmation paiement</source>
+        <target>__Confirmation paiement</target>
+      </trans-unit>
+      <trans-unit id="5TPrGB6" resname="Êtes vous sur de valider le paiement ?">
+        <source>Êtes vous sur de valider le paiement ?</source>
+        <target>__Êtes vous sur de valider le paiement ?</target>
+      </trans-unit>
+      <trans-unit id="3eVQeiO" resname="Montant (minimum 10)">
+        <source>Montant (minimum 10)</source>
+        <target>__Montant (minimum 10)</target>
+      </trans-unit>
+      <trans-unit id="SNPoFla" resname="Commentaire">
+        <source>Commentaire</source>
+        <target>__Commentaire</target>
+      </trans-unit>
+      <trans-unit id="j9cXi6O" resname="Association parainée">
+        <source>Association parainée</source>
+        <target>__Association parainée</target>
+      </trans-unit>
+      <trans-unit id="o0KoqLS" resname="Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. ">
+        <source>Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </source>
+        <target>__Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </target>
+      </trans-unit>
+      <trans-unit id="CpBAdjn" resname="Oui">
+        <source>Oui</source>
+        <target>__Oui</target>
+      </trans-unit>
+      <trans-unit id="f2JJawy" resname="Non">
+        <source>Non</source>
+        <target>__Non</target>
+      </trans-unit>
+      <trans-unit id="gkkxtPM" resname="Bénéficiaire supprimé">
+        <source>Bénéficiaire supprimé</source>
+        <target>__Bénéficiaire supprimé</target>
+      </trans-unit>
+      <trans-unit id="Jov77yg" resname="Erreur lors de la suppression">
+        <source>Erreur lors de la suppression</source>
+        <target>__Erreur lors de la suppression</target>
+      </trans-unit>
+      <trans-unit id="J01gKnl" resname="N° Adhérent-e">
+        <source>N° Adhérent-e</source>
+        <target>__N° Adhérent-e</target>
+      </trans-unit>
+      <trans-unit id="kP6j2PP" resname="Supprimer un bénéficiaire">
+        <source>Supprimer un bénéficiaire</source>
+        <target>__Supprimer un bénéficiaire</target>
+      </trans-unit>
+      <trans-unit id="mg7CjM5" resname="Supprimer le bénéficiaire">
+        <source>Supprimer le bénéficiaire</source>
+        <target>__Supprimer le bénéficiaire</target>
+      </trans-unit>
+      <trans-unit id="eLaXNdP" resname="Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :">
+        <source>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</source>
+        <target>__Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
+      </trans-unit>
+      <trans-unit id="KFjk34P" resname="Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
+        <source>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
+        <target>__Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
+      </trans-unit>
+      <trans-unit id="sZICvzl" resname="Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! &lt;br /&gt;&lt;br /&gt;&#10;                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.">
+        <source>Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! &lt;br /&gt;&lt;br /&gt;
+                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.</source>
+        <target><![CDATA[__Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! <br /><br />
+                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.]]></target>
+      </trans-unit>
+      <trans-unit id="s__LcH_" resname="Êtes vous sur de vouloir supprimer le bénéficiaire suivant :">
+        <source>Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</source>
+        <target>__Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</target>
       </trans-unit>
     </body>
   </file>

@@ -36,17 +36,17 @@
                 </a>#}
                 <a href="{{ path('app_aide') }}">
                     <i class="fal fa-question-circle cel-menu-icon"></i>
-                    <br /> Aide
+                    <br /> {{"Aide" | trans }}
                 </a>
 
                 <a href="{{ path('app_profil') }}">
                     <i class="fal fa-user cel-menu-icon"></i>
-                    <br /> Profil
+                    <br /> {{"Profil" | trans }}
                 </a>
 
                 <a href="{{ path('app_logout') }}">
                     <i class="fal fa-sign-out cel-menu-icon"></i>
-                    <br /> Quitter
+                    <br /> {{"Quitter" | trans }}
                 </a>
                 {% else %}
                     <a href="{{ path('app_anon_lang', {'locale': 'eu'}) }}" style="font-size: 16px;">
@@ -95,33 +95,33 @@
             <div class="col-3">
                 <a href="{{ path('app_homepage') }}">
                     <i class="fal fa-home"></i>
-                    <br /> Accueil
+                    <br /> {{"Accueil" | trans }}
                 </a>
             </div>
             <div class="col-3">
                 <a href="{{ path('app_virement') }}">
                     <img src="{{ asset('images/virement.png') }}">
-                    <br /> Virement
+                    <br /> {{"Virement" | trans }}
                 </a>
             </div>
             <div class="col-3">
                 <a href="{{ path('app_change') }}">
                     <img src="{{ asset('images/change.png') }}">
-                    <br /> Change
+                    <br /> {{"Change" | trans }}
                 </a>
             </div>
             {% if is_granted("ROLE_CLIENT") %}
             <div class="col-3">
                 <a href="{{ path('app_prelevement_autorisation') }}">
                     <i class="fal fa-list"></i>
-                    <br /> Prélèvements
+                    <br /> {{"Prélèvements" | trans }}
                 </a>
             </div>
             {% elseif is_granted("ROLE_PARTENAIRE") %}
                 <div class="col-3">
                     <a href="{{ path('app_prelevement') }}">
                         <i class="fal fa-list"></i>
-                        <br /> Prélèvements
+                        <br /> {{"Prélèvements" | trans }}
                     </a>
                 </div>
 

@@ -49,15 +49,15 @@ class ChangeController extends AbstractController
                 ->add('options_prelevement_change_montant', NumberType::class,
                     [
                         'required' => true,
-                        'label' => "Montant (minimum 10)",
+                        'label' => $translator->trans("Montant (minimum 10)"),
                         'constraints' => [
                             new NotBlank(),
                             new GreaterThan(['value' => 10]),
                         ],
                     ]
                 )
-                ->add('prelevement_change_comment', TextType::class, ['required' => false, 'label' => "Commentaire"])
-                ->add('submit', SubmitType::class, ['label' => 'Valider'])
+                ->add('prelevement_change_comment', TextType::class, ['required' => false, 'label' => $translator->trans("Commentaire")])
+                ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
                 ->getForm();
 
             $form->handleRequest($request);

@@ -197,7 +197,7 @@ class ProfilController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) > new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+            if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
                 $forcedCotisation = true;
             }
 
@@ -261,7 +261,7 @@ class ProfilController extends AbstractController
                             $params['label'] = 'Cotisation '.date('Y');
 
                             $reponsePaymentCotis = $APIToolbox->curlRequest('POST', '/member-cel-subscription/', $params);
-                            if($reponsePaymentCotis['httpcode'] == 200 or $reponsePaymentCotis['httpcode'] == 204 or $reponsePaymentCotis['httpcode'] == 202) {
+                            if($reponsePaymentCotis['httpcode'] == 200 or $reponsePaymentCotis['httpcode'] == 201 ) {
                                 return $this->redirectToRoute('app_homepage');
                             }
                         }
@@ -405,9 +405,6 @@ class ProfilController extends AbstractController
                 $data['birth'] = $data['birth']->format('d/m/Y');
                 $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
-
-                dump(json_encode($data));
-
                 if($responseLang['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                 } else {
@@ -479,12 +476,12 @@ class ProfilController extends AbstractController
             $form = $this->createFormBuilder()
                 ->add('news', ChoiceType::class,
                     [
-                        'label' => 'Recevoir les actualités liées à l\'Eusko',
+                        'label' => $translator->trans('Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l\'Eusko. '),
                         'help' => 'Vous recevrez un à deux mails par semaine.',
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
                         'data' => $booleanNewsletter
                     ])
-                ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+                ->add('submit', SubmitType::class, ['label' => $translator->trans('Enregistrer')])
                 ->getForm();
 
             $form->handleRequest($request);
@@ -521,16 +518,16 @@ class ProfilController extends AbstractController
             $form = $this->createFormBuilder()
                 ->add('options_notifications_virements', ChoiceType::class,
                     [
-                        'label' => 'Virement reçu',
-                        'help' => 'Vous recevrez un email pour chaque virement reçu.',
-                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'label' => $translator->trans('Virement reçu'),
+                        'help' => $translator->trans('Vous recevrez un email pour chaque virement reçu.'),
+                        'choices' => [$translator->trans('Oui') =>'1', $translator->trans('Non') => '0'],
                         'data' => $options_notifications_virements
                     ])
                 ->add('options_notifications_prelevements', ChoiceType::class,
                     [
-                        'label' => 'Prélèvement effectué sur votre compte',
-                        'help' => 'Vous recevrez un email pour chaque prélèvement effectué sur votre compte.',
-                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'label' => $translator->trans('Prélèvement effectué sur votre compte'),
+                        'help' => $translator->trans('Vous recevrez un email pour chaque prélèvement effectué sur votre compte.'),
+                        'choices' => [$translator->trans('Oui') =>'1', $translator->trans('Non') => '0'],
                         'data' => $options_notifications_prelevements
                     ])
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])

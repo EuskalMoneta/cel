@@ -197,7 +197,7 @@ class ProfilController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+            if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) > new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
                 $forcedCotisation = true;
             }
 
@@ -251,7 +251,19 @@ class ProfilController extends AbstractController
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                         if($forcedCotisation){
-                            return $this->redirectToRoute('app_homepage');
+                            $params['start_date'] = (new \DateTime('now'))->format('Y-m-d').'T00:00';
+                            if($data['options_prelevement_cotisation_periodicite'] == 1){
+                                $params['end_date'] = (new \DateTime('now'))->modify('last day of this month')->format('Y-m-d').'T00:00';
+                            } else {
+                                $params['end_date'] = (new \DateTime('now'))->modify('last day of December')->format('Y-m-d').'T00:00';
+                            }
+                            $params['amount'] = (int)$data['options_prelevement_cotisation_montant'];
+                            $params['label'] = 'Cotisation '.date('Y');
+
+                            $reponsePaymentCotis = $APIToolbox->curlRequest('POST', '/member-cel-subscription/', $params);
+                            if($reponsePaymentCotis['httpcode'] == 200 or $reponsePaymentCotis['httpcode'] == 204 or $reponsePaymentCotis['httpcode'] == 202) {
+                                return $this->redirectToRoute('app_homepage');
+                            }
                         }
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
@@ -528,8 +540,9 @@ class ProfilController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
-
                 if($responseLang['httpcode'] == 200) {
+
+
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));

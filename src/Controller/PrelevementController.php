@@ -151,7 +151,7 @@ class PrelevementController extends AbstractController
                 }
             }
 
-            $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevement/', json_encode($comptes));
+            $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', json_encode($comptes));
             if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
                 $data = $responsePrelevements['data'];
                 //$data = json_decode('[{"account":"123156564","status":"0","description":"toto"},{"account":"999999999","status":"1","description":"tutu"}, {"account":"999999999","status":"1","description":"tutu"}]');

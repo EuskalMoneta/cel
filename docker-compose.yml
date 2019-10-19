@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2'
 services:
     db:
         image: mysql
@@ -22,7 +22,7 @@ services:
     nginx:
         build: ./nginx
         ports:
-            - "8000:80"
+            - "8003:80"
         links:
             - php
         volumes:

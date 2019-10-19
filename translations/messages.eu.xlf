@@ -7,171 +7,171 @@
     <body>
       <trans-unit id="CsPSyzA" resname="Se connecter">
         <source>Se connecter</source>
-        <target>hasi saioa</target>
+        <target>Konektatu</target>
       </trans-unit>
       <trans-unit id="lpzL089" resname="Email">
         <source>Email</source>
-        <target>Email</target>
+        <target>Emaila</target>
       </trans-unit>
       <trans-unit id="7zR0Pox" resname="N° Adhérent">
         <source>N° Adhérent</source>
-        <target>__N° Adhérent</target>
+        <target>Kide zbakia</target>
       </trans-unit>
       <trans-unit id=".5yLjAZ" resname="Mot de passe">
         <source>Mot de passe</source>
-        <target>__Mot de passe</target>
+        <target>Pasahitza</target>
       </trans-unit>
       <trans-unit id="dgTlt.e" resname="Rechercher une opération">
         <source>Rechercher une opération</source>
-        <target>__Rechercher une opération</target>
+        <target>Eragiketa bat bilatu</target>
       </trans-unit>
       <trans-unit id="dRSyQ47" resname="Periode">
         <source>Periode</source>
-        <target>__Période</target>
+        <target>Garaia</target>
       </trans-unit>
       <trans-unit id="kigKoXg" resname="Le mois dernier">
         <source>Le mois dernier</source>
-        <target>__Le mois dernier</target>
+        <target>Joan den hilabetea</target>
       </trans-unit>
       <trans-unit id="VvJNEhb" resname="Ce mois ci">
         <source>Ce mois ci</source>
-        <target>__Ce mois ci</target>
+        <target>Hilabete hau</target>
       </trans-unit>
       <trans-unit id="GeCE9FZ" resname="Les 7 derniers jours">
         <source>Les 7 derniers jours</source>
-        <target>__Les 7 derniers jours</target>
+        <target>Azken 7 egunak</target>
       </trans-unit>
       <trans-unit id="XIKWKPm" resname="Date debut">
         <source>Date debut</source>
-        <target>__Date début</target>
+        <target>Hasierako eguna</target>
       </trans-unit>
       <trans-unit id="I4Kmk6." resname="Date fin">
         <source>Date fin</source>
-        <target>__Date fin</target>
+        <target>Bukatzeko eguna</target>
       </trans-unit>
       <trans-unit id="34MNj3q" resname="Motscles">
         <source>Motscles</source>
-        <target>__Mots cles</target>
+        <target>Gako-hitzak</target>
       </trans-unit>
       <trans-unit id="cz0cdCZ" resname="Rechercher">
         <source>Rechercher</source>
-        <target>__Rechercher</target>
+        <target>Bilatu</target>
       </trans-unit>
       <trans-unit id="lHzAfis" resname="Montant">
         <source>Montant</source>
-        <target>__Montant</target>
+        <target>Zenbatekoa</target>
       </trans-unit>
       <trans-unit id="fhBKLKW" resname="libellé de l'opération">
         <source>libellé de l'opération</source>
-        <target>__libellé de l'opération </target>
+        <target>Eragiketaren izena</target>
       </trans-unit>
       <trans-unit id="YmunqJ." resname="Valider">
         <source>Valider</source>
-        <target>__Valider</target>
+        <target>Baieztatu</target>
       </trans-unit>
       <trans-unit id="cdx0hz4" resname="Enregistrer">
         <source>Enregistrer</source>
-        <target>erregistro</target>
+        <target>Grabatu</target>
       </trans-unit>
       <trans-unit id="BGulXiO" resname="Destinataire">
         <source>Destinataire</source>
-        <target>__Destinataire</target>
+        <target>Hartzailee</target>
       </trans-unit>
       <trans-unit id="KQ4_65w" resname="Nouveau virement">
         <source>Nouveau virement</source>
-        <target>__Nouveau virement</target>
+        <target>Biramendu berria</target>
       </trans-unit>
       <trans-unit id="Zd6PsmH" resname="Gestion des bénéficiaires">
         <source>Gestion des bénéficiaires</source>
-        <target>__Gestion des bénéficiaires</target>
+        <target>Hartzaileen kudeaketa</target>
       </trans-unit>
       <trans-unit id="NfB_iiZ" resname="Ajout">
         <source>Ajout</source>
-        <target>__Ajout</target>
+        <target>Gehitu</target>
       </trans-unit>
       <trans-unit id="ZEYcavF" resname="Ajout bénéficiaire">
         <source>Ajout bénéficiaire</source>
-        <target>__Ajout bénéficiaire</target>
+        <target>Gehitu hartzailea</target>
       </trans-unit>
       <trans-unit id="7yOllAJ" resname="Retour">
         <source>Retour</source>
-        <target>__Retour</target>
+        <target>Itzuli</target>
       </trans-unit>
       <trans-unit id="KSkm37Y" resname="Rechercher par n° de compte">
         <source>Rechercher par n° de compte</source>
-        <target>__Rechercher par n° de compte</target>
+        <target>Kontu zbakia bilatu</target>
       </trans-unit>
       <trans-unit id="L_BX65B" resname="rechercher">
         <source>rechercher</source>
-        <target>__rechercher</target>
+        <target>Bilatu</target>
       </trans-unit>
       <trans-unit id="aK9Clqb" resname="Ajouter le bénéficiaire">
         <source>Ajouter le bénéficiaire</source>
-        <target>__Ajouter le bénéficiaire</target>
+        <target>Gehitu hartzailea</target>
       </trans-unit>
       <trans-unit id="hFtKVyp" resname="Première connexion">
         <source>Première connexion</source>
-        <target>__Première connexion</target>
+        <target>Lehen konexioa</target>
       </trans-unit>
       <trans-unit id="TI9sLOh" resname="Ajouter un nouveau bénéficiaire">
         <source>Ajouter un nouveau bénéficiaire</source>
-        <target>__Ajouter un nouveau bénéficiaire</target>
+        <target>Hartzaile berri bat gehitu</target>
       </trans-unit>
       <trans-unit id="d6_vddM" resname="Format: E12345">
         <source>Format: E12345</source>
-        <target>__Format: E12345</target>
+        <target>Formatua: E12345</target>
       </trans-unit>
       <trans-unit id="kHuspkh" resname="Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko">
         <source>Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko</source>
-        <target>__Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko</target>
+        <target>Euskora kidetu zirelarik eman duzun e-helbidea idatzi</target>
       </trans-unit>
       <trans-unit id="i5cUDhL" resname="Votre mot de passe">
         <source>Votre mot de passe</source>
-        <target>__Votre mot de passe</target>
+        <target>Zure pasahitza</target>
       </trans-unit>
       <trans-unit id="UP95_pK" resname="Votre question secrète">
         <source>Votre question secrète</source>
-        <target>__Votre question secrète</target>
+        <target>Zure galdera sekretua</target>
       </trans-unit>
       <trans-unit id="XFVRV7B" resname="Ancien mot de passe">
         <source>Ancien mot de passe</source>
-        <target>__Ancien mot de passe</target>
+        <target>Pasahitz ohia</target>
       </trans-unit>
       <trans-unit id="o9ZcpWl" resname="Nouveau mot de passe">
         <source>Nouveau mot de passe</source>
-        <target>__Nouveau mot de passe</target>
+        <target>Pasahitz berria</target>
       </trans-unit>
       <trans-unit id="iD6_.__" resname="Confirmer le nouveau mot de passe">
         <source>Confirmer le nouveau mot de passe</source>
-        <target>__Confirmer le nouveau mot de passe</target>
+        <target>Pasahitz berria baieztatu</target>
       </trans-unit>
       <trans-unit id="oKgULux" resname="Votre question personnalisée">
         <source>Votre question personnalisée</source>
-        <target>__Votre question personnalisée</target>
+        <target>Zure galdera pertsonala</target>
       </trans-unit>
       <trans-unit id="mAcwM1b" resname="Reponse">
         <source>Reponse</source>
-        <target>__Réponse</target>
+        <target>Erantzuna</target>
       </trans-unit>
       <trans-unit id="6ZbykUm" resname="autre">
         <source>autre</source>
-        <target>__autre</target>
+        <target>Beste</target>
       </trans-unit>
       <trans-unit id="YGJCCXP" resname="Question secrète">
         <source>Question secrète</source>
-        <target>__Question secrète</target>
+        <target>Galdera sekretua</target>
       </trans-unit>
       <trans-unit id="iblAykt" resname="Si vous avez oublié la réponse à la question secrète, merci de nous contacter.">
         <source>Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</source>
-        <target>__Si vous avez oublié la réponse à la question secrète, merci de nous contacter.</target>
+        <target>Galdera sekretuaren erantzuna ahantzi baduzu, gurekin harremanetan jarri.</target>
       </trans-unit>
       <trans-unit id="NFl6O4g" resname="Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.">
         <source>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</source>
-        <target>__Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
+        <target>Honi esker zure pasahitza segurtasun osoz eskuratuko duzu.</target>
       </trans-unit>
       <trans-unit id="RULWH19" resname="Mot de passe oublié">
         <source>Mot de passe oublié</source>
-        <target>__Mot de passe oublié</target>
+        <target>Pasahitza ahaztua</target>
       </trans-unit>
       <trans-unit id="4mfTQ4I" resname="Profil">
         <source>Profil</source>
@@ -183,607 +183,607 @@
       </trans-unit>
       <trans-unit id="X2uqtNv" resname="Langue">
         <source>Langue</source>
-        <target>hizkuntza</target>
+        <target>Hizkuntza</target>
       </trans-unit>
       <trans-unit id="maFavQy" resname="Langue mise à jour.">
         <source>Langue mise à jour.</source>
-        <target>__Langue mise à jour.</target>
+        <target>Hizkuntza eguneratua.</target>
       </trans-unit>
       <trans-unit id="J7r7KEk" resname="Le changement de langue n'a pas pu être effectué">
         <source>Le changement de langue n'a pas pu être effectué</source>
-        <target>__Le changement de langue n'a pas pu être effectué</target>
+        <target>Hizkuntza ezin izan da aldatu</target>
       </trans-unit>
       <trans-unit id="l.Fr090" resname="La modification n'a pas pu être effectuée">
         <source>La modification n'a pas pu être effectuée</source>
-        <target>__La modification n'a pas pu être effectuée</target>
+        <target>Aldaketa ezin izan da egin</target>
       </trans-unit>
       <trans-unit id="RA42efs" resname="Les modifications ont bien été prises en compte">
         <source>Les modifications ont bien été prises en compte</source>
-        <target>__Les modifications ont bien été prises en compte</target>
+        <target>Aldaketak kontuan hartuak izan dira</target>
       </trans-unit>
       <trans-unit id=".HQYHs6" resname="ou">
         <source>ou</source>
-        <target>__ou</target>
+        <target>edo</target>
       </trans-unit>
       <trans-unit id="IhQHL54" resname="Compte n°">
         <source>Compte n°</source>
-        <target>__Compte n°</target>
+        <target>Kontu zbakia</target>
       </trans-unit>
       <trans-unit id="4gqGWh." resname="Sécurité">
         <source>Sécurité</source>
-        <target>__Sécurité</target>
+        <target>Segurtasuna</target>
       </trans-unit>
       <trans-unit id="QuN2BLY" resname="Modifier">
         <source>Modifier</source>
-        <target>__Modifier</target>
+        <target>Aldatu</target>
       </trans-unit>
       <trans-unit id="su_.4Gv" resname="Changer mon code PIN">
         <source>Changer mon code PIN</source>
-        <target>__Changer mon code PIN</target>
+        <target>Nire PIN kodigoa aldatu</target>
       </trans-unit>
       <trans-unit id="IUbRpkc" resname="Coordonnées">
         <source>Coordonnées</source>
-        <target>__Coordonnées</target>
+        <target>Koordenatuak</target>
       </trans-unit>
       <trans-unit id="eIARgzp" resname="Notifications">
         <source>Notifications</source>
-        <target>__Notifications</target>
+        <target>Jakinarazpenak</target>
       </trans-unit>
       <trans-unit id="_Eyi53F" resname="Newsletter">
         <source>Newsletter</source>
-        <target>__Newsletter</target>
+        <target>Berri papera</target>
       </trans-unit>
       <trans-unit id="FXJP8R7" resname="Cotisation">
         <source>Cotisation</source>
-        <target>__Cotisation</target>
+        <target>Urtesaria</target>
       </trans-unit>
       <trans-unit id="QGdf5pO" resname="Vos bénéficiaires">
         <source>Vos bénéficiaires</source>
-        <target>__Vos bénéficiaires</target>
+        <target>Zure hartzailea</target>
       </trans-unit>
       <trans-unit id="aUVszdD" resname="Obtenir un relevé de compte">
         <source>Obtenir un relevé de compte</source>
-        <target>__Obtenir un relevé de compte</target>
+        <target>Kontu laburpena eskuratu</target>
       </trans-unit>
       <trans-unit id="Id7QvzY" resname="Change automatique">
         <source>Change automatique</source>
-        <target>__Change automatique</target>
+        <target>Truke automatikoa</target>
       </trans-unit>
       <trans-unit id="XvUjrEf" resname="mois">
         <source>mois</source>
-        <target>__mois</target>
+        <target>hilabetea</target>
       </trans-unit>
       <trans-unit id="xwYQJiS" resname="modifier">
         <source>modifier</source>
-        <target>__modifier</target>
+        <target>aldatu</target>
       </trans-unit>
       <trans-unit id="TUALl6J" resname="Change manuel">
         <source>Change manuel</source>
-        <target>__Change manuel</target>
+        <target>Eskuz eginiko trukea</target>
       </trans-unit>
       <trans-unit id="PvV1cs_" resname="Choix du code pin">
         <source>Choix du code pin</source>
-        <target>__Choix du code pin</target>
+        <target>Pin kodigoaren hautua</target>
       </trans-unit>
       <trans-unit id="iFgBhya" resname="Aucun résultat pour les dates sélectionnées.">
         <source>Aucun résultat pour les dates sélectionnées.</source>
-        <target>__Aucun résultat pour les dates sélectionnées.</target>
+        <target>Emaitzarik ez aukeratu dituzun egunentzat.</target>
       </trans-unit>
       <trans-unit id="SUyXryy" resname="Code précédent">
         <source>Code précédent</source>
-        <target>__Code précédent</target>
+        <target>Aurreko kodigoa</target>
       </trans-unit>
       <trans-unit id="9ytImW7" resname="Nouveau code pin (4 chiffres)">
         <source>Nouveau code pin (4 chiffres)</source>
-        <target>__Nouveau code pin (4 chiffres)</target>
+        <target>Pin kodigo berria (4 zenbaki)</target>
       </trans-unit>
       <trans-unit id="ub1oCM1" resname="Confirmer le nouveau code pin">
         <source>Confirmer le nouveau code pin</source>
-        <target>__Confirmer le nouveau code pin</target>
+        <target>Pin kodigoa baieztatu</target>
       </trans-unit>
       <trans-unit id="iOWrLAs" resname="Code pin (4 chiffres)">
         <source>Code pin (4 chiffres)</source>
-        <target>__Code pin (4 chiffres)</target>
+        <target>Pin kodigoa (4 zenbaki)</target>
       </trans-unit>
       <trans-unit id="o45LraB" resname="Confirmer le code">
         <source>Confirmer le code</source>
-        <target>__Confirmer le code</target>
+        <target>Kodigoa baieztatu</target>
       </trans-unit>
       <trans-unit id="UNs9HuJ" resname="À jour">
         <source>À jour</source>
-        <target>__À jour</target>
+        <target>Eguneratua</target>
       </trans-unit>
       <trans-unit id="eyGxk9O" resname="Autres paramètres">
         <source>Autres paramètres</source>
-        <target>__Autres paramètres</target>
+        <target>Beste parametro batzuk</target>
       </trans-unit>
       <trans-unit id="Murrb4B" resname="Birth">
         <source>Birth</source>
-        <target>__Date de naissance</target>
+        <target>Sorteguna</target>
       </trans-unit>
       <trans-unit id="Vu_PIJV" resname="Address">
         <source>Address</source>
-        <target>__Addresse</target>
+        <target>Helbidea</target>
       </trans-unit>
       <trans-unit id="e8iOu20" resname="Zip">
         <source>Zip</source>
-        <target>__Code postal</target>
+        <target>Posta kodea</target>
       </trans-unit>
       <trans-unit id="OQ8lE0u" resname="Town">
         <source>Town</source>
-        <target>__Ville</target>
+        <target>Herria</target>
       </trans-unit>
       <trans-unit id="PXV_XpD" resname="Country id">
         <source>Country id</source>
-        <target>__Pays</target>
+        <target>Herrialdea</target>
       </trans-unit>
       <trans-unit id="9x4K2dK" resname="Phone mobile">
         <source>Phone mobile</source>
-        <target>__Téléphone</target>
+        <target>Telefonoa</target>
       </trans-unit>
       <trans-unit id="EQNxKHP" resname="Montant de la cotisation">
         <source>Montant de la cotisation</source>
-        <target>__Montant de la cotisation</target>
+        <target>Urtesariaren kopurua</target>
       </trans-unit>
       <trans-unit id="XDage3y" resname="1 eusko par mois / 12 eusko par an">
         <source>1 eusko par mois / 12 eusko par an</source>
-        <target>__1 eusko par mois / 12 eusko par an</target>
+        <target>Hilean eusko 1/urtean 12 eusko</target>
       </trans-unit>
       <trans-unit id="ZkUMQ53" resname="2 eusko par mois / 24 eusko par an">
         <source>2 eusko par mois / 24 eusko par an</source>
-        <target>__2 eusko par mois / 24 eusko par an</target>
+        <target>Hilean 2 eusko/ Urtean 24 eusko</target>
       </trans-unit>
       <trans-unit id="ykTdITV" resname="3 eusko par mois / 36 eusko par an">
         <source>3 eusko par mois / 36 eusko par an</source>
-        <target>__3 eusko par mois / 36 eusko par an</target>
+        <target>Hilean 3 eusko/ Urtean 36 eusko</target>
       </trans-unit>
       <trans-unit id="zqUAM.q" resname="5 eusko par an (chômeurs, minima sociaux)">
         <source>5 eusko par an (chômeurs, minima sociaux)</source>
-        <target>__5 eusko par an (chômeurs, minima sociaux)</target>
+        <target>Urtean 5 eusko (langabetuak, gutxieneko sozialak)</target>
       </trans-unit>
       <trans-unit id="tIa6Q4o" resname="Périodicité du prélèvement">
         <source>Périodicité du prélèvement</source>
-        <target>__Périodicité du prélèvement</target>
+        <target>Diru kentzearen aldikatzea</target>
       </trans-unit>
       <trans-unit id="ov6OmZ4" resname="Annuel">
         <source>Annuel</source>
-        <target>__Annuel</target>
+        <target>Urtekoa</target>
       </trans-unit>
       <trans-unit id="eqxMbaV" resname="Mensuel (le 15 du mois)">
         <source>Mensuel (le 15 du mois)</source>
-        <target>__Mensuel (le 15 du mois)</target>
+        <target>Hilabetekoa (Hilaren 15ean)</target>
       </trans-unit>
       <trans-unit id="2F9Q2tT" resname="J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.">
         <source>J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.</source>
-        <target>__J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.</target>
+        <target>Euskal Monetari nire urtesaria automatikoki nire eusko kontuan hartzeko baimena ematen diot.</target>
       </trans-unit>
       <trans-unit id="Oz3gVJa" resname="Recevoir les actualités liées à l'Eusko">
         <source>Recevoir les actualités liées à l'Eusko</source>
-        <target>__Recevoir les actualités liées à l'Eusko</target>
+        <target>Euskoari loturiko berriak jaso</target>
       </trans-unit>
       <trans-unit id="6Dys69N" resname="Vous recevrez un à deux mails par semaine.">
         <source>Vous recevrez un à deux mails par semaine.</source>
-        <target>__Vous recevrez un à deux mails par semaine.</target>
+        <target>Astean e-mezu bat edo bi jasoko dituzu.</target>
       </trans-unit>
       <trans-unit id="RSfVoFs" resname="Virement reçu">
         <source>Virement reçu</source>
-        <target>__Virement reçu</target>
+        <target>Biramendua jasoa</target>
       </trans-unit>
       <trans-unit id="x.rDjcp" resname="Vous recevrez un email pour chaque virement reçu.">
         <source>Vous recevrez un email pour chaque virement reçu.</source>
-        <target>__Vous recevrez un email pour chaque virement reçu.</target>
+        <target>Jaso dituzun biramendu bakoitzarako e-mezu bat jasoko duzu.</target>
       </trans-unit>
       <trans-unit id="aGXfOD2" resname="Prélèvement effectué sur votre compte">
         <source>Prélèvement effectué sur votre compte</source>
-        <target>__Prélèvement effectué sur votre compte</target>
+        <target>Diru kentzea egina izan da zure kontuan</target>
       </trans-unit>
       <trans-unit id="AhQy8Sp" resname="Vous recevrez un email pour chaque prélèvement effectué sur votre compte.">
         <source>Vous recevrez un email pour chaque prélèvement effectué sur votre compte.</source>
-        <target>__Vous recevrez un email pour chaque prélèvement effectué sur votre compte.</target>
+        <target>Zure kontuan egiten diren diru kentze bakoitzarentzat e-mezu bat jasoko duzu.</target>
       </trans-unit>
       <trans-unit id="nZ7fwPa" resname="Mon solde">
         <source>Mon solde</source>
-        <target>__Mon solde</target>
+        <target>Nire kopurua</target>
       </trans-unit>
       <trans-unit id="hl3zMkr" resname="Historique">
         <source>Historique</source>
-        <target>__Historique</target>
+        <target>Historikoa</target>
       </trans-unit>
       <trans-unit id="mDSHbc_" resname="aaa">
         <source>aaa</source>
-        <target>__aaa</target>
+        <target>aaa</target>
       </trans-unit>
       <trans-unit id="WGBDFRh" resname="Relevés de compte">
         <source>Relevés de compte</source>
-        <target>__Relevés de compte</target>
+        <target>Kontu laburpenak</target>
       </trans-unit>
       <trans-unit id="4K8dbNg" resname="Votre saisie est vide !">
         <source>Votre saisie est vide !</source>
-        <target>__Votre saisie est vide !</target>
+        <target>Zure datu idaztea hutsa da!</target>
       </trans-unit>
       <trans-unit id="8mvF1sf" resname="Association ajoutée !">
         <source>Association ajoutée !</source>
-        <target>__Association ajoutée !</target>
+        <target>Elkartea gehitua!</target>
       </trans-unit>
       <trans-unit id="g9fwcTs" resname="Veuillez sélectionner une association dans la liste">
         <source>Veuillez sélectionner une association dans la liste</source>
-        <target>__Veuillez sélectionner une association dans la liste</target>
+        <target>Elkarte bat aukeratu zerrenda honetan</target>
       </trans-unit>
       <trans-unit id="l3MzLhS" resname="Vos associations ont bien été enregistrées.">
         <source>Vos associations ont bien été enregistrées.</source>
-        <target>__Vos associations ont bien été enregistrées.</target>
+        <target>Zure elkarteak ongi grabatuak izan dira.</target>
       </trans-unit>
       <trans-unit id="pV2Rx35" resname="Votre demande a bien été prise en compte">
         <source>Votre demande a bien été prise en compte</source>
-        <target>__Votre demande a bien été prise en compte</target>
+        <target>Zure eskaera kontuan hartua izan da</target>
       </trans-unit>
       <trans-unit id="YlyQRfk" resname="Erreur lors de la demande.">
         <source>Erreur lors de la demande.</source>
-        <target>__Erreur lors de la demande.</target>
+        <target>Hutsa gertatu da eskaera egiterakoan.</target>
       </trans-unit>
       <trans-unit id="hnKPQKS" resname="Reconversion réussie.">
         <source>Reconversion réussie.</source>
-        <target>__Reconversion réussie.</target>
+        <target>Diru aldaketa lortua.</target>
       </trans-unit>
       <trans-unit id="_t0WxXP" resname="Erreur : vérifier le solde de votre compte.">
         <source>Erreur : vérifier le solde de votre compte.</source>
-        <target>__Erreur : vérifier le solde de votre compte.</target>
+        <target>Huts egitea: zure kontuan dagoen diru zama begiratu.</target>
       </trans-unit>
       <trans-unit id="SSLiLHY" resname="Cette année">
         <source>Cette année</source>
-        <target>__Cette année</target>
+        <target>Aurten</target>
       </trans-unit>
       <trans-unit id="giNP4Sg" resname="Le mandat a été validé">
         <source>Le mandat a été validé</source>
-        <target>__Le mandat a été validé</target>
+        <target>Mandatua baieztatua izan da</target>
       </trans-unit>
       <trans-unit id="ghcOGTL" resname="Le mandat a été refusé">
         <source>Le mandat a été refusé</source>
-        <target>__Le mandat a été refusé</target>
+        <target>Mandatua ez da onartua izan</target>
       </trans-unit>
       <trans-unit id="OfOQuDx" resname="Le mandat a été révoqué">
         <source>Le mandat a été révoqué</source>
-        <target>__Le mandat a été révoqué</target>
+        <target>Mandatua baliogabetua izan da</target>
       </trans-unit>
       <trans-unit id="ZVAxqBv" resname="Le mandat a été supprimé">
         <source>Le mandat a été supprimé</source>
-        <target>__Le mandat a été supprimé</target>
+        <target>Mandatua kendua izan da</target>
       </trans-unit>
       <trans-unit id="KWc4XXj" resname="Mandat ajouté">
         <source>Mandat ajouté</source>
-        <target>__Mandat ajouté</target>
+        <target>Mandatua gehitua</target>
       </trans-unit>
       <trans-unit id="iFUXRfF" resname="Erreur lors de l'ajout du mandat">
         <source>Erreur lors de l'ajout du mandat</source>
-        <target>__Erreur lors de l'ajout du mandat</target>
+        <target>Mandatua gehitzerakoan huts bat gertatu da</target>
       </trans-unit>
       <trans-unit id="rpGS6HK" resname="Merci d'avoir accepté les CGU">
         <source>Merci d'avoir accepté les CGU</source>
-        <target>__Merci d'avoir accepté les CGU</target>
+        <target>CGU onartu izana eskertzen dizugu</target>
       </trans-unit>
       <trans-unit id="BJHAmFP" resname="Virement effectué">
         <source>Virement effectué</source>
-        <target>__Virement effectué</target>
+        <target>Biramendua egina</target>
       </trans-unit>
       <trans-unit id="aL9wfk6" resname="Le virement n'a pas pu être effectué">
         <source>Le virement n'a pas pu être effectué</source>
-        <target>__Le virement n'a pas pu être effectué</target>
+        <target>Biramendua ezin izan da egin</target>
       </trans-unit>
       <trans-unit id=".uJPLux" resname="Autorisations de prélèvement">
         <source>Autorisations de prélèvement</source>
-        <target>__Autorisations de prélèvement</target>
+        <target>Diru kentzea onartua</target>
       </trans-unit>
       <trans-unit id="wumw623" resname="Aucune autorisation de prélèvement">
         <source>Aucune autorisation de prélèvement</source>
-        <target>__Aucune autorisation de prélèvement</target>
+        <target>Diru kentze baimenik ez</target>
       </trans-unit>
       <trans-unit id="L2yEd_k" resname="En attente">
         <source>En attente</source>
-        <target>__En attente</target>
+        <target>Itxaroten</target>
       </trans-unit>
       <trans-unit id="fqtLUXN" resname="Créée le">
         <source>Créée le</source>
-        <target>__Créée le</target>
+        <target>Sortze eguna</target>
       </trans-unit>
       <trans-unit id="RdZOdU." resname="Autorisations validées">
         <source>Autorisations validées</source>
-        <target>__Autorisations validées</target>
+        <target>Baimenak onatzat emanak</target>
       </trans-unit>
       <trans-unit id="N1Ql7iN" resname="Validée le">
         <source>Validée le</source>
-        <target>__Validée le</target>
+        <target>Onarpen eguna</target>
       </trans-unit>
       <trans-unit id="cRIOsX6" resname="Êtes vous sur de vouloir supprimer ce mandat ?">
         <source>Êtes vous sur de vouloir supprimer ce mandat ?</source>
-        <target>__Êtes vous sur de vouloir supprimer ce mandat ?</target>
+        <target>Ziur al zaude mandatua ezabatu nahi duzula?</target>
       </trans-unit>
       <trans-unit id="2y3.0Ga" resname="Nouvelle autorisation">
         <source>Nouvelle autorisation</source>
-        <target>__Nouvelle autorisation</target>
+        <target>Baimen berria</target>
       </trans-unit>
       <trans-unit id="hYyEe3Q" resname="Suppression">
         <source>Suppression</source>
-        <target>__Suppression</target>
+        <target>Kentzea</target>
       </trans-unit>
       <trans-unit id="985v0vN" resname="Révoquer une autorisation">
         <source>Révoquer une autorisation</source>
-        <target>__Révoquer une autorisation</target>
+        <target>Baimena ezeztatu</target>
       </trans-unit>
       <trans-unit id="tOztW9f" resname="Êtes vous sur de valider cette autorisation de prélèvement ?">
         <source>Êtes vous sur de valider cette autorisation de prélèvement ?</source>
-        <target>__Êtes vous sur de valider cette autorisation de prélèvement ?</target>
+        <target>Ziur zaude diru kentze baimen hori onartzen duzula?</target>
       </trans-unit>
       <trans-unit id="q_KdiJk" resname="Êtes vous sur de vouloir supprimer cette demande ?">
         <source>Êtes vous sur de vouloir supprimer cette demande ?</source>
-        <target>__Êtes vous sur de vouloir supprimer cette demande ?</target>
+        <target>Ziur al zaude eskaera hori kendu nahi duzula?</target>
       </trans-unit>
       <trans-unit id="iwyGAK5" resname="Êtes vous sur de vouloir révoquer cette autorisation ?">
         <source>Êtes vous sur de vouloir révoquer cette autorisation ?</source>
-        <target>__Êtes vous sur de vouloir révoquer cette autorisation ?</target>
+        <target>Ziur al zaude baimen hori baliogabetu nahi duzula?</target>
       </trans-unit>
       <trans-unit id="vy4rTSU" resname="Prélèvements">
         <source>Prélèvements</source>
-        <target>__Prélèvements</target>
+        <target>Diru kentzeak</target>
       </trans-unit>
       <trans-unit id="t.MTVCf" resname="Prélèvements sur mon compte">
         <source>Prélèvements sur mon compte</source>
-        <target>__Prélèvements sur mon compte</target>
+        <target>Diru kentzeak nire kontuan</target>
       </trans-unit>
       <trans-unit id="rsVWMGQ" resname="Gérer les autorisations">
         <source>Gérer les autorisations</source>
-        <target>__Gérer les autorisations</target>
+        <target>Baimenak kudeatu</target>
       </trans-unit>
       <trans-unit id="i4ZcOYW" resname="Faire des prélèvements">
         <source>Faire des prélèvements</source>
-        <target>__Faire des prélèvements</target>
+        <target>Diru kentzeak egin</target>
       </trans-unit>
       <trans-unit id="7n_v7XH" resname="Exécuter des prélèvements">
         <source>Exécuter des prélèvements</source>
-        <target>__Exécuter des prélèvements</target>
+        <target>Diru kentzeak gauzatu</target>
       </trans-unit>
       <trans-unit id="VdBzb4." resname="Ajouter des mandats">
         <source>Ajouter des mandats</source>
-        <target>__Ajouter des mandats</target>
+        <target>Mandatuak gehitu</target>
       </trans-unit>
       <trans-unit id="Bds2sDp" resname="Une seule colonne avec les numéros de compte, sans titre">
         <source>Une seule colonne avec les numéros de compte, sans titre</source>
-        <target>__Une seule colonne avec les numéros de compte, sans titre</target>
+        <target>Zutabe bakar bat kontu zenbakiekin, izenbururik gabe</target>
       </trans-unit>
       <trans-unit id="v5X4sMU" resname="Mandats">
         <source>Mandats</source>
-        <target>__Mandats</target>
+        <target>Mandatuak</target>
       </trans-unit>
       <trans-unit id="pXdfcCt" resname="Aucun mandat">
         <source>Aucun mandat</source>
-        <target>__Aucun mandat</target>
+        <target>Mandaturik ez</target>
       </trans-unit>
       <trans-unit id="8VpJepu" resname="En attente de validation">
         <source>En attente de validation</source>
-        <target>__En attente de validation</target>
+        <target>Baieztatua izatea itxaroten</target>
       </trans-unit>
       <trans-unit id="PkAxAvZ" resname="Créé le">
         <source>Créé le</source>
-        <target>__Créé le</target>
+        <target>Egina</target>
       </trans-unit>
       <trans-unit id="yJN36oH" resname="Validés">
         <source>Validés</source>
-        <target>__Validés</target>
+        <target>Baieztatuak</target>
       </trans-unit>
       <trans-unit id="kU2ctJe" resname="Validé le">
         <source>Validé le</source>
-        <target>__Validé le</target>
+        <target>Baieztatze eguna</target>
       </trans-unit>
       <trans-unit id="_FPR0fc" resname="Révoqués">
         <source>Révoqués</source>
-        <target>__Révoqués</target>
+        <target>Ezeztatua</target>
       </trans-unit>
       <trans-unit id="8RM6EnL" resname="Révoqué le">
         <source>Révoqué le</source>
-        <target>__Révoqué le</target>
+        <target>Ezeztatze eguna</target>
       </trans-unit>
       <trans-unit id="0IBddQa" resname="Réfusés">
         <source>Réfusés</source>
-        <target>__Réfusés</target>
+        <target>Ukatuak</target>
       </trans-unit>
       <trans-unit id="rkg6t8g" resname="Refusé le">
         <source>Refusé le</source>
-        <target>__Refusé le</target>
+        <target>Ukatze eguna</target>
       </trans-unit>
       <trans-unit id="cJGeRf2" resname="Supprimer un mandat">
         <source>Supprimer un mandat</source>
-        <target>__Supprimer un mandat</target>
+        <target>Mandatu bat kendu</target>
       </trans-unit>
       <trans-unit id="Xb47_k6" resname="J’ai oublié mon mot de passe">
         <source>J’ai oublié mon mot de passe</source>
-        <target>__J’ai oublié mon mot de passe</target>
+        <target>Nire pasahitza ahantzi dut</target>
       </trans-unit>
       <trans-unit id="7T1kxVt" resname="C'est votre première connexion">
         <source>C'est votre première connexion</source>
-        <target>__C'est votre première connexion</target>
+        <target>Zure lehen konexioa da</target>
       </trans-unit>
       <trans-unit id="6FEu59A" resname="Conditions Générales d'Utilisation">
         <source>Conditions Générales d'Utilisation</source>
-        <target>__Conditions Générales d'Utilisation</target>
+        <target>Erabilpenerako Baldintza Orokorrak</target>
       </trans-unit>
       <trans-unit id="hmfH.he" resname="Lire les conditions générales d'Utilisation">
         <source>Lire les conditions générales d'Utilisation</source>
-        <target>__Lire les conditions générales d'Utilisation</target>
+        <target>Erabilpenerako baldintza orokorrak irakurri</target>
       </trans-unit>
       <trans-unit id="_M5HfI_" resname="N° d'adhérent">
         <source>N° d'adhérent</source>
-        <target>__N° d'adhérent</target>
+        <target>Kide zbakia</target>
       </trans-unit>
       <trans-unit id="zYxbDID" resname="Accès à mon compte">
         <source>Accès à mon compte</source>
-        <target>__Accès à mon compte</target>
+        <target>Nire kontuan sartu</target>
       </trans-unit>
       <trans-unit id="4mli900" resname="Mon euskokart">
         <source>Mon euskokart</source>
-        <target>__Mon euskokart</target>
+        <target>Nire Euskokarta</target>
       </trans-unit>
       <trans-unit id="MmNTfah" resname="Mon code PIN">
         <source>Mon code PIN</source>
-        <target>__Mon code PIN</target>
+        <target>PIN kodigoa</target>
       </trans-unit>
       <trans-unit id="6jJddh_" resname="an">
         <source>an</source>
-        <target>__an</target>
+        <target>urtea</target>
       </trans-unit>
       <trans-unit id="TA7Pgeb" resname="Cotisation offerte">
         <source>Cotisation offerte</source>
-        <target>__Cotisation offerte</target>
+        <target>Urtesaria eskainia</target>
       </trans-unit>
       <trans-unit id="QBNF22j" resname="Pas de prélèvement automatique de la cotisation">
         <source>Pas de prélèvement automatique de la cotisation</source>
-        <target>__Pas de prélèvement automatique de la cotisation</target>
+        <target>Urtesariaren diru kentze automatikorik ez</target>
       </trans-unit>
       <trans-unit id="fz4fpIO" resname="Non à jour">
         <source>Non à jour</source>
-        <target>__Non à jour</target>
+        <target>Ez eguneratua</target>
       </trans-unit>
       <trans-unit id="1IzjBXf" resname="Association second choix">
         <source>Association second choix</source>
-        <target>__Association second choix</target>
+        <target>Elkartea bigarren hautua</target>
       </trans-unit>
       <trans-unit id="INSoU_z" resname="Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions.">
         <source>Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions.</source>
-        <target>__Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions.</target>
+        <target>Zure lehen hautuak baldintzak bete bitartean zein beste elkartek jasoko du zure trukearen %3a.</target>
       </trans-unit>
       <trans-unit id="EtptXk1" resname="Modifier Association 3%">
         <source>Modifier Association 3%</source>
-        <target>__Modifier Association 3%</target>
+        <target>%3rako elkartea aldatu</target>
       </trans-unit>
       <trans-unit id="rOhVjBn" resname="Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :">
         <source>Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :</source>
-        <target>__Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :</target>
+        <target>Aukeratu elkarte bat jadanik Euskal Monetako kide direnen artean:</target>
       </trans-unit>
       <trans-unit id="KyG0R0o" resname="Association ...">
         <source>Association ...</source>
-        <target>__Association ...</target>
+        <target>Elkartea ...</target>
       </trans-unit>
       <trans-unit id="PZ2RmIL" resname="ou saisie libre d'une autre association :">
         <source>ou saisie libre d'une autre association :</source>
-        <target>__ou saisie libre d'une autre association :</target>
+        <target>edo beste elkarte baten hautu librea:</target>
       </trans-unit>
       <trans-unit id="7NcMaPM" resname="Mon don 3% Eusko">
         <source>Mon don 3% Eusko</source>
-        <target>__Mon don 3% Eusko</target>
+        <target>Nire Eusko %3 dohaintza</target>
       </trans-unit>
       <trans-unit id="Mqg0olA" resname="L'association que je parraine">
         <source>L'association que je parraine</source>
-        <target>__L'association que je parraine</target>
+        <target>Lagun gisa aukeratu dudan elkartea</target>
       </trans-unit>
       <trans-unit id="5YAK4Br" resname="L'association qui bénéficie de mon 3%">
         <source>L'association qui bénéficie de mon 3%</source>
-        <target>__L'association qui bénéficie de mon 3%</target>
+        <target>Nire %3a jasotzen duen elkartea</target>
       </trans-unit>
       <trans-unit id="PJz.H5F" resname="modifier mon association">
         <source>modifier mon association</source>
-        <target>__modifier mon association</target>
+        <target>nire elkartea aldatu</target>
       </trans-unit>
       <trans-unit id="ccg9Wqj" resname="3% de votre change reversé">
         <source>3% de votre change reversé</source>
-        <target>__3% de votre change reversé</target>
+        <target>Zure trukearen %3a erreserbatua</target>
       </trans-unit>
       <trans-unit id="hTnKXJQ" resname="Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.">
         <source>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</source>
-        <target>__Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</target>
+        <target>Euroak euskotan aldatzen dituzun aldi oro, zure trukearen %3a erreserbatzen du Euskal Monetak zuk aukeratu elkartearentzat.</target>
       </trans-unit>
       <trans-unit id="GJdfIa2" resname="Versements annuels">
         <source>Versements annuels</source>
-        <target>__Versements annuels</target>
+        <target>Urteko ordainketak</target>
       </trans-unit>
       <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
         <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
-        <target>__Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</target>
+        <target>Urtero bildua den dirua elkarte lagunentzat erreserbatua da. Hasieratik xxx EUS baino gehiago erreserbatuak izan dira.</target>
       </trans-unit>
       <trans-unit id="rBh_I.y" resname="Changement d'association">
         <source>Changement d'association</source>
-        <target>__Changement d'association</target>
+        <target>Elkartea aldatu</target>
       </trans-unit>
       <trans-unit id="9DwMTcu" resname="Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)">
         <source>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</source>
-        <target>__Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</target>
+        <target>Urtean zehar elkartez aldatzen baduzu, aukeratu duzun elkarte berriak jasoko du zure dohaintza garai honetarako. (Uztailaren 1etik ekainaren 30a arte)</target>
       </trans-unit>
       <trans-unit id="a4yUVm1" resname="Reconvertir des eusko en €">
         <source>Reconvertir des eusko en €</source>
-        <target>__Reconvertir des eusko en €</target>
+        <target>Euskoak €tan aldatu</target>
       </trans-unit>
       <trans-unit id="fkTAWHe" resname="Télécharger en CSV">
         <source>Télécharger en CSV</source>
-        <target>__Télécharger en CSV</target>
+        <target>CSVn deskargatu</target>
       </trans-unit>
       <trans-unit id="bE3HQ63" resname="Télécharger en PDF">
         <source>Télécharger en PDF</source>
-        <target>__Télécharger en PDF</target>
+        <target>PDF deskargatu</target>
       </trans-unit>
       <trans-unit id="AN7EuNk" resname="+ d'infos">
         <source>+ d'infos</source>
-        <target>__+ d'infos</target>
+        <target>Info gehio</target>
       </trans-unit>
       <trans-unit id="0L1wgYs" resname="Votre historique est vide">
         <source>Votre historique est vide</source>
-        <target>__Votre historique est vide</target>
+        <target>Zure historikoa hutsa da</target>
       </trans-unit>
       <trans-unit id="nqoak7n" resname="Faire un virement">
         <source>Faire un virement</source>
-        <target>__Faire un virement</target>
+        <target>Biramendu bat egin</target>
       </trans-unit>
       <trans-unit id="CHFHj_C" resname="Selectionner dans la liste ...">
         <source>Selectionner dans la liste ...</source>
-        <target>__Selectionner dans la liste ...</target>
+        <target>Hautatu zerrendan ...</target>
       </trans-unit>
       <trans-unit id="LjBU4S." resname="Aide">
         <source>Aide</source>
-        <target>__Aide</target>
+        <target>Laguntza</target>
       </trans-unit>
       <trans-unit id="zMhvWDq" resname="Modifier mon change automatique">
         <source>Modifier mon change automatique</source>
-        <target>__Modifier mon change automatique</target>
+        <target>Nire diru kentze automatikoa aldatu</target>
       </trans-unit>
       <trans-unit id="r1.B4uC" resname="Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.">
         <source>Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.</source>
-        <target>__Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.</target>
+        <target>Hilabetero euroak euskoz aldatzen dituzu zure kontu korrentean egiten den diru kentze automatiko bati esker.</target>
       </trans-unit>
       <trans-unit id="0phfZFc" resname="Les prélèvements sont effectués le 10 de chaque mois.">
         <source>Les prélèvements sont effectués le 10 de chaque mois.</source>
-        <target>__Les prélèvements sont effectués le 10 de chaque mois.</target>
+        <target>Diru hartzeak hilaren 10ero egiten dira.</target>
       </trans-unit>
       <trans-unit id="U8UnXQ0" resname="Informations sur le mandat de prélèvement">
         <source>Informations sur le mandat de prélèvement</source>
-        <target>__Informations sur le mandat de prélèvement</target>
+        <target>Diru hartzeari buruzko informazioak</target>
       </trans-unit>
       <trans-unit id="FnvkPms" resname="Nom du créancier">
         <source>Nom du créancier</source>
-        <target>__Nom du créancier</target>
+        <target>Hartzedunaren izena</target>
       </trans-unit>
       <trans-unit id="WOnr9oT" resname="Identifiant du créancier">
         <source>Identifiant du créancier</source>
-        <target>__Identifiant du créancier</target>
+        <target>Hartzedunaren erabiltzaile izena</target>
       </trans-unit>
       <trans-unit id="OUxfKzu" resname="Référence Unique du Mandat">
         <source>Référence Unique du Mandat</source>
-        <target>__Référence Unique du Mandat</target>
+        <target>Mandatuaren erreferentzia bakarra</target>
       </trans-unit>
       <trans-unit id="9Uc_lDV" resname="Modifier le montant du change automatique">
         <source>Modifier le montant du change automatique</source>
-        <target>__Modifier le montant du change automatique</target>
+        <target>Truke automatikoaren kopurua aldatu</target>
       </trans-unit>
       <trans-unit id="b5IVanQ" resname="Créditer mon compte">
         <source>Créditer mon compte</source>
-        <target>__Créditer mon compte</target>
+        <target>Nire kontuan dirua sartu</target>
       </trans-unit>
       <trans-unit id="z4tnY_a" resname="Change en ligne via hello asso">
         <source>Change en ligne via hello asso</source>
-        <target>__Change en ligne via hello asso</target>
+        <target>Hello assoren bidez linean trukea</target>
       </trans-unit>
       <trans-unit id="S_MhFjG" resname="Bon à savoir">
         <source>Bon à savoir</source>
-        <target>__Bon à savoir</target>
+        <target>Jakiteko ona</target>
       </trans-unit>
       <trans-unit id="VFSc1BP" resname="Bureaux de change">
         <source>Bureaux de change</source>
-        <target>__Bureaux de change</target>
+        <target>Aldaguneak</target>
       </trans-unit>
       <trans-unit id="SXQWHdh" resname="Quitter">
         <source>Quitter</source>

@@ -1,20 +1,18 @@
-/logs
-.idea/
 
 ###> symfony/framework-bundle ###
-/symfony/.env.local
-/symfony/.env.local.php
-/symfony/.env.*.local
-/symfony/public/bundles/
-/symfony/public/uploads/
-/symfony/var/
-/symfony/vendor/
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/public/uploads/
+/var/
+/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
-/symfony/.phpunit
-/symfony/.phpunit.result.cache
-/symfony/phpunit.xml
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/web-server-bundle ###
@@ -23,6 +21,5 @@
 
 /.idea/
 ###> liip/imagine-bundle ###
-/symfony/public/media/cache/
+/public/media/cache/
 ###< liip/imagine-bundle ###
-

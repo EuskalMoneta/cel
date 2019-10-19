@@ -1,6 +1,30 @@
 # Compte En Ligne Eusko (CEL)
 
-## Installation
+## Installation docker-compose
+
+* git clone ssh://.... ./cel
+* `cd cel`
+
+* `cd symfony` puis `cp .env .env.local`
+* Modifier dans .env.local les paramètres de base de données avec ceux inscrit dans le docker-compose.yml
+* Modifier dans .env.local APP_ENV=prod ou dev
+
+* docker-compose up -d
+* docker-compose exec php composer install
+
+* docker-compose exec php php bin/console doctrine:database:create  //normalement renvoi une erreur database déjà existante --> ignorer
+* docker-compose exec php php bin/console doctrine:migrations:migrate (puis valider y)
+
+
+Vérifier les permissions des dossiers symfony/var/cache symfony/var/log  symfony/logs et symfony/public/uploads \
+
+
+do not forget to add `symfony.localhost` in your `/etc/hosts` file.
+You are done, you can visit your Symfony application on the following URL: `http://symfony.localhost:8000`
+
+That's all folks ! 
+
+## Installation stack LAMP
 
 1. git clone https://.... ./cel
 2. `cd cel`

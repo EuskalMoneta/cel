@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
+                <h2 class="secondary-color mb-2">{{ 'Profil' | trans }} >  {{ 'Question secrète' | trans }}</h2>
+
+                {{ form_start(form) }}
+                {% if  form_errors(form) != '' %}
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col">
+                        {{ form_row(form.questionSecrete) }}
+                    </div>
+                </div>
+
+                <div id="questionPerso" class="row d-none">
+                    <div class="col">
+                        {{ form_row(form.questionPerso) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {{ form_row(form.reponse) }}
+                    </div>
+                </div>
+
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //If refresh
+            if($("#form_questionSecrete").val() == 'autre'){
+                $('#questionPerso').removeClass('d-none');
+            }
+            $("#form_questionSecrete").change(function(){
+                if($(this).children("option:selected").val() == 'autre'){
+                    $('#questionPerso').removeClass('d-none');
+                } else {
+                    $('#questionPerso').addClass('d-none');
+                }
+            });
+        });
+    </script>
+{% endblock %}

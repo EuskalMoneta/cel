@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+
+{% block css %}
+    <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet"  type='text/css'>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="mt-2 mb-4">
+                            <h3 class="secondary-color mb-0"> {{ "Mon don 3% Eusko" | trans }}</h3>
+                            <div class="main-color text-bold threepermain"> {{ montant_don | number_format(2, ',') }} eusko</div>
+                        </div>
+
+                        <div class="mt-2 mb-4">
+                            <h3 class="secondary-color mb-0"> {{ "L'association que je parraine" | trans }}</h3>
+                            <div class="main-color text-bold threepermain">
+                                {% if membre.fk_asso != '' %}
+                                    {{ membre.fk_asso }}
+                                {% elseif membre.array_options.options_asso_saisie_libre != '' %}
+                                    {{ membre.array_options.options_asso_saisie_libre }}
+                                {% else %}
+                                    Euskal Moneta
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mt-2 mb-4">
+                            <h3 class="secondary-color mb-0"> {{ "L'association qui bénéficie de mon 3%" | trans }}</h3>
+                            <div class="main-color text-bold threepermain">
+                                {% if membre.fk_asso2 != '' %}
+                                    {{ membre.fk_asso2 }}
+                                {% else %}
+                                    Euskal Moneta
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <a class="btn btn-outline-primary mb-4" href="{{ path('app_asso_modifier') }}">{{ "modifier mon association" | trans }} </a>
+
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col pl-4" style="margin-top: 70px;">
+
+                        <div class="row">
+                            <div class="col-2 text-right">
+                                <img src="{{ asset('images/asso-troispercent.png') }}" style="width: 100%; max-width: 50px; margin-left: 15px">
+                            </div>
+                            <div class="col-9">
+                                <h3 class="main-color mb-2">{{ "3% de votre change reversé" | trans }}</h3>
+                                <p class="secondary-color"> {{ "Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix." | trans  }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <img src="{{ asset('images/asso-calendar.png') }}" style="width: 100%; max-width: 50px; margin-left: 15px">
+                            </div>
+                            <div class="col-9">
+                                <h3 class="main-color mb-2">{{ "Versements annuels" | trans }}</h3>
+                                <p class="secondary-color"> {{ "Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés." | trans  }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <img src="{{ asset('images/asso-change.png') }}" style="width: 100%; max-width: 50px; margin-left: 15px">
+                            </div>
+                            <div class="col-9">
+                                <h3 class="main-color mb-2">{{ "Changement d'association" | trans }}</h3>
+                                <p class="secondary-color"> {{ "Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)" | trans  }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

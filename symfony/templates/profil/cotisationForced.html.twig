@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
+ {% block menu_top %}
+     <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+         <div class="container">
+             <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+             <div class="navbar-right">
+
+                 {% if app.user %}
+                     <a href="{{ path('app_logout') }}">
+                         <i class="fal fa-sign-out cel-menu-icon"></i>
+                         <br /> Quitter
+                     </a>
+                 {% endif %}
+             </div>
+         </div>
+     </nav>
+ {% endblock %}
+
+{% block menu_footer %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
+                <h2 class="secondary-color mb-2">{{ 'Profil' | trans }} >  {{ 'Cotisation' | trans }}</h2>
+
+                {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}
+
+                <p>Ma cotisation est prélevée automatiquement sur mon compte Eusko</p>
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            function disableMonthly() {
+                $("#form_options_prelevement_cotisation_periodicite_1").attr("disabled", true);
+                $("#form_options_prelevement_cotisation_periodicite_1").prop("checked", false);
+                $("#form_options_prelevement_cotisation_periodicite_0").prop("checked", true);
+
+            }
+            if($("#form_options_prelevement_cotisation_montant_3").prop("checked") == true){
+                disableMonthly();
+            }
+
+            $("input[name='form[options_prelevement_cotisation_montant]']").change(function() {
+                if($(this).val() == '5'){
+                    disableMonthly();
+                } else {
+                    $("#form_options_prelevement_cotisation_periodicite_1").attr("disabled", false);
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

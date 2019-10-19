@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+                <h1>Erreur</h1>
+
+                <p class="lead">
+                    {{ status_code }}
+                    {{ status_text }}
+                </p>
+                <p>
+                    La page que vous avez demandé n'a pas pu être chargée.<br /><br />
+                     <a class="btn btn-outline-primary" href="{{ path('app_homepage') }}">Retourner à la page d'accueil</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

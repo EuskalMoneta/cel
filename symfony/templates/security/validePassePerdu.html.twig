@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ "Première connexion" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+
+                <div class="mt-4">
+                    <h1 class="h3 mb-3 font-weight-normal">{{ "Votre mot de passe" | trans }}</h1>
+
+                    {{ form_start(form) }}
+                    {% if  form_errors(form) != '' %}
+                        <div class="alert alert-dismissible alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col">
+                            {{ form_row(form.motDePasse) }}
+                        </div>
+                    </div>
+
+                    <h1 class="h3 mt-4 mb-4 font-weight-normal">{{ "Question secrète" | trans }}</h1>
+
+
+                    <div class="row">
+                        <div class="col">
+                            <h2 class="mb-0">{{ question }}</h2>
+                            {{ form_row(form.reponse) }}
+                        </div>
+                    </div>
+                    <p>{{"Si vous avez oublié la réponse à la question secrète, merci de nous contacter." | trans }}</p>
+
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -871,6 +871,30 @@
         <source>Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</source>
         <target>Segur zaude hartzaile hau ezabatu nahi duzula?</target>
       </trans-unit>
+      <trans-unit id="HGofsQw" resname="Importer un tableur (Fichier CSV)">
+        <source>Importer un tableur (Fichier CSV)</source>
+        <target>Taula bat kargatu (CSV fitxategia)</target>
+      </trans-unit>
+      <trans-unit id="EH.dx4K" resname="Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :">
+        <source>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</source>
+        <target>Taulak zutabe hauek ukan behar ditu: ontu zenbakia, hartu behar den kopurua, deskribapena; adibidez:</target>
+      </trans-unit>
+      <trans-unit id="5_xgHPh" resname="Il n'y a pas de titre pour les colonnes">
+        <source>Il n'y a pas de titre pour les colonnes</source>
+        <target>Zutabeek ez dute titulurik</target>
+      </trans-unit>
+      <trans-unit id="grkGxUt" resname="Résultat des prélèvements">
+        <source>Résultat des prélèvements</source>
+        <target>Diru kentzeen emaitza</target>
+      </trans-unit>
+      <trans-unit id="zERDC9z" resname="N° Adhérent-e ou Email">
+        <source>N° Adhérent-e ou Email</source>
+        <target>Kide zenbakia edo Emaila</target>
+      </trans-unit>
+      <trans-unit id="PyeE.aC" resname="Activer votre compte">
+        <source>Activer votre compte</source>
+        <target>Zure kontua aktibatu</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

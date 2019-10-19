@@ -775,89 +775,113 @@
       </trans-unit>
       <trans-unit id="SXQWHdh" resname="Quitter">
         <source>Quitter</source>
-        <target>__Quitter</target>
+        <target>Quitter</target>
       </trans-unit>
       <trans-unit id="UzFhc1Y" resname="Accueil">
         <source>Accueil</source>
-        <target>__Accueil</target>
+        <target>Accueil</target>
       </trans-unit>
       <trans-unit id="5Y8P_g5" resname="Virement">
         <source>Virement</source>
-        <target>__Virement</target>
+        <target>Virement</target>
       </trans-unit>
       <trans-unit id="wL91vXi" resname="Change">
         <source>Change</source>
-        <target>__Change</target>
+        <target>Change</target>
       </trans-unit>
       <trans-unit id="lLQfHN3" resname="Confirmation paiement">
         <source>Confirmation paiement</source>
-        <target>__Confirmation paiement</target>
+        <target>Confirmation paiement</target>
       </trans-unit>
       <trans-unit id="5TPrGB6" resname="Êtes vous sur de valider le paiement ?">
         <source>Êtes vous sur de valider le paiement ?</source>
-        <target>__Êtes vous sur de valider le paiement ?</target>
+        <target>Êtes vous sur de valider le paiement ?</target>
       </trans-unit>
       <trans-unit id="3eVQeiO" resname="Montant (minimum 10)">
         <source>Montant (minimum 10)</source>
-        <target>__Montant (minimum 10)</target>
+        <target>Montant (minimum 10)</target>
       </trans-unit>
       <trans-unit id="SNPoFla" resname="Commentaire">
         <source>Commentaire</source>
-        <target>__Commentaire</target>
+        <target>Commentaire</target>
       </trans-unit>
       <trans-unit id="j9cXi6O" resname="Association parainée">
         <source>Association parainée</source>
-        <target>__Association parainée</target>
+        <target>Association parainée</target>
       </trans-unit>
       <trans-unit id="o0KoqLS" resname="Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. ">
         <source>Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </source>
-        <target>__Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </target>
+        <target>Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </target>
       </trans-unit>
       <trans-unit id="CpBAdjn" resname="Oui">
         <source>Oui</source>
-        <target>__Oui</target>
+        <target>Oui</target>
       </trans-unit>
       <trans-unit id="f2JJawy" resname="Non">
         <source>Non</source>
-        <target>__Non</target>
+        <target>Non</target>
       </trans-unit>
       <trans-unit id="gkkxtPM" resname="Bénéficiaire supprimé">
         <source>Bénéficiaire supprimé</source>
-        <target>__Bénéficiaire supprimé</target>
+        <target>Bénéficiaire supprimé</target>
       </trans-unit>
       <trans-unit id="Jov77yg" resname="Erreur lors de la suppression">
         <source>Erreur lors de la suppression</source>
-        <target>__Erreur lors de la suppression</target>
+        <target>Erreur lors de la suppression</target>
       </trans-unit>
       <trans-unit id="J01gKnl" resname="N° Adhérent-e">
         <source>N° Adhérent-e</source>
-        <target>__N° Adhérent-e</target>
+        <target>N° Adhérent-e</target>
       </trans-unit>
       <trans-unit id="kP6j2PP" resname="Supprimer un bénéficiaire">
         <source>Supprimer un bénéficiaire</source>
-        <target>__Supprimer un bénéficiaire</target>
+        <target>Supprimer un bénéficiaire</target>
       </trans-unit>
       <trans-unit id="mg7CjM5" resname="Supprimer le bénéficiaire">
         <source>Supprimer le bénéficiaire</source>
-        <target>__Supprimer le bénéficiaire</target>
+        <target>Supprimer le bénéficiaire</target>
       </trans-unit>
       <trans-unit id="eLaXNdP" resname="Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :">
         <source>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</source>
-        <target>__Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
+        <target>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
       </trans-unit>
       <trans-unit id="KFjk34P" resname="Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
         <source>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
-        <target>__Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
+        <target>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
       </trans-unit>
       <trans-unit id="sZICvzl" resname="Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! &lt;br /&gt;&lt;br /&gt;&#10;                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.">
         <source>Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! &lt;br /&gt;&lt;br /&gt;
                                 Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.</source>
-        <target><![CDATA[__Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! <br /><br />
+        <target><![CDATA[Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! <br /><br />
                                 Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.]]></target>
       </trans-unit>
       <trans-unit id="s__LcH_" resname="Êtes vous sur de vouloir supprimer le bénéficiaire suivant :">
         <source>Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</source>
-        <target>__Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</target>
+        <target>Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</target>
+      </trans-unit>
+      <trans-unit id="HGofsQw" resname="Importer un tableur (Fichier CSV)">
+        <source>Importer un tableur (Fichier CSV)</source>
+        <target>Importer un tableur (Fichier CSV)</target>
+      </trans-unit>
+      <trans-unit id="EH.dx4K" resname="Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :">
+        <source>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</source>
+        <target>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</target>
+      </trans-unit>
+      <trans-unit id="5_xgHPh" resname="Il n'y a pas de titre pour les colonnes">
+        <source>Il n'y a pas de titre pour les colonnes</source>
+        <target>Il n'y a pas de titre pour les colonnes</target>
+      </trans-unit>
+      <trans-unit id="grkGxUt" resname="Résultat des prélèvements">
+        <source>Résultat des prélèvements</source>
+        <target>Résultat des prélèvements</target>
+      </trans-unit>
+      <trans-unit id="zERDC9z" resname="N° Adhérent-e ou Email">
+        <source>N° Adhérent-e ou Email</source>
+        <target>N° Adhérent-e ou Email</target>
+      </trans-unit>
+      <trans-unit id="PyeE.aC" resname="Activer votre compte">
+        <source>Activer votre compte</source>
+        <target>Activer votre compte</target>
       </trans-unit>
     </body>
   </file>

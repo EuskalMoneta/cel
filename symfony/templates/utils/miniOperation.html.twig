@@ -1,0 +1,25 @@
+{% for operation in operations %}
+    <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
+        <div class="col-8">
+            <div class="main-color text-semi-bold">
+                {{ operation.description }}
+
+            </div>
+            <div class="secondary-color">
+                {% if operation.relatedAccount.owner.display is defined %}
+                    <span class="text-semi-bold"> {{ operation.relatedAccount.owner.display }}</span><br />
+                {% endif %}
+                {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="float-right ">
+                {% if operation.amount > 0 %}
+                    <div class="prix text-right green">+ {{ operation.amount | number_format(2, ',') }}</div>
+                {% else %}
+                    <div class="prix text-right">{{ operation.amount | number_format(2, ',') }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}

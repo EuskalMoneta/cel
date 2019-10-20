@@ -1,23 +1,30 @@
 version: '2'
-
 services:
-  cel:
-    build: .
-    container_name: cel
-    volumes:
-      - ./src/cel:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 8003:8000
-    environment:
-      - API_PUBLIC_URL=http://localhost:8000
-      - API_INTERNAL_URL=http://api:8000
-      - DJANGO_DEBUG=True
-      - NODE_ENV=dev
-    networks:
-      - eusko_net
-
-networks:
-  eusko_net:
-    external:
-      name: api_eusko_net
+    db:
+        image: mysql
+        command: ["--default-authentication-plugin=mysql_native_password"]
+        ports:
+            - "3308:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: symfony
+            MYSQL_USER: symfony
+            MYSQL_PASSWORD: symfony
+    php:
+        build: ./php-fpm
+        ports:
+            - "9000:9001"
+        volumes:
+            - ./symfony:/var/www/symfony:cached
+            - ./logs/symfony:/var/www/symfony/var/log:cached
+        links:
+            - db
+    nginx:
+        build: ./nginx
+        ports:
+            - "8003:80"
+        links:
+            - php
+        volumes:
+            - ./logs/nginx:/var/log/nginx:cached
+            - ./symfony:/var/www/symfony:cached

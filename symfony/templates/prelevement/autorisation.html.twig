@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+                <h2 class="secondary-color mb-4"> {{ "Autorisations de prélèvement" | trans }} </h2>
+
+                {% if mandatsEnATT is empty and mandatsValide is empty %}
+                    <div class="text-center mt-4">
+                        <h3 class="mt-4">{{"Aucune autorisation de prélèvement" | trans }}</h3>
+                        <img src="{{ asset('images/no-data.png') }}" width="30%"/>
+                    </div>
+                {% endif %}
+
+
+                {% if mandatsEnATT is not empty %}
+                    <h3 class="main-color">{{ "En attente" | trans }} </h3>
+
+                    {% for mandat in mandatsEnATT %}
+                        <div class="row p-2" >
+                            <div class="col-2 text-right">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fal fa-clock fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </div>
+                            <div class="col-4">
+                                <div class="main-color text-semi-bold"> {{ mandat.nom_crediteur }}</div>
+                                <div class="secondary-color">{{ "Créée le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="float-right ">
+                                    <a class="btn btn-outline-danger btn-guard btn-refuser" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'refuser'}) }}"> <i class="far fa-trash-alt"></i> </a>
+                                    <a class="btn btn-outline-success btn-guard btn-valider" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'valider'}) }}"> <i class="far fa-check"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+
+                {% if mandatsValide is not empty %}
+                    <h3 class="main-color mt-4">  {{ "Autorisations validées" | trans }} </h3>
+                    {% for mandat in mandatsValide %}
+                        <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
+                            <div class="col-2 text-right">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="far fa-user fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <div class="main-color text-semi-bold"> {{ mandat.nom_crediteur }}</div>
+                                <div class="secondary-color"> {{ "Validée le " | trans }} {{  mandat.date_derniere_modif |localizeddate('long', 'none', app.request.getLocale()) }}{# operation.date|localizeddate('long', 'none', app.request.getLocale()) #}</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="float-right ">
+                                    <a class="btn btn-outline-danger btn-guard btn-revoquer" href="{{ path('app_prelevement_autorisation_change_state', {'id': mandat.id, 'type': 'revoquer'}) }}"> <i class="far fa-trash-alt"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{"Êtes vous sur de vouloir supprimer ce mandat ?" | trans }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a href="#" class="btn btn-outline-success" id="modal-valid">Valider</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        var titleModalValider = '{{"Nouvelle autorisation" | trans }}';
+        var titleModalRefuser = '{{"Suppression" | trans }}';
+        var titleModalRevoquer = '{{"Révoquer une autorisation" | trans }}';
+        var bodyModalValider = '{{"Êtes vous sur de valider cette autorisation de prélèvement ?" | trans }}';
+        var bodyModalRefuser = '{{"Êtes vous sur de vouloir supprimer cette demande ?" | trans }}';
+        var bodyModalRevoquer = '{{"Êtes vous sur de vouloir révoquer cette autorisation ?" | trans }}';
+        /*$('.btn-refuser').click(function (e){
+        $('.btn-valider').click(function (e){
+        $('.btn-revoquer').click(function (e){*/
+        $('.btn-guard').click(function (e){
+            if($(this).hasClass('btn-valider')){
+                $('#modalLongTitle').html(titleModalValider);
+                $('.modal-body').html(bodyModalValider);
+            } else if($(this).hasClass('btn-refuser')){
+                $('#modalLongTitle').html(titleModalRefuser);
+                $('.modal-body').html(bodyModalRefuser);
+            }else if($(this).hasClass('btn-revoquer')){
+                $('#modalLongTitle').html(titleModalRevoquer);
+                $('.modal-body').html(bodyModalRevoquer);
+            }
+            $('#confirm-modal').modal('show');
+            e.preventDefault();
+            $('#modal-valid').attr('href', $(this).attr('href'));
+        });
+    </script>
+{% endblock %}

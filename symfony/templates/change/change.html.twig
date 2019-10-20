@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+
+                <h1 class="main-color mb-2"> {{ "Créditer mon compte" | trans }} </h1>
+                <h2 class="secondary-color mb-2"> {{ "Change en ligne via hello asso" | trans }} </h2>
+                <div class=" mt-4">
+                    <p>{{ "Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :" | trans }} <span class="text-semi-bold"> {{ app.user }}</span><br />
+
+                     {{ "Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!" |  trans }}</p>
+                    <div class="text-center"> <iframe id="haWidgetButton" src="https://www.helloasso.com/associations/euskal-moneta/paiements/eusko-kontuaren-kargatzea-chargement-de-compte-eusko/widget-bouton" style="border: none;" ></iframe></div>
+                </div>
+
+
+                <div style="margin-top: -40px">
+                    <h2 class="secondary-color mb-2"> {{ "Change automatique" | trans }} </h2>
+
+                    <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} eusko / {{ "mois" | trans }}</div>
+
+                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_change_modifier') }}">{{ "modifier" | trans }} </a>
+
+
+                    <div class="alert  alert-info">
+                        <h2 class="secondary-color mt-4 mb-2"> {{ "Bon à savoir" | trans }} </h2>
+                        <div class="mb-4">
+
+                            <p>{{ "Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! <br /><br />
+                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte. " | trans }}</p>
+
+                            {% if app.request.getLocale() == 'eu' %}
+                                <a href="http://www.euskalmoneta.org/aldaguneak/?lang=eu" class="btn btn-outline-info" target="_blank"> {{"Bureaux de change" | trans }}</a>
+                            {% else %}
+                                <a href="http://www.euskalmoneta.org/bureaux-de-change/"  class="btn btn-outline-info" target="_blank"> {{"Bureaux de change" | trans }}</a>
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
+                <div class="text-center mb-5">
+
+                    <i class="fal fa-user-circle" style="font-size: 72px;"></i>
+                    <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
+                    <h3 class="secondary-color" >{{ "N° d'adhérent" | trans }} {{ app.user }} </h3>
+                    <h3 class="secondary-color" >{{ "Compte n°" | trans }} {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %} </h3>
+                    {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}
+
+                </div>
+
+                <h2 class="secondary-color mt-5">{{ "Accès à mon compte" | trans }}</h2>
+                <table class="table">
+                    <tr>
+                        <td><p class="main-color text-semi-bold">{{ "Mot de passe" | trans }}</p></td>
+                        <td class="text-right"><a href="{{ path('app_profil_password') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold">{{ "Question secrète" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                </table>
+
+
+                <h2 class="secondary-color mt-5">{{ "Mon euskokart" | trans }}</h2>
+                <table class="table">
+                    <tr>
+                        <td><span class="main-color text-semi-bold">{{ "Mon code PIN" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_pin') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                </table>
+
+                <h2 class="secondary-color mt-5">{{ "Coordonnées" | trans }}</h2>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <p class="main-color text-semi-bold">
+                                {{ infosUser.nom }}<br />
+                                {{ membre.address }}<br />
+                                {{ membre.zip }} {{ membre.town }}<br /><br />
+                                {{ membre.phone_mobile }}<br />
+                                {{ membre.email }}
+                            </p>
+                        </td>
+                        <td class="text-right"><a href="{{ path('app_profil_coordonnees') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                </table>
+
+                {% if is_granted('ROLE_CLIENT') %}
+                    <h2 class="secondary-color mt-5">{{"Cotisation" | trans}}</h2>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <p class="main-color text-semi-bold">
+                                    {% if membre.array_options.options_prelevement_auto_cotisation_eusko %}
+
+                                        {{ membre.array_options.options_prelevement_cotisation_montant | round(2) }} eusko /
+                                        {% if membre.array_options.options_prelevement_cotisation_periodicite == 12 %}
+                                            {{"an" | trans }}
+                                        {% else %}
+                                            {{"mois" | trans }}
+                                        {% endif %}
+                                    {% elseif  membre.array_options.options_cotisation_offerte %}
+                                        {{"Cotisation offerte" | trans }}
+                                    {% else %}
+                                        {{"Pas de prélèvement automatique de la cotisation" | trans }}
+                                    {% endif %}
+                                </p>
+                            </td>
+                            <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
+                        </tr>
+                    </table>
+                {% endif %}
+
+                <h2 class="secondary-color mt-5">{{"Autres paramètres" | trans }}</h2>
+                <table class="table">
+                    <tr>
+                        <td><p class="main-color text-semi-bold"> {{"Langue" | trans }}</p></td>
+                        <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold"> {{ "Newsletter" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="main-color text-semi-bold">{{ "Notifications" | trans }}</span></td>
+                        <td class="text-right"><a href="{{ path('app_profil_notifications') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

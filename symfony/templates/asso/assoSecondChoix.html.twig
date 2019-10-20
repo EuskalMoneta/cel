@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+
+{% block css %}
+    <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet"  type='text/css'>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <div class="row">
+                    <div class="col"><h2 class="secondary-color mb-4"> {{"Association second choix" | trans }} </h2></div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+
+                        <form method="post" class="form">
+
+                            <p>{{"Choisissez quelle association recevra les 3% de vos changes en attendant que votre premier choix remplisse les conditions." | trans }}</p>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="form_amount" >{{ "Votre second choix" }}</label>
+                                        <select name="fk_asso2" id="fk_asso2" class="chosen-select form-control" data-placeholder="{{ "Association ..." }}">
+                                            <option value=""></option>
+                                            {% for asso in optionsAsso %}
+                                                <option value="{{ asso.id }}" {% if membre.fk_asso2 == asso.id %}selected{% endif %}>{{ asso.nom }} - {{ asso.nb_parrains }}  </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Valider" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript">
+        $(".chosen-select").chosen();
+    </script>
+{% endblock %}

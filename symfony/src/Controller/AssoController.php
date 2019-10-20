@@ -24,9 +24,18 @@ class AssoController extends AbstractController
         if($responseMember['httpcode'] == 200) {
             $membre = $responseMember['data'][0];
 
-            $response = $APIToolbox->curlRequest('GET', '/associations/?id='.$membre->fk_asso);
+            $asso1 = '';
+            $asso2 = '';
+            $response = $APIToolbox->curlRequest('GET', '/associations/');
             if($response['httpcode'] == 200) {
-                $optionsAsso = $response['data'];
+                foreach ($response['data'] as $asso) {
+                    if ($asso->id == $membre->fk_asso) {
+                        $asso1 = $asso->nom;
+                    }
+                    if ($asso->id == $membre->fk_asso2) {
+                        $asso2 = $asso->nom;
+                    }
+                }
             }
 
             //GET montant du don 3%
@@ -35,7 +44,7 @@ class AssoController extends AbstractController
                 $montant_don = $response['data']->montant_don;
             }
 
-            return $this->render('asso/asso.html.twig', ['membre' => $membre, 'montant_don' => $montant_don]);
+            return $this->render('asso/asso.html.twig', ['membre' => $membre, 'montant_don' => $montant_don, 'asso1' => $asso1, 'asso2' => $asso2]);
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }

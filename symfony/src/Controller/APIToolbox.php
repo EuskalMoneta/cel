@@ -10,12 +10,13 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 class APIToolbox extends AbstractController
 {
 
-    private $base_url = "http://localhost:8000";
+    private $base_url;
 
     private $logger;
 
     public function __construct(LoggerInterface $logger)
     {
+        $this->base_url = getenv('API_PUBLIC_URL');
         $this->logger = $logger;
     }
 

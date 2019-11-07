@@ -99,7 +99,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             }
 
             // set locale according to the language chosen by the user
-            $user->setLocale($member->array_options->options_langue);
+            if($member->array_options->options_langue == 'eu'){
+                $user->setLocale($member->array_options->options_langue);
+            } else {
+                $user->setLocale('fr');
+            }
         }
 
         return $user;

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,6 +32,7 @@ class VirementController extends AbstractController
         $destinataire ='';
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
             ->add('amount', NumberType::class, ['required' => true, 'label' => "Montant"])
+            ->add('guard_check', HiddenType::class, ['required' => false])
             ->add('description', TextType::class, ['required' => true, 'label' => "libellé de l'opération"])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
@@ -42,14 +44,20 @@ class VirementController extends AbstractController
             $data = $form->getData();
             $data['beneficiaire'] = $request->get('destinataire');
 
-            //API CALL
-            $responseVirement = $APIToolbox->curlRequest('POST', '/one-time-transfer/', $data);
-            if($responseVirement['httpcode'] == 200) {
-                $this->addFlash('success',$translator->trans('Virement effectué'));
-                return $this->redirectToRoute('app_virement');
-            } else {
-                $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
+            //check if the guard has been submitted, prevent double submit bug
+            if($data['guard_check'] == 'ok'){
+                unset($data['guard_check']);
+                //API CALL
+                $responseVirement = $APIToolbox->curlRequest('POST', '/one-time-transfer/', $data);
+                if($responseVirement['httpcode'] == 200) {
+                    $this->addFlash('success',$translator->trans('Virement effectué'));
+                    return $this->redirectToRoute('app_virement');
+                } else {
+                    $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
+                }
             }
+
+
 
         }
 

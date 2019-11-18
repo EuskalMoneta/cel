@@ -61,7 +61,7 @@
                 </div>
 
 
-                <div class="d-block d-sm-none">
+                <div class="d-block d-sm-none" style="z-index: 1;">
                     <hr>
                     <div class="text-center mb-4">
                         <a href="{{ path('app_beneficiaire_gestion') }}"><i class="fal fa-users main-color" style="font-size: 50px;"></i><br /></a>
@@ -126,6 +126,7 @@
 
         });
         $('#modal-valid').click(function (e){
+            $("#form_guard_check").val('ok');
             $('form').unbind('submit').submit();
             $("#form_submit").submit();
         });

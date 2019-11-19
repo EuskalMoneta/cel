@@ -189,6 +189,10 @@ label.required:before {
 
 .before-footer{
     margin-bottom: 60px;
+    z-index: 1;
+}
+.chosen-container{
+    z-index: 10;
 }
 
 .table-success td, .table-success th{

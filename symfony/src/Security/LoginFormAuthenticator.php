@@ -69,24 +69,40 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('Erreur de connexion');
         }
 
-        $user = new User();
-        $user->setUsername($credentials['username']);
-        $user->setLastLogin(new \DateTime());
-        $user->setToken($token);
-
-        //User Roles
-        if($user->getUsername()[0] == 'E'){
-            $user->setRoles(['ROLE_CLIENT']);
-        } elseif($user->getUsername()[0] == 'Z') {
-            $user->setRoles(['ROLE_PARTENAIRE']);
+        // Get member
+        $member = null;
+        if (strpos($credentials['username'], '@') === false) {
+            $responseMember = $this->apiToolBox->curlRequest('GET', '/members/?login='.$credentials['username'], '', $token);
+            if($responseMember['httpcode'] == 200) {
+                $member = $responseMember['data'][0];
+            }
+        } else {
+            $responseMember = $this->apiToolBox->curlRequest('GET', '/members/?email='.$credentials['username'], '', $token);
+            if($responseMember['httpcode'] == 200) {
+                $member = $responseMember['data'];
+            }
         }
+        if ($member != null) {
+            $user = new User();
+            $user->setUsername($member->login);
+            $user->setLastLogin(new \DateTime());
+            $user->setToken($token);
 
-        //get Locale
-        $responseMember = $this->apiToolBox->curlRequest('GET', '/members/?login='.$credentials['username'], '', $token);
-        if($responseMember['httpcode'] == 200) {
-            $user->setLocale($responseMember['data'][0]->array_options->options_langue);
-            if($responseMember['data'][0]->type == 'Régie publique de recettes'){
+            //User Roles
+            if($user->getUsername()[0] == 'E'){
+                $user->setRoles(['ROLE_CLIENT']);
+            } elseif($user->getUsername()[0] == 'Z') {
+                $user->setRoles(['ROLE_PARTENAIRE']);
+            }
+            if($member->type == 'Régie publique de recettes'){
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
+            }
+
+            // set locale according to the language chosen by the user
+            if($member->array_options->options_langue == 'eu'){
+                $user->setLocale($member->array_options->options_langue);
+            } else {
+                $user->setLocale('fr');
             }
         }
 

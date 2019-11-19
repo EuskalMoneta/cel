@@ -19,8 +19,8 @@
                         <div class="mt-2 mb-4">
                             <h3 class="secondary-color mb-0"> {{ "L'association que je parraine" | trans }}</h3>
                             <div class="main-color text-bold threepermain">
-                                {% if membre.fk_asso != '' %}
-                                    {{ membre.fk_asso }}
+                                {% if asso1 != '' %}
+                                    {{ asso1 }}
                                 {% elseif membre.array_options.options_asso_saisie_libre != '' %}
                                     {{ membre.array_options.options_asso_saisie_libre }}
                                 {% else %}
@@ -28,7 +28,7 @@
                                 {% endif %}
                             </div>
                         </div>
-
+<!-- FIXME
                         <div class="mt-2 mb-4">
                             <h3 class="secondary-color mb-0"> {{ "L'association qui bénéficie de mon 3%" | trans }}</h3>
                             <div class="main-color text-bold threepermain">
@@ -39,7 +39,7 @@
                                 {% endif %}
                             </div>
                         </div>
-
+-->
                         <a class="btn btn-outline-primary mb-4" href="{{ path('app_asso_modifier') }}">{{ "modifier mon association" | trans }} </a>
 
 

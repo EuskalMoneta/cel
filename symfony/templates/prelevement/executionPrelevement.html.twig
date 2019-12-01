@@ -67,11 +67,13 @@
                         <table class="table table-danger table-striped">
                             <thead>
                             <th>N° de compte</th>
+                            <th>Nom</th>
                             <th>Message</th>
                             </thead>
                             {% for prelevement in listFail %}
                                 <tr>
                                     <td>{{ prelevement.account }}</td>
+                                    <td>{{ prelevement.name }}</td>
                                     <td>{{ prelevement.description }}</td>
                                 </tr>
                             {% endfor %}
@@ -82,11 +84,13 @@
                         <table class="table table-success table-striped">
                             <thead>
                             <th>N° de compte</th>
+                            <th>Nom</th>
                             <th>Message</th>
                             </thead>
                             {% for prelevement in listSuccess %}
                                 <tr>
                                     <td>{{ prelevement.account }}</td>
+                                    <td>{{ prelevement.name }}</td>
                                     <td>{{ prelevement.description }}</td>
                                 </tr>
                             {% endfor %}

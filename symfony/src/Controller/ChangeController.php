@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -52,7 +52,7 @@ class ChangeController extends AbstractController
                         'label' => $translator->trans("Montant (minimum 10)"),
                         'constraints' => [
                             new NotBlank(),
-                            new GreaterThan(['value' => 10]),
+                            new GreaterThanOrEqual(['value' => 10]),
                         ],
                     ]
                 )

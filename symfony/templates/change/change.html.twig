@@ -19,17 +19,17 @@
                 <div style="margin-top: -40px">
                     <h2 class="secondary-color mb-2"> {{ "Change automatique" | trans }} </h2>
 
-                    <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} eusko / {{ "mois" | trans }}</div>
+                    <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} {{ "eusko par mois" | trans }}</div>
 
-                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_change_modifier') }}">{{ "modifier" | trans }} </a>
+                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_change_modifier') }}">{{ "Modifier" | trans }} </a>
 
 
                     <div class="alert  alert-info">
                         <h2 class="secondary-color mt-4 mb-2"> {{ "Bon à savoir" | trans }} </h2>
                         <div class="mb-4">
 
-                            <p>{{ "Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! <br /><br />
-                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte. " | trans }}</p>
+                            <p>{{ "Vous pouvez aussi dans n'importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat !
+Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte." | trans | nl2br }}</p>
 
                             {% if app.request.getLocale() == 'eu' %}
                                 <a href="http://www.euskalmoneta.org/aldaguneak/?lang=eu" class="btn btn-outline-info" target="_blank"> {{"Bureaux de change" | trans }}</a>

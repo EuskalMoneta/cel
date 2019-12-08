@@ -26,6 +26,11 @@ class VirementController extends AbstractController
         $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
         if($response['httpcode'] == 200){
             $beneficiaires = $response['data']->results;
+
+            //Sort by alpha order, will be fixed in API ? #18
+            usort($beneficiaires, function($a, $b) {
+                return strcmp($a->cyclos_name, $b->cyclos_name);
+            });
         }
 
         //Form generation

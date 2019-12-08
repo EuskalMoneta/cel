@@ -215,55 +215,58 @@ class SecurityController extends AbstractController
     {
         $token = $request->query->get('token');
         $responseToken = $APIToolbox->curlWithoutToken('GET', '/securityqa/me/?token='.$token);
+        $securityQuestion = '';
 
-        dump($responseToken);
         if($responseToken['httpcode'] == 200){
+            $securityQuestion = $responseToken['data']->question->question;
+        } else {
+            $this->addFlash('danger', 'Erreur lors de la connexion avec l\'API : '.$responseToken['data']->error);
+        }
 
-            $form = $this->createFormBuilder()
-                ->add('motDePasse', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Nouveau mot de passe'],
-                    'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 4, 'max'=> 12]),
-                    ],
-                    'type' => PasswordType::class,
-                    'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => true,
-                ])
-                ->add('reponse', TextType::class, [
-                    'label' => ' ',
-                    'required' => false,
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ])
-                ->add('submit', SubmitType::class, ['label' => 'Valider'])
-                ->getForm();
+        $form = $this->createFormBuilder()
+            ->add('motDePasse', RepeatedType::class, [
+                'first_options'  => ['label' => 'Nouveau mot de passe'],
+                'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 4, 'max'=> 12]),
+                ],
+                'type' => PasswordType::class,
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+            ])
+            ->add('reponse', TextType::class, [
+                'label' => ' ',
+                'required' => false,
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
 
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                $parameters = [
-                    'token' => $token,
-                    'new_password' => $data['motDePasse'],
-                    'confirm_password' => $data['motDePasse'],
-                    'answer' => $data['reponse'],
-                ];
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $parameters = [
+                'token' => $token,
+                'new_password' => $data['motDePasse'],
+                'confirm_password' => $data['motDePasse'],
+                'answer' => $data['reponse'],
+            ];
 
-                $response = $APIToolbox->curlWithoutToken('POST', '/validate-lost-password/', $parameters);
+            $response = $APIToolbox->curlWithoutToken('POST', '/validate-lost-password/', $parameters);
 
 
-                if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-                    $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
-                    return $this->redirectToRoute('app_login');
-                } else {
-                    $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
-                }
+            if($response['httpcode'] == 200 && $response['data']->status == 'success'){
+                $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
+                return $this->redirectToRoute('app_login');
+            } else {
+                $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
             }
         }
-        $this->addFlash('danger', 'Erreur lors de la connexion avec l\"API : '.$responseToken['data']->error);
-        return $this->render('security/validePassePerdu.html.twig', ['form' => $form->createView(), 'question' => $responseToken['data']->question->question]);
+
+        return $this->render('security/validePassePerdu.html.twig', ['form' => $form->createView(), 'question' => $securityQuestion]);
     }
 
     /**

@@ -667,7 +667,7 @@
       </trans-unit>
       <trans-unit id="7NcMaPM" resname="Mon don 3% Eusko">
         <source>Mon don 3% Eusko</source>
-        <target>Nire Eusko %3 dohaintza</target>
+        <target>Nire Eusko %3 emaitza</target>
       </trans-unit>
       <trans-unit id="Mqg0olA" resname="L'association que je parraine">
         <source>L'association que je parraine</source>
@@ -679,15 +679,15 @@
       </trans-unit>
       <trans-unit id="PJz.H5F" resname="modifier mon association">
         <source>modifier mon association</source>
-        <target>nire elkartea aldatu</target>
+        <target>Nire elkartea aldatu</target>
       </trans-unit>
       <trans-unit id="ccg9Wqj" resname="3% de votre change reversé">
         <source>3% de votre change reversé</source>
-        <target>Zure trukearen %3a erreserbatua</target>
+        <target>Zure trukearen %3a emana</target>
       </trans-unit>
       <trans-unit id="hTnKXJQ" resname="Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.">
         <source>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</source>
-        <target>Euroak euskotan aldatzen dituzun aldi oro, zure trukearen %3a erreserbatzen du Euskal Monetak zuk aukeratu elkartearentzat.</target>
+        <target>Euroak euskotan aldatzen dituzun aldi oro, zure trukearen %3a emaiten dio Euskal Monetak zuk aukeratu elkarteari.</target>
       </trans-unit>
       <trans-unit id="GJdfIa2" resname="Versements annuels">
         <source>Versements annuels</source>
@@ -695,15 +695,15 @@
       </trans-unit>
       <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
         <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
-        <target>Urtero bildua den dirua elkarte lagunentzat erreserbatua da. Hasieratik xxx EUS baino gehiago erreserbatuak izan dira.</target>
+        <target>Urtero, bildua den dirua partaide diren elkarteei emana zaie. Hasieratik 100 000 eusko baino gehiago emanak izan dira. Emaitza horiek profesionalek euskoak euroetarat trukatzen dituztelarik pagatzen duten %5eko komisioak diruztatzen ditu.</target>
       </trans-unit>
       <trans-unit id="rBh_I.y" resname="Changement d'association">
         <source>Changement d'association</source>
-        <target>Elkartea aldatu</target>
+        <target>Elkartez aldatu</target>
       </trans-unit>
       <trans-unit id="9DwMTcu" resname="Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)">
         <source>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</source>
-        <target>Urtean zehar elkartez aldatzen baduzu, aukeratu duzun elkarte berriak jasoko du zure dohaintza garai honetarako. (Uztailaren 1etik ekainaren 30a arte)</target>
+        <target>Urtean zehar elkartez aldatzen baduzu, aukeratzen duzun elkarte berriak du zure emaitza jasoko garai honetarako (uztailaren 1etik ekainaren 30a arte).</target>
       </trans-unit>
       <trans-unit id="a4yUVm1" resname="Reconvertir des eusko en €">
         <source>Reconvertir des eusko en €</source>
@@ -904,6 +904,10 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
       <trans-unit id="Fvwo5Mb" resname="eusko par mois">
         <source>eusko par mois</source>
         <target>eusko hilabetean</target>
+      </trans-unit>
+      <trans-unit id="t7rrDtn" resname="depuis le 1er juillet dernier">
+        <source>depuis le 1er juillet dernier</source>
+        <target>joan den uztailaren 1etik</target>
       </trans-unit>
     </body>
   </file>

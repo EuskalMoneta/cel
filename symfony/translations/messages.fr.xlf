@@ -667,7 +667,7 @@
       </trans-unit>
       <trans-unit id="PJz.H5F" resname="modifier mon association">
         <source>modifier mon association</source>
-        <target>modifier mon association</target>
+        <target>Modifier mon association</target>
       </trans-unit>
       <trans-unit id="ccg9Wqj" resname="3% de votre change reversé">
         <source>3% de votre change reversé</source>
@@ -675,7 +675,7 @@
       </trans-unit>
       <trans-unit id="hTnKXJQ" resname="Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.">
         <source>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</source>
-        <target>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</target>
+        <target>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par Euskal Moneta à l'association de votre choix.</target>
       </trans-unit>
       <trans-unit id="GJdfIa2" resname="Versements annuels">
         <source>Versements annuels</source>
@@ -683,7 +683,7 @@
       </trans-unit>
       <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
         <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
-        <target>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</target>
+        <target>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de 100 000 eusko reversés, et financés par la commission de 5% que les professionnels règlent si ils reconvertissent des eusko en euros.</target>
       </trans-unit>
       <trans-unit id="rBh_I.y" resname="Changement d'association">
         <source>Changement d'association</source>
@@ -691,7 +691,7 @@
       </trans-unit>
       <trans-unit id="9DwMTcu" resname="Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)">
         <source>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</source>
-        <target>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</target>
+        <target>Si vous décidez de changer d'association en cours d'année, c'est la nouvelle association choisie qui sera bénéficiaire du total de vos dons pour la période en cours (du 1er juillet au 30 juin).</target>
       </trans-unit>
       <trans-unit id="a4yUVm1" resname="Reconvertir des eusko en €">
         <source>Reconvertir des eusko en €</source>
@@ -892,6 +892,10 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="Fvwo5Mb" resname="eusko par mois">
         <source>eusko par mois</source>
         <target>eusko par mois</target>
+      </trans-unit>
+      <trans-unit id="t7rrDtn" resname="depuis le 1er juillet dernier">
+        <source>depuis le 1er juillet dernier</source>
+        <target>depuis le 1er juillet dernier</target>
       </trans-unit>
     </body>
   </file>

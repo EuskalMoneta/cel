@@ -96,9 +96,6 @@
     "egulias/email-validator": {
         "version": "2.1.10"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "imagine/imagine": {
         "version": "v0.7.1"
     },
@@ -145,6 +142,12 @@
             "config/routes/liip_imagine.yaml"
         ]
     },
+    "markbaker/complex": {
+        "version": "1.4.7"
+    },
+    "markbaker/matrix": {
+        "version": "1.2.0"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -157,6 +160,9 @@
     "ocramius/proxy-manager": {
         "version": "2.2.2"
     },
+    "php": {
+        "version": "7.2"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
@@ -165,6 +171,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.10.1"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -177,6 +186,9 @@
     },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -297,6 +309,9 @@
     },
     "symfony/dotenv": {
         "version": "v4.3.3"
+    },
+    "symfony/error-handler": {
+        "version": "v4.4.4"
     },
     "symfony/event-dispatcher": {
         "version": "v4.3.3"

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Security\User;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,7 +18,8 @@ use Symfony\Component\Form\FormFactoryBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\File;
+use \Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -116,53 +119,51 @@ class PrelevementController extends AbstractController
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new File([
+                    new FileConstraint([
                         'maxSize' => '2024k',
-                        'mimeTypes' => [
-                            'text/csv',
-                            'text/plain',
-                        ],
-                        'mimeTypesMessage' => 'Le fichier n\'est pas au format csv',
                     ])
                 ],
             ])
             ->add('submit', SubmitType::class, ['label' => $translator->trans('Valider')])
             ->getForm();
 
-        if($request->isMethod('POST')){
+        if($request->isMethod('POST')) {
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
-                //On charge le fichier csv
+                /** @var \Symfony\Component\HttpFoundation\File\File $file */
                 $file = $form['tableur']->getData();
+
                 if(!empty($file)) {
-                    if (($handle = fopen($file, "r")) !== FALSE) {
-                        while(($row = fgetcsv($handle)) !== FALSE) {
-                            if(sizeof($row) == 3){
-                                $comptes[] = [
-                                    'account' => $row[0],
-                                    'amount' => $row[1],
-                                    'description' => $row[2]
-                                ];
-                            }
+                    $rows = $this->spreadsheetToArray($file);
+                }
+
+                if(count($rows) > 0){
+                    foreach ($rows as $row) {
+                        $comptes[] = [
+                            'account' => $row[0],
+                            'amount' => $row[1],
+                            'description' => $row[2]
+                        ];
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                }
+
+                $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
+                if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
+                    $data = $responsePrelevements['data'];
+                    foreach ($data as $prelevement){
+                        if($prelevement->status){
+                            $listSuccess[] = $prelevement;
+                        } else {
+                            $listFail[] = $prelevement;
                         }
                     }
+                } else {
+                    $this->addFlash('danger', $translator->trans('Erreur lors de la demande.'));
                 }
-            }
-
-            $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
-            if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
-                $data = $responsePrelevements['data'];
-                foreach ($data as $prelevement){
-                    if($prelevement->status){
-                        $listSuccess[] = $prelevement;
-                    } else {
-                        $listFail[] = $prelevement;
-                    }
-                }
-            } else {
-                $this->addFlash('danger', $translator->trans('Erreur lors de la demande.'));
             }
         }
 
@@ -222,17 +223,12 @@ class PrelevementController extends AbstractController
                 ]
             )
             ->add('tableur', FileType::class, [
-                'label' => 'Ou importer un tableur (Fichier CSV)',
+                'label' => 'Ou importer un tableur (Fichier XLSX/CSV)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new File([
+                    new FileConstraint([
                         'maxSize' => '2024k',
-                        'mimeTypes' => [
-                            'text/csv',
-                            'text/plain',
-                        ],
-                        'mimeTypesMessage' => 'Le fichier n\'est pas au format csv',
                     ])
                 ],
             ])
@@ -255,16 +251,20 @@ class PrelevementController extends AbstractController
 
                 //Si on charge un fichier csv
                 $file = $form['tableur']->getData();
+
                 if(!empty($file)) {
-                    if (($handle = fopen($file, "r")) !== FALSE) {
-                        while(($row = fgetcsv($handle)) !== FALSE) {
-                            if(sizeof($row) == 1){
-                                $comptes[] = ['numero_compte_debiteur' => $row[0]];
-                            }
-                        }
+                    $rows = $this->spreadsheetToArray($file);
+                }
+
+                if(count($rows) > 0){
+                    foreach ($rows as $row) {
+                        $comptes[] = ['numero_compte_debiteur' => $row[0]];
                     }
+                } else {
+                $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
                 }
             }
+
 
             //On fait appel à l'API pour les mandats et on sauvegarde le résultat dans des listes
             foreach ($comptes as $data){
@@ -286,6 +286,49 @@ class PrelevementController extends AbstractController
 
         }
         return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * Helper method to get a readable array from a spreadsheet !
+     *
+     * @param File $file
+     * @return array
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function spreadsheetToArray(File $file){
+
+        $rows = [];
+        if($file->getMimeType() == 'text/csv' || $file->getMimeType() == 'text/plain'){
+
+            //READ A CSV File
+            if (($handle = fopen($file, "r")) !== FALSE) {
+                while(($row = fgetcsv($handle)) !== FALSE) {
+                    $rows[] = $row;
+                }
+            }
+        } else {
+
+            //READ other formats .xls .xlsx
+            try {
+                $reader = IOFactory::createReaderForFile($file);
+                $reader->setReadDataOnly(true);
+                $spreadsheet = $reader->load($file);
+                $worksheet = $spreadsheet->getActiveSheet();
+                foreach ($worksheet->getRowIterator() AS $row) {
+                    $cellIterator = $row->getCellIterator();
+                    $cellIterator->setIterateOnlyExistingCells(FALSE); // This loops through all cells,
+                    $cells = [];
+                    foreach ($cellIterator as $cell) {
+                        $cells[] = $cell->getValue();
+                    }
+                    $rows[] = $cells;
+                }
+            } catch (Exception $exception){
+            };
+
+        }
+
+        return $rows;
     }
 
 }

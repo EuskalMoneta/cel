@@ -873,7 +873,7 @@
       </trans-unit>
       <trans-unit id="HGofsQw" resname="Importer un tableur (Fichier CSV)">
         <source>Importer un tableur (Fichier CSV)</source>
-        <target>Taula bat kargatu (CSV fitxategia)</target>
+        <target>Taula bat kargatu (.csv/.xlsx fitxategia)</target>
       </trans-unit>
       <trans-unit id="EH.dx4K" resname="Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :">
         <source>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</source>
@@ -908,6 +908,10 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
       <trans-unit id="t7rrDtn" resname="depuis le 1er juillet dernier">
         <source>depuis le 1er juillet dernier</source>
         <target>joan den uztailaren 1etik</target>
+      </trans-unit>
+      <trans-unit id="nt5WBCI" resname="Format de fichier non reconnu ou tableur vide">
+        <source>Format de fichier non reconnu ou tableur vide</source>
+        <target>Fitxategi formatu ez ezaguna edo kalkulu orri hutsa</target>
       </trans-unit>
     </body>
   </file>

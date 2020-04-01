@@ -10,14 +10,14 @@
                 {% if promotions | length > 0 %}
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                            {% for promotion in promotions %}
+                                <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}"></li>
+                            {% endfor %}
                         </ol>
                         <div class="carousel-inner">
                             {% for promotion in promotions %}
                                 <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                    <img src="{{ asset(promotion.getWebPath) }}" class="d-block w-100" alt="...">
+                                    <a href="{{ promotion.lien }}" target="_blank"><img src="{{ asset(promotion.getWebPath) }}" class="d-block w-100" alt="" /></a>
                                 </div>
                             {% endfor %}
                         </div>

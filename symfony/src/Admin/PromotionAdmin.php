@@ -31,7 +31,7 @@ final class PromotionAdmin extends AbstractAdmin
         }
 
         $formMapper
-            ->add('lien')
+            ->add('lien', null, ['help' => 'Mettre le lien sous la forme https://elkar.eus'])
             ->add('visible')
             ->add('file', FileType::class, $fileFieldOptions)
         ;

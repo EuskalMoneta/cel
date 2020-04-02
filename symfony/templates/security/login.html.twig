@@ -17,7 +17,13 @@
                         <div class="carousel-inner">
                             {% for promotion in promotions %}
                                 <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                    <a href="{{ promotion.lien }}" target="_blank"><img src="{{ asset(promotion.getWebPath) }}" class="d-block w-100" alt="" /></a>
+                                    {% if promotion.lien != '' %}
+                                    <a href="{{ promotion.lien }}" target="_blank">
+                                        {% endif %}
+                                        <img src="{{ asset(promotion.getWebPath) }}" class="d-block w-100" alt="" />
+                                        {% if promotion.lien != '' %}
+                                    </a>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         </div>

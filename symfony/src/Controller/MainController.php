@@ -24,6 +24,15 @@ class MainController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker)
     {
+
+        $responseIDCheck = $APIToolbox->curlRequestIdCheck('GET', '/rest/v0/sandbox/image/CNI_FR_SPECIMEN_BERTHIER?rawType=BASE64');
+        if($responseIDCheck['httpcode'] == 200) {
+            $carteId = $responseIDCheck['data'];
+            $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $carteId]);
+            dump(json_decode($checkID["data"]));
+            dump($APIToolbox->go_nogo($checkID['data']));
+        }
+
         //Check if CGU are accepted, redirect otherwise
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         $membre = $responseMember['data'][0];
@@ -32,7 +41,9 @@ class MainController extends AbstractController
         }
 
         // check last_subscription_date_end to redirect to costisation
-        if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+        if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now")
+            and $authChecker->isGranted('ROLE_CLIENT'))
+        {
             return $this->redirectToRoute('app_profil_cotisation');
         }
 

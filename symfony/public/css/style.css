@@ -48,12 +48,14 @@ body{
 h1, h2, h3, h4, h5, h6 {
     text-transform: none;
     letter-spacing: 0;
+    color: #1B1B1B;
 }
 h2 {
     font-size: 18px;
     text-transform: uppercase;
 }
 h3 {
+    font-family: Montserrat-semi-bold, sans-serif;
     font-size: 15px;
 }
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
@@ -138,6 +140,12 @@ button.btn-primary:hover{
 }
 .eusko-btn {
     padding: 0.3rem 0.3rem;
+}
+small{
+    font-size: 90%;
+}
+.text-subtitle{
+    font-size: 1rem;
 }
 
 .prix{
@@ -256,4 +264,26 @@ label.required:before {
 .btn-success {
     color: #fff;
     background-color: #41A528;
+}
+div.vertical-line{
+    width: 4px;
+    background-color: #f4f2f2;
+    height: 25px;
+    margin-left: 18px;
+    margin-bottom: 15px;
+}
+
+.waiting {
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
 }

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ "Mot de passe oublié" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+                <div class="mt-4">
+                    <form method="post">
+
+                        <h1 class="h3 mb-3 font-weight-normal">{{ title | trans }}</h1>
+
+                        {{ form(form) }}
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

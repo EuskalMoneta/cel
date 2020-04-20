@@ -58,6 +58,15 @@ class SecurityController extends AbstractController
         return new RedirectResponse($targetPath);
     }
 
+
+    /**
+     * @Route("/activer-compte/cgu", name="app_activer_compte")
+     */
+    public function activerCompte(Request $request, APIToolbox $APIToolbox): Response
+    {
+
+    }
+
     /**
      * @Route("/premiere/connexion", name="app_first_login")
      */
@@ -86,15 +95,23 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+
             $data = $form->getData();
             $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
             if($response['httpcode'] == 200 && $response['data']->member == 'OK'){
-                $this->addFlash('success', 'Veuillez vérifier vos emails. Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.');
+
+                return $this->render('security/firstLoginSuccess.html.twig', []);
             } else {
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api : '.$response['data']->error);
             }
+
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => "Première connexion", 'form' => $form->createView()]);
+
+
+
+        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form->createView()]);
     }
 
     /**
@@ -205,7 +222,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
+        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
     }
 
     /**

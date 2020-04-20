@@ -60,15 +60,15 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/activer-compte/cgu", name="app_activer_compte")
+     * @Route("/creer-compte", name="app_creer_compte")
      */
-    public function activerCompte(Request $request, APIToolbox $APIToolbox): Response
+    public function creerCompte(Request $request): Response
     {
-
+        
     }
 
     /**
-     * @Route("/premiere/connexion", name="app_first_login")
+     * @Route("/activer-compte", name="app_first_login")
      */
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
@@ -96,15 +96,19 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-
             $data = $form->getData();
             $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
-            if($response['httpcode'] == 200 && $response['data']->member == 'OK'){
 
+            if($data['adherent'][0] == 'T'){
+                $this->addFlash('danger', 'Les comptes eusko en vacances n\'ont pas besoin d\'activation. Essayez de vous connecter ou de faire une réinitialisation de mot de passe.');
+            } elseif($response['httpcode'] == 200 && $response['data']->member == 'OK'){
                 return $this->render('security/firstLoginSuccess.html.twig', []);
             } else {
-                $this->addFlash('danger', 'Erreur de communication avec le serveur api : '.$response['data']->error);
+                if($response['data']->error == 'User already exist!'){
+                    $this->addFlash('danger', 'Ce compte semble être déjà activé, essayez de vous connecter ou faire une réinitialisation de mot de passe.');
+                } else {
+                    $this->addFlash('danger', 'Erreur : '.$response['data']->error);
+                }
             }
 
         }

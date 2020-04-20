@@ -61,6 +61,14 @@ class SecurityController extends AbstractController
     /**
      * @Route("/premiere/connexion", name="app_first_login")
      */
+    public function creerCompte(Request $request): Response
+    {
+
+    }
+
+    /**
+     * @Route("/activer-compte", name="app_first_login")
+     */
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
         $form = $this->createFormBuilder()

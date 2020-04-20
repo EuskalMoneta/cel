@@ -48,6 +48,7 @@ body{
 h1, h2, h3, h4, h5, h6 {
     text-transform: none;
     letter-spacing: 0;
+    color: #47525E;
 }
 h2 {
     font-size: 18px;
@@ -256,4 +257,26 @@ label.required:before {
 .btn-success {
     color: #fff;
     background-color: #41A528;
+}
+div.vertical-line{
+    width: 4px;
+    background-color: #f4f2f2;
+    height: 25px;
+    margin-left: 18px;
+    margin-bottom: 15px;
+}
+
+.waiting {
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
 }

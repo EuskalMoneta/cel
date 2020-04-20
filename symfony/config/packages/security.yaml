@@ -34,7 +34,8 @@ security:
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/anon/language/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/creer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/activer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/valide-premiere-connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/valide-passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }

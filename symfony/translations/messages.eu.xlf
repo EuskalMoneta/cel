@@ -913,6 +913,78 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
         <source>Format de fichier non reconnu ou tableur vide</source>
         <target>Fitxategi formatu ez ezaguna edo kalkulu orri hutsa</target>
       </trans-unit>
+      <trans-unit id="piivmAm" resname="Créer un compte">
+        <source>Créer un compte</source>
+        <target>__Créer un compte</target>
+      </trans-unit>
+      <trans-unit id="WcXT5Yu" resname="Pour commencer, nous avons besoin de quelques informations.">
+        <source>Pour commencer, nous avons besoin de quelques informations.</source>
+        <target>__Pour commencer, nous avons besoin de quelques informations.</target>
+      </trans-unit>
+      <trans-unit id="5FinM3w" resname="Si vous avez un compte eusko en vacances vous n'avez pas besoin d'activer votre compte">
+        <source>Si vous avez un compte eusko en vacances vous n'avez pas besoin d'activer votre compte</source>
+        <target>__Si vous avez un compte eusko en vacances vous n'avez pas besoin d'activer votre compte</target>
+      </trans-unit>
+      <trans-unit id="56RGSdO" resname="Créer votre compte">
+        <source>Créer votre compte</source>
+        <target>__Créer votre compte</target>
+      </trans-unit>
+      <trans-unit id="DZG.RNa" resname="Ouvrir un compte">
+        <source>Ouvrir un compte</source>
+        <target>__Ouvrir un compte</target>
+      </trans-unit>
+      <trans-unit id="LBytHhh" resname="Compte eusko">
+        <source>Compte eusko</source>
+        <target>__Compte eusko</target>
+      </trans-unit>
+      <trans-unit id="w3.HCML" resname="Le compte standard pour tous les habitants du pays basque.">
+        <source>Le compte standard pour tous les habitants du pays basque.</source>
+        <target>__Le compte standard pour tous les habitants du pays basque.</target>
+      </trans-unit>
+      <trans-unit id="e0vthRO" resname="Créer un compte eusko">
+        <source>Créer un compte eusko</source>
+        <target>__Créer un compte eusko</target>
+      </trans-unit>
+      <trans-unit id="1.Dz3Ad" resname="Compte vacances en eusko">
+        <source>Compte vacances en eusko</source>
+        <target>__Compte vacances en eusko</target>
+      </trans-unit>
+      <trans-unit id="AzPL8oW" resname="Ce compte à durée limitée vous permet d'aquérir et dépenser des euskos pendant vos vacances.">
+        <source>Ce compte à durée limitée vous permet d'aquérir et dépenser des euskos pendant vos vacances.</source>
+        <target>__Ce compte à durée limitée vous permet d'aquérir et dépenser des euskos pendant vos vacances.</target>
+      </trans-unit>
+      <trans-unit id="12YvX4." resname="Créer un compte vacances">
+        <source>Créer un compte vacances</source>
+        <target>__Créer un compte vacances</target>
+      </trans-unit>
+      <trans-unit id="wAEFh6k" resname="Vos identifiants ont bien été reconnus">
+        <source>Vos identifiants ont bien été reconnus</source>
+        <target>__Vos identifiants ont bien été reconnus</target>
+      </trans-unit>
+      <trans-unit id="Cs.NBUi" resname="Les étapes restantes pour activer votre compte">
+        <source>Les étapes restantes pour activer votre compte</source>
+        <target>__Les étapes restantes pour activer votre compte</target>
+      </trans-unit>
+      <trans-unit id="Gv12MHk" resname="Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation">
+        <source>Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation</source>
+        <target>__Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation</target>
+      </trans-unit>
+      <trans-unit id="258q7if" resname="Choisir un mot de passe">
+        <source>Choisir un mot de passe</source>
+        <target>__Choisir un mot de passe</target>
+      </trans-unit>
+      <trans-unit id="0IA3.bb" resname="Lire et valider les Conditions Générales d'Utilisation">
+        <source>Lire et valider les Conditions Générales d'Utilisation</source>
+        <target>__Lire et valider les Conditions Générales d'Utilisation</target>
+      </trans-unit>
+      <trans-unit id="rhY9.DH" resname="Choisir votre cotisation">
+        <source>Choisir votre cotisation</source>
+        <target>__Choisir votre cotisation</target>
+      </trans-unit>
+      <trans-unit id="ErMX75l" resname="Charger votre compte et dépenser des euskos !">
+        <source>Charger votre compte et dépenser des euskos !</source>
+        <target>__Charger votre compte et dépenser des euskos !</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

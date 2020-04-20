@@ -59,11 +59,16 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/premiere/connexion", name="app_first_login")
+     * @Route("/creer-compte", name="app_creer_compte")
      */
     public function creerCompte(Request $request): Response
     {
-
+        if($request->isMethod('post')){
+            $request->getSession()->set('_locale', $request->get('locale'));
+            $targetPath = $this->getTargetPath($request->getSession(), 'main');
+            return $this->redirectToRoute('app_creer_compte');
+        }
+        return $this->render('security/creerCompte.html.twig');
     }
 
     /**

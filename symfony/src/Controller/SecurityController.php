@@ -112,9 +112,6 @@ class SecurityController extends AbstractController
             }
 
         }
-
-
-
         return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form->createView()]);
     }
 

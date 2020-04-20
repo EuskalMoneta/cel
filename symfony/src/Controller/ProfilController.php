@@ -106,6 +106,8 @@ class ProfilController extends AbstractController
      */
     public function pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
+        $forcedPin = false;
+
         $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
         if($responsePin['httpcode'] == 200) {
 
@@ -144,6 +146,7 @@ class ProfilController extends AbstractController
                     }
                 }
             } else {
+                $forcedPin = true;
                 // If there isn't a PIN code yet, don't ask for the old one
                 $form = $this->createFormBuilder()
                     ->add('pin1', RepeatedType::class, [
@@ -177,7 +180,7 @@ class ProfilController extends AbstractController
 
             }
 
-            return $this->render('profil/pin.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/pin.html.twig', ['form' => $form->createView(), 'forcedPin' => $forcedPin]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

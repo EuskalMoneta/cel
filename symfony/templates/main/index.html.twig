@@ -18,10 +18,19 @@
                 </div>
             {% endif %}
 
+
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
                 <h2 class="secondary-color mb-0"> {{ "Mon solde" | trans }}</h2>
                 <div class="main-color big-solde"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
 
+                {% if infosUser.solde == 0 %}
+                <div class="p-3 mt-4 text-center">
+                    <h1 class="h3 mb-3">{{ "Bienvenue dans votre compte eusko" | trans }}</h1>
+                    <p class="text-subtitle">{{ "Alimentez votre compte pour commencer à l'utiliser" | trans }}</p>
+                    <a href="{{ path('app_change') }}" class="btn btn-success"> Ajouter de l'argent</a>
+                </div>
+
+                {% endif %}
                 <div class="eusko-cart p-3 mt-4">
                     <div class="row">
                         <div class="col-6 ml-0 text-semi-bold">{{ infosUser.nom }} <br/>

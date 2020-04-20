@@ -166,22 +166,27 @@ small{
 
 i { vertical-align: middle; }
 .footer {
-    border-top: 1px solid #E8E8E8;
+    border-top: 3px solid #F0F0F0;
     background-color: white;
-    color: #C0CCDA;
+   color: #1b1b1b;
     text-align: center;
     height: 60px;
+    padding-top: 6px;
+}
+.footer a{
+    font-family: Montserrat-semi-bold, Serif;
+    font-size: 12px;
 }
 main{
     margin-top: 60px;
     margin-bottom: 60px;
 }
 .footer i{
-    font-size: 24px;
-    color: #31506C;
+    font-size: 28px;
+    color: #1b1b1b;
 }
 .footer img{
-    width: 30px;
+    width: 28px;
 }
 .footer > .container {
     padding-right: 15px;
@@ -287,3 +292,4 @@ div.vertical-line{
         opacity: 1;
     }
 }
+#1b1b1b

@@ -31,9 +31,77 @@ class PrelevementController extends AbstractController
      * @Route("/prelevements", name="app_prelevement")
      * @IsGranted("ROLE_PARTENAIRE")
      */
-    public function prelevement(APIToolbox $APIToolbox)
+    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
-        return $this->render('prelevement/prelevement.html.twig');
+        //init vars
+        $comptes = [];
+        $listSuccess = [];
+        $listFail = [];
+        $rows = [];
+
+        //Create form with acount number
+        $form = $this->createFormBuilder()
+            ->add('tableur', FileType::class, [
+                'label' => $translator->trans('Importer un tableur (Fichier CSV)'),
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new FileConstraint([
+                        'maxSize' => '2024k',
+                    ])
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans('Valider')])
+            ->getForm();
+
+        if($request->isMethod('POST')) {
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                /** @var \Symfony\Component\HttpFoundation\File\File $file */
+                $file = $form['tableur']->getData();
+
+                if(!empty($file)) {
+                    $rows = $this->spreadsheetToArray($file);
+                    //on supprime la première ligne du tableau
+                    $rows = array_slice($rows, 1);
+                }
+
+
+
+                if(count($rows) > 0){
+                    foreach ($rows as $row) {
+                        if($row[1] != null or $row[2] != null or $row[3] != null){
+                            $comptes[] = [
+                                'account' => $row[1],
+                                'amount' => $row[2],
+                                'description' => $row[3]
+                            ];
+                        }
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                }
+
+                $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
+                if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
+                    $data = $responsePrelevements['data'];
+                    foreach ($data as $prelevement){
+                        if($prelevement->status){
+                            $listSuccess[] = $prelevement;
+                        } else {
+                            $listFail[] = $prelevement;
+                        }
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans('Erreur lors de la demande.'));
+                }
+            }
+        }
+
+        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form->createView(), 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
+
     }
 
     /**
@@ -99,75 +167,6 @@ class PrelevementController extends AbstractController
             return $this->redirectToRoute('app_prelevement_mandats');
         }
         throw new NotFoundHttpException("Opération de suppression impossible.");
-    }
-
-    /**
-     * @Route("/prelevements/executions", name="app_prelevement_execution")
-     * @IsGranted("ROLE_PARTENAIRE")
-     */
-    public function executions(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
-    {
-        //init vars
-        $comptes = [];
-        $listSuccess = [];
-        $listFail = [];
-
-        //Create form with acount number
-        $form = $this->createFormBuilder()
-            ->add('tableur', FileType::class, [
-                'label' => $translator->trans('Importer un tableur (Fichier CSV)'),
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new FileConstraint([
-                        'maxSize' => '2024k',
-                    ])
-                ],
-            ])
-            ->add('submit', SubmitType::class, ['label' => $translator->trans('Valider')])
-            ->getForm();
-
-        if($request->isMethod('POST')) {
-
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                /** @var \Symfony\Component\HttpFoundation\File\File $file */
-                $file = $form['tableur']->getData();
-
-                if(!empty($file)) {
-                    $rows = $this->spreadsheetToArray($file);
-                }
-
-                if(count($rows) > 0){
-                    foreach ($rows as $row) {
-                        $comptes[] = [
-                            'account' => $row[0],
-                            'amount' => $row[1],
-                            'description' => $row[2]
-                        ];
-                    }
-                } else {
-                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
-                }
-
-                $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
-                if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
-                    $data = $responsePrelevements['data'];
-                    foreach ($data as $prelevement){
-                        if($prelevement->status){
-                            $listSuccess[] = $prelevement;
-                        } else {
-                            $listFail[] = $prelevement;
-                        }
-                    }
-                } else {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de la demande.'));
-                }
-            }
-        }
-
-        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form->createView(), 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
     }
 
     /**
@@ -261,7 +260,7 @@ class PrelevementController extends AbstractController
                         $comptes[] = ['numero_compte_debiteur' => $row[0]];
                     }
                 } else {
-                $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
                 }
             }
 

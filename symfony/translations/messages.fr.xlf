@@ -861,7 +861,7 @@
       </trans-unit>
       <trans-unit id="HGofsQw" resname="Importer un tableur (Fichier CSV)">
         <source>Importer un tableur (Fichier CSV)</source>
-        <target>Importer un tableur (Tableur .xlsx ou .csv)</target>
+        <target>Importer un tableur (Tableur .xlsx .xls ou .ods)</target>
       </trans-unit>
       <trans-unit id="EH.dx4K" resname="Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :">
         <source>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</source>

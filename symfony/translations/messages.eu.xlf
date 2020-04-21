@@ -873,7 +873,7 @@
       </trans-unit>
       <trans-unit id="HGofsQw" resname="Importer un tableur (Fichier CSV)">
         <source>Importer un tableur (Fichier CSV)</source>
-        <target>Taula bat kargatu (.csv/.xlsx fitxategia)</target>
+        <target>Taula bat kargatu (.ods/.xlsx fitxategia)</target>
       </trans-unit>
       <trans-unit id="EH.dx4K" resname="Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :">
         <source>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</source>

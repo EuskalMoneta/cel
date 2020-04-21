@@ -16,7 +16,7 @@ class APIToolbox extends AbstractController
 
     public function __construct(LoggerInterface $logger)
     {
-        $this->base_url = getenv('API_PUBLIC_URL');
+        $this->base_url = $_ENV['API_PUBLIC_URL'];
         $this->logger = $logger;
     }
 

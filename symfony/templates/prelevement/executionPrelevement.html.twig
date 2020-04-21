@@ -5,106 +5,112 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+                <h2 class="secondary-color mb-4"> {{ "Prélèvements sur mon compte" | trans }} </h2>
 
-                <div class="row">
-                    <div class="col-8">
-                        <h2 class="secondary-color mb-4"> {{ "Exécuter des prélèvements" | trans }} </h2>
-                    </div>
-                    <div class="col-4 text-right">
-                        <a href="{{ path('app_prelevement') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
+                <div class="ml-4 mr-2 mb-4">
+                    <div class="mt-4">
+                        <a href="{{ path('app_prelevement_autorisation') }}" class="btn btn-outline-primary">{{ "Gérer les autorisations" | trans }}</a>
                     </div>
                 </div>
 
-                {%  if (listFail is empty) and (listSuccess is empty) %}
+                <h2 class="secondary-color mb-4"> {{ "Faire des prélèvements" | trans }} </h2>
+                <div class="ml-4 mr-2 mb-4">
+                    <div class="mt-4">
+                        <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-outline-primary">{{ "Gérer les autorisations" | trans }}</a>
+                    </div>
+                </div>
+                <div>
 
-                    <div class="mb-4">
-                        {{ form_start(form) }}
-                        <div class="row">
-                            <div class="col mt-4">
-                                <h5>{{ form_label(form.tableur) }}</h5>
-                                {% if form_errors(form.tableur) != '' %}
-                                    <span class="invalid-feedback d-block"><span class="d-block">
+
+                    <div class="p-4 mt-4" style="width: 80%; background-color: #f7f7f9;">
+                        <h2 class="main-color">{{ "Exécuter des prélèvements" | trans }}</h2>
+
+
+                        {%  if (listFail is empty) and (listSuccess is empty) %}
+                            {% if app.request.locale == 'fr' %}
+                                <p>Vous trouverez un <a href="{{ asset('images/prelevement-fr.xlsx') }}" style="text-decoration: underline;">modèle pour Excel ici</a> et un <a href="{{ asset('images/prelevement-fr.ods') }}" style="text-decoration: underline;">modèle pour open office ici</a> </p>
+                            {% else %}
+                                <p>A traduire en euskara : vous trouverez un <a href="{{ asset('images/prelevement-eu.xlsx') }}" style="text-decoration: underline;">modèle pour Excel ici</a> et un <a href="{{ asset('images/prelevement-eu.ods') }}" style="text-decoration: underline;">modèle pour open office ici</a> </p>
+                            {% endif %}
+                            <div class="mb-4">
+                                {{ form_start(form) }}
+                                <div class="row">
+                                    <div class="col mt-4">
+                                        <p class="mb-0 text-bold">{{ form_label(form.tableur) }}</p>
+                                        {% if form_errors(form.tableur) != '' %}
+                                            <span class="invalid-feedback d-block"><span class="d-block">
                                 <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.tableur) }}</span>
                             </span></span>
-                                {% endif %}
-                                {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
+                                        {% endif %}
+                                        {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
 
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col mt-4  mb-4">
+                                        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                                    </div>
+                                </div>
+
+                                {{ form_rest(form) }}
                             </div>
-                        </div>
+                        {% else %}
 
 
-                        <div class="row">
-                            <div class="col mt-4  mb-4">
-                                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
-                            </div>
-                        </div>
+                            <h3>{{"Résultat des prélèvements" | trans}}</h3>
+                            {%  if listFail is not empty %}
+                                <table class="table table-danger table-striped">
+                                    <thead>
+                                    <th>N° de compte</th>
+                                    <th>Nom</th>
+                                    <th>Message</th>
+                                    </thead>
+                                    {% for prelevement in listFail %}
+                                        <tr>
+                                            <td>{{ prelevement.account }}</td>
+                                            <td>{{ prelevement.name }}</td>
+                                            <td>{{ prelevement.description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endif %}
 
-                        {{ form_rest(form) }}
+                            {%  if listSuccess is not empty %}
+                                <table class="table table-success table-striped">
+                                    <thead>
+                                    <th>N° de compte</th>
+                                    <th>Nom</th>
+                                    <th>Message</th>
+                                    </thead>
+                                    {% for prelevement in listSuccess %}
+                                        <tr>
+                                            <td>{{ prelevement.account }}</td>
+                                            <td>{{ prelevement.name }}</td>
+                                            <td>{{ prelevement.description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endif %}
+
+                            <a href="{{ path('app_prelevement') }}" class="mt-4 btn btn-outline-primary btn-slim">{{ "Nouveau prélèvement" | trans }}</a>
+
+
+
+                        {% endif %}
+
                     </div>
-
-                    <p class="text-semi-bold">{{"Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :" | trans }}</p>
-
-                    <table class="table" border="1">
-                        <tr>
-                            <td>123456789</td>
-                            <td>10.5</td>
-                            <td>Prélèvement mensuel xxx du mois d'octobre</td>
-                        </tr>
-                        <tr>
-                            <td>999999999</td>
-                            <td>12</td>
-                            <td>Prélèvement ikastola</td>
-                        </tr>
-                    </table>
-
-                    <p class="text-semi-bold">{{"Il n'y a pas de titre pour les colonnes" | trans }}</p>
-
-                {% else %}
-
-
-                    <h3>{{"Résultat des prélèvements" | trans}}</h3>
-                    {%  if listFail is not empty %}
-                        <table class="table table-danger table-striped">
-                            <thead>
-                            <th>N° de compte</th>
-                            <th>Nom</th>
-                            <th>Message</th>
-                            </thead>
-                            {% for prelevement in listFail %}
-                                <tr>
-                                    <td>{{ prelevement.account }}</td>
-                                    <td>{{ prelevement.name }}</td>
-                                    <td>{{ prelevement.description }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    {% endif %}
-
-                    {%  if listSuccess is not empty %}
-                        <table class="table table-success table-striped">
-                            <thead>
-                            <th>N° de compte</th>
-                            <th>Nom</th>
-                            <th>Message</th>
-                            </thead>
-                            {% for prelevement in listSuccess %}
-                                <tr>
-                                    <td>{{ prelevement.account }}</td>
-                                    <td>{{ prelevement.name }}</td>
-                                    <td>{{ prelevement.description }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    {% endif %}
-
-
-
-                {% endif %}
+                </div>
 
 
             </div>
         </div>
     </div>
+
+
+
+
 
 {% endblock %}
 

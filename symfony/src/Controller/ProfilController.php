@@ -253,7 +253,10 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+
+                        //todo: a supprimer
                         if($forcedCotisation){
+
                             $params['start_date'] = (new \DateTime('now'))->format('Y-m-d').'T00:00';
                             if($data['options_prelevement_cotisation_periodicite'] == 1){
                                 $params['end_date'] = (new \DateTime('now'))->modify('last day of this month')->format('Y-m-d').'T00:00';

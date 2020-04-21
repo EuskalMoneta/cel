@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VirementController extends AbstractController
@@ -92,25 +95,92 @@ class VirementController extends AbstractController
     /**
      * @Route("/beneficiaire/ajout", name="app_beneficiaire_ajout")
      */
-    public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox)
+    public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
 
-        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
+        //Create form with acount number
+        $form = $this->createFormBuilder()
+            ->add('numero_compte_debiteur', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new Length(['min' => 9, 'max'=> 9]),
+                    ],
+                    'label' => "Rentrer un numéro de compte (9 chiffres)"
+                ]
+            )
+            ->add('tableur', FileType::class, [
+                'label' => 'Ou importer un tableur (Fichier .xlsx / .xls / .ods )',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new FileConstraint([
+                        'maxSize' => '2024k',
+                    ])
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
 
-        if($response['httpcode'] == 200){
+        if($request->isMethod('POST')){
 
-            if($request->isMethod('POST')){
-                $params = explode('!', $request->get('recherche'));
-                $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => $this->getUser()->getUsername()]);
+            $rows = [];
+            $comptes = [];
+            $listSuccess = '';
+            $listFail = '';
 
-                $this->addFlash('success', 'Bénéficiaire ajouté');
-                return $this->redirectToRoute('app_beneficiaire_gestion');
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                //Si on ne rentre qu'un seul numéro de compte
+                if($form['numero_compte_debiteur']->getData() != null){
+                    //todo: remplacer avec les nouveaux paramètres API
+                    //$comptes = [['numero_compte_debiteur' => $form['numero_compte_debiteur']->getData()]];
+                }
+
+                //Si on charge un fichier csv
+                $file = $form['tableur']->getData();
+
+                if(!empty($file)) {
+                    $rows = $this->spreadsheetToArray($file);
+                    $rows = array_slice($rows, 1);
+                }
+
+                if(count($rows) > 0){
+                    foreach ($rows as $row) {
+                        $comptes[] = ['numero_compte_debiteur' => $row[0]];
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                }
             }
 
-            return $this->render('main/ajoutBeneficiaire.html.twig', ['beneficiaires' => $response['data']->results]);
-        } else {
-            throw new NotFoundHttpException("La liste des bénéficiaires n'a pas pu être retrouvée.");
+
+            /* ANCIENS PARAMS $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => $this->getUser()->getUsername()]);
+            $this->addFlash('success', 'Bénéficiaire ajouté');*/
+
+            //On fait appel à l'API pour les mandats et on sauvegarde le résultat dans des listes
+            foreach ($comptes as $data){
+                //todo: remplacer avec les nouveaux paramètres API
+                /*
+                $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
+                if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
+                    $listSuccess .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
+                } else {
+                    $listFail .= '<li>'.$data['numero_compte_debiteur'].'</li>';
+                }*/
+            }
+
+            //Préparation du feedback pour l'utilisateur
+            if($listSuccess != ''){
+                $this->addFlash('success',$translator->trans('Bénéficiaire ajouté').'<ul>'.$listSuccess.'</ul> ');
+            }
+            if($listFail != '') {
+                $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout de bénéficaire') .'<ul>'. $listFail . '</ul> ');
+            }
         }
+
+        return $this->render('virement/virement_ajout.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**

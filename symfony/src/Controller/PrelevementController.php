@@ -222,7 +222,7 @@ class PrelevementController extends AbstractController
                 ]
             )
             ->add('tableur', FileType::class, [
-                'label' => 'Ou importer un tableur (Fichier XLSX/CSV)',
+                'label' => 'Ou importer un tableur (Fichier XLSX/ODS)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

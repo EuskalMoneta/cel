@@ -31,13 +31,16 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_accept_cgu');
         }
 
-        // check last_subscription_date_end to redirect to costisation
-        if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+        if($membre->array_options->options_prelevement_auto_cotisation_eusko != 1){
             return $this->redirectToRoute('app_profil_cotisation');
         }
+        /* check last_subscription_date_end to redirect to costisation
+        if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
+            return $this->redirectToRoute('app_profil_cotisation');
+        }*/
 
-        //check activation //todo: replace condition
-        if(false){
+        $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
+        if($responsePin['httpcode'] == 200 && $responsePin['data'] != 'ACTIVE') {
             return $this->redirectToRoute('app_profil_pin');
         }
 

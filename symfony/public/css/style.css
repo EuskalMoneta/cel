@@ -126,6 +126,18 @@ h3 {
     background-color: #47525E;
     border-color: #47525E;
 }
+.btn-berdea {
+    padding: 0.5rem 3rem;
+    color: #fff;
+    background-color: rgb(26, 131, 15);
+    border-color: rgb(26, 131, 15);
+}
+.btn-berdea:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: rgb(21, 106, 12);
+    border-color: rgb(26, 131, 15);
+}
 button.btn-primary{
     color: #fff;
     background-color: #41A528;

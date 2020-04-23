@@ -14,7 +14,7 @@
 
                 <div class="mt-md-4">
                     <div style="width: 80%">
-                        <div>ETAPE 1/3</div>
+                        <div>{{ "ETAPE 1/3" | trans }}</div>
                         <h1 class="mb-3">{{ title | trans }}</h1>
                         <p class="text-subtitle">{{ "Ouvrez un compte très facilement en trois étapes." | trans }}</p>
 
@@ -31,7 +31,7 @@
 
                             {{ form_errors(form.valide) }}
                             {{ form_widget(form.valide) }}
-                            <label style="margin-left: 20px;display: inline;top: -19px;position: relative;" for="{{ form.valide.vars.id }}">J'ai lu et je valide les <a href="{{ asset('images/CGU-Particuliers.pdf') }}" target="_blank" class=""> CGU Particuliers</a></label>
+                            <label style="margin-left: 20px;display: inline;top: -19px;position: relative;" for="{{ form.valide.vars.id }}">{{ "J'ai lu et je valide les" | trans }} <a href="{{ asset('images/CGU-Particuliers.pdf') }}" target="_blank" class=""> {{ "CGU Particuliers" | trans }}</a></label>
                         </div>
 
                         {{ form(form) }}

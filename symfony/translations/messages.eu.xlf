@@ -985,6 +985,60 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
         <source>Charger votre compte et dépenser des euskos !</source>
         <target>__Charger votre compte et dépenser des euskos !</target>
       </trans-unit>
+      <trans-unit id="_dPSs9R" resname="Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)">
+        <source>Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)</source>
+        <target>__Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)</target>
+      </trans-unit>
+      <trans-unit id="eU_tngg" resname="ETAPE 3/3">
+        <source>ETAPE 3/3</source>
+        <target>__ETAPE 3/3</target>
+      </trans-unit>
+      <trans-unit id="Yf67PJv" resname="Afin de compléter votre inscription, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;&#10;                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;&#10;                        - Le document ne doit pas être flou &lt;br /&gt;&#10;                        - La pièce d'identité doit contenir votre photo &lt;br /&gt;">
+        <source>Afin de compléter votre inscription, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;
+                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;
+                        - Le document ne doit pas être flou &lt;br /&gt;
+                        - La pièce d'identité doit contenir votre photo &lt;br /&gt;</source>
+        <target><![CDATA[__Afin de compléter votre inscription, la régulation bancaire nous impose de vérifier une pièce d'identité.<br /><br />
+                        Vous pouvez importer un scan ou une photo de votre <b>carte d'identité</b> ou de votre <b>passeport</b> : <br /><br />
+                        - Le document ne doit pas être flou <br />
+                        - La pièce d'identité doit contenir votre photo <br />]]></target>
+      </trans-unit>
+      <trans-unit id="ciioopi" resname="Importer votre pièce d'identité">
+        <source>Importer votre pièce d'identité</source>
+        <target>__Importer votre pièce d'identité</target>
+      </trans-unit>
+      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
+        <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
+        <target>__Au format .jpg .png ou .pdf, maximum 4 Mo</target>
+      </trans-unit>
+      <trans-unit id="K4HAFar" resname="ETAPE 2/3">
+        <source>ETAPE 2/3</source>
+        <target>__ETAPE 2/3</target>
+      </trans-unit>
+      <trans-unit id="sRNfSIz" resname="ETAPE 1/3">
+        <source>ETAPE 1/3</source>
+        <target>__ETAPE 1/3</target>
+      </trans-unit>
+      <trans-unit id="M7WJjGc" resname="Ouvrez un compte très facilement en trois étapes.">
+        <source>Ouvrez un compte très facilement en trois étapes.</source>
+        <target>__Ouvrez un compte très facilement en trois étapes.</target>
+      </trans-unit>
+      <trans-unit id="QeyeLI6" resname="J'ai lu et je valide les">
+        <source>J'ai lu et je valide les</source>
+        <target>__J'ai lu et je valide les</target>
+      </trans-unit>
+      <trans-unit id="gM63Ica" resname="CGU Particuliers">
+        <source>CGU Particuliers</source>
+        <target>__CGU Particuliers</target>
+      </trans-unit>
+      <trans-unit id="CV0vG6U" resname="Charger mon compte">
+        <source>Charger mon compte</source>
+        <target>__Charger mon compte</target>
+      </trans-unit>
+      <trans-unit id="NxG8b.B" resname="Identité">
+        <source>Identité</source>
+        <target>__Identité</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -95,8 +95,8 @@
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 mt-4">
                 <div class="mt-md-4">
-                    <div style="width: 80%">
-                        <div>ETAPE 3/3</div>
+                    <div style="">
+                        <div>{{ "ETAPE 3/3" | trans }}</div>
                         <h1 class="mb-3">{{ title | trans }}</h1>
                         <p class="text-subtitle">{{ "Afin de compléter votre inscription, la régulation bancaire nous impose de vérifier une pièce d'identité.<br /><br />
                         Vous pouvez importer un scan ou une photo de votre <b>carte d'identité</b> ou de votre <b>passeport</b> : <br /><br />
@@ -121,16 +121,16 @@
                             <div class="mt-2">
                                 <form id="myform" action="{{ path('app_vee_api_idcheck') }}" method="post">
                                     <div class="form-group">
-                                        <label for="form_idcard"> Importer votre pièce d'identité</label>
+                                        <label for="form_idcard"> {{ "Importer votre pièce d'identité" | trans }}</label>
                                         <div class="custom-file">
                                             <input type="file" id="form_idcard" name="form[idcard]" aria-describedby="form_idcard_help" class="custom-file-input" lang="{{ app.request.locale }}">
                                             <label for="form_idcard" class="custom-file-label"> </label>
                                         </div>
-                                        <small id="form_idcard_help" class="form-text text-muted">Au format .jpg .png ou .pdf, maximum 4 Mo </small>
+                                        <small id="form_idcard_help" class="form-text text-muted">{{ "Au format .jpg .png ou .pdf, maximum 4 Mo" | trans }}</small>
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="submit" class="btn btn-outline-primary" value="Valider">
+                                        <input type="submit" class="btn btn-outline-primary" value="{{ "Valider" | trans }}">
                                     </div>
                                 </form>
                             </div>

@@ -25,9 +25,9 @@
 
                 {% if infosUser.solde == 0 %}
                     <div class="p-3 mt-4 text-center" style="margin-bottom: 60px">
-                        <h1 class="h3 mb-3">{{ "Bienvenue dans votre compte eusko" | trans }}</h1>
-                        <p class="text-subtitle">{{ "Alimentez votre compte pour commencer à l'utiliser" | trans }}</p>
-                        <a href="{{ path('app_change') }}" class="btn btn-success"> Ajouter de l'argent</a>
+                        <h1 class="h3 mb-3">{{ "Bienvenue dans votre compte eusko !" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Créditer votre compte pour commencer à l'utiliser" | trans }}</p>
+                        <a href="{{ path('app_change') }}" class="btn btn-success"> {{ "Charger mon compte" | trans }}</a>
                     </div>
 
                 {% endif %}

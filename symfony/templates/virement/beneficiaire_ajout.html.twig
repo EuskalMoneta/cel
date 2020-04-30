@@ -8,10 +8,10 @@
 
                 <div class="row">
                     <div class="col-8">
-                        <h2 class="secondary-color mb-4"> {{ "Faire des virements" | trans }} </h2>
+                        <h2 class="secondary-color mb-4"> {{ "Ajouter des bénéficiaires" | trans }} </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <a href="{{ path('app_virement') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
+                        <a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
                     </div>
                 </div>
 
@@ -19,8 +19,28 @@
 
                 {#<h3 class="main-color mt-4">{{ "Un seul mandat" | trans }} </h3>#}
                 <div class="mb-4">
-
                     {{ form_start(form) }}
+
+                    <div class="row">
+                        <div class="col mt-4">
+
+                            <h5>{{ form_label(form.numero_compte_debiteur) }}</h5>
+                            {% if form_errors(form.numero_compte_debiteur) != '' %}
+                                <span class="invalid-feedback d-block"><span class="d-block">
+                                <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.numero_compte_debiteur) }}</span>
+                            </span></span>
+                            {% endif %}
+
+                            {{ form_widget(form.numero_compte_debiteur, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mt-4 mb-4">
+                            <button type="submit" id="form_submit" name="form[submit]" class="btn btn-primary">Valider</button>
+                        </div>
+                    </div>
+
+
                     <div class="row">
                         <div class="col mt-4">
                             <h5>{{ form_label(form.tableur) }}</h5>
@@ -36,7 +56,6 @@
                             </span></span>
                             {% endif %}
                             {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
-
 
                         </div>
                     </div>

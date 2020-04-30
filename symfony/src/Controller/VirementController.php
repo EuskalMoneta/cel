@@ -69,7 +69,77 @@ class VirementController extends AbstractController
 
         }
 
-        return $this->render('main/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
+        return $this->render('virement/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
+    }
+
+    /**
+     * @Route("/virement-multiple", name="app_virement_multiple")
+     */
+    public function virementMultiple(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController)
+    {
+        //Create form with acount number
+        $form = $this->createFormBuilder()
+            ->add('tableur', FileType::class, [
+                'label' => 'Importer un tableur (Fichier .xlsx / .xls / .ods )',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new FileConstraint([
+                        'maxSize' => '2024k',
+                    ])
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
+
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $rows = [];
+                $comptes = [];
+                $listSuccess = '';
+                $listFail = '';
+
+                //Si on charge un tableur, on supprime la première ligne
+                $file = $form['tableur']->getData();
+                if(!empty($file)) {
+                    $rows = $prelevementController->spreadsheetToArray($file);
+                    $rows = array_slice($rows, 1);
+                }
+
+                if(count($rows) > 0){
+                    foreach ($rows as $row) {
+                        $comptes[] = ['numero_compte_debiteur' => $row[0]];
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                }
+
+                //todo: mise en conformité avec API
+                $responseVirement = $APIToolbox->curlRequest('POST', '/virements/', $comptes);
+                if($responseVirement['httpcode'] == 200) {
+                    $resultats = $responseVirement['data'];
+                    foreach($resultats->succes as $succes){
+                        $succes->nom_beneficiaire;
+                    }
+                    foreach($resultats->echec as $echec){
+                        $echec->nom_beneficiaire;
+                    }
+                }
+
+                //Préparation du feedback pour l'utilisateur
+                if($listSuccess != ''){
+                    $this->addFlash('success',$translator->trans('Bénéficiaire ajouté').'<ul>'.$listSuccess.'</ul> ');
+                }
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout de bénéficaire') .'<ul>'. $listFail . '</ul> ');
+                }
+            }
+        }
+
+        return $this->render('virement/virement_ajout.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**
@@ -155,6 +225,22 @@ class VirementController extends AbstractController
             }
 
 
+            /*$responseMandats = $APIToolbox->curlRequest('POST', '/beneficiaires/', $comptes);
+            if($responseMandats['httpcode'] == 200) {
+                $resultats = $responseMandats['data'];
+                foreach($resultats->succes as $succes){
+                    $succes->nom_debiteur;
+                }
+                foreach($resultats->echec as $echec){
+                    $echec->numero_compte_debiteur;
+                }
+
+                //actuellement renvoi une erreur 500 si le mandat existe déjà
+                foreach($resultats->attention as $echec){
+                    $echec->statut;
+                }
+            }*/
+
             /* ANCIENS PARAMS $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => $this->getUser()->getUsername()]);
             $this->addFlash('success', 'Bénéficiaire ajouté');*/
 
@@ -179,7 +265,7 @@ class VirementController extends AbstractController
             }
         }
 
-        return $this->render('virement/virement_ajout.html.twig', ['form' => $form->createView()]);
+        return $this->render('virement/beneficiaire_ajout.html.twig', ['form' => $form->createView()]);
 
     }
 

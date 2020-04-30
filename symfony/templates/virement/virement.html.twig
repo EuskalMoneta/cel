@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
-                <h2 class="secondary-color mb-2"> {{ "Faire un virement" | trans }} </h2>
+                <h2 class="secondary-color mb-2"> {{ "Faire un virement unique" | trans }} </h2>
 
                 <div class="mb-4">
 
@@ -60,14 +60,11 @@
 
                 </div>
 
-                {% if is_granted("ROLE_PARTENAIRE") %}
-                <h2 class="secondary-color mb-2"> {{ "Faire des virements" | trans }} </h2>
 
+                <h2 class="secondary-color mb-2"> {{ "Faire plusieurs virements" | trans }} </h2>
                 <div class="mb-4">
-                    <a href="{{ path('app_prelevement') }}" class="mt-4 btn btn-outline-primary">{{ "Importer un tableur" | trans }}</a>
-
+                    <a href="{{ path('app_virement_multiple') }}" class="mt-4 btn btn-outline-primary">{{ "Importer un tableur" | trans }}</a>
                 </div>
-                {% endif %}
 
 
  

@@ -253,17 +253,34 @@ class PrelevementController extends AbstractController
 
                 if(!empty($file)) {
                     $rows = $this->spreadsheetToArray($file);
+                    //on supprime la première ligne du tableau
+                    $rows = array_slice($rows, 1);
                 }
 
                 if(count($rows) > 0){
                     foreach ($rows as $row) {
-                        $comptes[] = ['numero_compte_debiteur' => $row[1]];
+                        $comptes[] = ['numero_compte_debiteur' => str_replace(' ', '',$row[1])];
                     }
                 } else {
                     $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
                 }
             }
 
+            /*$responseMandats = $APIToolbox->curlRequest('POST', '/mandats/', $comptes);
+            if($responseMandats['httpcode'] == 200) {
+                $resultats = $responseMandats['data'];
+                foreach($resultats->succes as $succes){
+                    $succes->nom_debiteur;
+                }
+                foreach($resultats->echec as $echec){
+                    $echec->numero_compte_debiteur;
+                }
+
+                //actuellement renvoi une erreur 500 si le mandat existe déjà
+                foreach($resultats->attention as $echec){
+                    $echec->statut;
+                }
+            }*/
 
             //On fait appel à l'API pour les mandats et on sauvegarde le résultat dans des listes
             foreach ($comptes as $data){
@@ -280,7 +297,7 @@ class PrelevementController extends AbstractController
                 $this->addFlash('success',$translator->trans('Mandat ajouté').'<ul>'.$listSuccess.'</ul> ');
             }
             if($listFail != '') {
-                $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout du mandat') .'<ul>'. $listFail . '</ul> ');
+                $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout :') .'<ul>'. $listFail . '</ul> ');
             }
 
         }

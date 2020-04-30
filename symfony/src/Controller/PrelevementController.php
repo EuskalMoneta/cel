@@ -248,7 +248,7 @@ class PrelevementController extends AbstractController
                     $comptes = [['numero_compte_debiteur' => $form['numero_compte_debiteur']->getData()]];
                 }
 
-                //Si on charge un fichier csv
+                //Si on charge un fichier tableur
                 $file = $form['tableur']->getData();
 
                 if(!empty($file)) {
@@ -257,7 +257,7 @@ class PrelevementController extends AbstractController
 
                 if(count($rows) > 0){
                     foreach ($rows as $row) {
-                        $comptes[] = ['numero_compte_debiteur' => $row[0]];
+                        $comptes[] = ['numero_compte_debiteur' => $row[1]];
                     }
                 } else {
                     $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));

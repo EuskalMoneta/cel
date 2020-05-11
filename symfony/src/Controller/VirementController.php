@@ -165,7 +165,7 @@ class VirementController extends AbstractController
     /**
      * @Route("/beneficiaire/ajout", name="app_beneficiaire_ajout")
      */
-    public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController)
     {
 
         //Create form with acount number
@@ -203,65 +203,41 @@ class VirementController extends AbstractController
 
                 //Si on ne rentre qu'un seul numéro de compte
                 if($form['numero_compte_debiteur']->getData() != null){
-                    //todo: remplacer avec les nouveaux paramètres API
-                    //$comptes = [['numero_compte_debiteur' => $form['numero_compte_debiteur']->getData()]];
-                }
-
-                //Si on charge un fichier csv
-                $file = $form['tableur']->getData();
-
-                if(!empty($file)) {
-                    $rows = $this->spreadsheetToArray($file);
-                    $rows = array_slice($rows, 1);
-                }
-
-                if(count($rows) > 0){
-                    foreach ($rows as $row) {
-                        $comptes[] = ['numero_compte_debiteur' => $row[0]];
+                    $comptes = [['cyclos_account_number' => $form['numero_compte_debiteur']->getData()]];
+                } else {
+                    $file = $form['tableur']->getData();
+                    if(!empty($file)) {
+                        $rows = $prelevementController->spreadsheetToArray($file);
+                        $rows = array_slice($rows, 1);
                     }
-                } else {
-                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
-                }
-            }
-
-
-            /*$responseMandats = $APIToolbox->curlRequest('POST', '/beneficiaires/', $comptes);
-            if($responseMandats['httpcode'] == 200) {
-                $resultats = $responseMandats['data'];
-                foreach($resultats->succes as $succes){
-                    $succes->nom_debiteur;
-                }
-                foreach($resultats->echec as $echec){
-                    $echec->numero_compte_debiteur;
+                    if(count($rows) > 0){
+                        foreach ($rows as $row) {
+                            $comptes[] = ['cyclos_account_number' => str_replace(' ', '', $row[1])];
+                        }
+                    } else {
+                        $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                    }
                 }
 
-                //actuellement renvoi une erreur 500 si le mandat existe déjà
-                foreach($resultats->attention as $echec){
-                    $echec->statut;
+                foreach ($comptes as $data){
+                    $responseBenef = $APIToolbox->curlRequest('POST', '/beneficiaires/', $data);
+                    if($responseBenef['httpcode'] == 201 || $responseBenef['httpcode'] == 200) {
+                        $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.'</li>';
+                    } else {
+                        $listFail .= '<li>'.$data['cyclos_account_number'].'</li>';
+                    }
                 }
-            }*/
+                //Préparation du feedback pour l'utilisateur
+                if($listSuccess != ''){
+                    $this->addFlash('success',$translator->trans('Bénéficiaire ajouté').'<ul>'.$listSuccess.'</ul> ');
+                }
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout de bénéficaire') .'<ul>'. $listFail . '</ul> ');
+                }
 
-            /* ANCIENS PARAMS $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => $this->getUser()->getUsername()]);
-            $this->addFlash('success', 'Bénéficiaire ajouté');*/
-
-            //On fait appel à l'API pour les mandats et on sauvegarde le résultat dans des listes
-            foreach ($comptes as $data){
-                //todo: remplacer avec les nouveaux paramètres API
-                /*
-                $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
-                if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
-                    $listSuccess .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
-                } else {
-                    $listFail .= '<li>'.$data['numero_compte_debiteur'].'</li>';
-                }*/
-            }
-
-            //Préparation du feedback pour l'utilisateur
-            if($listSuccess != ''){
-                $this->addFlash('success',$translator->trans('Bénéficiaire ajouté').'<ul>'.$listSuccess.'</ul> ');
-            }
-            if($listFail != '') {
-                $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout de bénéficaire') .'<ul>'. $listFail . '</ul> ');
+                if($form['numero_compte_debiteur']->getData() != null and $listSuccess !=''){
+                    return $this->redirectToRoute('app_beneficiaire_ajout');
+                }
             }
         }
 

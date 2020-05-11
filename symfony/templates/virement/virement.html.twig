@@ -30,7 +30,7 @@
                                 <select id="" name="destinataire" class="form-control chosen-select" data-placeholder="{{ "Selectionner dans la liste ..." | trans }}" >
                                     <option value=""></option>
                                     {% for beneficiaire in beneficiaires %}
-                                    <option value="{{ beneficiaire.cyclos_id }}">{{ beneficiaire.cyclos_name }} </option>
+                                    <option value="{{ beneficiaire.cyclos_account_number }}">{{ beneficiaire.cyclos_name }} </option>
                                     {% endfor %}
                                 </select>
                             </div>

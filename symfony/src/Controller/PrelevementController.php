@@ -266,29 +266,16 @@ class PrelevementController extends AbstractController
                 }
             }
 
-            /*$responseMandats = $APIToolbox->curlRequest('POST', '/mandats/', $comptes);
-            if($responseMandats['httpcode'] == 200) {
-                $resultats = $responseMandats['data'];
-                foreach($resultats->succes as $succes){
-                    $succes->nom_debiteur;
-                }
-                foreach($resultats->echec as $echec){
-                    $echec->numero_compte_debiteur;
-                }
-
-                //actuellement renvoi une erreur 500 si le mandat existe déjà
-                foreach($resultats->attention as $echec){
-                    $echec->statut;
-                }
-            }*/
-
-            //On fait appel à l'API pour les mandats et on sauvegarde le résultat dans des listes
             foreach ($comptes as $data){
-                $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/', $data);
-                if($responseMandat['httpcode'] == 201 || $responseMandat['httpcode'] == 200) {
-                    $listSuccess .= '<li>'.$responseMandat['data']->nom_debiteur.'</li>';
+                $responseApi = $APIToolbox->curlRequest('POST', '/mandats/', $data);
+                if($responseApi['httpcode'] == 200) {
+                    $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.' (existe déjà)</li>';
+                } elseif ($responseApi['httpcode'] == 201) {
+                    $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.'</li>';
+                } elseif ($responseApi['httpcode'] == 422) {
+                    $listFail .= '<li> '.$data['numero_compte_debiteur'].' '.$translator->trans("numéro de compte non trouvé").'</li>';
                 } else {
-                    $listFail .= '<li>'.$data['numero_compte_debiteur'].'</li>';
+                    $listFail .= '<li> '.$data['numero_compte_debiteur'].' '.$translator->trans("numéro de compte en erreur").'</li>';
                 }
             }
 
@@ -346,5 +333,6 @@ class PrelevementController extends AbstractController
 
         return $rows;
     }
+
 
 }

@@ -47,16 +47,15 @@ class VirementController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             //prepare payload
             $data = $form->getData();
-            $data['beneficiaire'] = $request->get('destinataire');
+            $data['account'] = $request->get('destinataire');
 
             //check if the guard has been submitted, prevent double submit bug
             if($data['guard_check'] == 'ok'){
                 unset($data['guard_check']);
                 //API CALL
-                $responseVirement = $APIToolbox->curlRequest('POST', '/one-time-transfer/', $data);
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
                 if($responseVirement['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Virement effectué'));
                     return $this->redirectToRoute('app_virement');
@@ -64,11 +63,7 @@ class VirementController extends AbstractController
                     $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
                 }
             }
-
-
-
         }
-
         return $this->render('virement/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
     }
 
@@ -110,30 +105,38 @@ class VirementController extends AbstractController
 
                 if(count($rows) > 0){
                     foreach ($rows as $row) {
-                        $comptes[] = ['numero_compte_debiteur' => $row[0]];
+                        $comptes[] = [
+                            'account' => str_replace(' ', '', $row[1]),
+                            'amount' => $row[2],
+                            'description' =>$row[3],
+                        ];
                     }
                 } else {
                     $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
                 }
 
-                //todo: mise en conformité avec API
-                $responseVirement = $APIToolbox->curlRequest('POST', '/virements/', $comptes);
+
+                dump($comptes);
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', $comptes);
+                dump($responseVirement);
                 if($responseVirement['httpcode'] == 200) {
                     $resultats = $responseVirement['data'];
-                    foreach($resultats->succes as $succes){
-                        $succes->nom_beneficiaire;
+
+                    foreach($resultats as $resultat){
+                        dump($resultat);
+                        $resultat->status;
                     }
-                    foreach($resultats->echec as $echec){
-                        $echec->nom_beneficiaire;
-                    }
+
+                } else {
+                    $this->addFlash('danger', $translator->trans('Erreur dans votre fichier'));
                 }
 
                 //Préparation du feedback pour l'utilisateur
                 if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans('Bénéficiaire ajouté').'<ul>'.$listSuccess.'</ul> ');
+                    $this->addFlash('success',$translator->trans('Virement effectué').'<ul>'.$listSuccess.'</ul> ');
                 }
                 if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout de bénéficaire') .'<ul>'. $listFail . '</ul> ');
+                    $this->addFlash('danger', $translator->trans('Erreur de virement : ') .'<ul>'. $listFail . '</ul> ');
                 }
             }
         }
@@ -221,10 +224,14 @@ class VirementController extends AbstractController
 
                 foreach ($comptes as $data){
                     $responseBenef = $APIToolbox->curlRequest('POST', '/beneficiaires/', $data);
-                    if($responseBenef['httpcode'] == 201 || $responseBenef['httpcode'] == 200) {
+                    if($responseBenef['httpcode'] == 200) {
+                        $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.' (existe déjà)</li>';
+                    } elseif ($responseBenef['httpcode'] == 201) {
                         $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.'</li>';
+                    } elseif ($responseBenef['httpcode'] == 422) {
+                        $listFail .= '<li> '.$data['cyclos_account_number'].' '.$translator->trans("numéro de compte non trouvé").'</li>';
                     } else {
-                        $listFail .= '<li>'.$data['cyclos_account_number'].'</li>';
+                        $listFail .= '<li> '.$data['cyclos_account_number'].' '.$translator->trans("numéro de compte en erreur").'</li>';
                     }
                 }
                 //Préparation du feedback pour l'utilisateur

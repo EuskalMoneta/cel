@@ -28,10 +28,11 @@
 
                         {%  if (listFail is empty) and (listSuccess is empty) %}
                             {% if app.request.locale == 'fr' %}
-                                <p>Vous trouverez un <a href="{{ asset('images/prelevement-fr.xlsx') }}" style="text-decoration: underline;">modèle pour Excel ici</a> et un <a href="{{ asset('images/prelevement-fr.ods') }}" style="text-decoration: underline;">modèle pour open office ici</a> </p>
+                                <p>Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-fr.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-fr.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a> </p>
                             {% else %}
-                                <p>A traduire en euskara : vous trouverez un <a href="{{ asset('images/prelevement-eu.xlsx') }}" style="text-decoration: underline;">modèle pour Excel ici</a> et un <a href="{{ asset('images/prelevement-eu.ods') }}" style="text-decoration: underline;">modèle pour open office ici</a> </p>
+                                <p>A traduire dans le code : Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-eu.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-eu.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a> </p>
                             {% endif %}
+                            
                             <div class="mb-4">
                                 {{ form_start(form) }}
                                 <div class="row">

@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,7 +37,6 @@ class VacancesEuskoController extends AbstractController
             ->add('nom', TextType::class, ['label' => 'Nom', 'required' => true, 'constraints' => [ new NotBlank(),]])
             ->add('prenom', TextType::class, ['label' => 'Prénom', 'required' => true, 'constraints' => [ new NotBlank(),]])
             ->add('email', EmailType::class, ['label' => 'Email', 'required' => true, 'constraints' => [ new NotBlank() ] ])
-            ->add('password', PasswordType::class, ['label' => 'Mot de passe', 'required' => true, 'constraints' => [ new NotBlank() ] ])
             ->add('valide', CheckboxType::class, ['label' => " ", 'required' => true])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
@@ -58,7 +58,7 @@ class VacancesEuskoController extends AbstractController
             return $this->redirectToRoute('app_vee_etape2_coordonnees');
 
         }
-        return $this->render('vacancesEusko/etape1_identite.html.twig', ['title' => $translator->trans("Identité"), 'form' => $form->createView()]);
+        return $this->render('vacancesEusko/etape_identite.html.twig', ['title' => $translator->trans("Identité"), 'form' => $form->createView()]);
     }
 
     /**
@@ -108,7 +108,6 @@ class VacancesEuskoController extends AbstractController
      */
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
     {
-        return $this->render('vacancesEusko/etape3_erreur.html.twig');
         if($session->get('compteur') < 4){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [
@@ -132,6 +131,77 @@ class VacancesEuskoController extends AbstractController
             return $this->render('vacancesEusko/etape3_justificatif.html.twig', ['title' => "Justificatif", 'form' => $form->createView()]);
         }
         return $this->render('vacancesEusko/etape3_erreur.html.twig');
+    }
+
+    /**
+     * @Route("/vacances-en-eusko/securite", name="app_vee_etape4_securite")
+     */
+    public function etape4Securite(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator, SessionInterface $session)
+    {
+        $questions = ['' => '','autre' => 'autre'];
+        $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
+
+        if($response['httpcode'] == 200){
+
+            foreach ($response['data'] as $question){
+                $questions[$question->question]=$question->question;
+            }
+
+            $form = $this->createFormBuilder()
+                ->add('motDePasse', RepeatedType::class, [
+                    'first_options'  => ['label' => $translator->trans('Nouveau mot de passe')],
+                    'second_options' => ['label' => $translator->trans('Confirmer le nouveau mot de passe')],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 4, 'max'=> 12]),
+                    ],
+                    'type' => PasswordType::class,
+                    'options' => ['attr' => ['class' => 'password-field']],
+                    'required' => true,
+                ])
+                ->add('questionSecrete', ChoiceType::class, [
+                    'label' => $translator->trans('Votre question secrète'),
+                    'required' => true,
+                    'choices' => $questions
+                ])
+                ->add('questionPerso', TextType::class, ['label' => $translator->trans('Votre question personnalisée'), 'required' => false])
+                ->add('reponse', TextType::class, [
+                    'label' => $translator->trans('Réponse'),
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank()
+                    ]
+                ])
+                ->add('submit', SubmitType::class, ['label' => 'Valider'])
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $parameters = [
+                    'token' => $request->query->get('token'),
+                    'new_password' => $data['motDePasse'],
+                    'confirm_password' => $data['motDePasse'],
+                    'answer' => $data['reponse'],
+                ];
+
+                if($data['questionSecrete'] == 'autre'){
+                    $parameters['question'] = $data['questionPerso'];
+                } else {
+                    $parameters['question'] = $data['questionSecrete'];
+                }
+                $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
+
+                if($response['httpcode'] == 200 && $response['data']->status == 'success'){
+                    $this->addFlash('success', 'Compte validé, vous pouvez vous connecter avec vos identifiants.');
+                    return $this->redirectToRoute('app_login');
+                } else {
+                    $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+                }
+            }
+        }
+        return $this->render('vacancesEusko/etape4_securite.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**

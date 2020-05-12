@@ -113,7 +113,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/valide-premiere-connexion", name="app_valide_first_login")
      */
-    public function validateFirstLogin(Request $request, APIToolbox $APIToolbox): Response
+    public function validateFirstLogin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): Response
     {
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -126,8 +126,8 @@ class SecurityController extends AbstractController
 
             $form = $this->createFormBuilder()
                 ->add('motDePasse', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Nouveau mot de passe'],
-                    'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                    'first_options'  => ['label' => $translator->trans('Nouveau mot de passe')],
+                    'second_options' => ['label' => $translator->trans('Confirmer le nouveau mot de passe')],
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max'=> 12]),
@@ -137,15 +137,14 @@ class SecurityController extends AbstractController
                     'required' => true,
                 ])
                 ->add('questionSecrete', ChoiceType::class, [
-                    'label' => 'Votre question secrète',
+                    'label' => $translator->trans('Votre question secrète'),
                     'required' => true,
                     'choices' => $questions
                 ])
-                ->add('questionPerso', TextType::class, ['label' => 'Votre question personnalisée', 'required' => false])
+                ->add('questionPerso', TextType::class, ['label' => $translator->trans('Votre question personnalisée'), 'required' => false])
                 ->add('reponse', TextType::class, [
-                    'label' => 'Reponse',
+                    'label' => $translator->trans('Réponse'),
                     'required' => true,
-                    'help' => "Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko",
                     'constraints' => [
                         new NotBlank()
                     ]

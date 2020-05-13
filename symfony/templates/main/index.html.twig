@@ -22,20 +22,47 @@
                 <h2 class="secondary-color mb-0"> {{ "Mon solde" | trans }}</h2>
                 <div class="main-color big-solde"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
 
-                <div class="eusko-cart p-3 mt-4">
-                    <div class="row">
-                        <div class="col-6 ml-0 text-semi-bold">{{ infosUser.nom }} <br/>
-                            {{ "Compte n°" | trans }} <br /> {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %}
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="eusko-cart p-3 mt-4">
+                            <div class="row">
+                                <div class="col-6 ml-0 text-semi-bold">{{ infosUser.nom }} <br/>
+                                    {{ "Compte n°" | trans }} <br /> {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %}
+                                </div>
+                                <div class="col-6 text-right">
+                                    <a class="btn btn-outline-primary eusko-btn" href="{{ path('app_export_rie') }}"> <i class="far fa-download mr-1"></i>RIB eusko</a>
+                                    {% if is_granted('ROLE_PARTENAIRE') and not is_granted('ROLE_REGIE') %}
+                                        <a class="btn btn-outline-primary eusko-btn mt-2" href="{{ path('app_reconvertir') }}"> {{ "Reconvertir des eusko en €" | trans }} </a>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6 text-right">
-                            <a class="btn btn-outline-primary eusko-btn" href="{{ path('app_export_rie') }}"> <i class="far fa-download mr-1"></i>RIB eusko</a>
-                            {% if is_granted('ROLE_PARTENAIRE') and not is_granted('ROLE_REGIE') %}
-                            <a class="btn btn-outline-primary eusko-btn mt-2" href="{{ path('app_reconvertir') }}"> {{ "Reconvertir des eusko en €" | trans }} </a>
-                            {% endif %}
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+
+                        <div class="main-carousel mb-4">
+
+                            <div class="carousel-cell">
+                                <img src="{{ asset('images/bonplanexemple.png') }}" width="100%" />
+                                {#<a href="#" class="btn btn-success" style="position: absolute; right: 5%; bottom: 15%;">En savoir plus</a>#}
+                            </div>
+
+                            <div class="carousel-cell p-1 pt-4">
+                                <div class="hero-carousel__cell__content">
+                                    <h3>Bon plans</h3>
+                                    <p class="tagline">Supprimer les bon plans sur cette page ?</p>
+                                    <div class="text-right mt-2">
+                                        <a href="#" class="btn btn-outline-primary">non</a>
+                                        <a href="#" class="btn btn-success">oui</a>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-
 
                 {% if is_granted('ROLE_CLIENT') %}
                     <div class="row mt-4 mb-4 threeper p-4">
@@ -78,3 +105,15 @@
         </div>
     </div>
 {% endblock %}
+
+    {% block js %}
+        <script type="text/javascript">
+            $('.main-carousel').flickity({
+                // options
+                cellAlign: 'left',
+                contain: true,
+                prevNextButtons: false
+            });
+        </script>
+
+    {% endblock %}

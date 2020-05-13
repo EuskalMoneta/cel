@@ -85,8 +85,10 @@ h3 {
     width: auto;
     max-width: 380px;
     /*height: 150px;*/
-    border: 1px solid #969FAA;
-    border-radius: 15px;
+    /*border: 1px solid #969FAA;*/
+    border-radius: 9px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+
 }
 .btn{
     letter-spacing: normal;

@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
-                <h2 class="secondary-color mb-2"> {{ "Faire un virement" | trans }} </h2>
+                <h2 class="secondary-color mb-2"> {{ "Faire un virement unique" | trans }} </h2>
 
                 <div class="mb-4">
 
@@ -30,7 +30,7 @@
                                 <select id="" name="destinataire" class="form-control chosen-select" data-placeholder="{{ "Selectionner dans la liste ..." | trans }}" >
                                     <option value=""></option>
                                     {% for beneficiaire in beneficiaires %}
-                                    <option value="{{ beneficiaire.cyclos_id }}">{{ beneficiaire.cyclos_name }} </option>
+                                    <option value="{{ beneficiaire.cyclos_account_number }}">{{ beneficiaire.cyclos_name }} </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -58,6 +58,12 @@
                         </div>
                     </div>
 
+                </div>
+
+
+                <h2 class="secondary-color mb-2"> {{ "Faire plusieurs virements" | trans }} </h2>
+                <div class="mb-4">
+                    <a href="{{ path('app_virement_multiple') }}" class="mt-4 btn btn-outline-primary">{{ "Importer un tableur" | trans }}</a>
                 </div>
 
 

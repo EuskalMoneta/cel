@@ -105,30 +105,35 @@ class VirementController extends AbstractController
 
                 if(count($rows) > 0){
                     foreach ($rows as $row) {
-                        $comptes[] = [
-                            'account' => str_replace(' ', '', $row[1]),
-                            'amount' => $row[2],
-                            'description' =>$row[3],
-                        ];
+                        if((float)$row[2] > 0) {
+                            $comptes[] = [
+                                'account' => str_replace(' ', '', $row[1]),
+                                'amount' => (float)$row[2],
+                                'description' => $row[3],
+                            ];
+                        } elseif($row[1] != ''){
+                            $listFail .= '<li>'.$row[1].' : Montant incorrect </li>';
+                        }
                     }
                 } else {
                     $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
                 }
 
-
-                dump($comptes);
                 $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', $comptes);
-                dump($responseVirement);
+
                 if($responseVirement['httpcode'] == 200) {
                     $resultats = $responseVirement['data'];
 
                     foreach($resultats as $resultat){
-                        dump($resultat);
-                        $resultat->status;
+                        if($resultat->status == 1){
+                            $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->description.'</li>';
+                        } else {
+                            $listFail .= '<li>'.$resultat->account.' : '.$resultat->description.'</li>';
+                        }
                     }
 
                 } else {
-                    $this->addFlash('danger', $translator->trans('Erreur dans votre fichier'));
+                    $this->addFlash('danger', $translator->trans('Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies'));
                 }
 
                 //Préparation du feedback pour l'utilisateur

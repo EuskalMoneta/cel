@@ -35,9 +35,8 @@ class PrelevementController extends AbstractController
     {
         //init vars
         $comptes = [];
-        $listSuccess = [];
-        $listFail = [];
-        $rows = [];
+        $listSuccess = '';
+        $listFail = '';
 
         //Create form with acount number
         $form = $this->createFormBuilder()
@@ -68,16 +67,16 @@ class PrelevementController extends AbstractController
                     $rows = array_slice($rows, 1);
                 }
 
-
-
                 if(count($rows) > 0){
                     foreach ($rows as $row) {
-                        if($row[1] != null or $row[2] != null or $row[3] != null){
+                        if((float)$row[2] > 0) {
                             $comptes[] = [
-                                'account' => $row[1],
-                                'amount' => $row[2],
-                                'description' => $row[3]
+                                'account' => str_replace(' ', '', $row[1]),
+                                'amount' => (float)$row[2],
+                                'description' => $row[3],
                             ];
+                        } elseif($row[1] != ''){
+                            $listFail .= '<li>'.$row[1].' : Montant incorrect </li>';
                         }
                     }
                 } else {
@@ -86,16 +85,24 @@ class PrelevementController extends AbstractController
 
                 $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
                 if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
-                    $data = $responsePrelevements['data'];
-                    foreach ($data as $prelevement){
-                        if($prelevement->status){
-                            $listSuccess[] = $prelevement;
+                    $resultats = $responsePrelevements['data'];
+
+                    foreach($resultats as $resultat){
+                        if($resultat->status == 1){
+                            $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->description.'</li>';
                         } else {
-                            $listFail[] = $prelevement;
+                            $listFail .= '<li>'.$resultat->account.' : '.$resultat->description.'</li>';
                         }
                     }
                 } else {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de la demande.'));
+                    $this->addFlash('danger', $translator->trans('Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies'));
+                }
+
+                if($listSuccess != ''){
+                    $this->addFlash('success',$translator->trans('Virement effectué').'<ul>'.$listSuccess.'</ul> ');
+                }
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans('Erreur de virement : ') .'<ul>'. $listFail . '</ul> ');
                 }
             }
         }

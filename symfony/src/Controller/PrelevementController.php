@@ -229,7 +229,7 @@ class PrelevementController extends AbstractController
                 ]
             )
             ->add('tableur', FileType::class, [
-                'label' => 'Ou importer un tableur (Fichier XLSX/ODS)',
+                'label' => 'Ou importer un tableur (Fichier .xlsx / .xls / .ods )',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -253,23 +253,24 @@ class PrelevementController extends AbstractController
                 //Si on ne rentre qu'un seul numéro de compte
                 if($form['numero_compte_debiteur']->getData() != null){
                     $comptes = [['numero_compte_debiteur' => $form['numero_compte_debiteur']->getData()]];
-                }
-
-                //Si on charge un fichier tableur
-                $file = $form['tableur']->getData();
-
-                if(!empty($file)) {
-                    $rows = $this->spreadsheetToArray($file);
-                    //on supprime la première ligne du tableau
-                    $rows = array_slice($rows, 1);
-                }
-
-                if(count($rows) > 0){
-                    foreach ($rows as $row) {
-                        $comptes[] = ['numero_compte_debiteur' => str_replace(' ', '',$row[1])];
-                    }
                 } else {
-                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+
+                    //Si on charge un fichier tableur
+                    $file = $form['tableur']->getData();
+
+                    if(!empty($file)) {
+                        $rows = $this->spreadsheetToArray($file);
+                        //on supprime la première ligne du tableau
+                        $rows = array_slice($rows, 1);
+                    }
+
+                    if(count($rows) > 0){
+                        foreach ($rows as $row) {
+                            $comptes[] = ['numero_compte_debiteur' => str_replace(' ', '',$row[1])];
+                        }
+                    } else {
+                        $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                    }
                 }
             }
 

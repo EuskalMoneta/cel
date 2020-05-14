@@ -253,5 +253,13 @@ class VacancesEuskoController extends AbstractController
 
     }
 
+    /**
+     * @Route("/bons-plans", name="app_bons_plans")
+     */
+    public function bonsplans(APIToolbox $APIToolbox, Request $request)
+    {
+        return $this->render('vacancesEusko/bonsPlans.html.twig');
+    }
+
 
 }

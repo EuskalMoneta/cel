@@ -116,15 +116,20 @@
             </div>
             {% if is_granted("ROLE_CLIENT") %}
             <div class="col-3">
-                <a href="{{ path('app_prelevement_autorisation') }}">
+                {#<a href="{{ path('app_prelevement_autorisation') }}">
                     <i class="fal fa-list"></i>
                     <br /> {{"Prélèvements" | trans }}
+                </a>#}
+                <a href="{{ path('app_bons_plans') }}">
+                    <i class="fal fa-shopping-bag"></i>
+                    <br /> {{"Bons plans" | trans }}
                 </a>
+
             </div>
             {% elseif is_granted("ROLE_PARTENAIRE") %}
                 <div class="col-3">
                     <a href="{{ path('app_prelevement') }}">
-                        <i class="fal fa-list"></i>
+                        <i class="far fa-list"></i>
                         <br /> {{"Prélèvements" | trans }}
                     </a>
                 </div>

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <h1 class="secondary-color mb-0"> {{ "Bon plans" | trans }}</h1>
+
+                <div class="row">
+                    {% for i in 1..15 %}
+                    <div class="col-md-6 col-sm-12">
+                        <div class="main-carousel pt-3 mb-4">
+                            <img src="{{ asset('images/bonplanexemple.png') }}" width="100%" />
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

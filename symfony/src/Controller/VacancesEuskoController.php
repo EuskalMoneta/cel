@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -256,9 +257,17 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/bons-plans", name="app_bons_plans")
      */
-    public function bonsplans(APIToolbox $APIToolbox, Request $request)
+    public function bonsplans(EntityManagerInterface $em)
     {
         return $this->render('vacancesEusko/bonsPlans.html.twig');
+    }
+
+    /**
+     * @Route("/bons-plans/12", name="app_bons_plans_show")
+     */
+    public function showOneBonPlan(EntityManagerInterface $em)
+    {
+        return $this->render('vacancesEusko/voirUnBonPlan.html.twig');
     }
 
 

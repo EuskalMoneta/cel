@@ -41,7 +41,7 @@ class PrelevementController extends AbstractController
         //Create form with acount number
         $form = $this->createFormBuilder()
             ->add('tableur', FileType::class, [
-                'label' => $translator->trans('Importer un tableur (Fichier CSV)'),
+                'label' => $translator->trans('Importer un tableur (Fichier .xlsx / .xls / .ods )'),
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -91,7 +91,12 @@ class PrelevementController extends AbstractController
                         if($resultat->status == 1){
                             $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
                         } else {
-                            $listFail .= '<li>'.$resultat->account.' : '.$resultat->message.'</li>';
+                            if($resultat->name != ''){
+                                $listFail .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
+                            } else {
+                                $listFail .= '<li>'.$resultat->account.' : '.$resultat->message.'</li>';
+                            }
+
                         }
                     }
                 } else {
@@ -99,10 +104,10 @@ class PrelevementController extends AbstractController
                 }
 
                 if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans('Virement effectué').'<ul>'.$listSuccess.'</ul> ');
+                    $this->addFlash('success',$translator->trans('Prélèvement effectué').'<ul>'.$listSuccess.'</ul> ');
                 }
                 if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans('Erreur de virement : ') .'<ul>'. $listFail . '</ul> ');
+                    $this->addFlash('danger', $translator->trans('Erreur de prélèvement : ') .'<ul>'. $listFail . '</ul> ');
                 }
             }
         }

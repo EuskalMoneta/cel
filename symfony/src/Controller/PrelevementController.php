@@ -277,30 +277,35 @@ class PrelevementController extends AbstractController
                         $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
                     }
                 }
-            }
 
-            foreach ($comptes as $data){
-                $responseApi = $APIToolbox->curlRequest('POST', '/mandats/', $data);
-                if($responseApi['httpcode'] == 200) {
-                    $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.' (existe déjà)</li>';
-                } elseif ($responseApi['httpcode'] == 201) {
-                    $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.'</li>';
-                } elseif ($responseApi['httpcode'] == 422) {
-                    $listFail .= '<li> '.$data['numero_compte_debiteur'].' '.$translator->trans("numéro de compte non trouvé").'</li>';
-                } else {
-                    $listFail .= '<li> '.$data['numero_compte_debiteur'].' '.$translator->trans("numéro de compte en erreur").'</li>';
+
+                foreach ($comptes as $data){
+                    $responseApi = $APIToolbox->curlRequest('POST', '/mandats/', $data);
+                    if($responseApi['httpcode'] == 200) {
+                        $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.' (existe déjà)</li>';
+                    } elseif ($responseApi['httpcode'] == 201) {
+                        $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.'</li>';
+                    } elseif ($responseApi['httpcode'] == 422) {
+                        $listFail .= '<li> '.$data['numero_compte_debiteur'].' '.$translator->trans("numéro de compte non trouvé").'</li>';
+                    } else {
+                        $listFail .= '<li> '.$data['numero_compte_debiteur'].' '.$translator->trans("numéro de compte en erreur").'</li>';
+                    }
+                }
+
+                //Préparation du feedback pour l'utilisateur
+                if($listSuccess != ''){
+                    $this->addFlash('success',$translator->trans('Mandat ajouté').'<ul>'.$listSuccess.'</ul> ');
+                }
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout :') .'<ul>'. $listFail . '</ul> ');
+                }
+
+                if($form['numero_compte_debiteur']->getData() != null and $listSuccess !=''){
+                    return $this->redirectToRoute('app_prelevement_mandats_ajout');
                 }
             }
-
-            //Préparation du feedback pour l'utilisateur
-            if($listSuccess != ''){
-                $this->addFlash('success',$translator->trans('Mandat ajouté').'<ul>'.$listSuccess.'</ul> ');
-            }
-            if($listFail != '') {
-                $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout :') .'<ul>'. $listFail . '</ul> ');
-            }
-
         }
+
         return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form->createView()]);
     }
 

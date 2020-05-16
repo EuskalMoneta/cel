@@ -9,6 +9,11 @@ ENV APP_VERSION="${APP_VERSION}"
 
 COPY symfony/ /app
 
+RUN apt-get update && \
+    apt-get install -y libpng-dev && \
+    docker-php-ext-configure gd && \
+    docker-php-ext-install gd
+
 RUN mkdir -p var && \
     echo "APP_ENV=prod" > .env.local && \
     echo "DATABASE_URL=sqlite:///%kernel.project_dir%/var/db.sqlite" >> .env.local && \

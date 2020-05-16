@@ -25,9 +25,9 @@
                         <div class="col mt-4">
                             <h5>{{ form_label(form.tableur) }}</h5>
                             {% if app.request.locale == 'fr' %}
-                                <p>Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-fr.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-fr.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a> </p>
+                                <p>Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-fr.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-fr.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a></p>
                             {% else %}
-                                <p>A traduire dans le code : Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-eu.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-eu.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a> </p>
+                                <p><a href="{{ asset('images/tableur-eu.xlsx') }}" style="text-decoration: underline;">Excel</a> edo <a href="{{ asset('images/tableur-eu.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a>-eko fitxategi adibide bat kargatu</p>
                             {% endif %}
 
                             {% if form_errors(form.tableur) != '' %}

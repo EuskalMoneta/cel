@@ -16,9 +16,9 @@
                                     <h3 class="mb-0">{{ form_label(form.tableur) }}</h3>
 
                                     {% if app.request.locale == 'fr' %}
-                                        <p>Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-fr.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-fr.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a> </p>
+                                        <p>Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-fr.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-fr.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a></p>
                                     {% else %}
-                                        <p>A traduire dans le code : Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-eu.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-eu.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a> </p>
+                                        <p><a href="{{ asset('images/tableur-eu.xlsx') }}" style="text-decoration: underline;">Excel</a> edo <a href="{{ asset('images/tableur-eu.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a>-eko fitxategi adibide bat kargatu</p>
                                     {% endif %}
                                     {% if form_errors(form.tableur) != '' %}
                                         <span class="invalid-feedback d-block"><span class="d-block">
@@ -50,7 +50,7 @@
                         <div class="col">
                             <div class="ml-4 mr-2 mb-4">
                                 <div class="mt-4">
-                                    <a href="{{ path('app_prelevement_autorisation') }}" class="btn btn-outline-primary">{{ "Gerer les autorisations de prélèvement sur mon compte" | trans }}</a>
+                                    <a href="{{ path('app_prelevement_autorisation') }}" class="btn btn-outline-primary">{{ "Gérer les autorisations de prélèvement sur mon compte" | trans }}</a>
                                 </div>
                             </div>
                         </div>

@@ -9,49 +9,9 @@
         <source>Se connecter</source>
         <target>Se connecter</target>
       </trans-unit>
-      <trans-unit id="7zR0Pox" resname="N° Adhérent">
-        <source>N° Adhérent</source>
-        <target>N° Adhérent</target>
-      </trans-unit>
       <trans-unit id=".5yLjAZ" resname="Mot de passe">
         <source>Mot de passe</source>
         <target>Mot de passe</target>
-      </trans-unit>
-      <trans-unit id="dgTlt.e" resname="Rechercher une opération">
-        <source>Rechercher une opération</source>
-        <target>Rechercher une opération</target>
-      </trans-unit>
-      <trans-unit id="dRSyQ47" resname="Periode">
-        <source>Periode</source>
-        <target>Période</target>
-      </trans-unit>
-      <trans-unit id="kigKoXg" resname="Le mois dernier">
-        <source>Le mois dernier</source>
-        <target>Le mois dernier</target>
-      </trans-unit>
-      <trans-unit id="XIKWKPm" resname="Date debut">
-        <source>Date debut</source>
-        <target>Date début</target>
-      </trans-unit>
-      <trans-unit id="I4Kmk6." resname="Date fin">
-        <source>Date fin</source>
-        <target>Date fin</target>
-      </trans-unit>
-      <trans-unit id="34MNj3q" resname="Motscles">
-        <source>Motscles</source>
-        <target>Mots cles</target>
-      </trans-unit>
-      <trans-unit id="cz0cdCZ" resname="Rechercher">
-        <source>Rechercher</source>
-        <target>Rechercher</target>
-      </trans-unit>
-      <trans-unit id="lHzAfis" resname="Montant">
-        <source>Montant</source>
-        <target>Montant</target>
-      </trans-unit>
-      <trans-unit id="fhBKLKW" resname="libellé de l'opération">
-        <source>libellé de l'opération</source>
-        <target>libellé de l'opération </target>
       </trans-unit>
       <trans-unit id="YmunqJ." resname="Valider">
         <source>Valider</source>
@@ -61,17 +21,9 @@
         <source>Destinataire</source>
         <target>Destinataire</target>
       </trans-unit>
-      <trans-unit id="KQ4_65w" resname="Nouveau virement">
-        <source>Nouveau virement</source>
-        <target>Nouveau virement</target>
-      </trans-unit>
       <trans-unit id="Zd6PsmH" resname="Gestion des bénéficiaires">
         <source>Gestion des bénéficiaires</source>
         <target>Gestion des bénéficiaires</target>
-      </trans-unit>
-      <trans-unit id="NfB_iiZ" resname="Ajout">
-        <source>Ajout</source>
-        <target>Ajout</target>
       </trans-unit>
       <trans-unit id="ZEYcavF" resname="Ajout bénéficiaire">
         <source>Ajout bénéficiaire</source>
@@ -109,30 +61,6 @@
         <source>Votre question secrète</source>
         <target>Votre question secrète</target>
       </trans-unit>
-      <trans-unit id="XFVRV7B" resname="Ancien mot de passe">
-        <source>Ancien mot de passe</source>
-        <target>Ancien mot de passe</target>
-      </trans-unit>
-      <trans-unit id="o9ZcpWl" resname="Nouveau mot de passe">
-        <source>Nouveau mot de passe</source>
-        <target>Nouveau mot de passe</target>
-      </trans-unit>
-      <trans-unit id="iD6_.__" resname="Confirmer le nouveau mot de passe">
-        <source>Confirmer le nouveau mot de passe</source>
-        <target>Confirmer le nouveau mot de passe</target>
-      </trans-unit>
-      <trans-unit id="oKgULux" resname="Votre question personnalisée">
-        <source>Votre question personnalisée</source>
-        <target>Votre question personnalisée</target>
-      </trans-unit>
-      <trans-unit id="mAcwM1b" resname="Reponse">
-        <source>Reponse</source>
-        <target>Réponse</target>
-      </trans-unit>
-      <trans-unit id="6ZbykUm" resname="autre">
-        <source>autre</source>
-        <target>autre</target>
-      </trans-unit>
       <trans-unit id="YGJCCXP" resname="Question secrète">
         <source>Question secrète</source>
         <target>Question secrète</target>
@@ -144,10 +72,6 @@
       <trans-unit id="NFl6O4g" resname="Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.">
         <source>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</source>
         <target>Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité.</target>
-      </trans-unit>
-      <trans-unit id="RULWH19" resname="Mot de passe oublié">
-        <source>Mot de passe oublié</source>
-        <target>Mot de passe oublié</target>
       </trans-unit>
       <trans-unit id="4mfTQ4I" resname="Profil">
         <source>Profil</source>
@@ -181,29 +105,13 @@
         <source>Les modifications ont bien été prises en compte</source>
         <target>Les modifications ont bien été prises en compte</target>
       </trans-unit>
-      <trans-unit id=".HQYHs6" resname="ou">
-        <source>ou</source>
-        <target>ou</target>
-      </trans-unit>
-      <trans-unit id="lpzL089" resname="Email">
-        <source>Email</source>
-        <target>Email</target>
-      </trans-unit>
       <trans-unit id="IhQHL54" resname="Compte n°">
         <source>Compte n°</source>
         <target>Compte n°</target>
       </trans-unit>
-      <trans-unit id="4gqGWh." resname="Sécurité">
-        <source>Sécurité</source>
-        <target>Sécurité</target>
-      </trans-unit>
       <trans-unit id="QuN2BLY" resname="Modifier">
         <source>Modifier</source>
         <target>Modifier</target>
-      </trans-unit>
-      <trans-unit id="su_.4Gv" resname="Changer mon code PIN">
-        <source>Changer mon code PIN</source>
-        <target>Code PIN</target>
       </trans-unit>
       <trans-unit id="IUbRpkc" resname="Coordonnées">
         <source>Coordonnées</source>
@@ -237,22 +145,6 @@
         <source>mois</source>
         <target>mois</target>
       </trans-unit>
-      <trans-unit id="xwYQJiS" resname="modifier">
-        <source>modifier</source>
-        <target>modifier</target>
-      </trans-unit>
-      <trans-unit id="TUALl6J" resname="Change manuel">
-        <source>Change manuel</source>
-        <target>Change manuel</target>
-      </trans-unit>
-      <trans-unit id="VvJNEhb" resname="Ce mois ci">
-        <source>Ce mois ci</source>
-        <target>Ce mois ci</target>
-      </trans-unit>
-      <trans-unit id="GeCE9FZ" resname="Les 7 derniers jours">
-        <source>Les 7 derniers jours</source>
-        <target>Les 7 derniers jours</target>
-      </trans-unit>
       <trans-unit id="PvV1cs_" resname="Choix du code pin">
         <source>Choix du code pin</source>
         <target>Choix du code pin</target>
@@ -261,26 +153,6 @@
         <source>Aucun résultat pour les dates sélectionnées.</source>
         <target>Aucun résultat pour les dates sélectionnées.</target>
       </trans-unit>
-      <trans-unit id="SUyXryy" resname="Code précédent">
-        <source>Code précédent</source>
-        <target>Code précédent</target>
-      </trans-unit>
-      <trans-unit id="9ytImW7" resname="Nouveau code pin (4 chiffres)">
-        <source>Nouveau code pin (4 chiffres)</source>
-        <target>Nouveau code pin (4 chiffres)</target>
-      </trans-unit>
-      <trans-unit id="ub1oCM1" resname="Confirmer le nouveau code pin">
-        <source>Confirmer le nouveau code pin</source>
-        <target>Confirmer le nouveau code pin</target>
-      </trans-unit>
-      <trans-unit id="iOWrLAs" resname="Code pin (4 chiffres)">
-        <source>Code pin (4 chiffres)</source>
-        <target>Code pin (4 chiffres)</target>
-      </trans-unit>
-      <trans-unit id="o45LraB" resname="Confirmer le code">
-        <source>Confirmer le code</source>
-        <target>Confirmer le code</target>
-      </trans-unit>
       <trans-unit id="UNs9HuJ" resname="À jour">
         <source>À jour</source>
         <target>À jour</target>
@@ -288,74 +160,6 @@
       <trans-unit id="eyGxk9O" resname="Autres paramètres">
         <source>Autres paramètres</source>
         <target>Autres paramètres</target>
-      </trans-unit>
-      <trans-unit id="Murrb4B" resname="Birth">
-        <source>Birth</source>
-        <target>Date de naissance</target>
-      </trans-unit>
-      <trans-unit id="Vu_PIJV" resname="Address">
-        <source>Address</source>
-        <target>Addresse</target>
-      </trans-unit>
-      <trans-unit id="e8iOu20" resname="Zip">
-        <source>Zip</source>
-        <target>Code postal</target>
-      </trans-unit>
-      <trans-unit id="OQ8lE0u" resname="Town">
-        <source>Town</source>
-        <target>Ville</target>
-      </trans-unit>
-      <trans-unit id="PXV_XpD" resname="Country id">
-        <source>Country id</source>
-        <target>Pays</target>
-      </trans-unit>
-      <trans-unit id="9x4K2dK" resname="Phone mobile">
-        <source>Phone mobile</source>
-        <target>Téléphone</target>
-      </trans-unit>
-      <trans-unit id="EQNxKHP" resname="Montant de la cotisation">
-        <source>Montant de la cotisation</source>
-        <target>Montant de la cotisation</target>
-      </trans-unit>
-      <trans-unit id="XDage3y" resname="1 eusko par mois / 12 eusko par an">
-        <source>1 eusko par mois / 12 eusko par an</source>
-        <target>1 eusko par mois / 12 eusko par an</target>
-      </trans-unit>
-      <trans-unit id="ZkUMQ53" resname="2 eusko par mois / 24 eusko par an">
-        <source>2 eusko par mois / 24 eusko par an</source>
-        <target>2 eusko par mois / 24 eusko par an</target>
-      </trans-unit>
-      <trans-unit id="ykTdITV" resname="3 eusko par mois / 36 eusko par an">
-        <source>3 eusko par mois / 36 eusko par an</source>
-        <target>3 eusko par mois / 36 eusko par an</target>
-      </trans-unit>
-      <trans-unit id="zqUAM.q" resname="5 eusko par an (chômeurs, minima sociaux)">
-        <source>5 eusko par an (chômeurs, minima sociaux)</source>
-        <target>5 eusko par an (chômeurs, minima sociaux)</target>
-      </trans-unit>
-      <trans-unit id="tIa6Q4o" resname="Périodicité du prélèvement">
-        <source>Périodicité du prélèvement</source>
-        <target>Périodicité du prélèvement</target>
-      </trans-unit>
-      <trans-unit id="ov6OmZ4" resname="Annuel">
-        <source>Annuel</source>
-        <target>Annuel</target>
-      </trans-unit>
-      <trans-unit id="eqxMbaV" resname="Mensuel (le 15 du mois)">
-        <source>Mensuel (le 15 du mois)</source>
-        <target>Mensuel (le 15 du mois)</target>
-      </trans-unit>
-      <trans-unit id="2F9Q2tT" resname="J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.">
-        <source>J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.</source>
-        <target>J'autorise Euskal Moneta à prélever automatiquement ma cotisation sur mon compte Eusko.</target>
-      </trans-unit>
-      <trans-unit id="Oz3gVJa" resname="Recevoir les actualités liées à l'Eusko">
-        <source>Recevoir les actualités liées à l'Eusko</source>
-        <target>Recevoir les actualités liées à l'Eusko</target>
-      </trans-unit>
-      <trans-unit id="6Dys69N" resname="Vous recevrez un à deux mails par semaine.">
-        <source>Vous recevrez un à deux mails par semaine.</source>
-        <target>Vous recevrez un à deux mails par semaine.</target>
       </trans-unit>
       <trans-unit id="RSfVoFs" resname="Virement reçu">
         <source>Virement reçu</source>
@@ -441,10 +245,6 @@
         <source>Mandat ajouté</source>
         <target>Mandat ajouté</target>
       </trans-unit>
-      <trans-unit id="iFUXRfF" resname="Erreur lors de l'ajout du mandat">
-        <source>Erreur lors de l'ajout du mandat</source>
-        <target>Erreur lors de l'ajout du mandat</target>
-      </trans-unit>
       <trans-unit id="rpGS6HK" resname="Merci d'avoir accepté les CGU">
         <source>Merci d'avoir accepté les CGU</source>
         <target>Merci d'avoir accepté les CGU</target>
@@ -481,10 +281,6 @@
         <source>Validée le</source>
         <target>Validée le</target>
       </trans-unit>
-      <trans-unit id="cRIOsX6" resname="Êtes vous sur de vouloir supprimer ce mandat ?">
-        <source>Êtes vous sur de vouloir supprimer ce mandat ?</source>
-        <target>Êtes vous sur de vouloir supprimer ce mandat ?</target>
-      </trans-unit>
       <trans-unit id="2y3.0Ga" resname="Nouvelle autorisation">
         <source>Nouvelle autorisation</source>
         <target>Nouvelle autorisation</target>
@@ -497,33 +293,9 @@
         <source>Révoquer une autorisation</source>
         <target>Révoquer une autorisation</target>
       </trans-unit>
-      <trans-unit id="tOztW9f" resname="Êtes vous sur de valider cette autorisation de prélèvement ?">
-        <source>Êtes vous sur de valider cette autorisation de prélèvement ?</source>
-        <target>Êtes vous sur de valider cette autorisation de prélèvement ?</target>
-      </trans-unit>
-      <trans-unit id="q_KdiJk" resname="Êtes vous sur de vouloir supprimer cette demande ?">
-        <source>Êtes vous sur de vouloir supprimer cette demande ?</source>
-        <target>Êtes vous sur de vouloir supprimer cette demande ?</target>
-      </trans-unit>
-      <trans-unit id="iwyGAK5" resname="Êtes vous sur de vouloir révoquer cette autorisation ?">
-        <source>Êtes vous sur de vouloir révoquer cette autorisation ?</source>
-        <target>Êtes vous sur de vouloir révoquer cette autorisation ?</target>
-      </trans-unit>
       <trans-unit id="vy4rTSU" resname="Prélèvements">
         <source>Prélèvements</source>
         <target>Prélèvements</target>
-      </trans-unit>
-      <trans-unit id="t.MTVCf" resname="Prélèvements sur mon compte">
-        <source>Prélèvements sur mon compte</source>
-        <target>Prélèvements sur mon compte</target>
-      </trans-unit>
-      <trans-unit id="rsVWMGQ" resname="Gérer les autorisations">
-        <source>Gérer les autorisations</source>
-        <target>Gérer les autorisations</target>
-      </trans-unit>
-      <trans-unit id="i4ZcOYW" resname="Faire des prélèvements">
-        <source>Faire des prélèvements</source>
-        <target>Faire des prélèvements</target>
       </trans-unit>
       <trans-unit id="7n_v7XH" resname="Exécuter des prélèvements">
         <source>Exécuter des prélèvements</source>
@@ -532,10 +304,6 @@
       <trans-unit id="VdBzb4." resname="Ajouter des mandats">
         <source>Ajouter des mandats</source>
         <target>Ajouter des mandats</target>
-      </trans-unit>
-      <trans-unit id="Bds2sDp" resname="Une seule colonne avec les numéros de compte, sans titre">
-        <source>Une seule colonne avec les numéros de compte, sans titre</source>
-        <target>Une seule colonne avec les numéros de compte, sans titre</target>
       </trans-unit>
       <trans-unit id="v5X4sMU" resname="Mandats">
         <source>Mandats</source>
@@ -713,10 +481,6 @@
         <source>Votre historique est vide</source>
         <target>Votre historique est vide</target>
       </trans-unit>
-      <trans-unit id="nqoak7n" resname="Faire un virement">
-        <source>Faire un virement</source>
-        <target>Faire un virement</target>
-      </trans-unit>
       <trans-unit id="CHFHj_C" resname="Selectionner dans la liste ...">
         <source>Selectionner dans la liste ...</source>
         <target>Selectionner dans la liste ...</target>
@@ -793,10 +557,6 @@
         <source>Confirmation paiement</source>
         <target>Confirmation paiement</target>
       </trans-unit>
-      <trans-unit id="5TPrGB6" resname="Êtes vous sur de valider le paiement ?">
-        <source>Êtes vous sur de valider le paiement ?</source>
-        <target>Êtes vous sur de valider le paiement ?</target>
-      </trans-unit>
       <trans-unit id="3eVQeiO" resname="Montant (minimum 10)">
         <source>Montant (minimum 10)</source>
         <target>Montant (minimum 10)</target>
@@ -829,10 +589,6 @@
         <source>Erreur lors de la suppression</source>
         <target>Erreur lors de la suppression</target>
       </trans-unit>
-      <trans-unit id="J01gKnl" resname="N° Adhérent-e">
-        <source>N° Adhérent-e</source>
-        <target>N° Adhérent-e</target>
-      </trans-unit>
       <trans-unit id="kP6j2PP" resname="Supprimer un bénéficiaire">
         <source>Supprimer un bénéficiaire</source>
         <target>Supprimer un bénéficiaire</target>
@@ -848,32 +604,6 @@
       <trans-unit id="KFjk34P" resname="Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
         <source>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
         <target>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
-      </trans-unit>
-      <trans-unit id="sZICvzl" resname="Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! &lt;br /&gt;&lt;br /&gt;&#10;                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.">
-        <source>Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! &lt;br /&gt;&lt;br /&gt;
-                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.</source>
-        <target><![CDATA[Vous pouvez aussi dans n’importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat ! <br /><br />
-                                Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte.]]></target>
-      </trans-unit>
-      <trans-unit id="s__LcH_" resname="Êtes vous sur de vouloir supprimer le bénéficiaire suivant :">
-        <source>Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</source>
-        <target>Êtes vous sur de vouloir supprimer le bénéficiaire suivant :</target>
-      </trans-unit>
-      <trans-unit id="HGofsQw" resname="Importer un tableur (Fichier CSV)">
-        <source>Importer un tableur (Fichier CSV)</source>
-        <target>Importer un tableur (Tableur .xlsx .xls ou .ods)</target>
-      </trans-unit>
-      <trans-unit id="EH.dx4K" resname="Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :">
-        <source>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</source>
-        <target>Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :</target>
-      </trans-unit>
-      <trans-unit id="5_xgHPh" resname="Il n'y a pas de titre pour les colonnes">
-        <source>Il n'y a pas de titre pour les colonnes</source>
-        <target>Il n'y a pas de titre pour les colonnes</target>
-      </trans-unit>
-      <trans-unit id="grkGxUt" resname="Résultat des prélèvements">
-        <source>Résultat des prélèvements</source>
-        <target>Résultat des prélèvements</target>
       </trans-unit>
       <trans-unit id="zERDC9z" resname="N° Adhérent-e ou Email">
         <source>N° Adhérent-e ou Email</source>
@@ -899,7 +629,123 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       </trans-unit>
       <trans-unit id="nt5WBCI" resname="Format de fichier non reconnu ou tableur vide">
         <source>Format de fichier non reconnu ou tableur vide</source>
-        <target>__Format de fichier non reconnu ou tableur vide</target>
+        <target>Format de fichier non reconnu ou tableur vide</target>
+      </trans-unit>
+      <trans-unit id="4Cffita" resname="Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies">
+        <source>Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies</source>
+        <target>Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies</target>
+      </trans-unit>
+      <trans-unit id="uf6NBeP" resname="Prélèvement effectué">
+        <source>Prélèvement effectué</source>
+        <target>Prélèvement effectué</target>
+      </trans-unit>
+      <trans-unit id="MAy9EQd" resname="Erreur de prélèvement : ">
+        <source>Erreur de prélèvement : </source>
+        <target>Erreur de prélèvement : </target>
+      </trans-unit>
+      <trans-unit id="qGgA5IL" resname="numéro de compte non trouvé">
+        <source>numéro de compte non trouvé</source>
+        <target>numéro de compte non trouvé</target>
+      </trans-unit>
+      <trans-unit id="t4S_jnr" resname="numéro de compte en erreur">
+        <source>numéro de compte en erreur</source>
+        <target>numéro de compte en erreur</target>
+      </trans-unit>
+      <trans-unit id="yeapVke" resname="Erreur lors de l'ajout :">
+        <source>Erreur lors de l'ajout :</source>
+        <target>Erreur lors de l'ajout :</target>
+      </trans-unit>
+      <trans-unit id="LyXp6r7" resname="Erreur de virement : ">
+        <source>Erreur de virement : </source>
+        <target>Erreur de virement : </target>
+      </trans-unit>
+      <trans-unit id="_STALDo" resname="Bénéficiaire ajouté">
+        <source>Bénéficiaire ajouté</source>
+        <target>Bénéficiaire ajouté</target>
+      </trans-unit>
+      <trans-unit id="czN5RFy" resname="Erreur lors de l'ajout de bénéficaire">
+        <source>Erreur lors de l'ajout de bénéficaire</source>
+        <target>Erreur lors de l'ajout de bénéficaire</target>
+      </trans-unit>
+      <trans-unit id="HMaGp2n" resname="Faire un virement unique">
+        <source>Faire un virement unique</source>
+        <target>Faire un virement unique</target>
+      </trans-unit>
+      <trans-unit id="li9eXJL" resname="Faire plusieurs virements">
+        <source>Faire plusieurs virements</source>
+        <target>Faire plusieurs virements</target>
+      </trans-unit>
+      <trans-unit id="kpsgwRr" resname="Importer un tableur">
+        <source>Importer un tableur</source>
+        <target>Importer un tableur</target>
+      </trans-unit>
+      <trans-unit id="MgJ8i42" resname="Faire des virements">
+        <source>Faire des virements</source>
+        <target>Faire des virements</target>
+      </trans-unit>
+      <trans-unit id="AcxRvzv" resname="Gérer les autorisations de prélèvement sur mon compte">
+        <source>Gérer les autorisations de prélèvement sur mon compte</source>
+        <target>Gérer les autorisations de prélèvement sur mon compte</target>
+      </trans-unit>
+      <trans-unit id="tTcJssB" resname="Gérer les mandats">
+        <source>Gérer les mandats</source>
+        <target>Gérer les mandats</target>
+      </trans-unit>
+      <trans-unit id="1pU7Vt." resname="Importer un tableur (fichier .xlsx / .xls / .ods)">
+        <source>Importer un tableur (fichier .xlsx / .xls / .ods)</source>
+        <target>Importer un tableur (fichier .xlsx / .xls / .ods)</target>
+      </trans-unit>
+      <trans-unit id="E4cPbE8" resname="Rentrer un numéro de compte (9 chiffres)">
+        <source>Rentrer un numéro de compte (9 chiffres)</source>
+        <target>Rentrer un numéro de compte (9 chiffres)</target>
+      </trans-unit>
+      <trans-unit id="X3LZDeo" resname="Ou importer un tableur (fichier .xlsx / .xls / .ods)">
+        <source>Ou importer un tableur (fichier .xlsx / .xls / .ods)</source>
+        <target>Ou importer un tableur (fichier .xlsx / .xls / .ods)</target>
+      </trans-unit>
+      <trans-unit id="lHzAfis" resname="Montant">
+        <source>Montant</source>
+        <target>Montant</target>
+      </trans-unit>
+      <trans-unit id="o668flu" resname="Libellé de l'opération">
+        <source>Libellé de l'opération</source>
+        <target>Libellé de l'opération</target>
+      </trans-unit>
+      <trans-unit id="h0P36PO" resname="Ajouter des bénéficiaires">
+        <source>Ajouter des bénéficiaires</source>
+        <target>Ajouter des bénéficiaires</target>
+      </trans-unit>
+      <trans-unit id="DZW9uC4" resname="Êtes-vous sûr de valider le paiement ?">
+        <source>Êtes-vous sûr de valider le paiement ?</source>
+        <target>Êtes-vous sûr de valider le paiement ?</target>
+      </trans-unit>
+      <trans-unit id="JkGYcTF" resname="Êtes-vous sûr de vouloir supprimer ce mandat ?">
+        <source>Êtes-vous sûr de vouloir supprimer ce mandat ?</source>
+        <target>Êtes-vous sûr de vouloir supprimer ce mandat ?</target>
+      </trans-unit>
+      <trans-unit id="OZvYmFn" resname="Êtes-vous sûr de valider cette autorisation de prélèvement ?">
+        <source>Êtes-vous sûr de valider cette autorisation de prélèvement ?</source>
+        <target>Êtes-vous sûr de valider cette autorisation de prélèvement ?</target>
+      </trans-unit>
+      <trans-unit id="25GNE.V" resname="Êtes-vous sûr de vouloir supprimer cette demande ?">
+        <source>Êtes-vous sûr de vouloir supprimer cette demande ?</source>
+        <target>Êtes-vous sûr de vouloir supprimer cette demande ?</target>
+      </trans-unit>
+      <trans-unit id="OZKULZH" resname="Êtes-vous sûr de vouloir révoquer cette autorisation ?">
+        <source>Êtes-vous sûr de vouloir révoquer cette autorisation ?</source>
+        <target>Êtes-vous sûr de vouloir révoquer cette autorisation ?</target>
+      </trans-unit>
+      <trans-unit id="ewTxsY8" resname="Êtes-vous sûr de vouloir supprimer le bénéficiaire suivant :">
+        <source>Êtes-vous sûr de vouloir supprimer le bénéficiaire suivant :</source>
+        <target>Êtes-vous sûr de vouloir supprimer le bénéficiaire suivant :</target>
+      </trans-unit>
+      <trans-unit id="Rq05Fva" resname="Annuler">
+        <source>Annuler</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="VVKb_u3" resname="existait déjà">
+        <source>existait déjà</source>
+        <target>existait déjà</target>
       </trans-unit>
     </body>
   </file>

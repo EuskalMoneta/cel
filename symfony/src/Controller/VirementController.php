@@ -39,10 +39,10 @@ class VirementController extends AbstractController
         //Form generation
         $destinataire ='';
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
-            ->add('amount', NumberType::class, ['required' => true, 'label' => "Montant"])
+            ->add('amount', NumberType::class, ['required' => true, 'label' => $translator->trans("Montant")])
             ->add('guard_check', HiddenType::class, ['required' => false])
-            ->add('description', TextType::class, ['required' => true, 'label' => "libellé de l'opération"])
-            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->add('description', TextType::class, ['required' => true, 'label' => $translator->trans("Libellé de l'opération")])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
             ->getForm();
 
         $form->handleRequest($request);
@@ -57,7 +57,7 @@ class VirementController extends AbstractController
                 //API CALL
                 $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
                 if($responseVirement['httpcode'] == 200) {
-                    $this->addFlash('success',$translator->trans('Virement effectué'));
+                    $this->addFlash('success',$translator->trans("Virement effectué"));
                     return $this->redirectToRoute('app_virement');
                 } else {
                     $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
@@ -75,7 +75,7 @@ class VirementController extends AbstractController
         //Create form with acount number
         $form = $this->createFormBuilder()
             ->add('tableur', FileType::class, [
-                'label' => 'Importer un tableur (Fichier .xlsx / .xls / .ods )',
+                'label' => 'Importer un tableur (fichier .xlsx / .xls / .ods)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -116,7 +116,7 @@ class VirementController extends AbstractController
                         }
                     }
                 } else {
-                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                    $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                 }
 
                 $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', $comptes);
@@ -133,15 +133,15 @@ class VirementController extends AbstractController
                     }
 
                 } else {
-                    $this->addFlash('danger', $translator->trans('Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies'));
+                    $this->addFlash('danger', $translator->trans("Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies"));
                 }
 
                 //Préparation du feedback pour l'utilisateur
                 if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans('Virement effectué').'<ul>'.$listSuccess.'</ul> ');
+                    $this->addFlash('success',$translator->trans("Virement effectué").'<ul>'.$listSuccess.'</ul> ');
                 }
                 if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans('Erreur de virement : ') .'<ul>'. $listFail . '</ul> ');
+                    $this->addFlash('danger', $translator->trans("Erreur de virement : ") .'<ul>'. $listFail . '</ul> ');
                 }
             }
         }
@@ -187,7 +187,7 @@ class VirementController extends AbstractController
                 ]
             )
             ->add('tableur', FileType::class, [
-                'label' => 'Ou importer un tableur (Fichier .xlsx / .xls / .ods )',
+                'label' => 'Ou importer un tableur (fichier .xlsx / .xls / .ods)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -223,14 +223,14 @@ class VirementController extends AbstractController
                             $comptes[] = ['cyclos_account_number' => str_replace(' ', '', $row[1])];
                         }
                     } else {
-                        $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                        $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                     }
                 }
 
                 foreach ($comptes as $data){
                     $responseBenef = $APIToolbox->curlRequest('POST', '/beneficiaires/', $data);
                     if($responseBenef['httpcode'] == 200) {
-                        $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.' (existe déjà)</li>';
+                        $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.' ('.$translator->trans("existait déjà").')</li>';
                     } elseif ($responseBenef['httpcode'] == 201) {
                         $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.'</li>';
                     } elseif ($responseBenef['httpcode'] == 422) {
@@ -241,10 +241,10 @@ class VirementController extends AbstractController
                 }
                 //Préparation du feedback pour l'utilisateur
                 if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans('Bénéficiaire ajouté').'<ul>'.$listSuccess.'</ul> ');
+                    $this->addFlash('success',$translator->trans("Bénéficiaire ajouté").'<ul>'.$listSuccess.'</ul> ');
                 }
                 if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout de bénéficaire') .'<ul>'. $listFail . '</ul> ');
+                    $this->addFlash('danger', $translator->trans("Erreur lors de l'ajout de bénéficaire") .'<ul>'. $listFail . '</ul> ');
                 }
 
                 if($form['numero_compte_debiteur']->getData() != null and $listSuccess !=''){
@@ -268,10 +268,10 @@ class VirementController extends AbstractController
             if($request->isMethod('POST')){
                 $APIToolbox->curlRequest('DELETE', '/beneficiaires/'.$id.'/');
                 if($response['httpcode'] == 200) {
-                    $this->addFlash('success', $translator->trans('Bénéficiaire supprimé'));
+                    $this->addFlash('success', $translator->trans("Bénéficiaire supprimé"));
                     return $this->redirectToRoute('app_beneficiaire_gestion');
                 } else {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de la suppression'));
+                    $this->addFlash('danger', $translator->trans("Erreur lors de la suppression"));
                 }
             }
 

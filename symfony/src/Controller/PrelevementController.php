@@ -41,7 +41,7 @@ class PrelevementController extends AbstractController
         //Create form with acount number
         $form = $this->createFormBuilder()
             ->add('tableur', FileType::class, [
-                'label' => $translator->trans('Importer un tableur (Fichier .xlsx / .xls / .ods )'),
+                'label' => $translator->trans("Importer un tableur (fichier .xlsx / .xls / .ods)"),
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -50,7 +50,7 @@ class PrelevementController extends AbstractController
                     ])
                 ],
             ])
-            ->add('submit', SubmitType::class, ['label' => $translator->trans('Valider')])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
             ->getForm();
 
         if($request->isMethod('POST')) {
@@ -80,7 +80,7 @@ class PrelevementController extends AbstractController
                         }
                     }
                 } else {
-                    $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                    $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                 }
 
                 $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
@@ -100,14 +100,14 @@ class PrelevementController extends AbstractController
                         }
                     }
                 } else {
-                    $this->addFlash('danger', $translator->trans('Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies'));
+                    $this->addFlash('danger', $translator->trans("Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies"));
                 }
 
                 if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans('Prélèvement effectué').'<ul>'.$listSuccess.'</ul> ');
+                    $this->addFlash('success',$translator->trans("Prélèvement effectué").'<ul>'.$listSuccess.'</ul> ');
                 }
                 if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans('Erreur de prélèvement : ') .'<ul>'. $listFail . '</ul> ');
+                    $this->addFlash('danger', $translator->trans("Erreur de prélèvement : ") .'<ul>'. $listFail . '</ul> ');
                 }
             }
         }
@@ -157,11 +157,11 @@ class PrelevementController extends AbstractController
         $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/'.$id.'/'.$type.'/');
         if($responseMandat['httpcode'] == 204 ) {
             if($type == 'valider'){
-                $this->addFlash('success', $translator->trans('Le mandat a été validé'));
+                $this->addFlash('success', $translator->trans("Le mandat a été validé"));
             } elseif($type == 'refuser'){
-                $this->addFlash('success', $translator->trans('Le mandat a été refusé'));
+                $this->addFlash('success', $translator->trans("Le mandat a été refusé"));
             } elseif($type == 'revoquer'){
-                $this->addFlash('success', $translator->trans('Le mandat a été révoqué'));
+                $this->addFlash('success', $translator->trans("Le mandat a été révoqué"));
             }
             return $this->redirectToRoute('app_prelevement_autorisation');
         }
@@ -175,7 +175,7 @@ class PrelevementController extends AbstractController
     {
         $responseMandat = $APIToolbox->curlRequest('DELETE', '/mandats/'.$id.'/');
         if($responseMandat['httpcode'] == 204 ) {
-            $this->addFlash('success', $translator->trans('Le mandat a été supprimé'));
+            $this->addFlash('success', $translator->trans("Le mandat a été supprimé"));
             return $this->redirectToRoute('app_prelevement_mandats');
         }
         throw new NotFoundHttpException("Opération de suppression impossible.");
@@ -230,11 +230,11 @@ class PrelevementController extends AbstractController
                     'constraints' => [
                         new Length(['min' => 9, 'max'=> 9]),
                     ],
-                    'label' => "Rentrer un numéro de compte (9 chiffres)"
+                    'label' => $translator->trans("Rentrer un numéro de compte (9 chiffres)")
                 ]
             )
             ->add('tableur', FileType::class, [
-                'label' => 'Ou importer un tableur (Fichier .xlsx / .xls / .ods )',
+                'label' => $translator->trans("Ou importer un tableur (fichier .xlsx / .xls / .ods)"),
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -243,7 +243,7 @@ class PrelevementController extends AbstractController
                     ])
                 ],
             ])
-            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
             ->getForm();
 
         if($request->isMethod('POST')){
@@ -274,7 +274,7 @@ class PrelevementController extends AbstractController
                             $comptes[] = ['numero_compte_debiteur' => str_replace(' ', '',$row[1])];
                         }
                     } else {
-                        $this->addFlash('danger', $translator->trans('Format de fichier non reconnu ou tableur vide'));
+                        $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                     }
                 }
 
@@ -282,7 +282,7 @@ class PrelevementController extends AbstractController
                 foreach ($comptes as $data){
                     $responseApi = $APIToolbox->curlRequest('POST', '/mandats/', $data);
                     if($responseApi['httpcode'] == 200) {
-                        $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.' (existe déjà)</li>';
+                        $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.' ('.$translator->trans("existait déjà").')</li>';
                     } elseif ($responseApi['httpcode'] == 201) {
                         $listSuccess .= '<li>'.$responseApi['data']->nom_debiteur.'</li>';
                     } elseif ($responseApi['httpcode'] == 422) {
@@ -294,10 +294,10 @@ class PrelevementController extends AbstractController
 
                 //Préparation du feedback pour l'utilisateur
                 if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans('Mandat ajouté').'<ul>'.$listSuccess.'</ul> ');
+                    $this->addFlash('success',$translator->trans("Mandat ajouté").'<ul>'.$listSuccess.'</ul> ');
                 }
                 if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de l\'ajout :') .'<ul>'. $listFail . '</ul> ');
+                    $this->addFlash('danger', $translator->trans("Erreur lors de l'ajout :") .'<ul>'. $listFail . '</ul> ');
                 }
 
                 if($form['numero_compte_debiteur']->getData() != null and $listSuccess !=''){

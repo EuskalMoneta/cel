@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VirementController extends AbstractController
@@ -36,37 +39,115 @@ class VirementController extends AbstractController
         //Form generation
         $destinataire ='';
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
-            ->add('amount', NumberType::class, ['required' => true, 'label' => "Montant"])
+            ->add('amount', NumberType::class, ['required' => true, 'label' => $translator->trans("Montant")])
             ->add('guard_check', HiddenType::class, ['required' => false])
-            ->add('description', TextType::class, ['required' => true, 'label' => "libellé de l'opération"])
-            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->add('description', TextType::class, ['required' => true, 'label' => $translator->trans("Libellé de l'opération")])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
             ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             //prepare payload
             $data = $form->getData();
-            $data['beneficiaire'] = $request->get('destinataire');
+            $data['account'] = $request->get('destinataire');
 
             //check if the guard has been submitted, prevent double submit bug
             if($data['guard_check'] == 'ok'){
                 unset($data['guard_check']);
                 //API CALL
-                $responseVirement = $APIToolbox->curlRequest('POST', '/one-time-transfer/', $data);
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
                 if($responseVirement['httpcode'] == 200) {
-                    $this->addFlash('success',$translator->trans('Virement effectué'));
+                    $this->addFlash('success',$translator->trans("Virement effectué"));
                     return $this->redirectToRoute('app_virement');
                 } else {
                     $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
                 }
             }
+        }
+        return $this->render('virement/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
+    }
 
+    /**
+     * @Route("/virement-multiple", name="app_virement_multiple")
+     */
+    public function virementMultiple(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController)
+    {
+        //Create form with acount number
+        $form = $this->createFormBuilder()
+            ->add('tableur', FileType::class, [
+                'label' => 'Importer un tableur (fichier .xlsx / .xls / .ods)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new FileConstraint([
+                        'maxSize' => '2024k',
+                    ])
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
 
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
 
+                $rows = [];
+                $comptes = [];
+                $listSuccess = '';
+                $listFail = '';
+
+                //Si on charge un tableur, on supprime la première ligne
+                $file = $form['tableur']->getData();
+                if(!empty($file)) {
+                    $rows = $prelevementController->spreadsheetToArray($file);
+                    $rows = array_slice($rows, 1);
+                }
+
+                if(count($rows) > 0){
+                    foreach ($rows as $row) {
+                        if((float)$row[2] > 0) {
+                            $comptes[] = [
+                                'account' => str_replace(' ', '', $row[1]),
+                                'amount' => (float)$row[2],
+                                'description' => $row[3],
+                            ];
+                        } elseif($row[1] != ''){
+                            $listFail .= '<li>'.$row[1].' : Montant incorrect </li>';
+                        }
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
+                }
+
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', $comptes);
+
+                if($responseVirement['httpcode'] == 200) {
+                    $resultats = $responseVirement['data'];
+
+                    foreach($resultats as $resultat){
+                        if($resultat->status == 1){
+                            $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
+                        } else {
+                            $listFail .= '<li>'.$resultat->account.' : '.$resultat->message.'</li>';
+                        }
+                    }
+
+                } else {
+                    $this->addFlash('danger', $translator->trans("Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies"));
+                }
+
+                //Préparation du feedback pour l'utilisateur
+                if($listSuccess != ''){
+                    $this->addFlash('success',$translator->trans("Virement effectué").'<ul>'.$listSuccess.'</ul> ');
+                }
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans("Erreur de virement : ") .'<ul>'. $listFail . '</ul> ');
+                }
+            }
         }
 
-        return $this->render('main/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
+        return $this->render('virement/virement_ajout.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**
@@ -92,25 +173,88 @@ class VirementController extends AbstractController
     /**
      * @Route("/beneficiaire/ajout", name="app_beneficiaire_ajout")
      */
-    public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox)
+    public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController)
     {
 
-        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
+        //Create form with acount number
+        $form = $this->createFormBuilder()
+            ->add('numero_compte_debiteur', TextType::class, [
+                    'required' => false,
+                    'constraints' => [
+                        new Length(['min' => 9, 'max'=> 9]),
+                    ],
+                    'label' => "Rentrer un numéro de compte (9 chiffres)"
+                ]
+            )
+            ->add('tableur', FileType::class, [
+                'label' => 'Ou importer un tableur (fichier .xlsx / .xls / .ods)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new FileConstraint([
+                        'maxSize' => '2024k',
+                    ])
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
 
-        if($response['httpcode'] == 200){
+        if($request->isMethod('POST')){
 
-            if($request->isMethod('POST')){
-                $params = explode('!', $request->get('recherche'));
-                $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_id' => $params[0], 'cyclos_account_number' => $params[1], 'cyclos_name' => $params[2], 'owner' => $this->getUser()->getUsername()]);
+            $rows = [];
+            $comptes = [];
+            $listSuccess = '';
+            $listFail = '';
 
-                $this->addFlash('success', 'Bénéficiaire ajouté');
-                return $this->redirectToRoute('app_beneficiaire_gestion');
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                //Si on ne rentre qu'un seul numéro de compte
+                if($form['numero_compte_debiteur']->getData() != null){
+                    $comptes = [['cyclos_account_number' => $form['numero_compte_debiteur']->getData()]];
+                } else {
+                    $file = $form['tableur']->getData();
+                    if(!empty($file)) {
+                        $rows = $prelevementController->spreadsheetToArray($file);
+                        $rows = array_slice($rows, 1);
+                    }
+                    if(count($rows) > 0){
+                        foreach ($rows as $row) {
+                            $comptes[] = ['cyclos_account_number' => str_replace(' ', '', $row[1])];
+                        }
+                    } else {
+                        $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
+                    }
+                }
+
+                foreach ($comptes as $data){
+                    $responseBenef = $APIToolbox->curlRequest('POST', '/beneficiaires/', $data);
+                    if($responseBenef['httpcode'] == 200) {
+                        $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.' ('.$translator->trans("existait déjà").')</li>';
+                    } elseif ($responseBenef['httpcode'] == 201) {
+                        $listSuccess .= '<li>'.$responseBenef['data']->cyclos_name.'</li>';
+                    } elseif ($responseBenef['httpcode'] == 422) {
+                        $listFail .= '<li> '.$data['cyclos_account_number'].' '.$translator->trans("numéro de compte non trouvé").'</li>';
+                    } else {
+                        $listFail .= '<li> '.$data['cyclos_account_number'].' '.$translator->trans("numéro de compte en erreur").'</li>';
+                    }
+                }
+                //Préparation du feedback pour l'utilisateur
+                if($listSuccess != ''){
+                    $this->addFlash('success',$translator->trans("Bénéficiaire ajouté").'<ul>'.$listSuccess.'</ul> ');
+                }
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans("Erreur lors de l'ajout de bénéficaire") .'<ul>'. $listFail . '</ul> ');
+                }
+
+                if($form['numero_compte_debiteur']->getData() != null and $listSuccess !=''){
+                    return $this->redirectToRoute('app_beneficiaire_ajout');
+                }
             }
-
-            return $this->render('main/ajoutBeneficiaire.html.twig', ['beneficiaires' => $response['data']->results]);
-        } else {
-            throw new NotFoundHttpException("La liste des bénéficiaires n'a pas pu être retrouvée.");
         }
+
+        return $this->render('virement/beneficiaire_ajout.html.twig', ['form' => $form->createView()]);
+
     }
 
     /**
@@ -124,10 +268,10 @@ class VirementController extends AbstractController
             if($request->isMethod('POST')){
                 $APIToolbox->curlRequest('DELETE', '/beneficiaires/'.$id.'/');
                 if($response['httpcode'] == 200) {
-                    $this->addFlash('success', $translator->trans('Bénéficiaire supprimé'));
+                    $this->addFlash('success', $translator->trans("Bénéficiaire supprimé"));
                     return $this->redirectToRoute('app_beneficiaire_gestion');
                 } else {
-                    $this->addFlash('danger', $translator->trans('Erreur lors de la suppression'));
+                    $this->addFlash('danger', $translator->trans("Erreur lors de la suppression"));
                 }
             }
 

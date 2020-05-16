@@ -8,10 +8,10 @@
 
                 <div class="row">
                     <div class="col-8">
-                        <h2 class="secondary-color mb-4"> {{ "Ajouter des mandats" | trans }} </h2>
+                        <h2 class="secondary-color mb-4"> {{ "Ajouter des bénéficiaires" | trans }} </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
+                        <a href="{{ path('app_beneficiaire_gestion') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
                     </div>
                 </div>
 
@@ -26,7 +26,7 @@
 
                             <h5>{{ form_label(form.numero_compte_debiteur) }}</h5>
                             {% if form_errors(form.numero_compte_debiteur) != '' %}
-                            <span class="invalid-feedback d-block"><span class="d-block">
+                                <span class="invalid-feedback d-block"><span class="d-block">
                                 <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.numero_compte_debiteur) }}</span>
                             </span></span>
                             {% endif %}

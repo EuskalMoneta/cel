@@ -6,105 +6,73 @@
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
 
-                <div class="row">
-                    <div class="col-8">
-                        <h2 class="secondary-color mb-4"> {{ "Exécuter des prélèvements" | trans }} </h2>
-                    </div>
-                    <div class="col-4 text-right">
-                        <a href="{{ path('app_prelevement') }}" class="btn btn-slim btn-outline-dark">{{"Retour" | trans }}</a>
+                <div class="p-4 " >
+                    <h2 class="main-color">{{ "Exécuter des prélèvements" | trans }}</h2>
+                    
+                        <div class="mb-4">
+                            {{ form_start(form) }}
+                            <div class="row">
+                                <div class="col mt-4">
+                                    <h3 class="mb-0">{{ form_label(form.tableur) }}</h3>
+
+                                    {% if app.request.locale == 'fr' %}
+                                        <p>Télécharger un fichier d'exemple pour <a href="{{ asset('images/tableur-fr.xlsx') }}" style="text-decoration: underline;">Excel</a> ou pour <a href="{{ asset('images/tableur-fr.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a></p>
+                                    {% else %}
+                                        <p><a href="{{ asset('images/tableur-eu.xlsx') }}" style="text-decoration: underline;">Excel</a> edo <a href="{{ asset('images/tableur-eu.ods') }}" style="text-decoration: underline;">OpenOffice / LibreOffice</a>-eko fitxategi adibide bat kargatu</p>
+                                    {% endif %}
+                                    {% if form_errors(form.tableur) != '' %}
+                                        <span class="invalid-feedback d-block"><span class="d-block">
+                                <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.tableur) }}</span>
+                            </span></span>
+                                    {% endif %}
+                                    {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
+
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col mt-4  mb-4">
+                                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                                </div>
+                            </div>
+
+                            {{ form_rest(form) }}
+                        </div>
+
+
+                </div>
+
+
+                <div class="before-footer text-center">
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <div class="ml-4 mr-2 mb-4">
+                                <div class="mt-4">
+                                    <a href="{{ path('app_prelevement_autorisation') }}" class="btn btn-outline-primary">{{ "Gérer les autorisations de prélèvement sur mon compte" | trans }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="ml-4 mr-2 mb-4">
+                                <div class="mt-4">
+                                    <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-outline-primary">{{ "Gérer les mandats" | trans }}</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {%  if (listFail is empty) and (listSuccess is empty) %}
-
-                    <div class="mb-4">
-                        {{ form_start(form) }}
-                        <div class="row">
-                            <div class="col mt-4">
-                                <h5>{{ form_label(form.tableur) }}</h5>
-                                {% if form_errors(form.tableur) != '' %}
-                                    <span class="invalid-feedback d-block"><span class="d-block">
-                                <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span> <span class="form-error-message">{{ form_errors(form.tableur) }}</span>
-                            </span></span>
-                                {% endif %}
-                                {{ form_widget(form.tableur, {'attr': {'class': 'form-control'}}) }}
-
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col mt-4  mb-4">
-                                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
-                            </div>
-                        </div>
-
-                        {{ form_rest(form) }}
-                    </div>
-
-                    <p class="text-semi-bold">{{"Le tableur est composé des élèments suivants : n° de compte, montant à prélever, libellé de l'opération ex :" | trans }}</p>
-
-                    <table class="table" border="1">
-                        <tr>
-                            <td>123456789</td>
-                            <td>10.5</td>
-                            <td>Prélèvement mensuel xxx du mois d'octobre</td>
-                        </tr>
-                        <tr>
-                            <td>999999999</td>
-                            <td>12</td>
-                            <td>Prélèvement ikastola</td>
-                        </tr>
-                    </table>
-
-                    <p class="text-semi-bold">{{"Il n'y a pas de titre pour les colonnes" | trans }}</p>
-
-                {% else %}
-
-
-                    <h3>{{"Résultat des prélèvements" | trans}}</h3>
-                    {%  if listFail is not empty %}
-                        <table class="table table-danger table-striped">
-                            <thead>
-                            <th>N° de compte</th>
-                            <th>Nom</th>
-                            <th>Message</th>
-                            </thead>
-                            {% for prelevement in listFail %}
-                                <tr>
-                                    <td>{{ prelevement.account }}</td>
-                                    <td>{{ prelevement.name }}</td>
-                                    <td>{{ prelevement.description }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    {% endif %}
-
-                    {%  if listSuccess is not empty %}
-                        <table class="table table-success table-striped">
-                            <thead>
-                            <th>N° de compte</th>
-                            <th>Nom</th>
-                            <th>Message</th>
-                            </thead>
-                            {% for prelevement in listSuccess %}
-                                <tr>
-                                    <td>{{ prelevement.account }}</td>
-                                    <td>{{ prelevement.name }}</td>
-                                    <td>{{ prelevement.description }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    {% endif %}
-
-
-
-                {% endif %}
 
 
             </div>
         </div>
     </div>
+
+
+
+
 
 {% endblock %}
 

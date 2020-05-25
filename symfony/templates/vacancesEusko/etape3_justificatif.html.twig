@@ -176,7 +176,7 @@
                     type        : 'POST',
                     success     : function(data, textStatus, jqXHR){
                         if(data.bool){
-                            window.location.href = '{{ path('app_vee_etape4_success') }}';
+                            window.location.href = '{{ path('app_vee_etape4_securite') }}';
                         } else {
                             document.location.reload(true);
                         }

@@ -295,7 +295,7 @@
       </trans-unit>
       <trans-unit id="Vu_PIJV" resname="Address">
         <source>Address</source>
-        <target>Addresse</target>
+        <target>Adresse</target>
       </trans-unit>
       <trans-unit id="e8iOu20" resname="Zip">
         <source>Zip</source>

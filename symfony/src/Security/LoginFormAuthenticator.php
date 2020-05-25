@@ -91,8 +91,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             //User Roles
             if($user->getUsername()[0] == 'E'){
                 $user->setRoles(['ROLE_CLIENT']);
-            } elseif($user->getUsername()[0] == 'Z') {
+            }
+            elseif($user->getUsername()[0] == 'Z') {
                 $user->setRoles(['ROLE_PARTENAIRE']);
+            }
+            elseif($user->getUsername()[0] == 'T') {
+                $user->setRoles(['ROLE_TOURISTE']);
             }
             if($member->type == 'Régie publique de recettes'){
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);

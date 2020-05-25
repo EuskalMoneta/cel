@@ -65,6 +65,25 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
+                        <div class="eusko-cart p-3 mt-4">
+                            <div class="d-flex align-items-center flex-row">
+                                <div class="d-inline-flex" style="flex-grow: 4;">
+                                    <div>
+                                        <div class="threepermain text-semi-bold mb-2"> <img src="{{ asset('images/icon-annuaire.png') }}" width="40px"> Annuaire</div>
+                                        <div class="text-center mb-2"> La liste des prestataires acceptant l'eusko</div>
+                                        <div class="text-center">
+                                        <a href="https://annuaire.euskalmoneta.org/" target="_blank" class="btn btn-outline-primary"> Annuaire en ligne</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-3 col-md-6  col-sm-12">
 
                         <div class="main-carousel pt-3 mb-4">
 
@@ -73,21 +92,10 @@
                                 {#<a href="#" class="btn btn-success" style="position: absolute; right: 5%; bottom: 15%;">En savoir plus</a>#}
                             </div>
 
-                            <div class="carousel-cell p-1 pt-4">
-                                <div class="hero-carousel__cell__content">
-                                    <h3>Bon plans</h3>
-                                    <p class="tagline">Supprimer les bon plans sur cette page ?</p>
-                                    <div class="text-right mt-2">
-                                        <a href="#" class="btn btn-outline-primary">non</a>
-                                        <a href="#" class="btn btn-success">oui</a>
-                                    </div>
-
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
+
 
                 {% if is_granted('ROLE_CLIENT') %}
                     <div class="row mt-4 mb-4 threeper p-4">
@@ -101,6 +109,19 @@
                                 <h2 class="threepersecond mb-0 text-light"> {{ "Mon don 3% Eusko" | trans }}</h2>
                                 <div class="threepermain text-semi-bold"> {{ montant_don | number_format(2, ',') }} eusko</div>
                                 <p>{{ "depuis le 1er juillet dernier" | trans }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row mt-4 mb-4 threeper p-4">
+                        <div class="col-12">
+                            <div class="text-center">
+                                <div class="text-semi-bold"> Afficher les bons plans sur cette page ?</div>
+                                <div class="mt-4">
+                                    <a href="#" class="btn btn-outline-primary" style="color: #fff; border: 0px; background-color: #284f1e;">non</a>
+                                    <a href="#" class="btn btn-outline-primary">oui</a>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -133,12 +154,7 @@
 
     {% block js %}
         <script type="text/javascript">
-            $('.main-carousel').flickity({
-                // options
-                cellAlign: 'left',
-                contain: true,
-                prevNextButtons: false
-            });
+
         </script>
 
     {% endblock %}

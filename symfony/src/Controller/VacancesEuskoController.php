@@ -149,8 +149,8 @@ class VacancesEuskoController extends AbstractController
 
             $form = $this->createFormBuilder()
                 ->add('motDePasse', RepeatedType::class, [
-                    'first_options'  => ['label' => $translator->trans('Nouveau mot de passe')],
-                    'second_options' => ['label' => $translator->trans('Confirmer le nouveau mot de passe')],
+                    'first_options'  => ['label' => $translator->trans('Mot de passe')],
+                    'second_options' => ['label' => $translator->trans('Confirmer le mot de passe')],
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max'=> 12]),

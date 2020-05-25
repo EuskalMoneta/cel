@@ -1027,6 +1027,108 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>Identité</source>
         <target>Identité</target>
       </trans-unit>
+      <trans-unit id="ooszjiG" resname="Je souhaite afficher les bons plans proposés par l'Eusko. ">
+        <source>Je souhaite afficher les bons plans proposés par l'Eusko. </source>
+        <target>__Je souhaite afficher les bons plans proposés par l'Eusko. </target>
+      </trans-unit>
+      <trans-unit id="xCq6OBS" resname="Réponse">
+        <source>Réponse</source>
+        <target>__Réponse</target>
+      </trans-unit>
+      <trans-unit id="SQlNO6e" resname="Confirmer le mot de passe">
+        <source>Confirmer le mot de passe</source>
+        <target>__Confirmer le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="dUoivWP" resname="Paiment">
+        <source>Paiment</source>
+        <target>__Paiment</target>
+      </trans-unit>
+      <trans-unit id="OjP9hGm" resname="Bons plans">
+        <source>Bons plans</source>
+        <target>__Bons plans</target>
+      </trans-unit>
+      <trans-unit id="yPLoWHM" resname="Echec vérification">
+        <source>Echec vérification</source>
+        <target>__Echec vérification</target>
+      </trans-unit>
+      <trans-unit id="GQyYXio" resname="Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.">
+        <source>Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.</source>
+        <target>__Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.</target>
+      </trans-unit>
+      <trans-unit id="0OV9pZd" resname="Vous pouvez contacter le support téléphonique :&lt;br /&gt;">
+        <source>Vous pouvez contacter le support téléphonique :&lt;br /&gt;</source>
+        <target><![CDATA[__Vous pouvez contacter le support téléphonique :<br />]]></target>
+      </trans-unit>
+      <trans-unit id="rH9Swgi" resname="- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h">
+        <source>- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h</source>
+        <target>__- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h</target>
+      </trans-unit>
+      <trans-unit id="t.Fqbn_" resname="- en écrivant à support@euskalmoneta.org">
+        <source>- en écrivant à support@euskalmoneta.org</source>
+        <target>__- en écrivant à support@euskalmoneta.org</target>
+      </trans-unit>
+      <trans-unit id="Y1sdWG0" resname="ETAPE 3/4">
+        <source>ETAPE 3/4</source>
+        <target>__ETAPE 3/4</target>
+      </trans-unit>
+      <trans-unit id="Po3.G8h" resname="Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;&#10;                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;&#10;                        - Le document ne doit pas être flou &lt;br /&gt;&#10;                        - Votre photo doit apparaître sur le document &lt;br /&gt;">
+        <source>Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;
+                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;
+                        - Le document ne doit pas être flou &lt;br /&gt;
+                        - Votre photo doit apparaître sur le document &lt;br /&gt;</source>
+        <target><![CDATA[__Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.<br /><br />
+                        Vous pouvez importer un scan ou une photo de votre <b>carte d'identité</b> ou de votre <b>passeport</b> : <br /><br />
+                        - Le document ne doit pas être flou <br />
+                        - Votre photo doit apparaître sur le document <br />]]></target>
+      </trans-unit>
+      <trans-unit id="xcGxmDu" resname="ETAPE 4/4">
+        <source>ETAPE 4/4</source>
+        <target>__ETAPE 4/4</target>
+      </trans-unit>
+      <trans-unit id="kdJ0tJO" resname="Choisissez un mot de passe pour sécuriser l'accès à votre compte.">
+        <source>Choisissez un mot de passe pour sécuriser l'accès à votre compte.</source>
+        <target>__Choisissez un mot de passe pour sécuriser l'accès à votre compte.</target>
+      </trans-unit>
+      <trans-unit id="grV147a" resname="ETAPE 2/4">
+        <source>ETAPE 2/4</source>
+        <target>__ETAPE 2/4</target>
+      </trans-unit>
+      <trans-unit id="mz6YrhM" resname="Bon plans">
+        <source>Bon plans</source>
+        <target>__Bon plans</target>
+      </trans-unit>
+      <trans-unit id="AOIVPR9" resname="ETAPE 1/4">
+        <source>ETAPE 1/4</source>
+        <target>__ETAPE 1/4</target>
+      </trans-unit>
+      <trans-unit id="egZRM_r" resname="Ouverture de votre compte &quot;Vacances en eusko&quot;">
+        <source>Ouverture de votre compte "Vacances en eusko"</source>
+        <target>__Ouverture de votre compte "Vacances en eusko"</target>
+      </trans-unit>
+      <trans-unit id="ii32qJx" resname="Votre solde">
+        <source>Votre solde</source>
+        <target>__Votre solde</target>
+      </trans-unit>
+      <trans-unit id="BuCoPQF" resname="Charger votre compte">
+        <source>Charger votre compte</source>
+        <target>__Charger votre compte</target>
+      </trans-unit>
+      <trans-unit id="qwNRpd8" resname="Ouvrez un compte très facilement en quatre étapes.">
+        <source>Ouvrez un compte très facilement en quatre étapes.</source>
+        <target>__Ouvrez un compte très facilement en quatre étapes.</target>
+      </trans-unit>
+      <trans-unit id="anSUEIT" resname="Bienvenue dans votre compte eusko !">
+        <source>Bienvenue dans votre compte eusko !</source>
+        <target>__Bienvenue dans votre compte eusko !</target>
+      </trans-unit>
+      <trans-unit id="UEMAa7O" resname="Créditer votre compte pour commencer à l'utiliser">
+        <source>Créditer votre compte pour commencer à l'utiliser</source>
+        <target>__Créditer votre compte pour commencer à l'utiliser</target>
+      </trans-unit>
+      <trans-unit id="ssEkU20" resname="Nom">
+        <source>Nom</source>
+        <target>__Nom</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

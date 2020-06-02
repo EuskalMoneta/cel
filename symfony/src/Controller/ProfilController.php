@@ -504,6 +504,49 @@ class ProfilController extends AbstractController
     }
 
     /**
+     * @Route("/profil/bonsplans", name="app_profil_bons_plans")
+     */
+    public function bonplans(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
+
+            $membre = $responseMember['data'][0];
+            //todo: booléen bons plans
+            $booleanNewsletter = $membre->array_options->options_recevoir_actus;
+
+            $form = $this->createFormBuilder()
+                ->add('news', ChoiceType::class,
+                    [
+                        'label' => $translator->trans("Je souhaite afficher les bons plans proposés par l'Eusko. "),
+                        'help' => '',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('submit', SubmitType::class, ['label' => $translator->trans('Enregistrer')])
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                //todo: booléen bons plans
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+
+                if($responseLang['httpcode'] == 200) {
+                    $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                } else {
+                    $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
+                }
+            }
+
+            return $this->render('profil/bonsPlans.html.twig', ['form' => $form->createView()]);
+
+        } else {
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
+    /**
      * @Route("/profil/notifications", name="app_profil_notifications")
      */
     public function notifications(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)

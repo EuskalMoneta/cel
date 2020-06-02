@@ -22,7 +22,7 @@ class User implements UserInterface
     /**
      * @return \DateTime
      */
-    public function getLastLogin(): \DateTime
+    public function getLastLogin()
     {
         return $this->last_login;
     }

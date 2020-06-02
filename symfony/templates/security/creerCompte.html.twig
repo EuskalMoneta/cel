@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Créer votre compte" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+                <h2 class="secondary-color mb-2"> {{ "Ouvrir un compte" | trans }} </h2>
+
+                <div class="">
+                    <div style="width: 90%">
+                        <h1 class="h3 mb-3">{{ "Compte eusko" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Le compte standard pour tous les habitants du pays basque." | trans }}</p>
+                        <a href="#" class="btn btn-success">{{ "Créer un compte eusko" | trans }}</a>
+                    </div>
+                </div>
+
+                <div class="" style="margin-top: 70px">
+                    <div style="width: 90%">
+                        <h1 class="h3 mb-3">{{ "Compte vacances en eusko" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Ce compte à durée limitée vous permet d'aquérir et dépenser des euskos pendant vos vacances." | trans }}</p>
+                        <p class="text-subtitle">{{ "Ouvrez un compte très facilement en quatre étapes." | trans }}</p>
+                        <a href="{{ path('app_vee_etape1_identite') }}" class="btn btn-success">{{ "Créer un compte vacances" | trans }}</a>
+                    </div>
+                </div>
+
+
+                <form id="formLocale" class="form mt-4" method="post" style="width: 150px;">
+                    <select class="form-control" name="locale" id="localeSelect">
+
+                        {% if app.request.locale == 'fr' %}
+                            <option value="fr" selected>Français</option>
+                            <option value="eu">Euskara</option>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        {% elseif app.request.locale == 'eu' %}
+                            <option value="eu" selected>Euskara</option>
+                            <option value="fr">Français</option>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        {% elseif app.request.locale == 'en' %}
+                            <option value="en" selected>English</option>
+                            <option value="fr">Français</option>
+                            <option value="eu">Euskara</option>
+                            <option value="es">Español</option>
+                        {% else %}
+                            <option value="es" selected>Español</option>
+                            <option value="fr">Français</option>
+                            <option value="eu">Euskara</option>
+                            <option value="en">English</option>
+                        {% endif %}
+
+                    </select>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $( "#localeSelect" ).change(function() {
+            $('#formLocale').submit();
+        });
+
+    </script>
+
+{% endblock %}

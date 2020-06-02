@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+
+{% block css %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="">
+                        <div>{{ "ETAPE 3/3" | trans }}</div>
+                        <h1 class="mb-3">{{ "Echec vérification" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Nous n'avons pas réussi à valider votre pièce d'identité automatiquement." | trans }}</p>
+                        <p class="text-subtitle">{{ "Vous pouvez contacter le support téléphonique :<br />" | trans | raw }}</p>
+                        <p class="text-subtitle">{{ "- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h" | trans }}</p>
+                        <p class="text-subtitle">{{ "- en écrivant à support@euskalmoneta.org" | trans }}</p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}
+

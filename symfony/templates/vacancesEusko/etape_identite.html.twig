@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+
+
+                <div class="mt-md-4">
+                    <div style="width: 80%">
+                        <div>{{ "ETAPE 1/4" | trans }}</div>
+                        <h1 class="mb-3">{{ title | trans }}</h1>
+                        <p class="text-subtitle">{{ 'Ouverture de votre compte "Vacances en eusko"' | trans }}</p>
+
+                    </div>
+                    <form method="post">
+                        {{ form_start(form) }}
+
+                        {{ form_row(form.nom) }}
+                        {{ form_row(form.prenom) }}
+                        {{ form_row(form.email) }}
+
+                        <div>
+
+                            {{ form_errors(form.valide) }}
+                            {{ form_widget(form.valide) }}
+                            <label style="margin-left: 20px;display: inline;top: -19px;position: relative;" for="{{ form.valide.vars.id }}">{{ "J'ai lu et je valide les" | trans }} <a href="{{ asset('images/CGU-Particuliers.pdf') }}" target="_blank" class=""> {{ "CGU Particuliers" | trans }}</a></label>
+                        </div>
+
+                        {{ form(form) }}
+                    </form>
+
+
+                    {#
+                    <div class="d-flex align-items-center flex-row mb-3" >
+                        <div class="flex-fill">
+                            <div class="text-center">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x"></i>
+                                  <i class="far fa-user fa-stack-1x fa-inverse"></i>
+                                </span>
+                                <div class="text-bold">{{ "Identité" | trans }}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex-fill">
+                            <div class="text-center">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x"></i>
+                                  <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                                <div class="text-bold">{{ "Coordonnées" | trans }}</div>
+                            </div>
+                        </div>
+                        <div class="flex-fill">
+                            <div class="text-center">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x"></i>
+                                  <i class="far fa-id-card fa-stack-1x fa-inverse"></i>
+                                </span>
+                                <div class="text-bold">{{ "Justificatif" | trans }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vertical-line"></div>#}
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

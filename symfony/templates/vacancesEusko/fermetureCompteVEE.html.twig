@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Fermeture compte" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="">
+                        <h1 class="mb-3">{{ "Fermeture compte" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Que voulez vous faire avec les eusko qui restent sur votre compte ?" | trans }}</p>
+
+                        <h3 class="secondary-color mb-0"> {{ "Votre solde" | trans }}</h3>
+                        <div class="main-color big-solde" style="font-size: 30px"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="{{ path('app_vee_fermeture_panier') }}">
+                                    <div class="eusko-cart p-3 mt-4 text-center">
+                                        <h3>{{ "Commander un panier paysan en livraison" | trans }}</h3>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <a href="{{ path('app_vee_fermeture_don') }}">
+                                    <div class="eusko-cart p-3 mt-4 text-center">
+                                        <h3>{{ "Faire un don de tout ou partie à Euskal Moneta" | trans }}</h3>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <a href="{{ path('app_vee_fermeture_solde') }}">
+                                    <div class="eusko-cart p-3 mt-4 text-center">
+                                        <h3>{{ "Récuperer le solde de mon compte" | trans }}</h3>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
+

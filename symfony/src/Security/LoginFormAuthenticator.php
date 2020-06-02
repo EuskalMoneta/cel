@@ -103,8 +103,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
             }
 
-            $user->setRoles(['ROLE_TOURISTE']);
-
             // set locale according to the language chosen by the user
             if($member->array_options->options_langue == 'eu'){
                 $user->setLocale($member->array_options->options_langue);

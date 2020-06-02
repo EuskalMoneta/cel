@@ -87,27 +87,15 @@
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 mt-2" style="">
 
-
                 <hr>
-                <div class="row">
-                    <div class="col">
-                        <div class="text-center p-2">
-                            {#<p class="text-semi-bold">{{ "Nouvel utilisateur ?" | trans }}</p>#}
-                            <a href="{{ path('app_creer_compte') }}" class="btn btn-info " >{{ "Créer un compte" | trans }}</a>
+                <div class="text-center p-2">
+                    <p class="text-semi-bold">{{ "C'est votre première connexion" | trans }}</p>
+                    <a href="{{ path('app_first_login') }}" class="btn btn-info btn-slim" >{{ "Activer votre compte" | trans }}</a>
 
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="text-center p-2">
-                            {#<p class="text-semi-bold">{{ "Activer votre compte" | trans }}</p>#}
-                            <a href="{{ path('app_first_login') }}" class="btn btn-info" >{{ "Activer votre compte" | trans }}</a>
-
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+    
 
 {% endblock %}

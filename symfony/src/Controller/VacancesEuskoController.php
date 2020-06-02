@@ -406,9 +406,13 @@ class VacancesEuskoController extends AbstractController
             if($guard == 'ok'){
                 //todo: a tester
                 $data = ['amount' => $montantDon, 'description' => $translator->trans('Don Euskal Moneta')];
-                $responseVirement = $APIToolbox->curlRequest('POST', '/virement-euskal-moneta/', $data);
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virement-asso-mlc/', $data);
                 if($responseVirement['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Don effectué'));
+                    if($montantDon == $infosUser['solde']){
+                        //todo : appel API CLOTURE COMPTE
+                        return $this->redirectToRoute('app_vee_fermeture_fin');
+                    }
                     return $this->redirectToRoute('app_vee_fermeture');
                 } else {
                     $this->addFlash('danger', $translator->trans("Le don n'a pas pu être effectué"));
@@ -436,7 +440,7 @@ class VacancesEuskoController extends AbstractController
             if($guard == 'ok' && $this->isValidIBAN($iban)){
                 //todo: a tester
                 $data = ['amount' => $amount, 'description' => $translator->trans('Reconversion - fermeture compte')];
-                $responseVirement = $APIToolbox->curlRequest('POST', '/virement-euskal-moneta/', $data);
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virement-asso-mlc/', $data);
                 if($responseVirement['httpcode'] == 200) {
 
                     $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -460,9 +464,9 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/vacances-en-eusko/fermeture-compte/fin", name="app_vee_fermeture_fin")
      */
-    public function fermetureCompteVEEfin()
+    public function fermetureCompteFinVEE()
     {
-        return $this->render('vacancesEusko/fermetureComptePanierVEE.html.twig');
+        return $this->render('vacancesEusko/fermetureCompteFinVEE.html.twig');
     }
 
 

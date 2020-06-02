@@ -1107,15 +1107,15 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       </trans-unit>
       <trans-unit id="ii32qJx" resname="Votre solde">
         <source>Votre solde</source>
-        <target>__Votre solde</target>
+        <target>Votre solde</target>
       </trans-unit>
       <trans-unit id="BuCoPQF" resname="Charger votre compte">
         <source>Charger votre compte</source>
-        <target>__Charger votre compte</target>
+        <target>Charger votre compte</target>
       </trans-unit>
       <trans-unit id="qwNRpd8" resname="Ouvrez un compte très facilement en quatre étapes.">
         <source>Ouvrez un compte très facilement en quatre étapes.</source>
-        <target>__Ouvrez un compte très facilement en quatre étapes.</target>
+        <target>Ouvrez un compte très facilement en quatre étapes.</target>
       </trans-unit>
       <trans-unit id="anSUEIT" resname="Bienvenue dans votre compte eusko !">
         <source>Bienvenue dans votre compte eusko !</source>

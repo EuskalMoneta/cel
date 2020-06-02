@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Panier paysan" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="">
+                        <h1 class="mb-3">{{ "Panier paysan" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Commandez un panier paysan avec le reste de vos eusko, il pourra vous être livré etc..." | trans }}</p>
+                        <p class="text-subtitle">{{ "Conditions" | trans }}</p>
+
+                        <div class="text-center">
+                            <a href="{{ path('app_vee_fermeture') }}" class="btn btn-primary">Retour</a>
+                            <a href="#" class="btn btn-success">Passez commande d'un panier paysan</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
+

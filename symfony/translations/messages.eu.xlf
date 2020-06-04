@@ -605,8 +605,8 @@
         <source>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
         <target>HelloAssoren zerbitzua dohainik da bainan eskupeko bat uzten ahal duzu nahi baduzu, elkarteen zerbitzuko den tresna alternatibo hori sustengatzeko!</target>
       </trans-unit>
-      <trans-unit id="zERDC9z" resname="N° Adhérent-e ou Email">
-        <source>N° Adhérent-e ou Email</source>
+      <trans-unit id="zERDC9z" resname="N° Adhérent-e ou e-mail">
+        <source>N° Adhérent-e ou e-mail</source>
         <target>Kide zenbakia edo Emaila</target>
       </trans-unit>
       <trans-unit id="PyeE.aC" resname="Activer votre compte">

@@ -14,7 +14,7 @@
                     {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}
                     {% endif %}
                     {% if is_granted('ROLE_TOURISTE') %}
-                        <a href="{{ path('app_vee_fermeture') }}" style="color: darkred">{{ "Cloturer mon compte" | trans }}</a>
+                        <a href="{{ path('app_vee_fermeture') }}" style="color: darkred">{{ "clotûrer mon compte" | trans }}</a>
                     {% endif %}
 
                 </div>

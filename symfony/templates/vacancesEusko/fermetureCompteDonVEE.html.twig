@@ -8,8 +8,8 @@
             <div class="col-12 col-md-6 offset-md-3 mt-4">
                 <div class="mt-md-4">
                     <div style="">
-                        <h1 class="mb-3">{{ "Faire un don à Euskal Moneta" | trans }}</h1>
-                        <p class="text-subtitle">{{ "Vous pouvez faire un don de tout ou partie de vos eusko à l'association Euskal Moneta. Utilisez le curseur ci dessous pour changer le montant de votre don." | trans }}</p>
+                        <h1 class="mb-3">{{ "Faire un don à l'Eusko" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Vous pouvez faire un don de tout ou partie de vos eusko à l'association Euskal Moneta. Utilisez le curseur ci-dessous pour choisir le montant de votre don." | trans }}</p>
 
                         {#<h3 class="secondary-color mb-0 mt-4"> {{ "Votre solde" | trans }}</h3>
                         <div class="main-color big-solde" style="font-size: 30px"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>#}
@@ -31,7 +31,10 @@
                                             <h3 class="secondary-color mb-0 mt-4"> {{ "Solde restant" | trans }}</h3>
                                             <div class="main-color big-solde" style="font-size: 30px"><span id="restant"></span> eusko</div>
                                         </div>
+
+
                                     </div>
+                                    <p>{{ "Si vous faites un don de la totalité du solde de votre compte celui-ci sera clotûré sans autre formalité." | }}</p>
 
                                     <div class="row" style="margin-top: 50px">
                                         <div class="col text-right">

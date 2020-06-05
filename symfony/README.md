@@ -69,3 +69,8 @@ Bien penser à effectuer la traduction dans le controleur avec `$translator->tra
  
  ### upgrade minor version 
  `docker-compose exec php composer update "symfony/*" --with-all-dependencies` 
+ 
+ 
+ ### Après une mise à jour de la base Dolibarr
+ - penser à refaire le processus d'activation de compte
+ - vider la base sqli contenant les questions secrètes (voir issue #35 )

@@ -48,13 +48,14 @@ body{
 h1, h2, h3, h4, h5, h6 {
     text-transform: none;
     letter-spacing: 0;
-    color: #47525E;
+    color: #1B1B1B;
 }
 h2 {
     font-size: 18px;
     text-transform: uppercase;
 }
 h3 {
+    font-family: Montserrat-semi-bold, sans-serif;
     font-size: 15px;
 }
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
@@ -154,6 +155,12 @@ button.btn-primary:hover{
 .eusko-btn {
     padding: 0.3rem 0.3rem;
 }
+small{
+    font-size: 90%;
+}
+.text-subtitle{
+    font-size: 1rem;
+}
 
 .prix{
     font-size: 13px;
@@ -173,22 +180,27 @@ button.btn-primary:hover{
 
 i { vertical-align: middle; }
 .footer {
-    border-top: 1px solid #E8E8E8;
+    border-top: 3px solid #F0F0F0;
     background-color: white;
-    color: #C0CCDA;
+   color: #1b1b1b;
     text-align: center;
     height: 60px;
+    padding-top: 6px;
+}
+.footer a{
+    font-family: Montserrat-semi-bold, Serif;
+    font-size: 12px;
 }
 main{
     margin-top: 60px;
     margin-bottom: 60px;
 }
 .footer i{
-    font-size: 24px;
-    color: #31506C;
+    font-size: 28px;
+    color: #1b1b1b;
 }
 .footer img{
-    width: 30px;
+    width: 28px;
 }
 .footer > .container {
     padding-right: 15px;
@@ -272,6 +284,29 @@ label.required:before {
     color: #fff;
     background-color: #41A528;
 }
+div.vertical-line{
+    width: 4px;
+    background-color: #f4f2f2;
+    height: 25px;
+    margin-left: 18px;
+    margin-bottom: 15px;
+}
+
+.waiting {
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+#1b1b1b
 div.vertical-line{
     width: 4px;
     background-color: #f4f2f2;

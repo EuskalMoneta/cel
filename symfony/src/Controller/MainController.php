@@ -47,6 +47,11 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_profil_cotisation');
         }
 
+        $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
+        if($responsePin['httpcode'] == 200 && $responsePin['data'] != 'ACTIVE') {
+            return $this->redirectToRoute('app_profil_pin');
+        }
+
         //init vars
         $operations = [];
         $montant_don = 0;
@@ -59,6 +64,11 @@ class MainController extends AbstractController
                 'compte' => $response['data']->result[0]->number,
                 'nom' => $response['data']->result[0]->owner->display,
                 'solde' => $response['data']->result[0]->status->balance
+            ];
+            $infosUser = [
+                'compte' => $response['data']->result[0]->number,
+                'nom' => $response['data']->result[0]->owner->display,
+                'solde' => 0
             ];
             /** @var User $user */
             $user = $this->getUser();

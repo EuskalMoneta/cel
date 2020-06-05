@@ -58,6 +58,7 @@ class SecurityController extends AbstractController
         return new RedirectResponse($targetPath);
     }
 
+
     /**
      * @Route("/creer-compte", name="app_creer_compte")
      */
@@ -99,15 +100,24 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $data = $form->getData();
             $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
-            if($response['httpcode'] == 200 && $response['data']->member == 'OK'){
-                $this->addFlash('success', 'Veuillez vérifier vos emails. Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.');
+
+            if($data['adherent'][0] == 'T'){
+                $this->addFlash('danger', 'Les comptes eusko en vacances n\'ont pas besoin d\'activation. Essayez de vous connecter ou de faire une réinitialisation de mot de passe.');
+            } elseif($response['httpcode'] == 200 && $response['data']->member == 'OK'){
+                return $this->render('security/firstLoginSuccess.html.twig', []);
             } else {
-                $this->addFlash('danger', 'Erreur de communication avec le serveur api : '.$response['data']->error);
+                if($response['data']->error == 'User already exist!'){
+                    $this->addFlash('danger', 'Ce compte semble être déjà activé, essayez de vous connecter ou faire une réinitialisation de mot de passe.');
+                } else {
+                    $this->addFlash('danger', 'Erreur : '.$response['data']->error);
+                }
             }
+
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => "Première connexion", 'form' => $form->createView()]);
+        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form->createView()]);
     }
 
     /**
@@ -217,7 +227,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
+        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
     }
 
     /**

@@ -2,22 +2,25 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block title %}{{ "Première connexion" | trans }}{% endblock %}
+{% block title %}{{ "Activer votre compte" | trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 mt-4">
 
-                <div class="mt-4">
+                <div class="mt-md-4">
+                    <div style="width: 80%">
+                        <h1 class="h3 mb-3">{{ title | trans }}</h1>
+                        <p class="text-subtitle">{{ "Pour commencer, nous avons besoin de quelques informations." | trans }}</p>
+                    </div>
                     <form method="post">
-
-                        <h1 class="h3 mb-3 font-weight-normal">{{ title | trans }}</h1>
-
                         {{ form(form) }}
-
-
                     </form>
+                </div>
+
+                <div class="alert  alert-info">
+                    {{ "Si vous avez un compte Vacances en eusko vous n'avez pas besoin d'activer votre compte" | trans }}
                 </div>
             </div>
         </div>

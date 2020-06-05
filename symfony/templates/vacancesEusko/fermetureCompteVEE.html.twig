@@ -12,31 +12,25 @@
                         <p class="text-subtitle">{{ "Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Plusieurs solutions sont possibles pour utiliser le solde de votre compte." | trans }}</p>
 
                         <h3 class="secondary-color mb-0"> {{ "Votre solde" | trans }}</h3>
-                        <div class="main-color big-solde" style="font-size: 30px"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
+                        <div class="main-color big-solde mb-4" style="font-size: 30px"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
 
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a href="{{ path('app_vee_fermeture_panier') }}">
-                                    <div class="eusko-cart p-3 mt-4 text-center">
-                                        <h3>{{ "Commander un panier paysan en livraison" | trans }}</h3>
-                                    </div>
+                        <div class="row text-center">
+                            <div class="col-sm-12 mb-4">
+                                <a href="{{ path('app_vee_fermeture_panier') }}" class="btn btn-outline-success">
+                                    {{ "Commander un panier paysan en livraison" | trans }}
                                 </a>
                             </div>
 
-                            <div class="col-sm-12">
-                                <a href="{{ path('app_vee_fermeture_don') }}">
-                                    <div class="eusko-cart p-3 mt-4 text-center">
-                                        <h3>{{ "Faire un don de tout ou partie de mon solde à l'Eusko" | trans }}</h3>
-                                    </div>
+                            <div class="col-sm-12 mb-4">
+                                <a href="{{ path('app_vee_fermeture_don') }}" class="btn btn-outline-success">
+                                    {{ "Faire un don de tout ou partie de mon solde à l'Eusko" | trans }}
                                 </a>
                             </div>
 
-                            <div class="col-sm-12">
-                                <a href="{{ path('app_vee_fermeture_solde') }}">
-                                    <div class="eusko-cart p-3 mt-4 text-center">
-                                        <h3>{{ "Récuperer le solde de mon compte" | trans }}</h3>
-                                    </div>
+                            <div class="col-sm-12 mb-4">
+                                <a href="{{ path('app_vee_fermeture_solde') }}" class="btn btn-outline-success">
+                                    {{ "Récuperer le solde de mon compte" | trans }}
                                 </a>
                             </div>
                         </div>

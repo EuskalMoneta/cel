@@ -72,11 +72,10 @@ class VacancesEuskoController extends AbstractController
     {
 
         $session->start();
-        dump($session->get('utilisateur'));
 
-        //todo: rendre public cet appel à l'api
         $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
         $tabCountries = [];
+
         foreach ($responseCountries['data'] as $country){
             $tabCountries[$country->label] = $country->id;
         }
@@ -86,7 +85,7 @@ class VacancesEuskoController extends AbstractController
             ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
             ->add('town', TextType::class, ['required' => true])
             ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone_mobile', TextType::class, ['required' => true])
+            ->add('phone_mobile', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
@@ -96,8 +95,7 @@ class VacancesEuskoController extends AbstractController
 
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
-
-
+            
             return $this->redirectToRoute('app_vee_etape3_justificatif');
         }
         return $this->render('vacancesEusko/etape2_coordonnees.html.twig', ['title' => "Coordonnées", 'form' => $form->createView()]);

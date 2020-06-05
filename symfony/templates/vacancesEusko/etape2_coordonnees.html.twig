@@ -28,7 +28,17 @@
 
 
 {% block js %}
+    <script src="{{ asset('js/jquery.mask.js') }}"></script>
     <script type="text/javascript">
+
+        $( document ).ready(function() {
+
+            $("#form_phone_mobile").mask('+00 0 00 00 00 00 00', {
+                placeholder: '+33 _ __ __ __ __ __'
+            });
+
+        });
+
 
         $('.basicAutoComplete').autoComplete({
             resolverSettings: {

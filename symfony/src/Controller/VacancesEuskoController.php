@@ -73,7 +73,7 @@ class VacancesEuskoController extends AbstractController
 
         $session->start();
 
-        $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
+        $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
         $tabCountries = [];
 
         foreach ($responseCountries['data'] as $country){

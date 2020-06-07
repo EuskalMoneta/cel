@@ -45,8 +45,8 @@ class VacancesEuskoController extends AbstractController
         $session->set('utilisateur', []);
 
         $form = $this->createFormBuilder()
-            ->add('nom', TextType::class, ['label' => 'Nom', 'required' => true, 'constraints' => [ new NotBlank(),]])
-            ->add('prenom', TextType::class, ['label' => 'Prénom', 'required' => true, 'constraints' => [ new NotBlank(),]])
+            ->add('lastname', TextType::class, ['label' => 'Nom', 'required' => true, 'constraints' => [ new NotBlank(),]])
+            ->add('firstname', TextType::class, ['label' => 'Prénom', 'required' => true, 'constraints' => [ new NotBlank(),]])
             ->add('email', EmailType::class, ['label' => 'Email', 'required' => true, 'constraints' => [ new NotBlank() ] ])
             ->add('valide', CheckboxType::class, ['label' => " ", 'required' => true])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
@@ -85,7 +85,7 @@ class VacancesEuskoController extends AbstractController
             ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
             ->add('town', TextType::class, ['required' => true])
             ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone_mobile', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33')])
+            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
@@ -160,7 +160,7 @@ class VacancesEuskoController extends AbstractController
             }
 
             $form = $this->createFormBuilder()
-                ->add('motDePasse', RepeatedType::class, [
+                ->add('password', RepeatedType::class, [
                     'first_options'  => ['label' => $translator->trans('Mot de passe')],
                     'second_options' => ['label' => $translator->trans('Confirmer le mot de passe')],
                     'constraints' => [
@@ -177,7 +177,7 @@ class VacancesEuskoController extends AbstractController
                     'choices' => $questions
                 ])
                 ->add('questionPerso', TextType::class, ['label' => $translator->trans('Votre question personnalisée'), 'required' => false])
-                ->add('reponse', TextType::class, [
+                ->add('answer', TextType::class, [
                     'label' => $translator->trans('Réponse'),
                     'required' => true,
                     'constraints' => [
@@ -190,20 +190,17 @@ class VacancesEuskoController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $parameters = [
-                    'new_password' => $data['motDePasse'],
-                    'confirm_password' => $data['motDePasse'],
-                    'answer' => $data['reponse'],
-                ];
+                $data = array_merge($session->get('utilisateur'), $data);
+                $session->set('utilisateur', $data);
 
                 if($data['questionSecrete'] == 'autre'){
-                    $parameters['question'] = $data['questionPerso'];
+                    $data['question'] = $data['questionPerso'];
                 } else {
-                    $parameters['question'] = $data['questionSecrete'];
+                    $data['question'] = $data['questionSecrete'];
                 }
 
                 //todo: Appel API création user
-                //$response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
+                $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte-vee/', $data);
                 /*$userData = array_merge($session->get('utilisateur'), $parameters);
                 $session->set('utilisateur', $userData);
                 dump($session->get('utilisateur'));*/
@@ -311,7 +308,7 @@ class VacancesEuskoController extends AbstractController
                 $dataCard = json_decode($checkID["data"]);
 
                 $naissance = $dataCard->holderDetail->birthDate;
-                $data['birth'] = $naissance->day.'/'.$naissance->month.'/'.$naissance->year;
+                $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
                 //todo API eusko upload image and profile
 
                 $dataU = array_merge($session->get('utilisateur'), ['document' => $docBase64], $data);

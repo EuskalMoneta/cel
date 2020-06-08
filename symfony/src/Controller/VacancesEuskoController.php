@@ -217,7 +217,7 @@ class VacancesEuskoController extends AbstractController
 
                 //todo : changer l'username par le retour de la fonction de création
                 $credentials['username'] = 'TOTO';
-                $credentials['password'] = $parameters['new_password'];
+                $credentials['password'] = $data['password'];
 
                 $user = $APIToolbox->autoLogin($credentials);
 
@@ -360,7 +360,6 @@ class VacancesEuskoController extends AbstractController
             $montantDon = $request->get('montantDon');
             $guard = $request->get('guard_check');
             if($guard == 'ok'){
-                //todo: a tester
                 $data = ['amount' => $montantDon, 'description' => $translator->trans('Don Euskal Moneta')];
                 $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virement-asso-mlc/', $data);
                 if($responseVirement['httpcode'] == 200) {
@@ -394,7 +393,6 @@ class VacancesEuskoController extends AbstractController
             $iban = str_replace(' ','', $request->get('iban'));
             $guard = $request->get('guard_check');
             if($guard == 'ok' && $this->isValidIBAN($iban)){
-                //todo: a tester
                 $data = ['amount' => $amount, 'description' => $translator->trans('Reconversion - fermeture compte')];
                 $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virement-asso-mlc/', $data);
                 if($responseVirement['httpcode'] == 200) {

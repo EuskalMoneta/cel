@@ -342,7 +342,7 @@ class ProfilController extends AbstractController
      */
     public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
     {
-        $response = $APIToolbox->curlRequest('GET', '/towns/?zipcode='.$request->get('q'));
+        $response = $APIToolbox->curlWithoutToken('GET', '/towns/?zipcode='.$request->get('q'));
         $tabBenef = [];
 
         if($response['httpcode'] == 200){

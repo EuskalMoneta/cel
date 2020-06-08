@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+
+
+                <div class="mt-md-4">
+                    <div style="width: 80%">
+                        <h1 style="font-size: 28px">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
+                        <div>{{ "ETAPE 1/5" | trans }}</div>
+                        <h1 class="mb-3">{{ title | trans }}</h1>
+                    </div>
+                    <form method="post">
+                        {{ form_start(form) }}
+
+                        {{ form_row(form.lastname) }}
+                        {{ form_row(form.firstname) }}
+                        {{ form_row(form.email) }}
+
+                        <div>
+
+                            {{ form_errors(form.valide) }}
+                            {{ form_widget(form.valide) }}
+                            <label style="margin-left: 20px;display: inline;top: -19px;position: relative;" for="{{ form.valide.vars.id }}">{{ "J'ai lu et je valide les" | trans }} <a href="{{ asset('images/CGU-Particuliers.pdf') }}" target="_blank" class=""> {{ "CGU Particuliers" | trans }}</a></label>
+                        </div>
+
+                        {{ form(form) }}
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

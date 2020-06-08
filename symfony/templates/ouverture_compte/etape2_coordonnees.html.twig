@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="width: 80%">
+                        <div>{{ "ETAPE 2/5" | trans }}</div>
+                        <h1 class="mb-3">{{ title | trans }}</h1>
+                    </div>
+                    <form method="post">
+
+                        {{ form(form) }}
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{{ asset('js/jquery.mask.js') }}"></script>
+    <script type="text/javascript">
+
+        $( document ).ready(function() {
+            $("#form_phone_mobile").mask('+00 0 00 00 00 00 00', {
+                placeholder: '+33 _ __ __ __ __ __'
+            });
+        });
+
+
+        $('.basicAutoComplete').autoComplete({
+            resolverSettings: {
+                url: '{{ path('app_ajex_zipcode_search') }}'
+            }
+        });
+
+        $('.basicAutoComplete').bind('autocomplete.select', function() {
+            var ziptown = $("#form_zip").val().split('--');
+            $("form_zip").val(ziptown[0]);
+            $(this).val(ziptown[0]);
+            $('#form_town').val(ziptown[1]);
+        });
+    </script>
+{% endblock %}
+

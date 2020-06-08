@@ -105,12 +105,12 @@
                     <div class="col-3">
                         {% if is_granted("ROLE_CLIENT") %}
                             <a href="{{ path('app_virement') }}">
-                                <img src="{{ asset('images/virement.png') }}">
+                                <img src="{{ asset('images/virement-icon.png') }}">
                                 <br /> {{"Virement" | trans }}
                             </a>
                         {% elseif is_granted("ROLE_TOURISTE") %}
                             <a href="{{ path('app_virement') }}">
-                                <img src="{{ asset('images/virement.png') }}">
+                                <img src="{{ asset('images/virement-icon.png') }}">
                                 <br /> {{"Paiment" | trans }}
                             </a>
                         {% endif %}
@@ -118,7 +118,7 @@
                     </div>
                     <div class="col-3">
                         <a href="{{ path('app_change') }}">
-                            <img src="{{ asset('images/change.png') }}">
+                            <img src="{{ asset('images/icon-change-3.png') }}">
                             <br /> {{"Change" | trans }}
                         </a>
                     </div>

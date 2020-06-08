@@ -211,54 +211,11 @@ class VacancesEuskoController extends AbstractController
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }*/
 
-                $credentials['username'] = 'E00098';
-                $credentials['password'] = 'E00098';
+                //todo : changer l'username par le retour de la fonction de création
+                $credentials['username'] = 'TOTO';
+                $credentials['password'] = $parameters['new_password'];
 
-                $tokenAPI = $APIToolbox->curlGetToken($credentials['username'], $credentials['password']);
-                $member = null;
-                if (strpos($credentials['username'], '@') === false) {
-                    $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$credentials['username'], '', $tokenAPI);
-                    if($responseMember['httpcode'] == 200) {
-                        $member = $responseMember['data'][0];
-                    }
-                } else {
-                    $responseMember = $APIToolbox->curlRequest('GET', '/members/?email='.$credentials['username'], '', $tokenAPI);
-                    if($responseMember['httpcode'] == 200) {
-                        $member = $responseMember['data'];
-                    }
-                }
-                if ($member != null) {
-                    $user = new User();
-                    $user->setUsername($member->login);
-                    $user->setLastLogin(new \DateTime());
-                    $user->setToken($tokenAPI);
-
-                    //User Roles
-                    if($user->getUsername()[0] == 'E'){
-                        $user->setRoles(['ROLE_CLIENT']);
-                    }
-                    elseif($user->getUsername()[0] == 'Z') {
-                        $user->setRoles(['ROLE_PARTENAIRE']);
-                    }
-                    elseif($user->getUsername()[0] == 'T') {
-                        $user->setRoles(['ROLE_TOURISTE']);
-                    }
-                    if($member->type == 'Régie publique de recettes'){
-                        $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
-                    }
-
-                    $user->setRoles(['ROLE_TOURISTE']);
-
-                    // set locale according to the language chosen by the user
-                    if($member->array_options->options_langue == 'eu'){
-                        $user->setLocale($member->array_options->options_langue);
-                    } else {
-                        $user->setLocale('fr');
-                    }
-                }
-                /*$providerKey = 'main'; // your firewall name
-                $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-                $this->container->get('security.context')->setToken($token);*/
+                $user = $APIToolbox->autoLogin($credentials);
 
                 return $guardAuthenticatorHandler
                     ->authenticateUserAndHandleSuccess(
@@ -267,7 +224,7 @@ class VacancesEuskoController extends AbstractController
                         $loginFormAuthenticator,
                         'main'
                     );
-                //$tokenInt = $authenticationManager->authenticate(new UsernamePasswordToken('E00098', 'E00098', 'main'));
+
             }
         }
         return $this->render('vacancesEusko/etape4_securite.html.twig', ['form' => $form->createView()]);

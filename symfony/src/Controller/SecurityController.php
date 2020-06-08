@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Validator\Constraints\Length;
@@ -123,7 +125,11 @@ class SecurityController extends AbstractController
     /**
      * @Route("/valide-premiere-connexion", name="app_valide_first_login")
      */
-    public function validateFirstLogin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): Response
+    public function validateFirstLogin(Request $request,
+                                       APIToolbox $APIToolbox,
+                                       TranslatorInterface $translator,
+                                       GuardAuthenticatorHandler $guardAuthenticatorHandler,
+                                       LoginFormAuthenticator $loginFormAuthenticator)
     {
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -179,9 +185,22 @@ class SecurityController extends AbstractController
                 }
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 
+
                 if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-                    $this->addFlash('success', 'Compte validé, vous pouvez vous connecter avec vos identifiants.');
-                    return $this->redirectToRoute('app_login');
+
+
+                    $credentials['username'] = 'TOTO';
+                    $credentials['password'] = $data['motDePasse'];
+
+                    $user = $APIToolbox->autoLogin($credentials);
+
+                    /*return $guardAuthenticatorHandler
+                        ->authenticateUserAndHandleSuccess(
+                            $user,
+                            $request,
+                            $loginFormAuthenticator,
+                            'main'
+                        );*/
                 } else {
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }

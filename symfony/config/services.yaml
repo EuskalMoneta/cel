@@ -32,3 +32,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: Promotion }
         public: true
+
+    admin.bonplan:
+        class: App\Admin\BonPlanAdmin
+        arguments: [~, App\Entity\BonPlan, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: BonPlans }
+        public: true

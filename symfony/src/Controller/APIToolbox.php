@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Security\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -243,6 +244,54 @@ class APIToolbox extends AbstractController
                 return ['status' => false, 'message' => $check->resultMsg];
         }
         return true;
+    }
+
+    public function autoLogin($credentials)
+    {
+        $tokenAPI = $this->curlGetToken($credentials['username'], $credentials['password']);
+        $member = null;
+        if (strpos($credentials['username'], '@') === false) {
+            $responseMember = $this->curlRequest('GET', '/members/?login='.$credentials['username'], '', $tokenAPI);
+            if($responseMember['httpcode'] == 200) {
+                $member = $responseMember['data'][0];
+            }
+        } else {
+            $responseMember = $this->curlRequest('GET', '/members/?email='.$credentials['username'], '', $tokenAPI);
+            if($responseMember['httpcode'] == 200) {
+                $member = $responseMember['data'];
+            }
+        }
+        if ($member != null) {
+            $user = new User();
+            $user->setUsername($member->login);
+            $user->setLastLogin(new \DateTime());
+            $user->setToken($tokenAPI);
+
+            //User Roles
+            if($user->getUsername()[0] == 'E'){
+                $user->setRoles(['ROLE_CLIENT']);
+            }
+            elseif($user->getUsername()[0] == 'Z') {
+                $user->setRoles(['ROLE_PARTENAIRE']);
+            }
+            elseif($user->getUsername()[0] == 'T') {
+                $user->setRoles(['ROLE_TOURISTE']);
+            }
+            if($member->type == 'Régie publique de recettes'){
+                $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
+            }
+            
+
+            // set locale according to the language chosen by the user
+            if($member->array_options->options_langue == 'eu'){
+                $user->setLocale($member->array_options->options_langue);
+            } else {
+                $user->setLocale('fr');
+            }
+        }
+
+        return $user;
+
     }
 
 

@@ -30,7 +30,7 @@ class MainController extends AbstractController
         if(! $membre->array_options->options_accepte_cgu_eusko_numerique){
             return $this->redirectToRoute('app_accept_cgu');
         }
-        
+
         // check si cotis automatique est activée sinon redirect to costisation
         if($membre->array_options->options_prelevement_auto_cotisation_eusko != 1 and $authChecker->isGranted('ROLE_CLIENT'))
         {

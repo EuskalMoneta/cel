@@ -173,6 +173,7 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200 or $responseProfile['httpcode'] == 202) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                        return $this->redirectToRoute('app_homepage');
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }

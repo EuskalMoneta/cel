@@ -280,7 +280,7 @@ class APIToolbox extends AbstractController
             if($member->type == 'Régie publique de recettes'){
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
             }
-            
+
 
             // set locale according to the language chosen by the user
             if($member->array_options->options_langue == 'eu'){

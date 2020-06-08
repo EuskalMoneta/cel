@@ -77,7 +77,11 @@ class VacancesEuskoController extends AbstractController
         $tabCountries = [];
 
         foreach ($responseCountries['data'] as $country){
-            $tabCountries[$country->label] = $country->id;
+            if($country->label == '-'){
+                $tabCountries[$country->label] = '';
+            } else {
+                $tabCountries[$country->label] = $country->id;
+            }
         }
 
         $form = $this->createFormBuilder()
@@ -95,7 +99,7 @@ class VacancesEuskoController extends AbstractController
 
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
-            
+
             return $this->redirectToRoute('app_vee_etape3_justificatif');
         }
         return $this->render('vacancesEusko/etape2_coordonnees.html.twig', ['title' => "Coordonnées", 'form' => $form->createView()]);

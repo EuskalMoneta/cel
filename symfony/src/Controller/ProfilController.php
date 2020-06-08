@@ -367,7 +367,11 @@ class ProfilController extends AbstractController
             $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
             $tabCountries = [];
             foreach ($responseCountries['data'] as $country){
-                $tabCountries[$country->label] = $country->id;
+                if($country->label == '-'){
+                    $tabCountries[$country->label] = '';
+                } else {
+                    $tabCountries[$country->label] = $country->id;
+                }
             }
 
             $builder = $this->createFormBuilder()

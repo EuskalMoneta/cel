@@ -103,15 +103,15 @@
                         </a>
                     </div>
                     <div class="col-3">
-                        {% if is_granted("ROLE_CLIENT") %}
-                            <a href="{{ path('app_virement') }}">
-                                <img src="{{ asset('images/virement-icon.png') }}">
-                                <br /> {{"Virement" | trans }}
-                            </a>
-                        {% elseif is_granted("ROLE_TOURISTE") %}
+                        {% if is_granted("ROLE_TOURISTE") %}
                             <a href="{{ path('app_virement') }}">
                                 <img src="{{ asset('images/virement-icon.png') }}">
                                 <br /> {{"Paiment" | trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_virement') }}">
+                                <img src="{{ asset('images/virement-icon.png') }}">
+                                <br /> {{"Virements" | trans }}
                             </a>
                         {% endif %}
 

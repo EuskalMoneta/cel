@@ -43,6 +43,9 @@ Faire une mise à jour de la base de données \
 
 Vérifier les permissions des dossiers var/cache var/log et public/uploads \
 
+Faire une mise à jour des assets \
+`php bin/console assets:install --symlink`
+
 
 ## Traductions
 

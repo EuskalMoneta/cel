@@ -185,22 +185,19 @@ class SecurityController extends AbstractController
                 }
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 
-
-                if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-
-
-                    $credentials['username'] = 'TOTO';
+                if ($response['httpcode'] == 200) {
+                    $credentials['username'] = $response['data']->login;
                     $credentials['password'] = $data['motDePasse'];
 
                     $user = $APIToolbox->autoLogin($credentials);
 
-                    /*return $guardAuthenticatorHandler
+                    return $guardAuthenticatorHandler
                         ->authenticateUserAndHandleSuccess(
                             $user,
                             $request,
                             $loginFormAuthenticator,
                             'main'
-                        );*/
+                        );
                 } else {
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }

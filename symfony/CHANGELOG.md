@@ -1,6 +1,14 @@
 # Changelog
 
-## Vacances en Eusko (04-2019)
+## CEL (06-2020)
+
+### Yousign
+- Nouveau vendor à installer pour YouSign WiziSignClient
+- Vérifier que wkhtmltopdf est bien installé, renseigner dans le .env.local le chemin du binaire
+- Ajout de l'API Yousign pour la signature de mandats SEPA. Nécessite l'ajout de deux variable d'env à copier
+  depuis .env vers .env.local (YOUSIGN_API_KEY et YOUSIGN_MODE)
+
+## Vacances en Eusko (04-2020)
 
 #### Enhancements:
 

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+
+
+                <div class="mt-md-4">
+                    <div style="width: 80%">
+                        <div>{{ "ETAPE 4/5" | trans }}</div>
+                        <h1 class="mb-3">{{ title | trans }}</h1>
+                        <p class="text-subtitle">{{ "Veuillez renseigner votre IBAN dans le formulaire ci dessous ainsi que le montant de votre change automatique." | trans }}</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 mt-4">
+
+                            {{ form(form) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{{ asset('js/jquery.mask.js') }}"></script>
+    <script type="text/javascript">
+
+        $( document ).ready(function() {
+            $('#form_options_iban').mask('SS00 0000 0000 0000 0000 0000 000', {
+                placeholder: '____ ____ ____ ____ ____ ____ ___'
+            });
+        });
+
+    </script>
+{% endblock %}
+
+

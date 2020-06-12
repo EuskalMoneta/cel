@@ -203,7 +203,7 @@ class VacancesEuskoController extends AbstractController
 
                 $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte-vee/', $data);
 
-                if($response['httpcode'] == 200){
+                if($response['httpcode'] == 201){
                     $credentials['username'] = $response['data']->login;
                     $credentials['password'] = $data['password'];
 

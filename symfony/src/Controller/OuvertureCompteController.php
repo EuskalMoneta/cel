@@ -296,15 +296,17 @@ class OuvertureCompteController extends AbstractController
     {
         $session->start();
 
-        //récupérer le SEPA signé
+        //récupérer le SEPA signé et le stocker en session
         $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
 
         $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_API_KEY']);
         $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
 
-        dump($file);
+        $data = array_merge($session->get('utilisateur'), ['sepa' => $file]);
+        $session->set('utilisateur', $data);
 
 
+        //on continue avec le mot de passe et la question secrète
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
 
@@ -344,9 +346,6 @@ class OuvertureCompteController extends AbstractController
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                $data = array_merge($session->get('utilisateur'), $data);
-                $session->set('utilisateur', $data);
 
                 if($data['questionSecrete'] == 'autre'){
                     $data['question'] = $data['questionPerso'];
@@ -354,31 +353,28 @@ class OuvertureCompteController extends AbstractController
                     $data['question'] = $data['questionSecrete'];
                 }
 
-                //todo: Appel API création user
                 $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte-vee/', $data);
-                /*$userData = array_merge($session->get('utilisateur'), $parameters);
-                $session->set('utilisateur', $userData);
-                dump($session->get('utilisateur'));*/
-                /*if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-                    $this->addFlash('success', 'Compte validé, vous pouvez vous connecter avec vos identifiants.');
-                    return $this->redirectToRoute('app_login');
+
+                if($response['httpcode'] == 201){
+                    $credentials['username'] = $response['data']->login;
+                    $credentials['password'] = $data['password'];
+
+                    $user = $APIToolbox->autoLogin($credentials);
+
+                    //Route pour la redirection après login
+                    $session->set('_security.main.target_path', $this->generateUrl('app_homepage'));
+
+                    return $guardAuthenticatorHandler
+                        ->authenticateUserAndHandleSuccess(
+                            $user,
+                            $request,
+                            $loginFormAuthenticator,
+                            'main'
+                        );
                 } else {
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
-                }*/
+                }
 
-                //todo : changer l'username par le retour de la fonction de création
-                $credentials['username'] = 'TOTO';
-                $credentials['password'] = $data['password'];
-
-                $user = $APIToolbox->autoLogin($credentials);
-
-                return $guardAuthenticatorHandler
-                    ->authenticateUserAndHandleSuccess(
-                        $user,
-                        $request,
-                        $loginFormAuthenticator,
-                        'main'
-                    );
 
             }
         }

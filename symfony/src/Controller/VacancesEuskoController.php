@@ -111,9 +111,8 @@ class VacancesEuskoController extends AbstractController
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
     {
         $session->start();
-        dump($session->get('utilisateur'));
 
-        if($session->get('compteur') < 4){
+        if($session->get('compteur') < 5){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [
                     'label' => ' ',
@@ -152,7 +151,6 @@ class VacancesEuskoController extends AbstractController
     {
 
         $session->start();
-        //dump($session->get('utilisateur'));
 
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -203,31 +201,28 @@ class VacancesEuskoController extends AbstractController
                     $data['question'] = $data['questionSecrete'];
                 }
 
-                //todo: Appel API création user
                 $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte-vee/', $data);
-                /*$userData = array_merge($session->get('utilisateur'), $parameters);
-                $session->set('utilisateur', $userData);
-                dump($session->get('utilisateur'));*/
-                /*if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-                    $this->addFlash('success', 'Compte validé, vous pouvez vous connecter avec vos identifiants.');
-                    return $this->redirectToRoute('app_login');
+
+                if($response['httpcode'] == 200){
+                    $credentials['username'] = $response['data']->login;
+                    $credentials['password'] = $data['password'];
+
+                    $user = $APIToolbox->autoLogin($credentials);
+
+                    //Route pour la redirection après login
+                    $session->set('_security.main.target_path', $this->generateUrl('app_vee_etape4_success'));
+
+                    return $guardAuthenticatorHandler
+                        ->authenticateUserAndHandleSuccess(
+                            $user,
+                            $request,
+                            $loginFormAuthenticator,
+                            'main'
+                        );
                 } else {
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
-                }*/
+                }
 
-                //todo : changer l'username par le retour de la fonction de création
-                $credentials['username'] = 'TOTO';
-                $credentials['password'] = $data['password'];
-
-                $user = $APIToolbox->autoLogin($credentials);
-
-                return $guardAuthenticatorHandler
-                    ->authenticateUserAndHandleSuccess(
-                        $user,
-                        $request,
-                        $loginFormAuthenticator,
-                        'main'
-                    );
 
             }
         }
@@ -262,6 +257,7 @@ class VacancesEuskoController extends AbstractController
             $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
 
             $session->set('compteur', $session->get('compteur') + 1);
+
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
             } elseif ($checkID['httpcode'] == 200){
@@ -270,15 +266,13 @@ class VacancesEuskoController extends AbstractController
 
                 $naissance = $dataCard->holderDetail->birthDate;
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
-                //todo API eusko upload image and profile
 
                 $dataU = array_merge($session->get('utilisateur'), ['document' => $docBase64], $data);
                 $session->set('utilisateur', $dataU);
 
-                dump($dataCard);
                 $response = $APIToolbox->go_nogo($checkID["data"]);
-
-                dump($response);
+            } else {
+                $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
             }
 
         } else {

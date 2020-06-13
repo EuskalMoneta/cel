@@ -247,7 +247,12 @@ class OuvertureCompteController extends AbstractController
         $session->start();
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
-            ->add('options_iban', TextType::class, ['required' => false, 'label' => $translator->trans("IBAN")])
+            ->add('options_iban', TextType::class, [
+                'required' => true,
+                'label' => $translator->trans("IBAN"),
+                'constraints' => [
+                    new NotBlank(),
+                ]])
             ->add('options_prelevement_change_montant', NumberType::class,
                 [
                     'required' => true,

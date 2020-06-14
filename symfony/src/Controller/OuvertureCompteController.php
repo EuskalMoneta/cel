@@ -247,13 +247,13 @@ class OuvertureCompteController extends AbstractController
         $session->start();
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
-            ->add('options_iban', TextType::class, [
+            ->add('iban', TextType::class, [
                 'required' => true,
                 'label' => $translator->trans("IBAN"),
                 'constraints' => [
                     new NotBlank(),
                 ]])
-            ->add('options_prelevement_change_montant', NumberType::class,
+            ->add('automatic_change_amount', NumberType::class,
                 [
                     'required' => true,
                     'label' => $translator->trans($translator->trans("Montant mensuel (minimum 20)")),
@@ -270,8 +270,7 @@ class OuvertureCompteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
-
-            $iban = str_replace(' ', '', $data['options_iban']);
+            $iban = str_replace(' ', '', $data['iban']);
             if ($vacancesEuskoController->isValidIBAN($iban)) {
                 $data = array_merge($session->get('utilisateur'), $data);
                 $session->set('utilisateur', $data);
@@ -307,7 +306,7 @@ class OuvertureCompteController extends AbstractController
         $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_API_KEY']);
         $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
 
-        $data = array_merge($session->get('utilisateur'), ['sepa' => $file]);
+        $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
         $session->set('utilisateur', $data);
 
 
@@ -351,6 +350,9 @@ class OuvertureCompteController extends AbstractController
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $data = array_merge($session->get('utilisateur'), $data);
+                $session->set('utilisateur', $data);
 
                 if($data['questionSecrete'] == 'autre'){
                     $data['question'] = $data['questionPerso'];
@@ -358,7 +360,7 @@ class OuvertureCompteController extends AbstractController
                     $data['question'] = $data['questionSecrete'];
                 }
 
-                $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte-vee/', $data);
+                $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte/', $data);
 
                 if($response['httpcode'] == 201){
                     $credentials['username'] = $response['data']->login;

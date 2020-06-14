@@ -267,7 +267,7 @@ class VacancesEuskoController extends AbstractController
                 $naissance = $dataCard->holderDetail->birthDate;
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
 
-                $dataU = array_merge($session->get('utilisateur'), ['document' => $docBase64], $data);
+                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64], $data);
                 $session->set('utilisateur', $dataU);
 
                 $response = $APIToolbox->go_nogo($checkID["data"]);

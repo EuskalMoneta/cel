@@ -75,7 +75,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture/compte/signature/sepa", name="ouverture_compte_signature_sepa")
+     * @Route("/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
      */
     public function index(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf)
     {
@@ -136,7 +136,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture/compte/validation-sepa", name="ouverture_compte_validation_sepa")
+     * @Route("/ouverture-compte/validation-sepa", name="ouverture_compte_validation_sepa")
      */
     public function validationSepa()
     {
@@ -144,7 +144,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture/compte/identite", name="app_ouverture_etape1_identite")
+     * @Route("/ouverture-compte", name="app_ouverture_etape1_identite")
      */
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session)
     {
@@ -173,7 +173,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture/compte/coordonnees", name="app_compte_etape2_coordonnees")
+     * @Route("/ouverture-compte/coordonnees", name="app_compte_etape2_coordonnees")
      */
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
     {
@@ -213,7 +213,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture/compte/justificatif", name="app_compte_etape3_justificatif")
+     * @Route("/ouverture-compte/justificatif", name="app_compte_etape3_justificatif")
      */
     public function etape3justificatif(SessionInterface $session)
     {
@@ -241,7 +241,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture/compte/sepa", name="app_compte_etape4_sepa")
+     * @Route("/ouverture-compte/sepa", name="app_compte_etape4_sepa")
      */
     public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
@@ -287,7 +287,7 @@ class OuvertureCompteController extends AbstractController
 
 
     /**
-     * @Route("/ouverture/compte/securite", name="app_compte_etape5_securite")
+     * @Route("/ouverture-compte/securite", name="app_compte_etape5_securite")
      */
     public function etape5Securite(APIToolbox $APIToolbox,
                                    EntityManagerInterface $em,
@@ -389,11 +389,4 @@ class OuvertureCompteController extends AbstractController
 
     }
 
-    /**
-     * @Route("/ouverture/compte/bienvenue", name="app_compte_etape5_success")
-     */
-    public function etape5Success(APIToolbox $APIToolbox, Request $request)
-    {
-        return $this->render('ouverture_compte/etape5_success.html.twig', ['title' => "Bienvenue"]);
-    }
 }

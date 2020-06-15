@@ -36,9 +36,8 @@ security:
         - { path: ^/anon/language/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/webhook, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/creer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/activer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/vacances-en-eusko, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/ouverture/compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/ouverture-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/ajax/zipcode, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/vacances-en-eusko/coordonnees, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }

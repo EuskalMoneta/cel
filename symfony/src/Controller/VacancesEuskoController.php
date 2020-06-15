@@ -253,7 +253,8 @@ class VacancesEuskoController extends AbstractController
 
         if($file){
             $session->set('compteur', $session->get('compteur') + 1);
-            $docBase64 = base64_encode(file_get_contents($file->getPathname()));
+
+            $docBase64 = 'data:'.$file->getMimeType().';base64,'.base64_encode(file_get_contents($file->getPathname()));
             $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
 
             $session->set('compteur', $session->get('compteur') + 1);

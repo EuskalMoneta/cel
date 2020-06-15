@@ -77,7 +77,7 @@ class OuvertureCompteController extends AbstractController
     /**
      * @Route("/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
      */
-    public function index(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf)
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf)
     {
         $session->start();
         $user = $session->get('utilisateur');
@@ -130,17 +130,8 @@ class OuvertureCompteController extends AbstractController
 
         return $this->render('ouverture_compte/etape4_signature_sepa.html.twig', [
             'memberToken' => $member->id,
-            'webHook' => $identifiantWebHook,
-            'controller_name' => 'OuvertureCompteController',
+            'webHook' => $identifiantWebHook
         ]);
-    }
-
-    /**
-     * @Route("/ouverture-compte/validation-sepa", name="ouverture_compte_validation_sepa")
-     */
-    public function validationSepa()
-    {
-
     }
 
     /**

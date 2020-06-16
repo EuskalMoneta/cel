@@ -119,14 +119,20 @@ class OuvertureCompteController extends AbstractController
 
         //etape 5 lancement de la procédure
         $response = $youSignClient->AdvancedProcedurePut();
+        $status = json_decode($response)->status;
+        if($status == 'active'){
+            //on enregistre l'id du fichier pour le récuperer signé plus tard
+            $webHook->setFile(json_decode($responseFile)->id);
+            $em->persist($webHook);
+            $em->flush();
 
-        //on enregistre l'id du fichier pour le récuperer signé plus tard
-        $webHook->setFile(json_decode($responseFile)->id);
-        $em->persist($webHook);
-        $em->flush();
+            //On sauvegarde en session l'ID du webHook
+            $session->set('idWebHookEvent', $webHook->getId());
+        } else {
+            $this->addFlash('warning', 'Erreur lors de la création de la signature électronique');
+            $identifiantWebHook = 0;
+        }
 
-        //On sauvegarde en session l'ID du webHook
-        $session->set('idWebHookEvent', $webHook->getId());
 
         return $this->render('ouverture_compte/etape4_signature_sepa.html.twig', [
             'memberToken' => $member->id,

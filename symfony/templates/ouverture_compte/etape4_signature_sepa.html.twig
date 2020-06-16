@@ -9,7 +9,17 @@
             <h1 class="mb-3">{{ "Change automatique" | trans }}</h1>
         </div>
 
+        {% if webHook != 0 %}
         <iframe src="https://staging-app.yousign.com/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>
+        {% else %}
+            <br />
+            <br />
+            <br />
+            <br />
+            <div class="text-center">
+                <a class="btn btn-outline-primary" href="{{ path('ouverture_compte_signature_sepa') }}"> Recharger la page </a>
+            </div>
+        {% endif %}
 
     </div>
 {% endblock %}

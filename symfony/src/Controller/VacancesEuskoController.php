@@ -253,8 +253,8 @@ class VacancesEuskoController extends AbstractController
 
         if($file){
             $session->set('compteur', $session->get('compteur') + 1);
-
-            $docBase64 = 'data:'.$file->getMimeType().';base64,'.base64_encode(file_get_contents($file->getPathname()));
+            
+            $docBase64 = base64_encode(file_get_contents($file->getPathname()));
             $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
 
             $session->set('compteur', $session->get('compteur') + 1);
@@ -268,6 +268,7 @@ class VacancesEuskoController extends AbstractController
                 $naissance = $dataCard->holderDetail->birthDate;
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
 
+                $docBase64 = 'data:'.$file->getMimeType().';base64,'.base64_encode(file_get_contents($file->getPathname()));
                 $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64], $data);
                 $session->set('utilisateur', $dataU);
 

@@ -973,6 +973,30 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>Nom</source>
         <target>Nom</target>
       </trans-unit>
+      <trans-unit id="saasEkU20" resname="Birth">
+        <source>Birth</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="saaeZU20" resname="Address">
+        <source>Address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="sa87U20" resname="Zip">
+        <source>Zip</source>
+        <target>Code postal</target>
+      </trans-unit>
+      <trans-unit id="szdZU20" resname="Town">
+        <source>Town</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="4aazd20" resname="Country id">
+        <source>Country id</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="saapo0" resname="Phone mobile">
+        <source>Phone mobile</source>
+        <target>Téléphone</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

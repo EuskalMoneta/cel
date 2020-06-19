@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\WebHookEvent;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonSchema\Constraints\NumberConstraint;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -30,6 +31,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WiziYousignClient\WiziSignClient;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OuvertureCompteController extends AbstractController
 {
@@ -324,6 +326,18 @@ class OuvertureCompteController extends AbstractController
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max'=> 12]),
+                    ],
+                    'type' => PasswordType::class,
+                    'options' => ['attr' => ['class' => 'password-field']],
+                    'required' => true,
+                ])
+                ->add('pin1', RepeatedType::class, [
+                    'first_options'  => ['label' => 'Code pin (4 chiffres)'],
+                    'second_options' => ['label' => 'Confirmer le code'],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Assert\Positive(),
+                        new Length(['min' => 4, 'max'=> 4]),
                     ],
                     'type' => PasswordType::class,
                     'options' => ['attr' => ['class' => 'password-field']],

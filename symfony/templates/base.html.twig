@@ -30,7 +30,10 @@
     {% block menu_top %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('app_homepage') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+                <a class="navbar-brand" href="{{ path('app_homepage') }}">
+                    <img src="{% if is_granted("ROLE_TOURISTE") %} {{ asset('images/logo-vee.png') }}{% else %}{{ asset('images/logo-eusko-topbar.png') }}{% endif %}" alt="eusko logo" style="width: 60px;">
+
+                </a>
                 <div class="navbar-right">
 
                     {% if app.user %}
@@ -106,7 +109,7 @@
                         {% if is_granted("ROLE_TOURISTE") %}
                             <a href="{{ path('app_virement') }}">
                                 <img src="{{ asset('images/virement-icon.png') }}">
-                                <br /> {{"Paiment" | trans }}
+                                <br /> {{"Paiement" | trans }}
                             </a>
                         {% else %}
                             <a href="{{ path('app_virement') }}">

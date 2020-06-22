@@ -26,11 +26,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
-                <h2 class="secondary-color mb-2">{{ 'Profil' | trans }} >  {{ 'Cotisation' | trans }}</h2>
+                <h2 class="secondary-color mb-2">{{ 'Profil' | trans }} >  {{ "Ma cotisation à l'eusko"| trans }}</h2>
 
                 {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}
 
-                <p>{{ "Ma cotisation est prélevée automatiquement sur mon compte Eusko" | trans }}</p>
+                <p>{{ "Ma cotisation est prélevée automatiquement sur mon compte eusko" | trans }}</p>
                 {{ form(form) }}
             </div>
         </div>

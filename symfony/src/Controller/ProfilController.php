@@ -236,7 +236,7 @@ class ProfilController extends AbstractController
                     'expanded' => true,
                     'choices' => [
                         'Annuel' => '12',
-                        'Mensuel (le 15 du mois)' => '1',
+                        'Mensuel (entre le 10 et le 15 du mois)' => '1',
                     ],
                     'data' => round($membre->array_options->options_prelevement_cotisation_periodicite, 0)
                 ])

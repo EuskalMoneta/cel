@@ -1,9 +1,8 @@
 <p style="font-size: 14px">
-    {{"Cotisation" | trans }} :
     {% if (date(membre.last_subscription_date_end) > date('now') ) %}
-        <i class="fa fa-check green" style="font-size: 18px;"></i> {{"À jour" | trans }}
+        <i class="fa fa-check green" style="font-size: 18px;"></i> {{"À jour" | trans }} {{ "depuis le " }} {{ membre.last_subscription_date | localizeddate('medium', 'none') }}
     {% else %}
         <i class="fa fa-times" style="font-size: 18px;"></i> {{"Non à jour" | trans }}
     {% endif %}
-    ({{ membre.last_subscription_date_end | localizeddate('medium', 'none') }})
+
 </p>

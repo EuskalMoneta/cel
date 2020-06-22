@@ -93,8 +93,9 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-6 offset-md-3 mt-4">
+            <div class="col-12 col-md-6 offset-md-3 ">
                 <div class="mt-md-4">
+                    <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte "Vacances en eusko"' | trans }}</h1>
                     <div style="">
                         <div>{{ "ETAPE 3/4" | trans }}</div>
                         <h1 class="mb-3">{{ title | trans }}</h1>
@@ -130,7 +131,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="submit" class="btn btn-outline-primary" value="{{ "Valider" | trans }}">
+                                        <input type="submit" class="btn btn-outline-sucess" value="{{ "Valider" | trans }}">
                                     </div>
                                 </form>
                             </div>

@@ -68,7 +68,7 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/vacances-en-eusko/coordonnees", name="app_vee_etape2_coordonnees")
      */
-    public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
+    public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
 
         $session->start();
@@ -89,7 +89,7 @@ class VacancesEuskoController extends AbstractController
             ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
             ->add('town', TextType::class, ['required' => true])
             ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33')])
+            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33'), 'help' => $translator->trans("Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.")])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
@@ -133,7 +133,7 @@ class VacancesEuskoController extends AbstractController
 
 
             }
-            return $this->render('vacancesEusko/etape3_justificatif.html.twig', ['title' => "Justificatif", 'form' => $form->createView()]);
+            return $this->render('vacancesEusko/etape3_justificatif.html.twig', ['title' => "Pièce d'identité", 'form' => $form->createView()]);
         }
         return $this->render('vacancesEusko/etape3_erreur.html.twig');
     }
@@ -152,7 +152,7 @@ class VacancesEuskoController extends AbstractController
 
         $session->start();
 
-        $questions = ['' => '','autre' => 'autre'];
+        $questions = ['' => ''];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
 
         if($response['httpcode'] == 200){
@@ -160,6 +160,7 @@ class VacancesEuskoController extends AbstractController
             foreach ($response['data'] as $question){
                 $questions[$question->question]=$question->question;
             }
+            $questions['Question personalisée'] = 'autre';
 
             $form = $this->createFormBuilder()
                 ->add('password', RepeatedType::class, [
@@ -259,6 +260,8 @@ class VacancesEuskoController extends AbstractController
 
             $session->set('compteur', $session->get('compteur') + 1);
 
+            /*dump($checkID);
+            dump($_ENV['IDCHECK_AUTH']);*/
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
             } elseif ($checkID['httpcode'] == 200){

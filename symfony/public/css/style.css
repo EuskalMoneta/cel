@@ -58,6 +58,17 @@ h3 {
     font-family: Montserrat-semi-bold, sans-serif;
     font-size: 15px;
 }
+.col-form-label {
+    padding-top: calc(0.75rem + 0px);
+    padding-bottom: calc(0.75rem + 0px);
+    margin-bottom: 0;
+    font-size: 22px;
+    line-height: 1.5;
+}
+legend {
+    font-family: Montserrat, sans-serif;
+
+}
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
 .text-semi-bold { font-family: 'Montserrat-semi-bold', Arial, sans-serif;}
 .text-light { font-family: 'Montserrat-light', Arial, sans-serif;}
@@ -80,6 +91,14 @@ h3 {
 .threepersecond {
     font-size: 16px;
     color: white;
+}
+.sur-titre-ouverture{
+    font-size: 23px;
+    color: #41a528;
+    text-transform: uppercase;
+}
+.text-muted {
+    color: #7b848a !important;
 }
 
 .eusko-cart{
@@ -337,7 +356,7 @@ a{font-weight: 700;}
     content: "Selectar";
 }
 .custom-file-input:lang(fr) ~ .custom-file-label::after {
-    content: "Choisir Fichier";
+    content: "Parcourir";
 }
 /* position outside */
 .flickity-prev-next-button.previous {

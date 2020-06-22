@@ -383,7 +383,7 @@ class OuvertureCompteController extends AbstractController
                     $user = $APIToolbox->autoLogin($credentials);
 
                     //Route pour la redirection après login
-                    $session->set('_security.main.target_path', $this->generateUrl('app_homepage'));
+                    $session->set('_security.main.target_path', $this->generateUrl('app_compte_etape5_sucess'));
 
                     return $guardAuthenticatorHandler
                         ->authenticateUserAndHandleSuccess(
@@ -401,6 +401,14 @@ class OuvertureCompteController extends AbstractController
         }
         return $this->render('ouverture_compte/etape5_securite.html.twig', ['form' => $form->createView()]);
 
+    }
+
+    /**
+     * @Route("/ouverture-compte/bienvenue", name="app_compte_etape5_sucess")
+     */
+    public function etape5Success(APIToolbox $APIToolbox, Request $request)
+    {
+        return $this->render('ouverture_compte/etape5_success.html.twig', ['title' => "Bienvenue"]);
     }
 
 }

@@ -8,10 +8,14 @@
                 <h1 class="secondary-color mb-0"> {{ "Bon plans" | trans }}</h1>
 
                 <div class="row">
-                    {% for i in 1..15 %}
+                    {% for bonplan in bonsplans %}
                     <div class="col-md-6 col-sm-12">
                         <div class="main-carousel pt-3 mb-4">
-                            <img src="{{ asset('images/bonplanexemple.png') }}" width="100%" />
+                            <a href="{{ path('app_bons_plans_show', {'id': bonplan.id} ) }}">
+
+                                <img src="{{ asset(bonplan.getWebPath) }}" class="d-block w-100" alt="" />
+
+                            </a>
                         </div>
 
                     </div>

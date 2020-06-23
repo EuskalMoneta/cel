@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\BonPlan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 
 /**
  * @method BonPlan|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,19 +23,21 @@ class BonPlanRepository extends ServiceEntityRepository
     // /**
     //  * @return BonPlan[] Returns an array of BonPlan objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findAccueil()
     {
+        $date = new \DateTime("now");
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('b.dateDebut <= :val')
+            ->andWhere('b.dateFin >= :val2')
+            ->setParameter('val', $date)
+            ->setParameter('val2', $date)
             ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            //->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?BonPlan

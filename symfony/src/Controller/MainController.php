@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -22,7 +23,7 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker)
+    public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker, EntityManagerInterface $em)
     {
         //Check if CGU are accepted, redirect otherwise
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -32,8 +33,7 @@ class MainController extends AbstractController
         }
 
         // check si cotis automatique est activée sinon redirect to costisation
-        if($membre->array_options->options_prelevement_auto_cotisation_eusko != 1 and $authChecker->isGranted('ROLE_CLIENT'))
-        {
+        if($membre->array_options->options_prelevement_auto_cotisation_eusko != 1 and $authChecker->isGranted('ROLE_CLIENT')) {
             return $this->redirectToRoute('app_profil_cotisation');
         }
 
@@ -46,6 +46,8 @@ class MainController extends AbstractController
         $operations = [];
         $montant_don = 0;
         $boolMandatATT = false;
+        $bonPlans = $em->getRepository('App:BonPlan')->findAccueil();
+        shuffle ($bonPlans);
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
@@ -88,7 +90,14 @@ class MainController extends AbstractController
             }
 
 
-            return $this->render('main/index.html.twig', ['infosUser' => $infosUser, 'operations' => $operations, 'montant_don' => $montant_don, 'boolMandatATT' =>$boolMandatATT]);
+            return $this->render('main/index.html.twig', [
+                'infosUser' => $infosUser,
+                'operations' => $operations,
+                'bonPlans' => $bonPlans,
+                'montant_don' => $montant_don,
+                'boolMandatATT' =>$boolMandatATT
+            ]
+            );
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

@@ -9,7 +9,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 final class BonPlanAdmin extends AbstractAdmin
 {
@@ -28,13 +30,25 @@ final class BonPlanAdmin extends AbstractAdmin
 
             // add a 'help' option containing the preview's img tag
             $fileFieldOptions['help'] = '<img src="'.$fullPath.'" style="max-height: 300px;max-width: 300px;"/>';
+            $fileFieldOptions['label'] = 'Image miniature';
         }
 
         $formMapper
             ->add('titre')
-            ->add('visible')
+            ->add('dateDebut', DatePickerType::class)
+            ->add('dateFin', DatePickerType::class)
+
             ->add('file', FileType::class, $fileFieldOptions)
-        ;
+            ->add('descriptifOffre', TextareaType::class, array(
+                    'attr' => array('class' => 'ckeditor'),
+                    'required' => false)
+            )
+            ->add('descriptionComplet', TextareaType::class, array(
+                    'attr' => array('class' => 'ckeditor'),
+                    'required' => false)
+            )
+            ->add('visible');
+
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
@@ -43,14 +57,17 @@ final class BonPlanAdmin extends AbstractAdmin
             ->add('id')
             ->add('image')
             ->add('updated')
-            ;
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
-            ->addIdentifier('image');
+            ->addIdentifier('titre')
+            ->add('dateDebut')
+            ->add('dateFin')
+            ->add('visible');
     }
 
 

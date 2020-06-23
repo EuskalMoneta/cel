@@ -4,7 +4,10 @@ sonata_admin:
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
-
+    templates:
+        layout:               'standard_layout.html.twig'
+        search:               'SonataAdminBundle:Core:search.html.twig'
+        search_result_block:  'SonataAdminBundle:Block:block_search_result.html.twig'
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:

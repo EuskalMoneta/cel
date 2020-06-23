@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BonPlanRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class BonPlan
 {
@@ -120,6 +121,11 @@ class BonPlan
     public function getWebPath()
     {
         return 'uploads/bonplan/'.$this->getImage();
+    }
+
+    public function __toString()
+    {
+        return $this->titre;
     }
 
     /**

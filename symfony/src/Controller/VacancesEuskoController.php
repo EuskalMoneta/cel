@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\BonPlan;
 use App\Security\LoginFormAuthenticator;
 use App\Security\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -293,15 +295,17 @@ class VacancesEuskoController extends AbstractController
      */
     public function bonsplans(EntityManagerInterface $em)
     {
-        return $this->render('vacancesEusko/bonsPlans.html.twig');
+        $bonsplans = $em->getRepository("App:BonPlan")->findBy(['visible' => true], ['dateDebut'=> 'DESC']);
+        return $this->render('vacancesEusko/bonsPlans.html.twig', ['bonsplans' => $bonsplans]);
     }
 
     /**
-     * @Route("/bons-plans/12", name="app_bons_plans_show")
+     * @Route("/bons-plans/{id}", name="app_bons_plans_show")
+     * @ParamConverter(name="bonPlan", class="App\Entity\BonPlan")
      */
-    public function showOneBonPlan(EntityManagerInterface $em)
+    public function showOneBonPlan(BonPlan $bonPlan, EntityManagerInterface $em)
     {
-        return $this->render('vacancesEusko/voirUnBonPlan.html.twig');
+        return $this->render('vacancesEusko/voirUnBonPlan.html.twig', ['bonplan' => $bonPlan]);
     }
 
     /**

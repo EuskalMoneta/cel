@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
@@ -104,7 +105,8 @@ class OuvertureCompteController extends AbstractController
             ],
             true,
             'GET',
-            $this->generateUrl('ouverture_web_hook'),
+            //'http://af5dff98a2aa.ngrok.io/eusko/cel/symfony/public/index.php/webhook',
+            $this->generateUrl('ouverture_web_hook', [], UrlGeneratorInterface::ABSOLUTE_URL),
             $identifiantWebHook
         );
 

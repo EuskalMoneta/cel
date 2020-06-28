@@ -322,7 +322,7 @@ class OuvertureCompteController extends AbstractController
             foreach ($response['data'] as $question){
                 $questions[$question->question]=$question->question;
             }
-            $questions['Question personalisée'] = 'autre';
+            $questions['Question personnalisée'] = 'autre';
 
             $form = $this->createFormBuilder()
                 ->add('password', RepeatedType::class, [
@@ -337,7 +337,7 @@ class OuvertureCompteController extends AbstractController
                     'required' => true,
                 ])
                 ->add('pin_code', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Code pin (4 chiffres)'],
+                    'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
                     'second_options' => ['label' => 'Confirmer le code'],
                     'constraints' => [
                         new NotBlank(),
@@ -349,7 +349,7 @@ class OuvertureCompteController extends AbstractController
                     'required' => true,
                 ])
                 ->add('questionSecrete', ChoiceType::class, [
-                    'label' => $translator->trans('Votre question secrète'),
+                    'label' => $translator->trans('Question secrète'),
                     'required' => true,
                     'choices' => $questions
                 ])

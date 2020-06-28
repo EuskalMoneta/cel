@@ -937,6 +937,34 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>Nom</source>
         <target>Nom</target>
       </trans-unit>
+      <trans-unit id="Murrb4B" resname="Birth">
+        <source>Birth</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="Vu_PIJV" resname="Address">
+        <source>Address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="e8iOu20" resname="Zip">
+        <source>Zip</source>
+        <target>Code postal</target>
+      </trans-unit>
+      <trans-unit id="OQ8lE0u" resname="Town">
+        <source>Town</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="PXV_XpD" resname="Country id">
+        <source>Country id</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="9x4K2dK" resname="Phone mobile">
+        <source>Phone mobile</source>
+        <target>Téléphone portable</target>
+      </trans-unit>
+      <trans-unit id="Y9zriAC" resname="Phone">
+        <source>Phone</source>
+        <target>Téléphone portable</target>
+      </trans-unit>
       <trans-unit id="k.FuAlz" resname="Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.">
         <source>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</source>
         <target>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</target>

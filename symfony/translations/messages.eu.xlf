@@ -1127,6 +1127,34 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
         <source>Nom</source>
         <target>Izena</target>
       </trans-unit>
+      <trans-unit id="Murrb4B" resname="Birth">
+        <source>Birth</source>
+        <target>Sorteguna</target>
+      </trans-unit>
+      <trans-unit id="Vu_PIJV" resname="Address">
+        <source>Address</source>
+        <target>Helbidea</target>
+      </trans-unit>
+      <trans-unit id="e8iOu20" resname="Zip">
+        <source>Zip</source>
+        <target>Posta kodea</target>
+      </trans-unit>
+      <trans-unit id="OQ8lE0u" resname="Town">
+        <source>Town</source>
+        <target>Herria</target>
+      </trans-unit>
+      <trans-unit id="PXV_XpD" resname="Country id">
+        <source>Country id</source>
+        <target>Herrialdea</target>
+      </trans-unit>
+      <trans-unit id="9x4K2dK" resname="Phone mobile">
+        <source>Phone mobile</source>
+        <target>Sakelako telefonoa</target>
+      </trans-unit>
+      <trans-unit id="Y9zriAC" resname="Phone">
+        <source>Phone</source>
+        <target>Sakelako telefonoa</target>
+      </trans-unit>
       <trans-unit id="fEHltnT" resname="Change en ligne via HelloAsso">
         <source>Change en ligne via HelloAsso</source>
         <target>HelloAssoren bidez linean trukea</target>

@@ -336,7 +336,7 @@ class OuvertureCompteController extends AbstractController
                     'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
                 ])
-                ->add('pin1', RepeatedType::class, [
+                ->add('pin_code', RepeatedType::class, [
                     'first_options'  => ['label' => 'Code pin (4 chiffres)'],
                     'second_options' => ['label' => 'Confirmer le code'],
                     'constraints' => [

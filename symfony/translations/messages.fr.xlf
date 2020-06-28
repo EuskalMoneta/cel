@@ -353,10 +353,6 @@
         <source>J’ai oublié mon mot de passe</source>
         <target>J’ai oublié mon mot de passe</target>
       </trans-unit>
-      <trans-unit id="7T1kxVt" resname="C'est votre première connexion">
-        <source>C'est votre première connexion</source>
-        <target>C'est votre première connexion</target>
-      </trans-unit>
       <trans-unit id="6FEu59A" resname="Conditions Générales d'Utilisation">
         <source>Conditions Générales d'Utilisation</source>
         <target>Conditions Générales d'Utilisation</target>
@@ -525,10 +521,6 @@
         <source>Créditer mon compte</source>
         <target>Créditer mon compte</target>
       </trans-unit>
-      <trans-unit id="z4tnY_a" resname="Change en ligne via hello asso">
-        <source>Change en ligne via hello asso</source>
-        <target>Change en ligne via hello asso</target>
-      </trans-unit>
       <trans-unit id="S_MhFjG" resname="Bon à savoir">
         <source>Bon à savoir</source>
         <target>Bon à savoir</target>
@@ -544,10 +536,6 @@
       <trans-unit id="UzFhc1Y" resname="Accueil">
         <source>Accueil</source>
         <target>Accueil</target>
-      </trans-unit>
-      <trans-unit id="5Y8P_g5" resname="Virement">
-        <source>Virement</source>
-        <target>Virement</target>
       </trans-unit>
       <trans-unit id="wL91vXi" resname="Change">
         <source>Change</source>
@@ -596,14 +584,6 @@
       <trans-unit id="mg7CjM5" resname="Supprimer le bénéficiaire">
         <source>Supprimer le bénéficiaire</source>
         <target>Supprimer le bénéficiaire</target>
-      </trans-unit>
-      <trans-unit id="eLaXNdP" resname="Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :">
-        <source>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</source>
-        <target>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
-      </trans-unit>
-      <trans-unit id="KFjk34P" resname="Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
-        <source>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
-        <target>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
       </trans-unit>
       <trans-unit id="r1f52Zb" resname="N° Adhérent-e ou e-mail">
         <source>N° Adhérent-e ou e-mail</source>
@@ -755,7 +735,7 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>Nouveau mot de passe</source>
         <target>Nouveau mot de passe</target>
       </trans-unit>
-      <trans-unit id="iD6_." resname="Confirmer le nouveau mot de passe">
+      <trans-unit id="iD6_.__" resname="Confirmer le nouveau mot de passe">
         <source>Confirmer le nouveau mot de passe</source>
         <target>Confirmer le nouveau mot de passe</target>
       </trans-unit>
@@ -803,17 +783,9 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>Votre IBAN n'est pas valide</source>
         <target>Votre IBAN n'est pas valide</target>
       </trans-unit>
-      <trans-unit id="dUoivWP" resname="Paiment">
-        <source>Paiment</source>
-        <target>Paiment</target>
-      </trans-unit>
       <trans-unit id="OjP9hGm" resname="Bons plans">
         <source>Bons plans</source>
         <target>Bons plans</target>
-      </trans-unit>
-      <trans-unit id="eU_tngg" resname="ETAPE 3/3">
-        <source>ETAPE 3/3</source>
-        <target>ETAPE 3/3</target>
       </trans-unit>
       <trans-unit id="yPLoWHM" resname="Echec vérification">
         <source>Echec vérification</source>
@@ -885,10 +857,6 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>ETAPE 4/4</source>
         <target>ETAPE 4/4</target>
       </trans-unit>
-      <trans-unit id="kdJ0tJO" resname="Choisissez un mot de passe pour sécuriser l'accès à votre compte.">
-        <source>Choisissez un mot de passe pour sécuriser l'accès à votre compte.</source>
-        <target>Choisissez un mot de passe pour sécuriser l'accès à votre compte.</target>
-      </trans-unit>
       <trans-unit id="P7uwklW" resname="Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire.">
         <source>Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire.</source>
         <target>Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire.</target>
@@ -924,10 +892,6 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="gM63Ica" resname="CGU Particuliers">
         <source>CGU Particuliers</source>
         <target>CGU Particuliers</target>
-      </trans-unit>
-      <trans-unit id="GCv0UW2" resname="Clotûre compte">
-        <source>Clotûre compte</source>
-        <target>Clotûre compte</target>
       </trans-unit>
       <trans-unit id="Mp1mdQ." resname="Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Plusieurs solutions sont possibles pour utiliser le solde de votre compte.">
         <source>Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Plusieurs solutions sont possibles pour utiliser le solde de votre compte.</source>
@@ -972,34 +936,6 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="ssEkU20" resname="Nom">
         <source>Nom</source>
         <target>Nom</target>
-      </trans-unit>
-      <trans-unit id="Murrb4B" resname="Birth">
-        <source>Birth</source>
-        <target>Date de naissance</target>
-      </trans-unit>
-      <trans-unit id="Vu_PIJV" resname="Address">
-        <source>Address</source>
-        <target>Adresse</target>
-      </trans-unit>
-      <trans-unit id="e8iOu20" resname="Zip">
-        <source>Zip</source>
-        <target>Code postal</target>
-      </trans-unit>
-      <trans-unit id="OQ8lE0u" resname="Town">
-        <source>Town</source>
-        <target>Ville</target>
-      </trans-unit>
-      <trans-unit id="PXV_XpD" resname="Country id">
-        <source>Country id</source>
-        <target>Pays</target>
-      </trans-unit>
-      <trans-unit id="9x4K2dK" resname="Phone mobile">
-        <source>Phone mobile</source>
-        <target>Téléphone portable</target>
-      </trans-unit>
-      <trans-unit id="Y9zriAC" resname="Phone">
-        <source>Phone</source>
-        <target>Téléphone portable</target>
       </trans-unit>
       <trans-unit id="k.FuAlz" resname="Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.">
         <source>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</source>
@@ -1086,10 +1022,6 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="PVYuYXt" resname="Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez">
         <source>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</source>
         <target>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</target>
-      </trans-unit>
-      <trans-unit id="CWc.ar." resname="Code pin">
-        <source>Code pin</source>
-        <target>Code pin</target>
       </trans-unit>
       <trans-unit id="DA.SaY0" resname="Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.">
         <source>Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.</source>
@@ -1182,6 +1114,30 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="5v9mnd9" resname="Téléchargez et utilisez l'application euskopay">
         <source>Téléchargez et utilisez l'application euskopay</source>
         <target>Téléchargez et utilisez l'application euskopay</target>
+      </trans-unit>
+      <trans-unit id="NQrmk5." resname="Choisissez le mot de passe pour sécuriser l'accès à votre compte.">
+        <source>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</source>
+        <target>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</target>
+      </trans-unit>
+      <trans-unit id="nUsUX1i" resname="Code PIN">
+        <source>Code PIN</source>
+        <target>Code PIN</target>
+      </trans-unit>
+      <trans-unit id="HRTEh3Y" resname="Clôture compte">
+        <source>Clôture compte</source>
+        <target>Clôture compte</target>
+      </trans-unit>
+      <trans-unit id="fEHltnT" resname="Change en ligne via HelloAsso">
+        <source>Change en ligne via HelloAsso</source>
+        <target>Change en ligne via HelloAsso</target>
+      </trans-unit>
+      <trans-unit id="NuqqZDX" resname="Vous allez être redirigé vers HelloAsso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :">
+        <source>Vous allez être redirigé vers HelloAsso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</source>
+        <target>Vous allez être redirigé vers HelloAsso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
+      </trans-unit>
+      <trans-unit id="bMuG88." resname="Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
+        <source>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
+        <target>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
       </trans-unit>
     </body>
   </file>

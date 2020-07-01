@@ -86,7 +86,7 @@ class OuvertureCompteController extends AbstractController
         $user = $session->get('utilisateur');
 
         //on démarre le client YouSign
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_API_KEY']);
+        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
 
         //Création d'un identifiant unique qui permet de récupérer le webHook yousign dans la vue
         $identifiantWebHook = time();

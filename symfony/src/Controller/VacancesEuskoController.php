@@ -162,7 +162,7 @@ class VacancesEuskoController extends AbstractController
             foreach ($response['data'] as $question){
                 $questions[$question->question]=$question->question;
             }
-            $questions['Question personalisée'] = 'autre';
+            $questions['Question personnalisée'] = 'autre';
 
             $form = $this->createFormBuilder()
                 ->add('password', RepeatedType::class, [
@@ -176,8 +176,20 @@ class VacancesEuskoController extends AbstractController
                     'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
                 ])
+                ->add('pin_code', RepeatedType::class, [
+                    'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
+                    'second_options' => ['label' => 'Confirmer le code'],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Assert\Positive(),
+                        new Length(['min' => 4, 'max'=> 4]),
+                    ],
+                    'type' => PasswordType::class,
+                    'options' => ['attr' => ['class' => 'password-field']],
+                    'required' => true,
+                ])
                 ->add('questionSecrete', ChoiceType::class, [
-                    'label' => $translator->trans('Votre question secrète'),
+                    'label' => $translator->trans('Question secrète'),
                     'required' => true,
                     'choices' => $questions
                 ])

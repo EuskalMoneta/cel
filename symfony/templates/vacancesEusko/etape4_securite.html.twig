@@ -12,7 +12,9 @@
                 <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte "Vacances en eusko"' | trans }}</h1>
                 <div style="">
                     <div>{{ "ETAPE 4/4" | trans }}</div>
-                    <h1 class="mb-3">{{ "Mot de passe" | trans }}</h1>
+                    <h1 class="mb-3">{{ "Sécurité" | trans }}</h1>
+
+                    <h1 class="h3 mt-4 font-weight-normal">{{ "Mot de passe" | trans }}</h1>
                     <p class="text-subtitle">{{ "Choisissez le mot de passe pour sécuriser l'accès à votre compte." | trans }}</p>
                     {{ form_start(form) }}
                     {% if  form_errors(form) != '' %}
@@ -27,8 +29,7 @@
                         </div>
                     </div>
 
-                    <h1 class="h3 mt-4 font-weight-normal">{{ "Votre question secrète" | trans }}</h1>
-                    <p class="text-subtitle">{{"Celle-ci vous permettra de retrouver votre mot de passe en toute sécurité." | trans }}</p>
+                    <p class="text-subtitle">{{"Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez" | trans }}</p>
 
                     <div class="row">
                         <div class="col">
@@ -47,6 +48,16 @@
                             {{ form_row(form.answer) }}
                         </div>
                     </div>
+
+                    <h1 class="h3 mt-4 font-weight-normal">{{ "Code PIN" | trans }}</h1>
+                    <p class="text-subtitle">{{"Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong>euskopay</strong> ou <strong>euskokart</strong>." | trans | raw }}</p>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.pin_code) }}
+                        </div>
+                    </div>
+
+
 
 
                     {{ form_end(form) }}

@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 class VacancesEuskoController extends AbstractController
 {

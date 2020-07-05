@@ -167,7 +167,7 @@
       </trans-unit>
       <trans-unit id="x.rDjcp" resname="Vous recevrez un email pour chaque virement reçu.">
         <source>Vous recevrez un email pour chaque virement reçu.</source>
-        <target>Vous recevrez un email pour chaque virement reçu.</target>
+        <target>Vous recevrez un e-mail pour chaque virement reçu.</target>
       </trans-unit>
       <trans-unit id="aGXfOD2" resname="Prélèvement effectué sur votre compte">
         <source>Prélèvement effectué sur votre compte</source>
@@ -175,7 +175,7 @@
       </trans-unit>
       <trans-unit id="AhQy8Sp" resname="Vous recevrez un email pour chaque prélèvement effectué sur votre compte.">
         <source>Vous recevrez un email pour chaque prélèvement effectué sur votre compte.</source>
-        <target>Vous recevrez un email pour chaque prélèvement effectué sur votre compte.</target>
+        <target>Vous recevrez un e-mail pour chaque prélèvement effectué sur votre compte.</target>
       </trans-unit>
       <trans-unit id="nZ7fwPa" resname="Mon solde">
         <source>Mon solde</source>
@@ -353,10 +353,6 @@
         <source>J’ai oublié mon mot de passe</source>
         <target>J’ai oublié mon mot de passe</target>
       </trans-unit>
-      <trans-unit id="7T1kxVt" resname="C'est votre première connexion">
-        <source>C'est votre première connexion</source>
-        <target>C'est votre première connexion</target>
-      </trans-unit>
       <trans-unit id="6FEu59A" resname="Conditions Générales d'Utilisation">
         <source>Conditions Générales d'Utilisation</source>
         <target>Conditions Générales d'Utilisation</target>
@@ -525,10 +521,6 @@
         <source>Créditer mon compte</source>
         <target>Créditer mon compte</target>
       </trans-unit>
-      <trans-unit id="z4tnY_a" resname="Change en ligne via hello asso">
-        <source>Change en ligne via hello asso</source>
-        <target>Change en ligne via hello asso</target>
-      </trans-unit>
       <trans-unit id="S_MhFjG" resname="Bon à savoir">
         <source>Bon à savoir</source>
         <target>Bon à savoir</target>
@@ -544,10 +536,6 @@
       <trans-unit id="UzFhc1Y" resname="Accueil">
         <source>Accueil</source>
         <target>Accueil</target>
-      </trans-unit>
-      <trans-unit id="5Y8P_g5" resname="Virement">
-        <source>Virement</source>
-        <target>Virement</target>
       </trans-unit>
       <trans-unit id="wL91vXi" resname="Change">
         <source>Change</source>
@@ -597,17 +585,9 @@
         <source>Supprimer le bénéficiaire</source>
         <target>Supprimer le bénéficiaire</target>
       </trans-unit>
-      <trans-unit id="eLaXNdP" resname="Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :">
-        <source>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</source>
-        <target>Vous allez être redirigé vers Hello Asso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
-      </trans-unit>
-      <trans-unit id="KFjk34P" resname="Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
-        <source>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
-        <target>Le service d'Hello Asso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
-      </trans-unit>
-      <trans-unit id="zERDC9z" resname="N° Adhérent-e ou Email">
-        <source>N° Adhérent-e ou Email</source>
-        <target>N° Adhérent-e ou Email</target>
+      <trans-unit id="r1f52Zb" resname="N° Adhérent-e ou e-mail">
+        <source>N° Adhérent-e ou e-mail</source>
+        <target>N° Adhérent-e ou e-mail</target>
       </trans-unit>
       <trans-unit id="PyeE.aC" resname="Activer votre compte">
         <source>Activer votre compte</source>
@@ -746,6 +726,446 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="VVKb_u3" resname="existait déjà">
         <source>existait déjà</source>
         <target>existait déjà</target>
+      </trans-unit>
+      <trans-unit id="ooszjiG" resname="Je souhaite afficher les bons plans proposés par l'Eusko. ">
+        <source>Je souhaite afficher les bons plans proposés par l'Eusko. </source>
+        <target>Je souhaite afficher les bons plans proposés par l'Eusko. </target>
+      </trans-unit>
+      <trans-unit id="o9ZcpWl" resname="Nouveau mot de passe">
+        <source>Nouveau mot de passe</source>
+        <target>Nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="iD6_.__" resname="Confirmer le nouveau mot de passe">
+        <source>Confirmer le nouveau mot de passe</source>
+        <target>Confirmer le nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="oKgULux" resname="Votre question personnalisée">
+        <source>Votre question personnalisée</source>
+        <target>Votre question personnalisée</target>
+      </trans-unit>
+      <trans-unit id="xCq6OBS" resname="Réponse">
+        <source>Réponse</source>
+        <target>Réponse</target>
+      </trans-unit>
+      <trans-unit id="NxG8b.B" resname="Identité">
+        <source>Identité</source>
+        <target>Identité</target>
+      </trans-unit>
+      <trans-unit id="SQlNO6e" resname="Confirmer le mot de passe">
+        <source>Confirmer le mot de passe</source>
+        <target>Confirmer le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="_dPSs9R" resname="Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)">
+        <source>Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)</source>
+        <target>Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)</target>
+      </trans-unit>
+      <trans-unit id="k_aUmwq" resname="Don Euskal Moneta">
+        <source>Don Euskal Moneta</source>
+        <target>Don Euskal Moneta</target>
+      </trans-unit>
+      <trans-unit id="LMN3VtZ" resname="Don effectué">
+        <source>Don effectué</source>
+        <target>Don effectué</target>
+      </trans-unit>
+      <trans-unit id="Hmd5H7C" resname="Le don n'a pas pu être effectué">
+        <source>Le don n'a pas pu être effectué</source>
+        <target>Le don n'a pas pu être effectué</target>
+      </trans-unit>
+      <trans-unit id="ZXd8QBl" resname="Reconversion - fermeture compte">
+        <source>Reconversion - fermeture compte</source>
+        <target>Reconversion - fermeture compte</target>
+      </trans-unit>
+      <trans-unit id="eamw0Pt" resname="La fermeture du compte n'a pas pu être effectuée. ">
+        <source>La fermeture du compte n'a pas pu être effectuée. </source>
+        <target>La fermeture du compte n'a pas pu être effectuée. </target>
+      </trans-unit>
+      <trans-unit id="SSdbVhL" resname="Votre IBAN n'est pas valide">
+        <source>Votre IBAN n'est pas valide</source>
+        <target>Votre IBAN n'est pas valide</target>
+      </trans-unit>
+      <trans-unit id="OjP9hGm" resname="Bons plans">
+        <source>Bons plans</source>
+        <target>Bons plans</target>
+      </trans-unit>
+      <trans-unit id="yPLoWHM" resname="Echec vérification">
+        <source>Echec vérification</source>
+        <target>Echec vérification</target>
+      </trans-unit>
+      <trans-unit id="GQyYXio" resname="Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.">
+        <source>Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.</source>
+        <target>Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.</target>
+      </trans-unit>
+      <trans-unit id="0OV9pZd" resname="Vous pouvez contacter le support téléphonique :&lt;br /&gt;">
+        <source>Vous pouvez contacter le support téléphonique :&lt;br /&gt;</source>
+        <target><![CDATA[Vous pouvez contacter le support téléphonique :<br />]]></target>
+      </trans-unit>
+      <trans-unit id="rH9Swgi" resname="- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h">
+        <source>- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h</source>
+        <target>- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h</target>
+      </trans-unit>
+      <trans-unit id="t.Fqbn_" resname="- en écrivant à support@euskalmoneta.org">
+        <source>- en écrivant à support@euskalmoneta.org</source>
+        <target>- en écrivant à support@euskalmoneta.org</target>
+      </trans-unit>
+      <trans-unit id="Y1sdWG0" resname="ETAPE 3/4">
+        <source>ETAPE 3/4</source>
+        <target>ETAPE 3/4</target>
+      </trans-unit>
+      <trans-unit id="Po3.G8h" resname="Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;&#10;                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;&#10;                        - Le document ne doit pas être flou &lt;br /&gt;&#10;                        - Votre photo doit apparaître sur le document &lt;br /&gt;">
+        <source>Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;
+                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;
+                        - Le document ne doit pas être flou &lt;br /&gt;
+                        - Votre photo doit apparaître sur le document &lt;br /&gt;</source>
+        <target><![CDATA[Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.<br /><br />
+                        Vous pouvez importer un scan ou une photo de votre <b>carte d'identité</b> ou de votre <b>passeport</b> : <br /><br />
+                        - Le document ne doit pas être flou <br />
+                        - Votre photo doit apparaître sur le document <br />]]></target>
+      </trans-unit>
+      <trans-unit id="ciioopi" resname="Importer votre pièce d'identité">
+        <source>Importer votre pièce d'identité</source>
+        <target>Importer votre pièce d'identité</target>
+      </trans-unit>
+      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
+        <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
+        <target>Au format .jpg .png ou .pdf, maximum 4 Mo</target>
+      </trans-unit>
+      <trans-unit id="gRJLECI" resname="Panier paysan">
+        <source>Panier paysan</source>
+        <target>Panier paysan</target>
+      </trans-unit>
+      <trans-unit id="SZg8UuI" resname="Commandez un panier paysan avec le reste de vos eusko, il pourra vous être livré etc...">
+        <source>Commandez un panier paysan avec le reste de vos eusko, il pourra vous être livré etc...</source>
+        <target>Commandez un panier paysan avec le reste de vos eusko, il pourra vous être livré etc...</target>
+      </trans-unit>
+      <trans-unit id="l9S_iWB" resname="Conditions">
+        <source>Conditions</source>
+        <target>Conditions</target>
+      </trans-unit>
+      <trans-unit id="Eq55v_O" resname="Fermeture compte">
+        <source>Fermeture compte</source>
+        <target>Fermeture compte</target>
+      </trans-unit>
+      <trans-unit id="N4RjcWX" resname="A bientôt">
+        <source>A bientôt</source>
+        <target>A bientôt</target>
+      </trans-unit>
+      <trans-unit id=".vUt8lZ" resname="Votre compte est cloturé merci de votre participation.">
+        <source>Votre compte est cloturé merci de votre participation.</source>
+        <target>Votre compte est cloturé merci de votre participation.</target>
+      </trans-unit>
+      <trans-unit id="xcGxmDu" resname="ETAPE 4/4">
+        <source>ETAPE 4/4</source>
+        <target>ETAPE 4/4</target>
+      </trans-unit>
+      <trans-unit id="P7uwklW" resname="Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire.">
+        <source>Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire.</source>
+        <target>Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire.</target>
+      </trans-unit>
+      <trans-unit id="10MHBUC" resname="Confirmation">
+        <source>Confirmation</source>
+        <target>Confirmation</target>
+      </trans-unit>
+      <trans-unit id="kNtbrgE" resname="Êtes-vous sur de vouloir fermer votre compte ?">
+        <source>Êtes-vous sur de vouloir fermer votre compte ?</source>
+        <target>Êtes-vous sur de vouloir fermer votre compte ?</target>
+      </trans-unit>
+      <trans-unit id="grV147a" resname="ETAPE 2/4">
+        <source>ETAPE 2/4</source>
+        <target>ETAPE 2/4</target>
+      </trans-unit>
+      <trans-unit id="mz6YrhM" resname="Bon plans">
+        <source>Bon plans</source>
+        <target>Bon plans</target>
+      </trans-unit>
+      <trans-unit id="AOIVPR9" resname="ETAPE 1/4">
+        <source>ETAPE 1/4</source>
+        <target>ETAPE 1/4</target>
+      </trans-unit>
+      <trans-unit id="egZRM_r" resname="Ouverture de votre compte &quot;Vacances en eusko&quot;">
+        <source>Ouverture de votre compte "Vacances en eusko"</source>
+        <target>Ouverture de votre compte "Vacances en eusko"</target>
+      </trans-unit>
+      <trans-unit id="QeyeLI6" resname="J'ai lu et je valide les">
+        <source>J'ai lu et je valide les</source>
+        <target>J'ai lu et je valide les</target>
+      </trans-unit>
+      <trans-unit id="gM63Ica" resname="CGU Particuliers">
+        <source>CGU Particuliers</source>
+        <target>CGU Particuliers</target>
+      </trans-unit>
+      <trans-unit id="Mp1mdQ." resname="Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Plusieurs solutions sont possibles pour utiliser le solde de votre compte.">
+        <source>Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Plusieurs solutions sont possibles pour utiliser le solde de votre compte.</source>
+        <target>Vos vacances sont finies ? Merci pour votre utilisation de l'eusko. Plusieurs solutions sont possibles pour utiliser le solde de votre compte.</target>
+      </trans-unit>
+      <trans-unit id="ii32qJx" resname="Votre solde">
+        <source>Votre solde</source>
+        <target>Votre solde</target>
+      </trans-unit>
+      <trans-unit id="uUWDqrq" resname="Commander un panier paysan en livraison">
+        <source>Commander un panier paysan en livraison</source>
+        <target>Commander un panier paysan en livraison</target>
+      </trans-unit>
+      <trans-unit id="AVFOBID" resname="Faire un don de tout ou partie de mon solde à l'Eusko">
+        <source>Faire un don de tout ou partie de mon solde à l'Eusko</source>
+        <target>Faire un don de tout ou partie de mon solde à l'Eusko</target>
+      </trans-unit>
+      <trans-unit id="v_NjIYi" resname="Récuperer le solde de mon compte">
+        <source>Récuperer le solde de mon compte</source>
+        <target>Récuperer le solde de mon compte</target>
+      </trans-unit>
+      <trans-unit id="BuCoPQF" resname="Charger votre compte">
+        <source>Charger votre compte</source>
+        <target>Charger votre compte</target>
+      </trans-unit>
+      <trans-unit id="Vp6jxGO" resname="clotûrer mon compte">
+        <source>clotûrer mon compte</source>
+        <target>clotûrer mon compte</target>
+      </trans-unit>
+      <trans-unit id="anSUEIT" resname="Bienvenue dans votre compte eusko !">
+        <source>Bienvenue dans votre compte eusko !</source>
+        <target>Bienvenue dans votre compte eusko !</target>
+      </trans-unit>
+      <trans-unit id="UEMAa7O" resname="Créditer votre compte pour commencer à l'utiliser">
+        <source>Créditer votre compte pour commencer à l'utiliser</source>
+        <target>Créditer votre compte pour commencer à l'utiliser</target>
+      </trans-unit>
+      <trans-unit id="CV0vG6U" resname="Charger mon compte">
+        <source>Charger mon compte</source>
+        <target>Charger mon compte</target>
+      </trans-unit>
+      <trans-unit id="ssEkU20" resname="Nom">
+        <source>Nom</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="Murrb4B" resname="Birth">
+        <source>Birth</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="Vu_PIJV" resname="Address">
+        <source>Address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="e8iOu20" resname="Zip">
+        <source>Zip</source>
+        <target>Code postal</target>
+      </trans-unit>
+      <trans-unit id="OQ8lE0u" resname="Town">
+        <source>Town</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="PXV_XpD" resname="Country id">
+        <source>Country id</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="9x4K2dK" resname="Phone mobile">
+        <source>Phone mobile</source>
+        <target>Téléphone portable</target>
+      </trans-unit>
+      <trans-unit id="Y9zriAC" resname="Phone">
+        <source>Phone</source>
+        <target>Téléphone portable</target>
+      </trans-unit>
+      <trans-unit id="k.FuAlz" resname="Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.">
+        <source>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</source>
+        <target>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</target>
+      </trans-unit>
+      <trans-unit id="YLSMTWU" resname="Le document n'est pas valide.">
+        <source>Le document n'est pas valide.</source>
+        <target>Le document n'est pas valide.</target>
+      </trans-unit>
+      <trans-unit id="5S.zyKA" resname="Pièce d'identité">
+        <source>Pièce d'identité</source>
+        <target>Pièce d'identité</target>
+      </trans-unit>
+      <trans-unit id="F8TCC51" resname="Montant du change automatique mensuel (minimum 20 eusko)">
+        <source>Montant du change automatique mensuel (minimum 20 eusko)</source>
+        <target>Montant du change automatique mensuel (minimum 20 eusko)</target>
+      </trans-unit>
+      <trans-unit id="9ExyRDW" resname="Coordonnées du compte à prélever (IBAN)">
+        <source>Coordonnées du compte à prélever (IBAN)</source>
+        <target>Coordonnées du compte à prélever (IBAN)</target>
+      </trans-unit>
+      <trans-unit id="efC3Aaq" resname="Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.">
+        <source>Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.</source>
+        <target>Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.</target>
+      </trans-unit>
+      <trans-unit id="pwLqjHU" resname="Change automatique mensuel">
+        <source>Change automatique mensuel</source>
+        <target>Change automatique mensuel</target>
+      </trans-unit>
+      <trans-unit id="XZ6eROG" resname="Paiement">
+        <source>Paiement</source>
+        <target>Paiement</target>
+      </trans-unit>
+      <trans-unit id="fsTn4lI" resname="Virements">
+        <source>Virements</source>
+        <target>Virements</target>
+      </trans-unit>
+      <trans-unit id="QyNZIY0" resname="ETAPE 3/5">
+        <source>ETAPE 3/5</source>
+        <target>ETAPE 3/5</target>
+      </trans-unit>
+      <trans-unit id="dH.5NlO" resname="Ouverture de votre compte eusko">
+        <source>Ouverture de votre compte eusko</source>
+        <target>Ouverture de votre compte eusko</target>
+      </trans-unit>
+      <trans-unit id="IlPIIeV" resname="La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.">
+        <source>La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.</source>
+        <target>La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.</target>
+      </trans-unit>
+      <trans-unit id="hhhB2ZW" resname="ETAPE 4/5">
+        <source>ETAPE 4/5</source>
+        <target>ETAPE 4/5</target>
+      </trans-unit>
+      <trans-unit id="HGUWuyo" resname="Pour que vous soyez sûr-e d'avoir des eusko tous les mois sur votre compte, nous vous demandons de mettre en place un change automatique mensuel d'au moins 20 eusko. Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois et votre compte eusko sera crédité du même montant sous 24h (hors week-end).&#10;&lt;br /&gt;&lt;br /&gt;Notre conseil : commencez avec 50 eusko par mois, et bien sûr, vous pourrez modifier le montant de ce change automatique à tout moment sur votre compte en ligne !">
+        <source>Pour que vous soyez sûr-e d'avoir des eusko tous les mois sur votre compte, nous vous demandons de mettre en place un change automatique mensuel d'au moins 20 eusko. Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois et votre compte eusko sera crédité du même montant sous 24h (hors week-end).
+&lt;br /&gt;&lt;br /&gt;Notre conseil : commencez avec 50 eusko par mois, et bien sûr, vous pourrez modifier le montant de ce change automatique à tout moment sur votre compte en ligne !</source>
+        <target><![CDATA[Pour que vous soyez sûr-e d'avoir des eusko tous les mois sur votre compte, nous vous demandons de mettre en place un change automatique mensuel d'au moins 20 eusko. Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois et votre compte eusko sera crédité du même montant sous 24h (hors week-end).
+<br /><br />Notre conseil : commencez avec 50 eusko par mois, et bien sûr, vous pourrez modifier le montant de ce change automatique à tout moment sur votre compte en ligne !]]></target>
+      </trans-unit>
+      <trans-unit id="eUO7o44" resname="Félicitations, votre compte eusko est bien ouvert !">
+        <source>Félicitations, votre compte eusko est bien ouvert !</source>
+        <target>Félicitations, votre compte eusko est bien ouvert !</target>
+      </trans-unit>
+      <trans-unit id="0pSUrwh" resname="Il ne vous reste plus qu’à choisir le montant de votre cotisation annuelle, qui sera prélevée sur votre compte eusko.">
+        <source>Il ne vous reste plus qu’à choisir le montant de votre cotisation annuelle, qui sera prélevée sur votre compte eusko.</source>
+        <target>Il ne vous reste plus qu’à choisir le montant de votre cotisation annuelle, qui sera prélevée sur votre compte eusko.</target>
+      </trans-unit>
+      <trans-unit id="0g6cGQI" resname="Choisir ma cotisation annuelle">
+        <source>Choisir ma cotisation annuelle</source>
+        <target>Choisir ma cotisation annuelle</target>
+      </trans-unit>
+      <trans-unit id="fAez1y5" resname="ETAPE 2/5">
+        <source>ETAPE 2/5</source>
+        <target>ETAPE 2/5</target>
+      </trans-unit>
+      <trans-unit id="qh.HwKi" resname="ETAPE 5/5">
+        <source>ETAPE 5/5</source>
+        <target>ETAPE 5/5</target>
+      </trans-unit>
+      <trans-unit id="4gqGWh." resname="Sécurité">
+        <source>Sécurité</source>
+        <target>Sécurité</target>
+      </trans-unit>
+      <trans-unit id="PVYuYXt" resname="Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez">
+        <source>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</source>
+        <target>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</target>
+      </trans-unit>
+      <trans-unit id="DA.SaY0" resname="Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.">
+        <source>Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.</source>
+        <target><![CDATA[Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong>euskopay</strong> ou <strong>euskokart</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="WZlidAl" resname="ETAPE 1/5">
+        <source>ETAPE 1/5</source>
+        <target>ETAPE 1/5</target>
+      </trans-unit>
+      <trans-unit id="rmaDdIQ" resname="Faire un don">
+        <source>Faire un don</source>
+        <target>Faire un don</target>
+      </trans-unit>
+      <trans-unit id="sKnA4Zc" resname="Faire un don à l'Eusko">
+        <source>Faire un don à l'Eusko</source>
+        <target>Faire un don à l'Eusko</target>
+      </trans-unit>
+      <trans-unit id="zsBaLOz" resname="Vous pouvez faire un don de tout ou partie de vos eusko à l'association Euskal Moneta. Utilisez le curseur ci-dessous pour choisir le montant de votre don.">
+        <source>Vous pouvez faire un don de tout ou partie de vos eusko à l'association Euskal Moneta. Utilisez le curseur ci-dessous pour choisir le montant de votre don.</source>
+        <target>Vous pouvez faire un don de tout ou partie de vos eusko à l'association Euskal Moneta. Utilisez le curseur ci-dessous pour choisir le montant de votre don.</target>
+      </trans-unit>
+      <trans-unit id="JNTTdjp" resname="Je donne">
+        <source>Je donne</source>
+        <target>Je donne</target>
+      </trans-unit>
+      <trans-unit id="0rda7TY" resname="Solde restant">
+        <source>Solde restant</source>
+        <target>Solde restant</target>
+      </trans-unit>
+      <trans-unit id="cOyQSt3" resname="Si vous faites un don de la totalité du solde de votre compte celui-ci sera clotûré sans autre formalité.">
+        <source>Si vous faites un don de la totalité du solde de votre compte celui-ci sera clotûré sans autre formalité.</source>
+        <target>Si vous faites un don de la totalité du solde de votre compte celui-ci sera clotûré sans autre formalité.</target>
+      </trans-unit>
+      <trans-unit id="45dVTvE" resname="Êtes-vous sur de valider le don ?">
+        <source>Êtes-vous sur de valider le don ?</source>
+        <target>Êtes-vous sur de valider le don ?</target>
+      </trans-unit>
+      <trans-unit id="ne_50HZ" resname="Vous n'avez jamais accédé à votre compte eusko ?">
+        <source>Vous n'avez jamais accédé à votre compte eusko ?</source>
+        <target>Vous n'avez jamais accédé à votre compte eusko ?</target>
+      </trans-unit>
+      <trans-unit id="sseqXQB" resname="Si vous avez un compte Vacances en eusko vous n'avez pas besoin d'activer votre compte">
+        <source>Si vous avez un compte Vacances en eusko vous n'avez pas besoin d'activer votre compte</source>
+        <target>Si vous avez un compte Vacances en eusko vous n'avez pas besoin d'activer votre compte</target>
+      </trans-unit>
+      <trans-unit id="RULWH19" resname="Mot de passe oublié">
+        <source>Mot de passe oublié</source>
+        <target>Mot de passe oublié</target>
+      </trans-unit>
+      <trans-unit id="wAEFh6k" resname="Vos identifiants ont bien été reconnus">
+        <source>Vos identifiants ont bien été reconnus</source>
+        <target>Vos identifiants ont bien été reconnus</target>
+      </trans-unit>
+      <trans-unit id="Cs.NBUi" resname="Les étapes restantes pour activer votre compte">
+        <source>Les étapes restantes pour activer votre compte</source>
+        <target>Les étapes restantes pour activer votre compte</target>
+      </trans-unit>
+      <trans-unit id="Gv12MHk" resname="Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation">
+        <source>Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation</source>
+        <target>Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation</target>
+      </trans-unit>
+      <trans-unit id="258q7if" resname="Choisir un mot de passe">
+        <source>Choisir un mot de passe</source>
+        <target>Choisir un mot de passe</target>
+      </trans-unit>
+      <trans-unit id="0IA3.bb" resname="Lire et valider les Conditions Générales d'Utilisation">
+        <source>Lire et valider les Conditions Générales d'Utilisation</source>
+        <target>Lire et valider les Conditions Générales d'Utilisation</target>
+      </trans-unit>
+      <trans-unit id="rhY9.DH" resname="Choisir votre cotisation">
+        <source>Choisir votre cotisation</source>
+        <target>Choisir votre cotisation</target>
+      </trans-unit>
+      <trans-unit id="LUFlfRo" resname="Choisir un code pin pour l'euskokart et euskopay">
+        <source>Choisir un code pin pour l'euskokart et euskopay</source>
+        <target>Choisir un code pin pour l'euskokart et euskopay</target>
+      </trans-unit>
+      <trans-unit id="AOtT_G5" resname="Ma cotisation à l'eusko">
+        <source>Ma cotisation à l'eusko</source>
+        <target>Ma cotisation à l'eusko</target>
+      </trans-unit>
+      <trans-unit id="iXFpC6M" resname="Ma cotisation est prélevée automatiquement sur mon compte eusko">
+        <source>Ma cotisation est prélevée automatiquement sur mon compte eusko</source>
+        <target>Ma cotisation est prélevée automatiquement sur mon compte eusko</target>
+      </trans-unit>
+      <trans-unit id="RGhp8si" resname="Payer chez un commerçant">
+        <source>Payer chez un commerçant</source>
+        <target>Payer chez un commerçant</target>
+      </trans-unit>
+      <trans-unit id="5v9mnd9" resname="Téléchargez et utilisez l'application euskopay">
+        <source>Téléchargez et utilisez l'application euskopay</source>
+        <target>Téléchargez et utilisez l'application euskopay</target>
+      </trans-unit>
+      <trans-unit id="NQrmk5." resname="Choisissez le mot de passe pour sécuriser l'accès à votre compte.">
+        <source>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</source>
+        <target>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</target>
+      </trans-unit>
+      <trans-unit id="nUsUX1i" resname="Code PIN">
+        <source>Code PIN</source>
+        <target>Code PIN</target>
+      </trans-unit>
+      <trans-unit id="HRTEh3Y" resname="Clôture compte">
+        <source>Clôture compte</source>
+        <target>Clôture compte</target>
+      </trans-unit>
+      <trans-unit id="fEHltnT" resname="Change en ligne via HelloAsso">
+        <source>Change en ligne via HelloAsso</source>
+        <target>Change en ligne via HelloAsso</target>
+      </trans-unit>
+      <trans-unit id="NuqqZDX" resname="Vous allez être redirigé vers HelloAsso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :">
+        <source>Vous allez être redirigé vers HelloAsso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</source>
+        <target>Vous allez être redirigé vers HelloAsso pour charger votre compte eusko de façon sécurisée.Vous aurez besoin de votre numéro d'adhérent, qui est le :</target>
+      </trans-unit>
+      <trans-unit id="bMuG88." resname="Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
+        <source>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
+        <target>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
       </trans-unit>
     </body>
   </file>

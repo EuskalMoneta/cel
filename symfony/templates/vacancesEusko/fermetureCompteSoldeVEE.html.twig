@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Fermeture compte" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="">
+                        <h1 class="mb-3">{{ "Fermeture compte" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Veuillez renseigner votre IBAN dans le formulaire ci dessous, vous recevrez ensuite le solde sur votre compte bancaire." | trans }}</p>
+
+                        <div class="row">
+                            <div class="col-sm-12 mt-4">
+
+                                <form id="form-don" method="post">
+                                    <div class="form-group">
+                                        <label for="iban">IBAN</label>
+                                    <input type="text" name="iban" id="iban" value="" class="form-control" style="text-transform: uppercase" required/>
+                                    </div>
+
+
+                                    <input type="hidden" id="form_guard_check" name="guard_check" />
+                                    <div class="row" style="margin-top: 50px">
+                                        <div class="col text-right">
+                                            <a href="{{ path('app_vee_fermeture') }}" class="btn btn-primary">Retour</a>
+                                            <input id="form_submit" type="submit" value="clotûrer mon compte" class="btn btn-success" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{"Confirmation" | trans }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{"Êtes-vous sur de vouloir fermer votre compte ?" | trans }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <input  type="submit" class="btn btn-outline-success btn-slim" id="modal-valid" value="Valider" />
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{{ asset('js/jquery.mask.js') }}"></script>
+    <script type="text/javascript">
+
+        $( document ).ready(function() {
+            $('#iban').mask('SS00 0000 0000 0000 0000 0000 000', {
+                placeholder: '____ ____ ____ ____ ____ ____ ___'
+            });
+
+
+            $('#form-don').submit(function (e){
+                if($('#confirm-modal').hasClass('fade')){
+                    $('#confirm-modal').modal('show');
+                    e.preventDefault();
+
+                } else {
+                    $("#form_submit").unbind('click').click();
+                    $(this).submit();
+                }
+
+            });
+            $('#modal-valid').click(function (e){
+                $("#form_guard_check").val('ok');
+                $('form').unbind('submit').submit();
+                $("#form_submit").submit();
+            });
+        });
+
+    </script>
+{% endblock %}
+

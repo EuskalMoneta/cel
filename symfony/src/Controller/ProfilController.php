@@ -106,6 +106,8 @@ class ProfilController extends AbstractController
      */
     public function pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
+        $forcedPin = false;
+
         $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
         if($responsePin['httpcode'] == 200) {
 
@@ -144,6 +146,7 @@ class ProfilController extends AbstractController
                     }
                 }
             } else {
+                $forcedPin = true;
                 // If there isn't a PIN code yet, don't ask for the old one
                 $form = $this->createFormBuilder()
                     ->add('pin1', RepeatedType::class, [
@@ -170,6 +173,7 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200 or $responseProfile['httpcode'] == 202) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                        return $this->redirectToRoute('app_homepage');
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
@@ -177,7 +181,7 @@ class ProfilController extends AbstractController
 
             }
 
-            return $this->render('profil/pin.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/pin.html.twig', ['form' => $form->createView(), 'forcedPin' => $forcedPin]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -197,6 +201,9 @@ class ProfilController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
+            if($membre->array_options->options_prelevement_auto_cotisation_eusko != 1){
+                $forcedCotisation = true;
+            }
             if((new \DateTime())->setTimestamp($membre->last_subscription_date_end) < new \DateTime("now") and $authChecker->isGranted('ROLE_CLIENT')){
                 $forcedCotisation = true;
             }
@@ -229,7 +236,7 @@ class ProfilController extends AbstractController
                     'expanded' => true,
                     'choices' => [
                         'Annuel' => '12',
-                        'Mensuel (le 15 du mois)' => '1',
+                        'Mensuel (entre le 10 et le 15 du mois)' => '1',
                     ],
                     'data' => round($membre->array_options->options_prelevement_cotisation_periodicite, 0)
                 ])
@@ -250,20 +257,9 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
-                        if($forcedCotisation){
-                            $params['start_date'] = (new \DateTime('now'))->format('Y-m-d').'T00:00';
-                            if($data['options_prelevement_cotisation_periodicite'] == 1){
-                                $params['end_date'] = (new \DateTime('now'))->modify('last day of this month')->format('Y-m-d').'T00:00';
-                            } else {
-                                $params['end_date'] = (new \DateTime('now'))->modify('last day of December')->format('Y-m-d').'T00:00';
-                            }
-                            $params['amount'] = (int)$data['options_prelevement_cotisation_montant'];
-                            $params['label'] = 'Cotisation '.date('Y');
 
-                            $reponsePaymentCotis = $APIToolbox->curlRequest('POST', '/member-cel-subscription/', $params);
-                            if($reponsePaymentCotis['httpcode'] == 200 or $reponsePaymentCotis['httpcode'] == 201 ) {
-                                return $this->redirectToRoute('app_homepage');
-                            }
+                        if($forcedCotisation){
+                            return $this->redirectToRoute('app_homepage');
                         }
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
@@ -271,16 +267,7 @@ class ProfilController extends AbstractController
                 }
 
             }
-
-            //QUICK FIX to remove menus from the vue is user has no cotisation and is forced to get one
-            //Couldn't be done in one layout as {% Block %} can't be conditionned by {% if %}
-            if($forcedCotisation){
-                return $this->render('profil/cotisationForced.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
-            } else {
-                return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre]);
-            }
-
-
+            return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre, 'forcedCotisation' => $forcedCotisation]);
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
@@ -355,7 +342,7 @@ class ProfilController extends AbstractController
      */
     public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
     {
-        $response = $APIToolbox->curlRequest('GET', '/towns/?zipcode='.$request->get('q'));
+        $response = $APIToolbox->curlWithoutToken('GET', '/towns/?zipcode='.$request->get('q'));
         $tabBenef = [];
 
         if($response['httpcode'] == 200){
@@ -381,7 +368,11 @@ class ProfilController extends AbstractController
             $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
             $tabCountries = [];
             foreach ($responseCountries['data'] as $country){
-                $tabCountries[$country->label] = $country->id;
+                if($country->label == '-'){
+                    $tabCountries[$country->label] = '';
+                } else {
+                    $tabCountries[$country->label] = $country->id;
+                }
             }
 
             $builder = $this->createFormBuilder()
@@ -497,6 +488,49 @@ class ProfilController extends AbstractController
             }
 
             return $this->render('profil/newsletter.html.twig', ['form' => $form->createView()]);
+
+        } else {
+            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+        }
+    }
+
+    /**
+     * @Route("/profil/bonsplans", name="app_profil_bons_plans")
+     */
+    public function bonplans(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
+
+            $membre = $responseMember['data'][0];
+            //todo: booléen bons plans
+            $booleanNewsletter = $membre->array_options->options_recevoir_actus;
+
+            $form = $this->createFormBuilder()
+                ->add('news', ChoiceType::class,
+                    [
+                        'label' => $translator->trans("Je souhaite afficher les bons plans proposés par l'Eusko. "),
+                        'help' => '',
+                        'choices' => ['Oui' =>'1', 'Non' => '0'],
+                        'data' => $booleanNewsletter
+                    ])
+                ->add('submit', SubmitType::class, ['label' => $translator->trans('Enregistrer')])
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                //todo: booléen bons plans
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+
+                if($responseLang['httpcode'] == 200) {
+                    $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                } else {
+                    $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
+                }
+            }
+
+            return $this->render('profil/bonsPlans.html.twig', ['form' => $form->createView()]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

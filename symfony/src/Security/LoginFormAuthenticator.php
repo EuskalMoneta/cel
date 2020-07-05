@@ -34,7 +34,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
+        return
+            'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
@@ -91,8 +92,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             //User Roles
             if($user->getUsername()[0] == 'E'){
                 $user->setRoles(['ROLE_CLIENT']);
-            } elseif($user->getUsername()[0] == 'Z') {
+            }
+            elseif($user->getUsername()[0] == 'Z') {
                 $user->setRoles(['ROLE_PARTENAIRE']);
+            }
+            elseif($user->getUsername()[0] == 'T') {
+                $user->setRoles(['ROLE_TOURISTE']);
             }
             if($member->type == 'Régie publique de recettes'){
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);

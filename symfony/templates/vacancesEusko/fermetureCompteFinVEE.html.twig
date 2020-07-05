@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Fermeture compte" | trans }}{% endblock %}
+
+ {% block menu_top %}
+     <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+         <div class="container">
+             <a class="navbar-brand" href="{{ path('app_login') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+             <div class="navbar-right">
+
+                 {% if app.user %}
+                     <a href="{{ path('app_logout') }}">
+                         <i class="fal fa-sign-out cel-menu-icon"></i>
+                         <br /> Quitter
+                     </a>
+                 {% endif %}
+             </div>
+         </div>
+     </nav>
+ {% endblock %}
+
+{% block menu_footer %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="">
+                        <div class="text-center">
+                            <h1 class="mb-3">{{ "A bientôt" | trans }}</h1>
+                            <p class="text-subtitle">{{ "Votre compte est cloturé merci de votre participation." | trans }}</p>
+                            <img src="{{ asset('images/euskoa5.png') }}" width="200px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
+

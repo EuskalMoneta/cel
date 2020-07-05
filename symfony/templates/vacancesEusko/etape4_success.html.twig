@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block css %}
+    <style type="text/css">
+        body{
+            background-color: #41A528 !important;
+            color: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div class="text-center">
+
+                        <i class="fas fa-check mb-4" style="font-size: 40px; margin-top: 50px;"></i>
+                        <h1 class="threeper" style="font-size: 24px; margin-bottom: 80px;" >{{ "Félicitations, votre compte eusko est bien ouvert !" | trans }}</h1>
+                        <h5 class="mb-0 threeper mt-4 mb-4" style="font-size: 16px;">{{ "Il ne vous reste plus qu’à charger votre compte et à télécharger l'application euskopay pour pouvoir payer en eusko !" |trans }}</h5>
+
+                        <a href="{{ path('app_change') }}" class="btn btn-berdea">{{ "Charger mon compte" | trans }}</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block menu_footer %}
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript"></script>
+{% endblock %}
+

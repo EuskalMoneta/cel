@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Première connexion" | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-2">
+
+                <div class="mt-md-4">
+                    <div style="">
+                        <h1 class="h3 mb-3">{{ "Activer votre compte" | trans }}</h1>
+                        <div class="alert alert-success" role="alert">
+                            <i class="fa fa-check"></i> {{ "Vos identifiants ont bien été reconnus" | trans }}
+                        </div>
+
+                        <p class="text-subtitle">
+                            {{ "Les étapes restantes pour activer votre compte" | trans }}
+                        </p>
+
+                        <br />
+
+                        <div style="width: 80%">
+                            <div class="d-flex align-items-center flex-row mb-3">
+                                <div class="d-inline-flex  ">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x" style="color: #E3EEF1"></i>
+                                  <i class="far fa-envelope fa-stack-1x fa-inverse waiting" style="color: #548796"></i>
+                                </span>
+                                </div>
+                                <div class="d-inline-flex ml-4">
+                                    <span class="text-bold">{{ "Vous allez recevoir un email, cliquez sur le lien à l'intérieur pour continuer l'activation" | trans }}</span>
+                                </div>
+                            </div>
+
+                            <div class="vertical-line"></div>
+
+                            <div style="opacity: 0.6;">
+
+                                <div class="d-flex align-items-center flex-row mb-3">
+                                    <div class="d-inline-flex  ">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x" style="color: #ffebe6;"></i>
+                                  <i class="far fa-key fa-stack-1x fa-inverse" style="color: #cd8d7b;"></i>
+                                </span>
+                                    </div>
+                                    <div class="d-inline-flex ml-4">
+                                        <span class="text-bold">{{ "Choisir un mot de passe" | trans }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="vertical-line"></div>
+
+                                <div class="d-flex align-items-center flex-row mb-3">
+                                    <div class="d-inline-flex  ">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x" style="color: #e7f0c3;"></i>
+                                  <i class="far fa-file-alt fa-stack-1x fa-inverse" style="color: #7f9776;"></i>
+                                </span>
+                                    </div>
+                                    <div class="d-inline-flex ml-4">
+                                        <span class="text-bold">{{ "Lire et valider les Conditions Générales d'Utilisation" | trans }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="vertical-line"></div>
+
+                                {# PAS POUR LES PROS #}
+                                <div class="d-flex align-items-center flex-row mb-3">
+                                    <div class="d-inline-flex  ">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x" style="color: #F2E9DA;"></i>
+                                  <i class="far fa-money-bill-alt fa-stack-1x fa-inverse" style="color: #cda35f;" ></i>
+                                </span>
+                                    </div>
+                                    <div class="d-inline-flex ml-4">
+                                        <span class="text-bold">{{ "Choisir votre cotisation" | trans }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="vertical-line"></div>
+
+                                <div class="d-flex align-items-center flex-row mb-3">
+                                    <div class="d-inline-flex  ">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x"></i>
+                                  <i class="far fa-credit-card fa-stack-1x fa-inverse"></i>
+                                </span>
+                                    </div>
+                                    <div class="d-inline-flex ml-4">
+                                        <span class="text-bold">{{ "Choisir un code pin pour l'euskokart et euskopay" | trans }}</span>
+                                    </div>
+                                </div>
+
+                                {#<div class="vertical-line"></div>
+
+                                <div class="d-flex align-items-center flex-row mb-3">
+                                    <div class="d-inline-flex  ">
+                                <span class="fa-stack" style="vertical-align: top;">
+                                  <i class="fas fa-circle fa-stack-2x"></i>
+                                  <i class="far fa-credit-card fa-stack-1x fa-inverse"></i>
+                                </span>
+                                    </div>
+                                    <div class="d-inline-flex ml-4">
+                                        <span class="text-bold">{{ "Charger votre compte et dépenser des euskos !" | trans }}</span>
+                                    </div>
+                                </div>
+                                #}
+
+                            </div>
+
+                        </div>
+
+
+                        {#<p class="text-subtitle">{{ "Veuillez vérifier vos emails. <br />Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe." | trans | raw }}</p>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

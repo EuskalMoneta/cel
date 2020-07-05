@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
+                <div>{{ "Bon plans" | trans }}</div>
+                <h1 class="mb-3"> {{ bonplan.titre }}</h1>
+                <p class="text-subtitle"> {{ bonplan.descriptifOffre | raw }}</p>
+
+
+                {{ bonplan.descriptionComplet | raw }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

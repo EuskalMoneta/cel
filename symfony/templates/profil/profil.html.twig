@@ -10,7 +10,12 @@
                     <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
                     <h3 class="secondary-color" >{{ "N° d'adhérent" | trans }} {{ app.user }} </h3>
                     <h3 class="secondary-color" >{{ "Compte n°" | trans }} {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %} </h3>
+                    {% if is_granted('ROLE_CLIENT') %}
                     {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}
+                    {% endif %}
+                    {% if is_granted('ROLE_TOURISTE') %}
+                        <a href="{{ path('app_vee_fermeture') }}" style="color: darkred">{{ "clotûrer mon compte" | trans }}</a>
+                    {% endif %}
 
                 </div>
 
@@ -91,6 +96,12 @@
                         <td><span class="main-color text-semi-bold">{{ "Notifications" | trans }}</span></td>
                         <td class="text-right"><a href="{{ path('app_profil_notifications') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
+                    {% if is_granted('ROLE_TOURISTE') %}
+                        <tr>
+                            <td><span class="main-color text-semi-bold">{{ "Bons plans" | trans }}</span></td>
+                            <td class="text-right"><a href="{{ path('app_profil_bons_plans') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        </tr>
+                    {% endif %}
                 </table>
 
             </div>

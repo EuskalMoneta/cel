@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ "Première connexion" | trans }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3 mt-2">
+            <div class="mt-md-4">
+                <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
+                <div style="">
+                    <div>{{ "ETAPE 5/5" | trans }}</div>
+                    <h1 class="mb-3">{{ "Sécurité" | trans }}</h1>
+
+                    <h1 class="h3 mt-4 font-weight-normal">{{ "Mot de passe" | trans }}</h1>
+                    <p class="text-subtitle">{{ "Choisissez le mot de passe pour sécuriser l'accès à votre compte." | trans }}</p>
+                    {{ form_start(form) }}
+                    {% if  form_errors(form) != '' %}
+                        <div class="alert alert-dismissible alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col">
+                            {{ form_row(form.password) }}
+                        </div>
+                    </div>
+
+                    <p class="text-subtitle">{{"Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez" | trans }}</p>
+
+                    <div class="row">
+                        <div class="col">
+                            {{ form_row(form.questionSecrete) }}
+                        </div>
+                    </div>
+
+                    <div id="questionPerso" class="row d-none">
+                        <div class="col">
+                            {{ form_row(form.questionPerso) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            {{ form_row(form.answer) }}
+                        </div>
+                    </div>
+
+                    <h1 class="h3 mt-4 font-weight-normal">{{ "Code PIN" | trans }}</h1>
+                    <p class="text-subtitle">{{"Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong>euskopay</strong> ou <strong>euskokart</strong>." | trans | raw }}</p>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.pin_code) }}
+                        </div>
+                    </div>
+
+
+
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //If refresh
+            if($("#form_questionSecrete").val() == 'autre'){
+                $('#questionPerso').removeClass('d-none');
+            }
+            $("#form_questionSecrete").change(function(){
+                if($(this).children("option:selected").val() == 'autre'){
+                    $('#questionPerso').removeClass('d-none');
+                } else {
+                    $('#questionPerso').addClass('d-none');
+                }
+            });
+        });
+    </script>
+{% endblock %}

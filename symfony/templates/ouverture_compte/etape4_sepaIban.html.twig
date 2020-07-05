@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-md-6 offset-md-3 mt-2">
+
+
+
+                <div class="mt-md-4">
+                    <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
+
+                        <div>{{ "ETAPE 4/5" | trans }}</div>
+                        <h1 class="mb-3">{{ title | trans }}</h1>
+                    <div style="">
+                        <p class="text-subtitle">{{ "Pour que vous soyez sûr-e d'avoir des eusko tous les mois sur votre compte, nous vous demandons de mettre en place un change automatique mensuel d'au moins 20 eusko. Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois et votre compte eusko sera crédité du même montant sous 24h (hors week-end).
+<br /><br />Notre conseil : commencez avec 50 eusko par mois, et bien sûr, vous pourrez modifier le montant de ce change automatique à tout moment sur votre compte en ligne !
+" | trans | raw }}</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 mt-4">
+
+                            {{ form(form) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{{ asset('js/jquery.mask.js') }}"></script>
+    <script type="text/javascript">
+
+        $( document ).ready(function() {
+            $('#form_iban').mask('SS00 0000 0000 0000 0000 0000 000', {
+                placeholder: '____ ____ ____ ____ ____ ____ ___'
+            });
+        });
+
+    </script>
+{% endblock %}
+
+

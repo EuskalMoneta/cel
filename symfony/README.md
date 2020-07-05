@@ -43,6 +43,9 @@ Faire une mise à jour de la base de données \
 
 Vérifier les permissions des dossiers var/cache var/log et public/uploads \
 
+Faire une mise à jour des assets \
+`php bin/console assets:install --symlink`
+
 
 ## Traductions
 
@@ -69,3 +72,8 @@ Bien penser à effectuer la traduction dans le controleur avec `$translator->tra
  
  ### upgrade minor version 
  `docker-compose exec php composer update "symfony/*" --with-all-dependencies` 
+ 
+ 
+ ### Après une mise à jour de la base Dolibarr
+ - penser à refaire le processus d'activation de compte
+ - vider la base sqli contenant les questions secrètes (voir issue #35 )

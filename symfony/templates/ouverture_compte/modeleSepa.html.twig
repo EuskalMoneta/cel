@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="utf-8" http-equiv="encoding" />
+    <title>Mandat de prélèvement SEPA</title>
+</head>
+<body>
+<img src="{{ absolute_url(asset('images/euskoa5.png')) }}" width="150px" />
+<p style="text-align:center;"><strong>MANDAT DE PRÉLÈVEMENT SEPA</strong></p>
+<p>
+<hr />
+<i>En signant ce formulaire de mandat, vous autorisez le Créancier à envoyer des instructions à
+    votre banque pour débiter votre compte, et votre banque à débiter votre compte conformément aux
+    instructions du Créancier. Vous bénéficiez du droit d’être remboursé par votre banque selon les
+    conditions décrites dans la convention que vous avez passée avec elle. Une demande de
+    remboursement doit être présentée dans les 8 semaines suivant la date de débit de votre compte
+    pour un prélèvement autorisé.</i>
+<hr />
+</p>
+<br />
+<p>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+    <tr><td><strong>DÉBITEUR</strong></td><td></td></tr>
+    <tr><td>Nom&nbsp;:&nbsp;</td><td>{{ user.firstname }} {{ user.lastname }}</td></tr>
+    <tr><td>Adresse&nbsp;:&nbsp;</td><td>{{ user.address }}</td></tr>
+    <tr><td>Code postal et Ville&nbsp;:&nbsp;</td><td>{{ user.zip }} {{ user.town }}</td></tr>
+    <tr><td colspan="2" />&nbsp;</tr>
+    <tr><td colspan="2">Coordonnées du compte à débiter&nbsp;:</td></tr>
+    <tr><td>IBAN&nbsp;:&nbsp;</td><td>{{ user.iban }}</td></tr>
+    <tr><td colspan="2" />&nbsp;</tr>
+    <tr><td colspan="2" />&nbsp;</tr>
+    <tr><td><strong>CRÉANCIER</strong></td><td></td></tr>
+    <tr><td>Nom&nbsp;:&nbsp;</td><td>Association Euskal Moneta - Monnaie locale du Pays Basque</td></tr>
+    <tr><td>ICS (identifiant du créancier)&nbsp;:&nbsp;</td><td>FR49ZZZ663869</td></tr>
+    <tr><td>Adresse&nbsp;:&nbsp;</td><td>20 rue des Cordeliers</td></tr>
+    <tr><td>Code postal et Ville&nbsp;:&nbsp;</td><td>64100 Bayonne</td></tr>
+    <tr><td>Type de paiement&nbsp;:&nbsp;</td><td>Récurrent</td></tr>
+    </tbody>
+</table>
+</p>
+<p>
+    <br />
+    <br />
+    Signature
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</p>
+<p>
+    <i>Vos droits concernant le prélèvement sont expliqués dans un document que vous pouvez
+        obtenir auprès de votre banque.<br />
+        <br />
+        Les informations contenues dans le présent mandat, qui doit être complété, sont destinées à
+        n’être utilisées par le créancier que pour la gestion de sa relation avec son client. Elles
+        pourront donner lieu à l’exercice, par ce dernier, de ses droits d’oppositions, d’accès et de
+        rectification tels que prévus aux articles 38 et suivants de la loi n° 78-17 du 6 janvier 1978
+        relative à l’informatique, aux fichiers et aux libertés.</i>
+</p>
+</body>
+</html>

@@ -48,8 +48,8 @@
 
                         <h1 class="h3 mb-3 font-weight-normal">{% trans %}Se connecter{% endtrans %}</h1>
                         <div class="form-group">
-                            <label for="inputUsername" class=" " >{{ "N° Adhérent-e ou Email" | trans }}</label>
-                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="{{ "N° Adhérent-e ou Email" | trans }}" required autofocus>
+                            <label for="inputUsername" class=" " >{{ "N° Adhérent-e ou e-mail" | trans }}</label>
+                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="{{ "N° Adhérent-e ou e-mail" | trans }}" required autofocus>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword" class="">{% trans %}Mot de passe{% endtrans %}</label>
@@ -89,12 +89,14 @@
 
                 <hr>
                 <div class="text-center p-2">
-                    <p class="text-semi-bold">{{ "C'est votre première connexion" | trans }}</p>
+                    <p class="text-semi-bold">{{ "Vous n'avez jamais accédé à votre compte eusko ?" | trans }}</p>
                     <a href="{{ path('app_first_login') }}" class="btn btn-info btn-slim" >{{ "Activer votre compte" | trans }}</a>
+                    {#<a href="{{ path('app_ouverture_etape1_identite') }}" class="btn btn-info btn-slim" >{{ "Créer votre compte" | trans }}</a>#}
 
                 </div>
             </div>
         </div>
     </div>
+
 
 {% endblock %}

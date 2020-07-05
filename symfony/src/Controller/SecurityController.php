@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Validator\Constraints\Length;
@@ -58,8 +60,22 @@ class SecurityController extends AbstractController
         return new RedirectResponse($targetPath);
     }
 
+
     /**
-     * @Route("/premiere/connexion", name="app_first_login")
+     * @Route("/creer-compte", name="app_creer_compte")
+     */
+    public function creerCompte(Request $request): Response
+    {
+        if($request->isMethod('post')){
+            $request->getSession()->set('_locale', $request->get('locale'));
+            $targetPath = $this->getTargetPath($request->getSession(), 'main');
+            return $this->redirectToRoute('app_creer_compte');
+        }
+        return $this->render('security/creerCompte.html.twig');
+    }
+
+    /**
+     * @Route("/activer-compte", name="app_first_login")
      */
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
@@ -86,21 +102,34 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $data = $form->getData();
             $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
-            if($response['httpcode'] == 200 && $response['data']->member == 'OK'){
-                $this->addFlash('success', 'Veuillez vérifier vos emails. Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.');
+
+            if($data['adherent'][0] == 'T'){
+                $this->addFlash('danger', 'Les comptes eusko en vacances n\'ont pas besoin d\'activation. Essayez de vous connecter ou de faire une réinitialisation de mot de passe.');
+            } elseif($response['httpcode'] == 200 && $response['data']->member == 'OK'){
+                return $this->render('security/firstLoginSuccess.html.twig', []);
             } else {
-                $this->addFlash('danger', 'Erreur de communication avec le serveur api : '.$response['data']->error);
+                if($response['data']->error == 'User already exist!'){
+                    $this->addFlash('danger', 'Ce compte semble être déjà activé, essayez de vous connecter ou faire une réinitialisation de mot de passe.');
+                } else {
+                    $this->addFlash('danger', 'Erreur : '.$response['data']->error);
+                }
             }
+
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => "Première connexion", 'form' => $form->createView()]);
+        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form->createView()]);
     }
 
     /**
      * @Route("/valide-premiere-connexion", name="app_valide_first_login")
      */
-    public function validateFirstLogin(Request $request, APIToolbox $APIToolbox): Response
+    public function validateFirstLogin(Request $request,
+                                       APIToolbox $APIToolbox,
+                                       TranslatorInterface $translator,
+                                       GuardAuthenticatorHandler $guardAuthenticatorHandler,
+                                       LoginFormAuthenticator $loginFormAuthenticator)
     {
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -113,8 +142,8 @@ class SecurityController extends AbstractController
 
             $form = $this->createFormBuilder()
                 ->add('motDePasse', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Nouveau mot de passe'],
-                    'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                    'first_options'  => ['label' => $translator->trans('Nouveau mot de passe')],
+                    'second_options' => ['label' => $translator->trans('Confirmer le nouveau mot de passe')],
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max'=> 12]),
@@ -124,15 +153,14 @@ class SecurityController extends AbstractController
                     'required' => true,
                 ])
                 ->add('questionSecrete', ChoiceType::class, [
-                    'label' => 'Votre question secrète',
+                    'label' => $translator->trans('Votre question secrète'),
                     'required' => true,
                     'choices' => $questions
                 ])
-                ->add('questionPerso', TextType::class, ['label' => 'Votre question personnalisée', 'required' => false])
+                ->add('questionPerso', TextType::class, ['label' => $translator->trans('Votre question personnalisée'), 'required' => false])
                 ->add('reponse', TextType::class, [
-                    'label' => 'Reponse',
+                    'label' => $translator->trans('Réponse'),
                     'required' => true,
-                    'help' => "Renseignez l'email que vous avez utilisé lors de votre adhésion à l'eusko",
                     'constraints' => [
                         new NotBlank()
                     ]
@@ -157,9 +185,19 @@ class SecurityController extends AbstractController
                 }
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 
-                if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-                    $this->addFlash('success', 'Compte validé, vous pouvez vous connecter avec vos identifiants.');
-                    return $this->redirectToRoute('app_login');
+                if ($response['httpcode'] == 200) {
+                    $credentials['username'] = $response['data']->login;
+                    $credentials['password'] = $data['motDePasse'];
+
+                    $user = $APIToolbox->autoLogin($credentials);
+
+                    return $guardAuthenticatorHandler
+                        ->authenticateUserAndHandleSuccess(
+                            $user,
+                            $request,
+                            $loginFormAuthenticator,
+                            'main'
+                        );
                 } else {
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }
@@ -205,7 +243,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
+        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
     }
 
     /**

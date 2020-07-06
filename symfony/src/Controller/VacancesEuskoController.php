@@ -274,19 +274,26 @@ class VacancesEuskoController extends AbstractController
 
             $session->set('compteur', $session->get('compteur') + 1);
 
-            /*dump($checkID);
-            dump($_ENV['IDCHECK_AUTH']);*/
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
             } elseif ($checkID['httpcode'] == 200){
                 $status = true;
                 $dataCard = json_decode($checkID["data"]);
+                $idCheckUID = $dataCard->uid;
 
                 $naissance = $dataCard->holderDetail->birthDate;
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
 
                 $docBase64 = 'data:'.$file->getMimeType().';base64,'.base64_encode(file_get_contents($file->getPathname()));
-                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64], $data);
+
+                $pdf = 'null';
+                $idcheckPDF = $APIToolbox->curlRequestIdCheck('GET', '/rest/v0/pdfreport/'.$idCheckUID);
+                if ($idcheckPDF['httpcode'] == 200){
+                    $dataPdf = json_decode($idcheckPDF["data"]);
+                    $pdf = 'data:application/pdf;base64,'.$dataPdf->report;
+                }
+
+                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
                 $session->set('utilisateur', $dataU);
 
                 $response = $APIToolbox->go_nogo($checkID["data"]);

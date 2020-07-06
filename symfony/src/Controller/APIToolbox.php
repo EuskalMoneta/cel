@@ -234,7 +234,7 @@ class APIToolbox extends AbstractController
         foreach ($analysisResult->checkReportSummary->check as $check){
             if($check->identifier == 'SUMMARY_ID_IDENTIFIED' and $check->result != 'OK')
                 return ['status' => false, 'message' => $check->resultMsg];
-            if($check->identifier == 'SUMMARY_ID_IDENTIFIED' and $check->result != 'OK')
+            if($check->identifier == 'SUMMARY_ID_EXPIRED' and $check->result != 'OK')
                 return ['status' => false, 'message' => $check->resultMsg];
             elseif ($check->identifier == 'SUMMARY_ID_FALSIFIED' and $check->result != 'OK')
                 return ['status' => false, 'message' => $check->resultMsg];

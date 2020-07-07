@@ -39,7 +39,7 @@ class VacancesEuskoController extends AbstractController
 {
 
     /**
-     * @Route("/vacances-en-eusko", name="app_vee_etape1_identite")
+     * @Route("/{_locale}/vacances-en-eusko", name="app_vee_etape1_identite")
      */
     public function etape1Identite(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator, SessionInterface $session)
     {
@@ -68,7 +68,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/coordonnees", name="app_vee_etape2_coordonnees")
+     * @Route("/{_locale}/vacances-en-eusko/coordonnees", name="app_vee_etape2_coordonnees")
      */
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
@@ -108,7 +108,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/justificatif", name="app_vee_etape3_justificatif")
+     * @Route("/{_locale}/vacances-en-eusko/justificatif", name="app_vee_etape3_justificatif")
      */
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
     {
@@ -141,7 +141,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/securite", name="app_vee_etape4_securite")
+     * @Route("/{_locale}/vacances-en-eusko/securite", name="app_vee_etape4_securite")
      */
     public function etape4Securite(APIToolbox $APIToolbox,
                                    Request $request,
@@ -246,7 +246,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/bienvenue", name="app_vee_etape4_success")
+     * @Route("/{_locale}/vacances-en-eusko/bienvenue", name="app_vee_etape4_success")
      */
     public function etape4Success(APIToolbox $APIToolbox, Request $request)
     {

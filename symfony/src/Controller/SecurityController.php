@@ -31,13 +31,13 @@ class SecurityController extends AbstractController
     use TargetPathTrait;
 
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/{_locale}/login",  locale="fr", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em): Response
     {
-        // if ($this->getUser()) {
-        //    $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_homepage');
+        }
 
         $promotions = $em->getRepository('App:Promotion')->findBy(['visible' => true]);
 
@@ -56,8 +56,8 @@ class SecurityController extends AbstractController
     public function changeLanguage($locale, Request $request): Response
     {
         $request->getSession()->set('_locale', $locale);
-        $targetPath = $this->getTargetPath($request->getSession(), 'main');
-        return new RedirectResponse($targetPath);
+
+        return $this->redirectToRoute('app_login', ['_locale' => $locale]);
     }
 
 

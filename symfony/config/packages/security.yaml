@@ -32,19 +32,19 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/anon/language/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /anon/language/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/webhook, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/creer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/vacances-en-eusko, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/ouverture-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/ajax/zipcode, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/vacances-en-eusko/coordonnees, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/activer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/valide-premiere-connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/valide-passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /vacances-en-eusko, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /ouverture-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /ajax/zipcode, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /vacances-en-eusko/coordonnees, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /activer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /valide-premiere-connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /valide-passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
 

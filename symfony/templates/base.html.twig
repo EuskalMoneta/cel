@@ -10,12 +10,20 @@
 
     <title>Compte Eusko</title>
 
+
+
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/favicon-96x96.png') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"  type='text/css'>
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet"  type='text/css'>
     <link href="{{ asset('css/flickety.min.css') }}" rel="stylesheet"  type='text/css'>
+
+    {% block cssBefore %}
+
+    {% endblock %}
+
     <link href="{{ asset('css/style.css') }}" rel="stylesheet"  type='text/css'>
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/favicon-96x96.png') }}">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
 
     {% block css %}
 

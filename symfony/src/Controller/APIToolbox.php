@@ -236,7 +236,7 @@ class APIToolbox extends AbstractController
             if($check->result != 'OK')
                 return ['status' => false, 'message' => $check->resultMsg];
         }
-        
+
         return true;
     }
 

@@ -86,12 +86,12 @@ class VacancesEuskoController extends AbstractController
             }
         }
 
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']])
             ->add('address', TextareaType::class, ['required' => true])
             ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
             ->add('town', TextType::class, ['required' => true])
             ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33'), 'help' => $translator->trans("Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.")])
+            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 

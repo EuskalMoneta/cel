@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Security\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -46,8 +45,12 @@ class MainController extends AbstractController
         $operations = [];
         $montant_don = 0;
         $boolMandatATT = false;
-        $bonPlans = $em->getRepository('App:BonPlan')->findAccueil();
-        shuffle ($bonPlans);
+        $bonPlans = [];
+
+        if($membre->array_options->options_recevoir_bons_plans != 0){
+            $bonPlans = $em->getRepository('App:BonPlan')->findAccueil();
+            shuffle ($bonPlans);
+        }
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
@@ -55,7 +58,8 @@ class MainController extends AbstractController
             $infosUser = [
                 'compte' => $response['data']->result[0]->number,
                 'nom' => $response['data']->result[0]->owner->display,
-                'solde' => $response['data']->result[0]->status->balance
+                'solde' => $response['data']->result[0]->status->balance,
+                'options_recevoir_bons_plans' => $membre->array_options->options_recevoir_bons_plans
             ];
 
             /** @var User $user */
@@ -91,12 +95,12 @@ class MainController extends AbstractController
 
 
             return $this->render('main/index.html.twig', [
-                'infosUser' => $infosUser,
-                'operations' => $operations,
-                'bonPlans' => $bonPlans,
-                'montant_don' => $montant_don,
-                'boolMandatATT' =>$boolMandatATT
-            ]
+                    'infosUser' => $infosUser,
+                    'operations' => $operations,
+                    'bonPlans' => $bonPlans,
+                    'montant_don' => $montant_don,
+                    'boolMandatATT' => $boolMandatATT
+                ]
             );
 
         } else {

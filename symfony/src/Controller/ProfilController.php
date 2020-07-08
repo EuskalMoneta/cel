@@ -503,8 +503,9 @@ class ProfilController extends AbstractController
         if($responseMember['httpcode'] == 200) {
 
             $membre = $responseMember['data'][0];
-            //todo: booléen bons plans
-            $booleanNewsletter = $membre->array_options->options_recevoir_actus;
+
+            dump($membre);
+            $booleanNewsletter = $membre->array_options->options_recevoir_bons_plans;
 
             $form = $this->createFormBuilder()
                 ->add('news', ChoiceType::class,
@@ -520,8 +521,7 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                //todo: booléen bons plans
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $data['news']]);
 
                 if($responseLang['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
@@ -535,6 +535,28 @@ class ProfilController extends AbstractController
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
+    }
+
+    /**
+     * Methode pour la pop up de la page d'accueil
+     * @Route("/ajax/bonPlans/{booleen}", name="app_set_bon_plans")
+     */
+    public function setBonPlans($booleen, Request $request, APIToolbox $APIToolbox)
+    {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
+
+            $membre = $responseMember['data'][0];
+
+            $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $booleen]);
+
+            if($responseLang['httpcode'] == 200) {
+                return new JsonResponse(true);
+            } else {
+                return new JsonResponse(false);
+            }
+        }
+
     }
 
     /**

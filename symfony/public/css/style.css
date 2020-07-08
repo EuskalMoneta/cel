@@ -588,3 +588,8 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
     position: relative;
     display: block;
 }
+
+.consolas{
+    font-family: 'Inconsolata', monospace, consolas;
+    font-size: 18px;
+}

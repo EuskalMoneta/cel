@@ -42,3 +42,9 @@ services:
             - { name: sonata.admin, manager_type: orm, group: admin, label: BonPlans }
         public: true
 
+    admin.article:
+        class: App\Admin\ArticleAdmin
+        arguments: [~, App\Entity\Article, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Article }
+        public: true

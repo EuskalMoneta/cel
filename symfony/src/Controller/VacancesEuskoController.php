@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -349,8 +352,9 @@ class VacancesEuskoController extends AbstractController
      * @isGranted("ROLE_TOURISTE")
      * @Route("/vacances-en-eusko/fermeture-compte/panier", name="app_vee_fermeture_panier")
      */
-    public function fermetureComptePanierVEE(APIToolbox $APIToolbox, Request $request)
+    public function fermetureComptePanierVEE(APIToolbox $APIToolbox, EntityManagerInterface $em, Request $request, SessionInterface $session)
     {
+        $articles = $em->getRepository('App:Article')->findBy(['visible' => true], ['prix' => 'ASC']);
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
             $infosUser = [
@@ -360,7 +364,110 @@ class VacancesEuskoController extends AbstractController
             ];
         }
 
-        return $this->render('vacancesEusko/fermetureComptePanierVEE.html.twig',  [ 'infosUser' => $infosUser]);
+        if($request->isMethod('POST')) {
+            $articleId = $request->get('articleRadio');
+            $session->start();
+            $session->set('panierpaysanArticle', $articleId);
+
+            return $this->redirectToRoute('app_vee_fermeture_panier_recapitulatif');
+        }
+
+        return $this->render('vacancesEusko/fermetureComptePanierVEE.html.twig', ['infosUser' => $infosUser, 'articles'=> $articles]);
+    }
+
+    /**
+     * @isGranted("ROLE_TOURISTE")
+     * @Route("/vacances-en-eusko/fermeture-compte/panier/recapitulatif", name="app_vee_fermeture_panier_recapitulatif")
+     */
+    public function fermetureComptePanierRecapVEE( APIToolbox $APIToolbox,
+                                                   EntityManagerInterface $em,
+                                                   Request $request,
+                                                   SessionInterface $session,
+                                                   TranslatorInterface $translator,
+                                                   MailerInterface $mailer
+                                                    )
+    {
+        $session->start();
+
+        $article = $em->getRepository('App:Article')->find($session->get('panierpaysanArticle'));
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($article and $responseMember['httpcode'] == 200){
+
+            $membre = $responseMember['data'][0];
+
+            $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
+            $tabCountries = [];
+            foreach ($responseCountries['data'] as $country){
+                if($country->label == '-'){
+                    $tabCountries[$country->label] = '';
+                } else {
+                    $tabCountries[$country->label] = $country->label;
+                }
+                if($country->id == $membre->country_id){
+                    $defautPays = $country->label;
+                }
+            }
+            $builder = $this->createFormBuilder()
+                ->add('destinataire', TextareaType::class, ['required' => true, 'data' => $membre->firstname.' '.$membre->lastname])
+                ->add('address', TextareaType::class, ['required' => true, 'data' => $membre->address])
+                ->add('zip', TextType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
+                ->add('town', TextType::class, ['required' => true, 'data' => $membre->town])
+                ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $defautPays])
+            ;
+            $form = $builder->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $dataAdresse = $form->getData();
+
+                //Ajout du bénéficiaire
+                $responseBenef = $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_account_number' => $article->getNumeroComptePartenaire()]);
+                if($responseBenef['httpcode'] == 200 or $responseBenef['httpcode'] == 201) {
+
+                    //Virement au partenaire
+                    $data['account'] = $article->getNumeroComptePartenaire();
+                    $data['amount'] = $article->getPrix();
+                    $data['description'] = $article->getLibelle();
+
+                    $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
+                    if($responseVirement['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans("Commande validée !"));
+
+                        $dataAdresse['email'] = $membre->email;
+
+                        //Email au partenaire
+                        $email = (new Email())
+                            ->from('info@euskalmoneta.org')
+                            ->to($article->getEmailPartenaire())
+                            ->subject('Nouvelle commande eusko')
+                            ->html($this->renderView('vacancesEusko/emailPanierPaysan.html.twig', ['adresse' => $dataAdresse, 'article' => $article]));
+
+                        $mailer->send($email);
+
+                        $session->set('panierpaysanArticle', null);
+                        return $this->redirectToRoute('app_vee_fermeture');
+                    } else {
+                        $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
+                    }
+
+                } else {
+                    $this->addFlash('danger', 'Erreur virement - compte partenaire non trouvé');
+                }
+
+            }
+
+            return $this->render('vacancesEusko/fermetureComptePanierRecapVEE.html.twig',
+                [
+                    'article'=> $article,
+                    'membre' => $membre,
+                    'tabCountries' => $tabCountries,
+                    'form' => $form->createView()
+                ]);
+
+        } else {
+            $this->addFlash('danger', 'erreur');
+            return $this->redirectToRoute('app_vee_fermeture_panier');
+        }
     }
 
     /**

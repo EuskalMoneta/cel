@@ -64,7 +64,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/activer-compte", name="app_first_login")
+     * @Route("/{_locale}/activer-compte", name="app_first_login")
      */
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
@@ -196,7 +196,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/passe-perdu", name="app_lost_password")
+     * @Route("/{_locale}/passe-perdu", name="app_lost_password")
      */
     public function lostPassword(Request $request, APIToolbox $APIToolbox): Response
     {

@@ -117,7 +117,7 @@
                             </div>
                         </div>
                     </div>
-                {% elseif is_granted('ROLE_TOURISTE') and infosUser.options_recevoir_bons_plans %}
+                {% elseif is_granted('ROLE_TOURISTE') and infosUser.options_recevoir_bons_plans is null %}
                     <div class="row mt-4 mb-4 threeper p-4" id="popupBP">
                         <div class="col-12">
                             <div class="text-center">

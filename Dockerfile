@@ -1,4 +1,4 @@
-FROM silarhi/php-apache:7.3-symfony
+FROM silarhi/php-apache:7.4-symfony
 
 EXPOSE 80
 WORKDIR /app

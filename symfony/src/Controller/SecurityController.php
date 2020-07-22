@@ -51,17 +51,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/anon/language/{locale}", name="app_anon_lang")
-     */
-    public function changeLanguage($locale, Request $request): Response
-    {
-        $request->getSession()->set('_locale', $locale);
-
-        return $this->redirectToRoute('app_login', ['_locale' => $locale]);
-    }
-
-
-    /**
      * @Route("/creer-compte", name="app_creer_compte")
      */
     public function creerCompte(Request $request): Response

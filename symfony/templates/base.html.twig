@@ -64,10 +64,10 @@
                             <br /> {{"Quitter" | trans }}
                         </a>
                     {% else %}
-                        <a href="{{ path('app_anon_lang', {'locale': 'eu'}) }}" style="font-size: 16px;">
+                        <a href="{{ path(app.request.attributes.get('_route'), {'_locale': 'eu'}) }}" style="font-size: 16px;">
                             EUS
                         </a>
-                        <a href="{{ path('app_anon_lang', {'locale': 'fr'}) }}" style="font-size: 16px;">
+                        <a href="{{ path(app.request.attributes.get('_route'), {'_locale': 'fr'}) }}" style="font-size: 16px;">
                             FR
                         </a>
                     {% endif %}

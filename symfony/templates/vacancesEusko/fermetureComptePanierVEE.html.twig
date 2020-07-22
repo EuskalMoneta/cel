@@ -12,10 +12,34 @@
                         <p class="text-subtitle">{{ "Commandez un panier paysan avec le reste de vos eusko, il pourra vous être livré etc..." | trans }}</p>
                         <p class="text-subtitle">{{ "Conditions" | trans }}</p>
 
-                        <div class="text-center">
+                        <h3 class="secondary-color mb-0"> {{ "Votre solde" | trans }}</h3>
+                        <div class="main-color big-solde mb-4" style="font-size: 30px"> {{ infosUser.solde | number_format(2, ',') }} eusko</div>
+
+                        <form class="form" method="post">
+                            {% for article in articles %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="articleRadio" id="radio{{ article.id }}" value="{{ article.id }}" required
+                                            {% if article.prix > infosUser.solde %} disabled {% endif %}>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        <p class="main-color text-semi-bold">
+                                            {{ article }} - {{ article.prix }} eusko
+                                            {% if article.prix > infosUser.solde %}
+                                                <span class="badge badge-warning">Solde insuffisant, chargez votre compte</span>
+                                            {% endif %}
+                                        </p>
+                                        <p>{{ article.description }}</p>
+
+                                    </label>
+                                </div>
+                            {% endfor %}
+
+                        <div class="text-center mt-4">
                             <a href="{{ path('app_vee_fermeture') }}" class="btn btn-primary">Retour</a>
-                            <a href="#" class="btn btn-success">Passez commande d'un panier paysan</a>
+                            <input type="submit" class="btn btn-success" value="{{ "Passer commande" | trans }}" />
                         </div>
+
+                        </form>
+
 
                     </div>
                 </div>

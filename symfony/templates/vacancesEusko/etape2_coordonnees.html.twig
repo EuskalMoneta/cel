@@ -4,6 +4,10 @@
 
 {% block title %}{{ title | trans }}{% endblock %}
 
+{% block cssBefore %}
+    <link href="{{ asset('css/intlTelInput.min.css') }}" rel="stylesheet"  type='text/css'>
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
@@ -15,12 +19,8 @@
                         <h1 class="mb-3">{{ title | trans }}</h1>
                        {# <p class="text-subtitle">{{ "Pour commencer, nous avons besoin de quelques informations." | trans }}</p>#}
                     </div>
-                    <form method="post">
 
-                        {{ form(form) }}
-
-
-                    </form>
+                    {{ form(form) }}
                 </div>
             </div>
         </div>
@@ -29,14 +29,23 @@
 
 
 {% block js %}
-    <script src="{{ asset('js/jquery.mask.js') }}"></script>
+    <script src="{{ asset('js/intlTelInput.min.js') }}"></script>
     <script type="text/javascript">
 
         $( document ).ready(function() {
 
-            $("#form_phone_mobile").mask('+00 0 00 00 00 00 00', {
-                placeholder: '+33 _ __ __ __ __ __'
+            var input = document.querySelector("#form_phone");
+            var iti = window.intlTelInput(input, {
+                nationalMode: true,
+                preferredCountries: ['fr', 'es'],
+                utilsScript: "{{ asset('js/intlTelInputUtils.js') }}"
             });
+
+            $('#coordonnees').submit(function () {
+                $('#form_phone').val(iti.getNumber());
+                return true;
+            });
+
 
         });
 

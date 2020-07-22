@@ -31,13 +31,13 @@ class SecurityController extends AbstractController
     use TargetPathTrait;
 
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/{_locale}/login",  locale="fr", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em): Response
     {
-        // if ($this->getUser()) {
-        //    $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            $this->redirectToRoute('app_homepage');
+        }
 
         $promotions = $em->getRepository('App:Promotion')->findBy(['visible' => true]);
 
@@ -49,17 +49,6 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'promotions' => $promotions]);
     }
-
-    /**
-     * @Route("/anon/language/{locale}", name="app_anon_lang")
-     */
-    public function changeLanguage($locale, Request $request): Response
-    {
-        $request->getSession()->set('_locale', $locale);
-        $targetPath = $this->getTargetPath($request->getSession(), 'main');
-        return new RedirectResponse($targetPath);
-    }
-
 
     /**
      * @Route("/creer-compte", name="app_creer_compte")
@@ -75,7 +64,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/activer-compte", name="app_first_login")
+     * @Route("/{_locale}/activer-compte", name="app_first_login")
      */
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
@@ -207,7 +196,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/passe-perdu", name="app_lost_password")
+     * @Route("/{_locale}/passe-perdu", name="app_lost_password")
      */
     public function lostPassword(Request $request, APIToolbox $APIToolbox): Response
     {

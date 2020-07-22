@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Panier paysan" | trans }}{% endblock %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div style="">
+                        <h1 class="mb-3">{{ "Panier paysan" | trans }}</h1>
+                        <p class="text-subtitle">{{ "Renseignez votre adresse de livraison, l'expédition sera effectuée sous 48h." | trans }}</p>
+
+                        <h2 class="main-color mb-2"> {{ "Commande" | trans }}</h2>
+                        <p class="text-semi-bold">
+                            {{ article }} - {{ article.prix }} eusko
+                        <p></p>
+
+
+                        <h2 class="main-color mt-4 mb-2"> {{ "Livraison" | trans }}</h2>
+                        {{ form_start(form) }}
+
+                        {{ form_row(form.destinataire) }}
+
+                        {{ form_row(form.address) }}
+
+                        {{ form_row(form.zip) }}
+
+                        {{ form_row(form.town) }}
+
+                        {{ form_row(form.country_id) }}
+
+
+                        <div class="text-center mt-4">
+                            <a href="{{ path('app_vee_fermeture_panier') }}" class="btn btn-primary">Retour</a>
+                            <input type="submit" class="btn btn-success" value="{{ "Payer ma commande" | trans }}" />
+                        </div>
+
+                        {{ form_rest(form) }}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
+

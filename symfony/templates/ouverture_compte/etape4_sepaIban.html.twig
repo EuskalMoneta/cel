@@ -25,7 +25,31 @@
                     <div class="row">
                         <div class="col-sm-12 mt-4">
 
-                            {{ form(form) }}
+                            {{ form_start(form) }}
+                            {% if  form_errors(form) != '' %}
+                                <div class="alert alert-dismissible alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+                                </div>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col">
+                                    {{ form_row(form.automatic_change_amount) }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    {{ form_row(form.iban) }}
+
+                                    <br />
+                                    <p class="text-subtitle">{{ "Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement." | trans}}</p>
+                                </div>
+                            </div>
+
+                            {{ form_end(form) }}
+
+
                         </div>
                     </div>
 

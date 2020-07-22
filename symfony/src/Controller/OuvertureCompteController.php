@@ -78,7 +78,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
+     * @Route("/{_locale}/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
      */
     public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf)
     {
@@ -145,7 +145,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture-compte", name="app_ouverture_etape1_identite")
+     * @Route("/{_locale}/ouverture-compte", name="app_ouverture_etape1_identite")
      */
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session)
     {
@@ -174,7 +174,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture-compte/coordonnees", name="app_compte_etape2_coordonnees")
+     * @Route("/{_locale}/ouverture-compte/coordonnees", name="app_compte_etape2_coordonnees")
      */
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
@@ -192,12 +192,12 @@ class OuvertureCompteController extends AbstractController
             }
         }
 
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']])
             ->add('address', TextareaType::class, ['required' => true])
             ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
             ->add('town', TextType::class, ['required' => true])
             ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33'), 'help' => $translator->trans("Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.")])
+            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
@@ -214,7 +214,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture-compte/justificatif", name="app_compte_etape3_justificatif")
+     * @Route("/{_locale}/ouverture-compte/justificatif", name="app_compte_etape3_justificatif")
      */
     public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator)
     {
@@ -242,11 +242,11 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture-compte/sepa", name="app_compte_etape4_sepa")
+     * @Route("/{_locale}/ouverture-compte/sepa", name="app_compte_etape4_sepa")
      */
     public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
-
+        
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
             ->add('automatic_change_amount', NumberType::class,
                 [
@@ -261,7 +261,7 @@ class OuvertureCompteController extends AbstractController
             ->add('iban', TextType::class, [
                 'required' => true,
                 'label' => $translator->trans("Coordonnées du compte à prélever (IBAN)"),
-                'help' => $translator->trans("Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement."),
+
                 'constraints' => [
                     new NotBlank(),
                 ]])
@@ -290,7 +290,7 @@ class OuvertureCompteController extends AbstractController
 
 
     /**
-     * @Route("/ouverture-compte/securite", name="app_compte_etape5_securite")
+     * @Route("/{_locale}/ouverture-compte/securite", name="app_compte_etape5_securite")
      */
     public function etape5Securite(APIToolbox $APIToolbox,
                                    EntityManagerInterface $em,
@@ -397,8 +397,6 @@ class OuvertureCompteController extends AbstractController
                 } else {
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }
-
-
             }
         }
         return $this->render('ouverture_compte/etape5_securite.html.twig', ['form' => $form->createView()]);
@@ -406,7 +404,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     /**
-     * @Route("/ouverture-compte/bienvenue", name="app_compte_etape5_sucess")
+     * @Route("/{_locale}/ouverture-compte/bienvenue", name="app_compte_etape5_sucess")
      */
     public function etape5Success(APIToolbox $APIToolbox, Request $request)
     {

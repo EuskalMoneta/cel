@@ -58,6 +58,11 @@
                     </div>
 
 
+                    <div id="spinner" class="text-center mt-4 d-none">
+                        <div class="loadingio-spinner-spinner-3n6a06i025x"><div class="ldio-x8uv5a6ulc">
+                                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                            </div></div>
+                    </div>
 
 
                     {{ form_end(form) }}
@@ -75,12 +80,19 @@
             if($("#form_questionSecrete").val() == 'autre'){
                 $('#questionPerso').removeClass('d-none');
             }
+
             $("#form_questionSecrete").change(function(){
                 if($(this).children("option:selected").val() == 'autre'){
                     $('#questionPerso').removeClass('d-none');
                 } else {
                     $('#questionPerso').addClass('d-none');
                 }
+            });
+
+            $('form[name="form"]').submit(function () {
+                $('#form_submit').attr("disabled", true);
+                $('#spinner').removeClass('d-none');
+                return true;
             });
         });
     </script>

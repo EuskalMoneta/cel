@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -39,7 +42,7 @@ class VacancesEuskoController extends AbstractController
 {
 
     /**
-     * @Route("/vacances-en-eusko", name="app_vee_etape1_identite")
+     * @Route("/{_locale}/vacances-en-eusko", name="app_vee_etape1_identite")
      */
     public function etape1Identite(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator, SessionInterface $session)
     {
@@ -68,7 +71,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/coordonnees", name="app_vee_etape2_coordonnees")
+     * @Route("/{_locale}/vacances-en-eusko/coordonnees", name="app_vee_etape2_coordonnees")
      */
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
@@ -86,12 +89,12 @@ class VacancesEuskoController extends AbstractController
             }
         }
 
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']])
             ->add('address', TextareaType::class, ['required' => true])
             ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
             ->add('town', TextType::class, ['required' => true])
             ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '+33'), 'help' => $translator->trans("Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.")])
+            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
@@ -108,7 +111,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/justificatif", name="app_vee_etape3_justificatif")
+     * @Route("/{_locale}/vacances-en-eusko/justificatif", name="app_vee_etape3_justificatif")
      */
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
     {
@@ -141,7 +144,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/securite", name="app_vee_etape4_securite")
+     * @Route("/{_locale}/vacances-en-eusko/securite", name="app_vee_etape4_securite")
      */
     public function etape4Securite(APIToolbox $APIToolbox,
                                    Request $request,
@@ -177,8 +180,8 @@ class VacancesEuskoController extends AbstractController
                     'required' => true,
                 ])
                 ->add('pin_code', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
-                    'second_options' => ['label' => 'Confirmer le code'],
+                    'first_options'  => ['label' => $translator->trans('Code PIN (4 chiffres)')],
+                    'second_options' => ['label' => $translator->trans('Confirmer le code')],
                     'constraints' => [
                         new NotBlank(),
                         new Assert\Positive(),
@@ -246,7 +249,7 @@ class VacancesEuskoController extends AbstractController
     }
 
     /**
-     * @Route("/vacances-en-eusko/bienvenue", name="app_vee_etape4_success")
+     * @Route("/{_locale}/vacances-en-eusko/bienvenue", name="app_vee_etape4_success")
      */
     public function etape4Success(APIToolbox $APIToolbox, Request $request)
     {
@@ -274,19 +277,26 @@ class VacancesEuskoController extends AbstractController
 
             $session->set('compteur', $session->get('compteur') + 1);
 
-            /*dump($checkID);
-            dump($_ENV['IDCHECK_AUTH']);*/
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
             } elseif ($checkID['httpcode'] == 200){
                 $status = true;
                 $dataCard = json_decode($checkID["data"]);
+                $idCheckUID = $dataCard->uid;
 
                 $naissance = $dataCard->holderDetail->birthDate;
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
 
                 $docBase64 = 'data:'.$file->getMimeType().';base64,'.base64_encode(file_get_contents($file->getPathname()));
-                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64], $data);
+
+                $pdf = 'null';
+                $idcheckPDF = $APIToolbox->curlRequestIdCheck('GET', '/rest/v0/pdfreport/'.$idCheckUID);
+                if ($idcheckPDF['httpcode'] == 200){
+                    $dataPdf = json_decode($idcheckPDF["data"]);
+                    $pdf = 'data:application/pdf;base64,'.$dataPdf->report;
+                }
+
+                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
                 $session->set('utilisateur', $dataU);
 
                 $response = $APIToolbox->go_nogo($checkID["data"]);
@@ -342,8 +352,9 @@ class VacancesEuskoController extends AbstractController
      * @isGranted("ROLE_TOURISTE")
      * @Route("/vacances-en-eusko/fermeture-compte/panier", name="app_vee_fermeture_panier")
      */
-    public function fermetureComptePanierVEE(APIToolbox $APIToolbox, Request $request)
+    public function fermetureComptePanierVEE(APIToolbox $APIToolbox, EntityManagerInterface $em, Request $request, SessionInterface $session)
     {
+        $articles = $em->getRepository('App:Article')->findBy(['visible' => true], ['prix' => 'ASC']);
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
             $infosUser = [
@@ -353,7 +364,110 @@ class VacancesEuskoController extends AbstractController
             ];
         }
 
-        return $this->render('vacancesEusko/fermetureComptePanierVEE.html.twig',  [ 'infosUser' => $infosUser]);
+        if($request->isMethod('POST')) {
+            $articleId = $request->get('articleRadio');
+            $session->start();
+            $session->set('panierpaysanArticle', $articleId);
+
+            return $this->redirectToRoute('app_vee_fermeture_panier_recapitulatif');
+        }
+
+        return $this->render('vacancesEusko/fermetureComptePanierVEE.html.twig', ['infosUser' => $infosUser, 'articles'=> $articles]);
+    }
+
+    /**
+     * @isGranted("ROLE_TOURISTE")
+     * @Route("/vacances-en-eusko/fermeture-compte/panier/recapitulatif", name="app_vee_fermeture_panier_recapitulatif")
+     */
+    public function fermetureComptePanierRecapVEE( APIToolbox $APIToolbox,
+                                                   EntityManagerInterface $em,
+                                                   Request $request,
+                                                   SessionInterface $session,
+                                                   TranslatorInterface $translator,
+                                                   MailerInterface $mailer
+                                                    )
+    {
+        $session->start();
+
+        $article = $em->getRepository('App:Article')->find($session->get('panierpaysanArticle'));
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($article and $responseMember['httpcode'] == 200){
+
+            $membre = $responseMember['data'][0];
+
+            $responseCountries = $APIToolbox->curlRequest('GET', '/countries/');
+            $tabCountries = [];
+            foreach ($responseCountries['data'] as $country){
+                if($country->label == '-'){
+                    $tabCountries[$country->label] = '';
+                } else {
+                    $tabCountries[$country->label] = $country->label;
+                }
+                if($country->id == $membre->country_id){
+                    $defautPays = $country->label;
+                }
+            }
+            $builder = $this->createFormBuilder()
+                ->add('destinataire', TextareaType::class, ['required' => true, 'data' => $membre->firstname.' '.$membre->lastname])
+                ->add('address', TextareaType::class, ['required' => true, 'data' => $membre->address])
+                ->add('zip', TextType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
+                ->add('town', TextType::class, ['required' => true, 'data' => $membre->town])
+                ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $defautPays])
+            ;
+            $form = $builder->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $dataAdresse = $form->getData();
+
+                //Ajout du bénéficiaire
+                $responseBenef = $APIToolbox->curlRequest('POST', '/beneficiaires/', ['cyclos_account_number' => $article->getNumeroComptePartenaire()]);
+                if($responseBenef['httpcode'] == 200 or $responseBenef['httpcode'] == 201) {
+
+                    //Virement au partenaire
+                    $data['account'] = $article->getNumeroComptePartenaire();
+                    $data['amount'] = $article->getPrix();
+                    $data['description'] = $article->getLibelle();
+
+                    $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
+                    if($responseVirement['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans("Commande validée !"));
+
+                        $dataAdresse['email'] = $membre->email;
+
+                        //Email au partenaire
+                        $email = (new Email())
+                            ->from('info@euskalmoneta.org')
+                            ->to($article->getEmailPartenaire())
+                            ->subject('Nouvelle commande eusko')
+                            ->html($this->renderView('vacancesEusko/emailPanierPaysan.html.twig', ['adresse' => $dataAdresse, 'article' => $article]));
+
+                        $mailer->send($email);
+
+                        $session->set('panierpaysanArticle', null);
+                        return $this->redirectToRoute('app_vee_fermeture');
+                    } else {
+                        $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
+                    }
+
+                } else {
+                    $this->addFlash('danger', 'Erreur virement - compte partenaire non trouvé');
+                }
+
+            }
+
+            return $this->render('vacancesEusko/fermetureComptePanierRecapVEE.html.twig',
+                [
+                    'article'=> $article,
+                    'membre' => $membre,
+                    'tabCountries' => $tabCountries,
+                    'form' => $form->createView()
+                ]);
+
+        } else {
+            $this->addFlash('danger', 'erreur');
+            return $this->redirectToRoute('app_vee_fermeture_panier');
+        }
     }
 
     /**

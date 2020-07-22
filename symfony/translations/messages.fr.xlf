@@ -811,7 +811,7 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>ETAPE 3/4</source>
         <target>ETAPE 3/4</target>
       </trans-unit>
-      <trans-unit id="Po3.G8h" resname="Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;&#10;                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;&#10;                        - Le document ne doit pas être flou &lt;br /&gt;&#10;                        - Votre photo doit apparaître sur le document &lt;br /&gt;">
+      <trans-unit id="Po3.G8h" resname="piece_d_identite.explication">
         <source>Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;
                         Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;
                         - Le document ne doit pas être flou &lt;br /&gt;
@@ -936,6 +936,14 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="ssEkU20" resname="Nom">
         <source>Nom</source>
         <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="4yW.j5A" resname="Prénom">
+        <source>Prénom</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>Email</target>
       </trans-unit>
       <trans-unit id="Murrb4B" resname="Birth">
         <source>Birth</source>
@@ -1166,6 +1174,42 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
       <trans-unit id="bMuG88." resname="Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
         <source>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
         <target>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</target>
+      </trans-unit>
+      <trans-unit id="VCUd6sO" resname="Commande validée !">
+        <source>Commande validée !</source>
+        <target>Commande validée !</target>
+      </trans-unit>
+      <trans-unit id="8GKIE4r" resname="Il ne vous reste plus qu’à charger votre compte et à télécharger l'application euskopay pour pouvoir payer en eusko !">
+        <source>Il ne vous reste plus qu’à charger votre compte et à télécharger l'application euskopay pour pouvoir payer en eusko !</source>
+        <target>Il ne vous reste plus qu’à charger votre compte et à télécharger l'application euskopay pour pouvoir payer en eusko !</target>
+      </trans-unit>
+      <trans-unit id="GeS2x9e" resname="Renseignez votre adresse de livraison, l'expédition sera effectuée sous 48h.">
+        <source>Renseignez votre adresse de livraison, l'expédition sera effectuée sous 48h.</source>
+        <target>Renseignez votre adresse de livraison, l'expédition sera effectuée sous 48h.</target>
+      </trans-unit>
+      <trans-unit id="HbxlzO1" resname="Commande">
+        <source>Commande</source>
+        <target>Commande</target>
+      </trans-unit>
+      <trans-unit id="qLPSUKy" resname="Livraison">
+        <source>Livraison</source>
+        <target>Livraison</target>
+      </trans-unit>
+      <trans-unit id="jgI4COD" resname="Payer ma commande">
+        <source>Payer ma commande</source>
+        <target>Payer ma commande</target>
+      </trans-unit>
+      <trans-unit id="OUHtg_x" resname="Passer commande">
+        <source>Passer commande</source>
+        <target>Passer commande</target>
+      </trans-unit>
+      <trans-unit id="jGL493d" resname="Code PIN (4 chiffres)">
+        <source>Code PIN (4 chiffres)</source>
+        <target>Code PIN (4 chiffres)</target>
+      </trans-unit>
+      <trans-unit id="o45LraB" resname="Confirmer le code">
+        <source>Confirmer le code</source>
+        <target>Confirmer le code</target>
       </trans-unit>
     </body>
   </file>

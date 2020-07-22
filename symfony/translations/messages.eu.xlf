@@ -115,7 +115,7 @@
       </trans-unit>
       <trans-unit id="IUbRpkc" resname="Coordonnées">
         <source>Coordonnées</source>
-        <target>Koordenatuak</target>
+        <target>Helbidea</target>
       </trans-unit>
       <trans-unit id="eIARgzp" resname="Notifications">
         <source>Notifications</source>
@@ -837,7 +837,7 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
         <source>ETAPE 3/5</source>
         <target>3/5 URRATSA</target>
       </trans-unit>
-      <trans-unit id="Po3.G8h" resname="Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;&#10;                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;&#10;                        - Le document ne doit pas être flou &lt;br /&gt;&#10;                        - Votre photo doit apparaître sur le document &lt;br /&gt;">
+      <trans-unit id="Po3.G8h" resname="piece_d_identite.explication">
         <source>Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;
                         Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;
                         - Le document ne doit pas être flou &lt;br /&gt;
@@ -1125,7 +1125,15 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
       </trans-unit>
       <trans-unit id="ssEkU20" resname="Nom">
         <source>Nom</source>
+        <target>Deitura / Abizena</target>
+      </trans-unit>
+      <trans-unit id="4yW.j5A" resname="Prénom">
+        <source>Prénom</source>
         <target>Izena</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>Emaila</target>
       </trans-unit>
       <trans-unit id="Murrb4B" resname="Birth">
         <source>Birth</source>
@@ -1166,6 +1174,42 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
       <trans-unit id="bMuG88." resname="Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!">
         <source>Le service d'HelloAsso est gratuit, mais pouvez laisser un pourboire de temps en temps si vous le souhaitez, pour soutenir cet outil alternatif au service des associations!</source>
         <target>HelloAssoren zerbitzua dohainik da bainan eskupeko bat uzten ahal duzu nahi baduzu, elkarteen zerbitzuko den tresna alternatibo hori sustengatzeko!</target>
+      </trans-unit>
+      <trans-unit id="jGL493d" resname="Code PIN (4 chiffres)">
+        <source>Code PIN (4 chiffres)</source>
+        <target>PIN kodea (4 zifra)</target>
+      </trans-unit>
+      <trans-unit id="o45LraB" resname="Confirmer le code">
+        <source>Confirmer le code</source>
+        <target>Kodea berretsi</target>
+      </trans-unit>
+      <trans-unit id="VCUd6sO" resname="Commande validée !">
+        <source>Commande validée !</source>
+        <target>Zure eskaera baieztatua da!</target>
+      </trans-unit>
+      <trans-unit id="8GKIE4r" resname="Il ne vous reste plus qu’à charger votre compte et à télécharger l'application euskopay pour pouvoir payer en eusko !">
+        <source>Il ne vous reste plus qu’à charger votre compte et à télécharger l'application euskopay pour pouvoir payer en eusko !</source>
+        <target>Bakarrik falta zaizu zure kontua kargatzea eta euskopay aplikazioa telekargatzea euskotan ordaindu ahal izaiteko!</target>
+      </trans-unit>
+      <trans-unit id="GeS2x9e" resname="Renseignez votre adresse de livraison, l'expédition sera effectuée sous 48h.">
+        <source>Renseignez votre adresse de livraison, l'expédition sera effectuée sous 48h.</source>
+        <target>Banatze helbidea bete zazu, igortzea 48 ordu barne eginen da.</target>
+      </trans-unit>
+      <trans-unit id="HbxlzO1" resname="Commande">
+        <source>Commande</source>
+        <target>Eskaera</target>
+      </trans-unit>
+      <trans-unit id="qLPSUKy" resname="Livraison">
+        <source>Livraison</source>
+        <target>Banatzea</target>
+      </trans-unit>
+      <trans-unit id="jgI4COD" resname="Payer ma commande">
+        <source>Payer ma commande</source>
+        <target>Nire eskaera ordaindu</target>
+      </trans-unit>
+      <trans-unit id="OUHtg_x" resname="Passer commande">
+        <source>Passer commande</source>
+        <target>Manatu</target>
       </trans-unit>
     </body>
   </file>

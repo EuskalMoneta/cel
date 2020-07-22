@@ -180,8 +180,8 @@ class VacancesEuskoController extends AbstractController
                     'required' => true,
                 ])
                 ->add('pin_code', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
-                    'second_options' => ['label' => 'Confirmer le code'],
+                    'first_options'  => ['label' => $translator->trans('Code PIN (4 chiffres)')],
+                    'second_options' => ['label' => $translator->trans('Confirmer le code')],
                     'constraints' => [
                         new NotBlank(),
                         new Assert\Positive(),

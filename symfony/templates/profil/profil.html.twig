@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block cssBefore %}
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@600&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
@@ -8,7 +12,7 @@
 
                     <i class="fal fa-user-circle" style="font-size: 72px;"></i>
                     <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
-                    <h3 class="secondary-color" >{{ "N° d'adhérent" | trans }} {{ app.user }} </h3>
+                    <h3 class="secondary-color" >{{ "N° d'adhérent" | trans }} <span class="consolas">{{ app.user }}</span></h3>
                     <h3 class="secondary-color" >{{ "Compte n°" | trans }} {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %} </h3>
                     {% if is_granted('ROLE_CLIENT') %}
                     {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}

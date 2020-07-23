@@ -117,8 +117,8 @@ class VacancesEuskoController extends AbstractController
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
     {
         $session->start();
-
-        if($session->get('compteur') < 5){
+        
+        if($session->get('compteur') < 20){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [
                     'label' => ' ',
@@ -260,7 +260,10 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/vacances-en-eusko/call/justificatif", name="app_vee_api_idcheck")
      */
-    public function verificationJustificatif(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator, SessionInterface $session)
+    public function verificationJustificatif(APIToolbox $APIToolbox,
+                                             Request $request,
+                                             TranslatorInterface $translator,
+                                             SessionInterface $session)
     {
         //INIT
         $session->start();
@@ -271,12 +274,26 @@ class VacancesEuskoController extends AbstractController
         $file = $request->files->get('form')['idcard'];
 
         if($file){
+
+            //si l'image fait plus de 4 Mo
+            if($file->getSize() > 4000000){
+                //resize avec GD
+                $image = $this->resize_image($file->getPathname(), 2000, 2000, $file->getMimeType());
+
+                //transformer la ressource GD en image
+                ob_start();
+                imagejpeg($image);
+                $contents = ob_get_contents();
+                ob_end_clean();
+            } else {
+                $contents = file_get_contents($file->getPathname());
+            }
+            $docBase64 = base64_encode($contents);
+
             $session->set('compteur', $session->get('compteur') + 1);
 
-            $docBase64 = base64_encode(file_get_contents($file->getPathname()));
+            //Appel ID Check
             $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
-
-            $session->set('compteur', $session->get('compteur') + 1);
 
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
@@ -288,7 +305,7 @@ class VacancesEuskoController extends AbstractController
                 $naissance = $dataCard->holderDetail->birthDate;
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
 
-                $docBase64 = 'data:'.$file->getMimeType().';base64,'.base64_encode(file_get_contents($file->getPathname()));
+                $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
 
                 $pdf = 'null';
                 $idcheckPDF = $APIToolbox->curlRequestIdCheck('GET', '/rest/v0/pdfreport/'.$idCheckUID);
@@ -311,6 +328,37 @@ class VacancesEuskoController extends AbstractController
 
         return new JsonResponse(['bool' => $status, 'resultat' => $response]);
 
+    }
+
+    function resize_image($file, $w, $h, $mime, $crop=FALSE) {
+        list($width, $height) = getimagesize($file);
+        $r = $width / $height;
+        if ($crop) {
+            if ($width > $height) {
+                $width = ceil($width-($width*abs($r-$w/$h)));
+            } else {
+                $height = ceil($height-($height*abs($r-$w/$h)));
+            }
+            $newwidth = $w;
+            $newheight = $h;
+        } else {
+            if ($w/$h > $r) {
+                $newwidth = $h*$r;
+                $newheight = $h;
+            } else {
+                $newheight = $w/$r;
+                $newwidth = $w;
+            }
+        }
+        if($mime == 'image/png'){
+            $src = imagecreatefrompng($file);
+        } else {
+            $src = imagecreatefromjpeg($file);
+        }
+        $dst = imagecreatetruecolor($newwidth, $newheight);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+        return $dst;
     }
 
     /**

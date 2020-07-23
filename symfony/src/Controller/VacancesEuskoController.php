@@ -42,6 +42,7 @@ class VacancesEuskoController extends AbstractController
 {
 
     /**
+     * @Route("/vacances-en-eusko", name="app_vee_etape1_identite_fr")
      * @Route("/{_locale}/vacances-en-eusko", name="app_vee_etape1_identite")
      */
     public function etape1Identite(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator, SessionInterface $session)

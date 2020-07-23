@@ -31,6 +31,7 @@ class SecurityController extends AbstractController
     use TargetPathTrait;
 
     /**
+     * @Route("/login", name="app_login_fr")
      * @Route("/{_locale}/login",  locale="fr", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em): Response

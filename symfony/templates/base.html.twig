@@ -36,7 +36,7 @@
 <header>
     <!-- Navigation -->
     {% block menu_top %}
-        <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-dark {% if is_granted('ROLE_PARTENAIRE') %} bg-partenaire {% else %}bg-eusko{% endif %} static-top fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ path('app_homepage') }}">
                     <img src="{% if is_granted("ROLE_TOURISTE") %} {{ asset('images/logo-vee.png') }}{% else %}{{ asset('images/logo-eusko-topbar.png') }}{% endif %}" alt="eusko logo" style="width: 60px;">

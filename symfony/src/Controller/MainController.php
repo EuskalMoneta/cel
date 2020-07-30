@@ -31,8 +31,9 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_accept_cgu');
         }
 
-        // check si cotis automatique est activée sinon redirect to costisation
-        if($membre->array_options->options_prelevement_auto_cotisation_eusko != 1 and $authChecker->isGranted('ROLE_CLIENT')) {
+        // check si prélèvement de la cotis en eusko est activé sinon redirect vers cotisation
+        // sauf pour les adhérents qui ont la cotisation offerte
+        if($membre->array_options->options_cotisation_offerte != 1 and $membre->array_options->options_prelevement_auto_cotisation_eusko != 1 and $authChecker->isGranted('ROLE_CLIENT')) {
             return $this->redirectToRoute('app_profil_cotisation');
         }
 

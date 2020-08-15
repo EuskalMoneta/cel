@@ -503,8 +503,7 @@ class ProfilController extends AbstractController
         if($responseMember['httpcode'] == 200) {
 
             $membre = $responseMember['data'][0];
-
-            dump($membre);
+            
             $booleanNewsletter = $membre->array_options->options_recevoir_bons_plans;
 
             $form = $this->createFormBuilder()

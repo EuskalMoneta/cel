@@ -102,92 +102,57 @@ class ProfilController extends AbstractController
     }
 
     /**
-     * @Route("/profil/pin", name="app_profil_pin")
+     * @Route("/profil/init-pin", name="app_profil_init_pin")
      */
-    public function pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function init_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $forcedPin = false;
-
-        $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
-        if($responsePin['httpcode'] == 200) {
-
-            // If the pin code is already defined
-            if($responsePin['data'] == 'ACTIVE'){
-                $form = $this->createFormBuilder()
-                    ->add('ex_pin', PasswordType::class, ['label' => 'Code précédent', 'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 4, 'max'=> 4]),
-                    ]])
-                    ->add('pin1', RepeatedType::class, [
-                        'first_options'  => ['label' => 'Nouveau code pin (4 chiffres)'],
-                        'second_options' => ['label' => 'Confirmer le nouveau code pin'],
-                        'constraints' => [
-                            new NotBlank(),
-                            new Length(['min' => 4, 'max'=> 4]),
-                        ],
-                        'type' => PasswordType::class,
-                        'options' => ['attr' => ['class' => 'password-field']],
-                        'required' => true,
-                    ])
-                    ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
-                    ->getForm();
-
-
-                $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $data = $form->getData();
-                    $data['pin2'] = $data['pin1'];
-
-                    $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
-                    if($responseProfile['httpcode'] == 200 or $responseProfile['httpcode'] == 202) {
-                        $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
-                    } else {
-                        $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
-                    }
-                }
-            } else {
-                $forcedPin = true;
-                // If there isn't a PIN code yet, don't ask for the old one
-                $form = $this->createFormBuilder()
-                    ->add('pin1', RepeatedType::class, [
-                        'first_options'  => ['label' => 'Code pin (4 chiffres)'],
-                        'second_options' => ['label' => 'Confirmer le code'],
-                        'constraints' => [
-                            new NotBlank(),
-                            new Length(['min' => 4, 'max'=> 4]),
-                        ],
-                        'type' => PasswordType::class,
-                        'options' => ['attr' => ['class' => 'password-field']],
-                        'required' => true,
-                    ])
-                    ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
-                    ->getForm();
-
-
-                $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $data = $form->getData();
-                    $data['pin2'] = $data['pin1'];
-
-                    $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
-
-                    if($responseProfile['httpcode'] == 200 or $responseProfile['httpcode'] == 202) {
-                        $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
-                        return $this->redirectToRoute('app_homepage');
-                    } else {
-                        $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
-                    }
-                }
-
-            }
-
-            return $this->render('profil/pin.html.twig', ['form' => $form->createView(), 'forcedPin' => $forcedPin]);
-
-        } else {
-            throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
-        }
+        return $this->set_pin($request, $APIToolbox, $translator, true);
     }
 
+    /**
+     * @Route("/profil/pin", name="app_profil_pin")
+     */
+    public function update_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    {
+        return $this->set_pin($request, $APIToolbox, $translator, false);
+    }
+
+    private function set_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, bool $forcedPin)
+    {
+        $form = $this->createFormBuilder()
+            ->add('pin', RepeatedType::class, [
+                'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
+                'second_options' => ['label' => 'Confirmer le code'],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 4, 'max'=> 4]),
+                ],
+                'type' => PasswordType::class,
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $data['pin2'] = $data['pin'];
+
+            $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
+
+            if($responseProfile['httpcode'] == 200) {
+                $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                if ($forcedPin) {
+                    return $this->redirectToRoute('app_homepage');
+                }
+            } else {
+                $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
+            }
+        }
+
+        return $this->render('profil/pin.html.twig', ['form' => $form->createView(), 'forcedPin' => $forcedPin]);
+    }
 
     /**
      * @Route("/profil/cotisation", name="app_profil_cotisation")

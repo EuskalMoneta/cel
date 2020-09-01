@@ -39,7 +39,7 @@ class MainController extends AbstractController
 
         $responsePin = $APIToolbox->curlRequest('GET', '/euskokart-pin/');
         if($responsePin['httpcode'] == 200 && $responsePin['data'] != 'ACTIVE') {
-            return $this->redirectToRoute('app_profil_pin');
+            return $this->redirectToRoute('app_profil_init_pin');
         }
 
         //init vars

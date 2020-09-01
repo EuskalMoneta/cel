@@ -145,9 +145,9 @@
         <source>mois</source>
         <target>hilabetea</target>
       </trans-unit>
-      <trans-unit id="PvV1cs_" resname="Choix du code pin">
-        <source>Choix du code pin</source>
-        <target>Pin kodigoaren hautua</target>
+      <trans-unit id="A7FMzkc" resname="Choix du code PIN">
+        <source>Choix du code PIN</source>
+        <target>PIN kodigoaren hautua</target>
       </trans-unit>
       <trans-unit id="iFgBhya" resname="Aucun résultat pour les dates sélectionnées.">
         <source>Aucun résultat pour les dates sélectionnées.</source>

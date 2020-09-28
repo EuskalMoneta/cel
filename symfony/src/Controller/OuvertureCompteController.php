@@ -306,7 +306,7 @@ class OuvertureCompteController extends AbstractController
         //récupérer le SEPA signé et le stocker en session
         $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
 
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_API_KEY']);
+        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
         $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
 
         $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);

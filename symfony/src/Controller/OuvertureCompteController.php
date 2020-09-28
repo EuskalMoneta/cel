@@ -119,7 +119,7 @@ class OuvertureCompteController extends AbstractController
         $member = json_decode($response);
 
         //etape 4 position et contenu de la signature
-        $response = $youSignClient->AdvancedProcedureFileObject("33,235,291,338",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
+        $response = $youSignClient->AdvancedProcedureFileObject("150,235,460,335",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
 
         //etape 5 lancement de la procédure
         $response = $youSignClient->AdvancedProcedurePut();

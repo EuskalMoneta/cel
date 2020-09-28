@@ -2,11 +2,11 @@ legacy_login:
     path: /login
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
-        path: 'https://moncompte.euskalmoneta.org/fr/login'
+        path: '/fr/login'
         permanent: true
 legacy_vee:
     path: /vacances-en-eusko
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
-        path: 'https://moncompte.euskalmoneta.org/fr/vacances-en-eusko'
+        path: '/fr/vacances-en-eusko'
         permanent: true

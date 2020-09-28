@@ -4,3 +4,5 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - '@SonataCore/Form/datepicker.html.twig'
+    globals:
+        yousign_url: '%env(YOUSIGN_URL)%'

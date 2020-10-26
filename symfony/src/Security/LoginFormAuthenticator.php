@@ -41,11 +41,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
+        $username = $request->request->get('username');
+        //force username uppercase if username is not an email
+        if (strpos($username, '@') === false) {
+            $username = strtoupper($username);
+        }
+
         $credentials = [
-            'username' => $request->request->get('username'),
+            'username' => $username,
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['username']

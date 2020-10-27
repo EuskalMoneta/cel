@@ -126,7 +126,7 @@ class VirementController extends AbstractController
 
                     foreach($resultats as $resultat){
                         if($resultat->status == 1){
-                            $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
+                            $listSuccess .= '<li>'.$resultat->name.'</li>';
                         } else {
                             $listFail .= '<li>'.$resultat->account.' : '.$resultat->message.'</li>';
                         }

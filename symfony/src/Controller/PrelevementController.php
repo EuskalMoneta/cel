@@ -89,7 +89,7 @@ class PrelevementController extends AbstractController
 
                     foreach($resultats as $resultat){
                         if($resultat->status == 1){
-                            $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
+                            $listSuccess .= '<li>'.$resultat->name.'</li>';
                         } else {
                             if($resultat->name != ''){
                                 $listFail .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';

@@ -57,8 +57,15 @@ class VirementController extends AbstractController
                 //API CALL
                 $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
                 if($responseVirement['httpcode'] == 200) {
-                    $this->addFlash('success',$translator->trans("Virement effectué"));
-                    return $this->redirectToRoute('app_virement');
+                    $resultats = $responseVirement['data'];
+                    foreach($resultats as $resultat){
+                        if($resultat->status == 1){
+                            $this->addFlash('success',$translator->trans("Virement effectué"));
+                            return $this->redirectToRoute('app_virement');
+                        } else {
+                            $this->addFlash('danger',$translator->trans($resultat->message));
+                        }
+                    }
                 } else {
                     $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
                 }

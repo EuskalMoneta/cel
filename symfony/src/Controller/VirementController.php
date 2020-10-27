@@ -269,23 +269,13 @@ class VirementController extends AbstractController
      */
     public function removeBeneficiaires($id, Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
-        $response = $APIToolbox->curlRequest('GET', '/beneficiaires/'.$id.'/');
-        if($response['httpcode'] == 200){
-
-            if($request->isMethod('POST')){
-                $APIToolbox->curlRequest('DELETE', '/beneficiaires/'.$id.'/');
-                if($response['httpcode'] == 200) {
-                    $this->addFlash('success', $translator->trans("Bénéficiaire supprimé"));
-                    return $this->redirectToRoute('app_beneficiaire_gestion');
-                } else {
-                    $this->addFlash('danger', $translator->trans("Erreur lors de la suppression"));
-                }
-            }
-
-            return $this->render('main/removeBeneficiaire.html.twig', ['beneficiaire' => $response['data']]);
+        $response = $APIToolbox->curlRequest('DELETE', '/beneficiaires/'.$id.'/');
+        if($response['httpcode'] == 200 || $response['httpcode'] == 204) {
+            $this->addFlash('success', $translator->trans("Bénéficiaire supprimé"));
         } else {
-            throw new NotFoundHttpException("La liste des bénéficiaires n'a pas pu être retrouvée.");
+            $this->addFlash('danger', $translator->trans("Erreur lors de la suppression"));
         }
+        return $this->redirectToRoute('app_beneficiaire_gestion');
     }
 
 

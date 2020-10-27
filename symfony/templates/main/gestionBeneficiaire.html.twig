@@ -14,44 +14,60 @@
 
                 <h3 class="main-color mb-4"> {{ "Vos bénéficiaires" | trans }} </h3>
 
-
-                {# if beneficiaires | length > 10 %}
-                    <div class="text-center mb-4">
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fal fa-search"></i> </span>
+                <div class="colored-tab">
+                    {% for beneficiaire in beneficiaires %}
+                        <div class="row">
+                            <div class="col-2 text-center">
+                                <i class="fal fa-user-circle" style="font-size: 35px;"></i>
+                            </div>
+                            <div class="col-7">
+                                <div class="main-color text-semi-bold"> {{ beneficiaire.cyclos_name }}</div>
+                                <div class="secondary-color"> {{ beneficiaire.cyclos_account_number }}</div>
+                            </div>
+                            <div class="col-3">
+                                <div class="float-right ">
+                                    <a href="{{ path('app_beneficiaire_remove', {'id': beneficiaire.id}) }}" aria-label="{{ beneficiaire.cyclos_name }}" class="btn btn-danger btn-slim btn-guard"><i class="far fa-trash-alt"></i> </a>
                                 </div>
-                                <input type="text" class="form-control" placeholder="{{ "Rechercher" | trans }}">
                             </div>
                         </div>
-                    </div>
-                {% endif #}
-
-                {% for beneficiaire in beneficiaires %}
-                    <div class="row mb-4">
-                        <div class="col-2 text-center">
-                            <i class="fal fa-user-circle" style="font-size: 35px;"></i>
-                        </div>
-                        <div class="col-7">
-                            <div class="main-color text-semi-bold"> {{ beneficiaire.cyclos_name }}</div>
-                            <div class="secondary-color"> {{ beneficiaire.cyclos_account_number }}</div>
-                        </div>
-                        <div class="col-3">
-                            <div class="float-right ">
-                                <a href="{{ path('app_beneficiaire_remove', {'id': beneficiaire.id}) }}" class="btn btn-danger btn-slim"><i class="far fa-trash-alt"></i> </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
 
             </div>
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{"Supprimer un mandat" | trans }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ "Êtes-vous sûr de vouloir supprimer le bénéficiaire suivant :" | trans }}<br />
+                    <span id="nomMandat"></span> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a href="#" class="btn btn-outline-success" id="modal-valid">Valider</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript">
+
+        $('.btn-guard').click(function (e){
+            $('#nomMandat').html($(this).attr('aria-label'));
+            $('#confirm-modal').modal('show');
+            e.preventDefault();
+            $('#modal-valid').attr('href', $(this).attr('href'));
+        });
     </script>
 {% endblock %}

@@ -105,9 +105,19 @@ class VirementController extends AbstractController
 
                 //Si on charge un tableur, on supprime la première ligne
                 $file = $form['tableur']->getData();
+
                 if(!empty($file)) {
                     $rows = $prelevementController->spreadsheetToArray($file);
-                    $rows = array_slice($rows, 1);
+                    //extract and validate column names and length
+                    $msg = $prelevementController->validateFirstRow(array_slice($rows, 0, 1)[0], 'moneyType');
+                    if($msg != ''){
+                        $this->addFlash('danger', $msg);
+                        //init rows to cancel proccessing
+                        $rows = [];
+                    } else {
+                        //on supprime la première ligne du tableau
+                        $rows = array_slice($rows, 1);
+                    }
                 }
 
                 if(count($rows) > 0){
@@ -122,7 +132,7 @@ class VirementController extends AbstractController
                             $listFail .= '<li>'.$row[1].' : Montant incorrect </li>';
                         }
                     }
-                } else {
+                } elseif($msg == '') {
                     $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                 }
 
@@ -223,13 +233,22 @@ class VirementController extends AbstractController
                     $file = $form['tableur']->getData();
                     if(!empty($file)) {
                         $rows = $prelevementController->spreadsheetToArray($file);
-                        $rows = array_slice($rows, 1);
+                        //extract and validate column names and length
+                        $msg = $prelevementController->validateFirstRow(array_slice($rows, 0, 1)[0], 'personType');
+                        if($msg != ''){
+                            $this->addFlash('danger', $msg);
+                            //init rows to cancel proccessing
+                            $rows = [];
+                        } else {
+                            //on supprime la première ligne du tableau
+                            $rows = array_slice($rows, 1);
+                        }
                     }
                     if(count($rows) > 0){
                         foreach ($rows as $row) {
                             $comptes[] = ['cyclos_account_number' => str_replace(' ', '', $row[1])];
                         }
-                    } else {
+                    } elseif($msg == '') {
                         $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                     }
                 }

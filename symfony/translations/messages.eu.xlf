@@ -123,7 +123,7 @@
       </trans-unit>
       <trans-unit id="_Eyi53F" resname="Newsletter">
         <source>Newsletter</source>
-        <target>Berri papera</target>
+        <target>Berripapera</target>
       </trans-unit>
       <trans-unit id="FXJP8R7" resname="Cotisation">
         <source>Cotisation</source>
@@ -557,9 +557,9 @@
         <source>Association parainée</source>
         <target>Sustengatzen duzun elkartea</target>
       </trans-unit>
-      <trans-unit id="o0KoqLS" resname="Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. ">
-        <source>Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </source>
-        <target>Hilabetean 3 edo 4 email jasoko ditut Euskoaren aktualitateaz jakinean izaiteko.</target>
+      <trans-unit id="o0KoqLS" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
+        <source>Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.</source>
+        <target>Hilabetean 2 edo 3 email jasoko ditut Euskoaren aktualitateaz jakinean izaiteko.</target>
       </trans-unit>
       <trans-unit id="CpBAdjn" resname="Oui">
         <source>Oui</source>

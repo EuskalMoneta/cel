@@ -432,8 +432,7 @@ class ProfilController extends AbstractController
             $form = $this->createFormBuilder()
                 ->add('news', ChoiceType::class,
                     [
-                        'label' => $translator->trans('Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l\'Eusko. '),
-                        'help' => 'Vous recevrez un à deux mails par semaine.',
+                        'label' => $translator->trans("Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko."),
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
                         'data' => $booleanNewsletter
                     ])

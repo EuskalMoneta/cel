@@ -557,9 +557,9 @@
         <source>Association parainée</source>
         <target>Association parainée</target>
       </trans-unit>
-      <trans-unit id="o0KoqLS" resname="Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. ">
-        <source>Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </source>
-        <target>Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l'Eusko. </target>
+      <trans-unit id="o0KoqLS" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
+        <source>Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.</source>
+        <target>Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.</target>
       </trans-unit>
       <trans-unit id="CpBAdjn" resname="Oui">
         <source>Oui</source>

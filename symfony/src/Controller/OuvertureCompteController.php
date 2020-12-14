@@ -251,7 +251,7 @@ class OuvertureCompteController extends AbstractController
             ->add('automatic_change_amount', NumberType::class,
                 [
                     'required' => true,
-                    'label' => $translator->trans($translator->trans("Montant du change automatique mensuel (minimum 20 eusko)")),
+                    'label' => $translator->trans($translator->trans("Montant du change automatique mensuel")),
                     'constraints' => [
                         new NotBlank(),
                         new GreaterThanOrEqual(['value' => 20]),

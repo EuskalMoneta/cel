@@ -545,9 +545,9 @@
         <source>Confirmation paiement</source>
         <target>Confirmation paiement</target>
       </trans-unit>
-      <trans-unit id="3eVQeiO" resname="Montant (minimum 10)">
-        <source>Montant (minimum 10)</source>
-        <target>Montant (minimum 10)</target>
+      <trans-unit id="3eVQeiO" resname="Montant">
+        <source>Montant</source>
+        <target>Montant</target>
       </trans-unit>
       <trans-unit id="SNPoFla" resname="Commentaire">
         <source>Commentaire</source>
@@ -985,9 +985,9 @@ Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eus
         <source>Pièce d'identité</source>
         <target>Pièce d'identité</target>
       </trans-unit>
-      <trans-unit id="F8TCC51" resname="Montant du change automatique mensuel (minimum 20 eusko)">
-        <source>Montant du change automatique mensuel (minimum 20 eusko)</source>
-        <target>Montant du change automatique mensuel (minimum 20 eusko)</target>
+      <trans-unit id="F8TCC51" resname="Montant du change automatique mensuel">
+        <source>Montant du change automatique mensuel</source>
+        <target>Montant du change automatique mensuel</target>
       </trans-unit>
       <trans-unit id="9ExyRDW" resname="Coordonnées du compte à prélever (IBAN)">
         <source>Coordonnées du compte à prélever (IBAN)</source>

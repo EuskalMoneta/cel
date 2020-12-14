@@ -545,9 +545,9 @@
         <source>Confirmation paiement</source>
         <target>Ordainketaren baieztapena</target>
       </trans-unit>
-      <trans-unit id="3eVQeiO" resname="Montant (minimum 10)">
-        <source>Montant (minimum 10)</source>
-        <target>Zenbatekoa (gutienekoa 10)</target>
+      <trans-unit id="3eVQeiO" resname="Montant">
+        <source>Montant</source>
+        <target>Zenbatekoa</target>
       </trans-unit>
       <trans-unit id="SNPoFla" resname="Commentaire">
         <source>Commentaire</source>
@@ -795,9 +795,9 @@ Bestalde, edozein aldagunetan, euskoak ateratzen ahal dituzu zure eusko kontutik
         <source>Pièce d'identité</source>
         <target>Nortasun agiria</target>
       </trans-unit>
-      <trans-unit id="F8TCC51" resname="Montant du change automatique mensuel (minimum 20 eusko)">
-        <source>Montant du change automatique mensuel (minimum 20 eusko)</source>
-        <target>Hilabetero trukatuko duzun diru kopurua (gutienez 20 eusko)</target>
+      <trans-unit id="F8TCC51" resname="Montant du change automatique mensuel">
+        <source>Montant du change automatique mensuel</source>
+        <target>Hilabetero trukatuko duzun diru kopurua</target>
       </trans-unit>
       <trans-unit id="9ExyRDW" resname="Coordonnées du compte à prélever (IBAN)">
         <source>Coordonnées du compte à prélever (IBAN)</source>

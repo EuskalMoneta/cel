@@ -49,10 +49,10 @@ class ChangeController extends AbstractController
                 ->add('options_prelevement_change_montant', NumberType::class,
                     [
                         'required' => true,
-                        'label' => $translator->trans("Montant (minimum 10)"),
+                        'label' => $translator->trans("Montant"),
                         'constraints' => [
                             new NotBlank(),
-                            new GreaterThanOrEqual(['value' => 10]),
+                            new GreaterThanOrEqual(['value' => 20]),
                         ],
                     ]
                 )

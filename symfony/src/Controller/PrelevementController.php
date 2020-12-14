@@ -395,6 +395,8 @@ class PrelevementController extends AbstractController
         }
 
         for($i =0; $i < count($colFr); $i++){
+            // gestion des différents types d'apostrophe
+            $row[$i] = str_replace("’", "'", $row[$i]);
             if(!($row[$i] == $colEu[$i] || $row[$i] == $colFr[$i])){
                 $msg = "Le fichier envoyé ne contient pas les bonnes colonnes (les titres de la première ligne ne correspondent pas), veuillez utiliser le modèle de fichier pour Excel ou pour OpenOffice / LibreOffice.";
             }

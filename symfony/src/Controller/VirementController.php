@@ -102,6 +102,7 @@ class VirementController extends AbstractController
                 $comptes = [];
                 $listSuccess = '';
                 $listFail = '';
+                $msg= '';
 
                 //Si on charge un tableur, on supprime la première ligne
                 $file = $form['tableur']->getData();
@@ -222,6 +223,7 @@ class VirementController extends AbstractController
             $comptes = [];
             $listSuccess = '';
             $listFail = '';
+            $msg = '';
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {

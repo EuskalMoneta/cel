@@ -37,6 +37,8 @@ class PrelevementController extends AbstractController
         $comptes = [];
         $listSuccess = '';
         $listFail = '';
+        $rows = [];
+        $msg = '';
 
         //Create form with acount number
         $form = $this->createFormBuilder()
@@ -259,6 +261,8 @@ class PrelevementController extends AbstractController
             $comptes = [];
             $listSuccess = '';
             $listFail = '';
+            $rows = [];
+            $msg = '';
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {

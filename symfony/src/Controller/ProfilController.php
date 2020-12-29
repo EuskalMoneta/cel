@@ -187,10 +187,10 @@ class ProfilController extends AbstractController
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        '1 eusko par mois / 12 eusko par an' => '12',
                         '2 eusko par mois / 24 eusko par an' => '24',
                         '3 eusko par mois / 36 eusko par an' => '36',
-                        '5 eusko par an (chômeurs, minima sociaux)' => '5'
+                        '5 eusko par mois / 60 eusko par an' => '60',
+                        '5 eusko par an (chômeurs, allocataires de minima sociaux, étudiants)' => '5'
                     ],
                     'data' => round($defaultData, 0)
                 ])

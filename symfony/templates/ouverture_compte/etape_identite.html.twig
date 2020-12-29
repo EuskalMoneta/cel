@@ -12,14 +12,17 @@
                 <div class="mt-md-4">
                     <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
                     <div style="width: 80%">
-                        <div>{{ "ETAPE 1/5" | trans }}</div>
+                        <div>{{ "ETAPE 1/8" | trans }}</div>
                         <h1 class="mb-3">{{ title | trans }}</h1>
+                    </div>
+                    <div style="">
+                        <p class="text-subtitle">{{ "identite.explication" | trans | raw }}</p>
                     </div>
                     <form method="post">
                         {{ form_start(form) }}
 
-                        {{ form_row(form.lastname) }}
                         {{ form_row(form.firstname) }}
+                        {{ form_row(form.lastname) }}
                         {{ form_row(form.email) }}
 
                         <div>

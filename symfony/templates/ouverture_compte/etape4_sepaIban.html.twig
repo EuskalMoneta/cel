@@ -10,18 +10,12 @@
 
             <div class="col-12 col-md-6 offset-md-3 mt-2">
 
-
-
                 <div class="mt-md-4">
                     <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
 
-                        <div>{{ "ETAPE 4/5" | trans }}</div>
+                        <div>{{ "ETAPE 4/8" | trans }}</div>
                         <h1 class="mb-3">{{ title | trans }}</h1>
-                    <div style="">
-                        <p class="text-subtitle">{{ "Pour que vous soyez sûr-e d'avoir des eusko tous les mois sur votre compte, nous vous demandons de mettre en place un change automatique mensuel d'au moins 20 eusko. Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois et votre compte eusko sera crédité du même montant sous 24h (hors week-end).
-<br /><br />Notre conseil : commencez avec 50 eusko par mois, et bien sûr, vous pourrez modifier le montant de ce change automatique à tout moment sur votre compte en ligne !
-" | trans | raw }}</p>
-                    </div>
+
                     <div class="row">
                         <div class="col-sm-12 mt-4">
 
@@ -32,23 +26,26 @@
                                 </div>
                             {% endif %}
 
+                            <p class="text-subtitle">{{ "change_automatique.explication" | trans | raw }}</p>
+
                             <div class="row">
                                 <div class="col">
                                     {{ form_row(form.automatic_change_amount) }}
                                 </div>
                             </div>
 
+                            <p class="text-subtitle">{{ "change_automatique.explication2" | trans | raw }}</p>
+
                             <div class="row">
                                 <div class="col">
                                     {{ form_row(form.iban) }}
 
                                     <br />
-                                    <p class="text-subtitle">{{ "Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement." | trans}}</p>
+                                    <p class="text-subtitle">{{ "Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement." | trans}}</p>
                                 </div>
                             </div>
 
                             {{ form_end(form) }}
-
 
                         </div>
                     </div>
@@ -72,5 +69,3 @@
 
     </script>
 {% endblock %}
-
-

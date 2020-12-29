@@ -12,7 +12,7 @@
                 <div class="mt-md-4">
                     <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
                     <div style="">
-                        <div>{{ "ETAPE 3/5" | trans }}</div>
+                        <div>{{ "ETAPE 3/8" | trans }}</div>
                         <h1 class="mb-3">{{ title | trans }}</h1>
                         <p class="text-subtitle">{{ "piece_d_identite.explication" | trans | raw }}</p>
 
@@ -33,7 +33,7 @@
                             <div class="mt-2">
                                 <form id="myform" action="{{ path('app_vee_api_idcheck') }}" method="post">
                                     <div class="form-group">
-                                        <label for="form_idcard"> {{ "Importer votre pièce d'identité" | trans }}</label>
+                                        <label for="form_idcard"> {{ "Importer ou prendre en photo votre pièce d'identité" | trans }}</label>
                                         <div class="custom-file">
                                             <input type="file" id="form_idcard" name="form[idcard]" aria-describedby="form_idcard_help" class="custom-file-input" lang="{{ app.request.locale }}">
                                             <label for="form_idcard" class="custom-file-label"> </label>

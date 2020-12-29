@@ -138,7 +138,7 @@ class OuvertureCompteController extends AbstractController
         }
 
 
-        return $this->render('ouverture_compte/etape4_signature_sepa.html.twig', [
+        return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
             'memberToken' => $member->id,
             'webHook' => $identifiantWebHook
         ]);
@@ -170,7 +170,7 @@ class OuvertureCompteController extends AbstractController
             return $this->redirectToRoute('app_compte_etape2_coordonnees');
 
         }
-        return $this->render('ouverture_compte/etape_identite.html.twig', ['title' => $translator->trans("Identité"), 'form' => $form->createView()]);
+        return $this->render('ouverture_compte/etape_identite.html.twig', ['title' => "Identité", 'form' => $form->createView()]);
     }
 
     /**
@@ -178,16 +178,12 @@ class OuvertureCompteController extends AbstractController
      */
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
-
         $session->start();
 
         $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
         $tabCountries = [];
-
         foreach ($responseCountries['data'] as $country){
-            if($country->label == '-'){
-                $tabCountries[$country->label] = '';
-            } else {
+            if($country->label != '-'){
                 $tabCountries[$country->label] = $country->id;
             }
         }
@@ -248,13 +244,16 @@ class OuvertureCompteController extends AbstractController
         $session->start();
         
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
-            ->add('automatic_change_amount', NumberType::class,
+            ->add('automatic_change_amount', ChoiceType::class,
                 [
                     'required' => true,
-                    'label' => $translator->trans($translator->trans("Montant du change automatique mensuel")),
-                    'constraints' => [
-                        new NotBlank(),
-                        new GreaterThanOrEqual(['value' => 20]),
+                    'label' => $translator->trans("Montant du change automatique mensuel"),
+                    'multiple' => false,
+                    'expanded' => true,
+                    'choices' => [
+                        '100 eusko' => '100',
+                        '60 eusko' => '60',
+                        '20 eusko' => '20',
                     ],
                 ]
             )
@@ -288,18 +287,10 @@ class OuvertureCompteController extends AbstractController
 
     }
 
-
     /**
-     * @Route("/{_locale}/ouverture-compte/securite", name="app_compte_etape5_securite")
+     * @Route("/{_locale}/ouverture-compte/cotisation", name="app_compte_etape6_cotisation")
      */
-    public function etape5Securite(APIToolbox $APIToolbox,
-                                   EntityManagerInterface $em,
-                                   Request $request,
-                                   TranslatorInterface $translator,
-                                   SessionInterface $session,
-                                   LoginFormAuthenticator $loginFormAuthenticator,
-                                   GuardAuthenticatorHandler $guardAuthenticatorHandler,
-                                   AuthenticationManagerInterface $authenticationManager)
+    public function etape5Cotisation(EntityManagerInterface $em, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
 
@@ -312,103 +303,198 @@ class OuvertureCompteController extends AbstractController
         $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
         $session->set('utilisateur', $data);
 
+        //on continue avec la cotisation
+        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'cotisation']])
+            ->add('subscription_amount', ChoiceType::class, [
+                'label' => 'Montant de la cotisation',
+                'attr' => ['class' => 'chk'],
+                'required' => true,
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    '2 eusko par mois / 24 eusko par an' => '24',
+                    '3 eusko par mois / 36 eusko par an' => '36',
+                    '5 eusko par mois / 60 eusko par an' => '60',
+                    '5 eusko par an (chômeurs, allocataires de minima sociaux, étudiants)' => '5'
+                ],
+            ])
+            ->add('subscription_periodicity', ChoiceType::class, [
+                'label' => 'Périodicité du prélèvement',
+                'required' => true,
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'Annuel' => '12',
+                    'Mensuel (entre le 10 et le 15 du mois)' => '1',
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
 
-        //on continue avec le mot de passe et la question secrète
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $data = array_merge($session->get('utilisateur'), $data);
+            $session->set('utilisateur', $data);
+
+            return $this->redirectToRoute('app_compte_etape7_securite');
+        }
+        return $this->render('ouverture_compte/etape6_cotisation.html.twig', ['title' => "Cotisation", 'form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/{_locale}/ouverture-compte/securite", name="app_compte_etape7_securite")
+     */
+    public function etape7Securite(APIToolbox $APIToolbox,
+                                   Request $request,
+                                   SessionInterface $session,
+                                   TranslatorInterface $translator)
+    {
+        $session->start();
+
         $questions = ['' => ''];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
-
         if($response['httpcode'] == 200){
 
             foreach ($response['data'] as $question){
                 $questions[$question->question]=$question->question;
             }
             $questions['Question personnalisée'] = 'autre';
-
-            $form = $this->createFormBuilder()
-                ->add('password', RepeatedType::class, [
-                    'first_options'  => ['label' => $translator->trans('Mot de passe')],
-                    'second_options' => ['label' => $translator->trans('Confirmer le mot de passe')],
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 4, 'max'=> 12]),
-                    ],
-                    'type' => PasswordType::class,
-                    'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => true,
-                ])
-                ->add('pin_code', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
-                    'second_options' => ['label' => 'Confirmer le code'],
-                    'constraints' => [
-                        new NotBlank(),
-                        new Assert\Positive(),
-                        new Length(['min' => 4, 'max'=> 4]),
-                    ],
-                    'type' => PasswordType::class,
-                    'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => true,
-                ])
-                ->add('questionSecrete', ChoiceType::class, [
-                    'label' => $translator->trans('Question secrète'),
-                    'required' => true,
-                    'choices' => $questions
-                ])
-                ->add('questionPerso', TextType::class, ['label' => $translator->trans('Votre question personnalisée'), 'required' => false])
-                ->add('answer', TextType::class, [
-                    'label' => $translator->trans('Réponse'),
-                    'required' => true,
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ])
-                ->add('submit', SubmitType::class, ['label' => 'Valider'])
-                ->getForm();
-
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                $data = array_merge($session->get('utilisateur'), $data);
-                $session->set('utilisateur', $data);
-
-                if($data['questionSecrete'] == 'autre'){
-                    $data['question'] = $data['questionPerso'];
-                } else {
-                    $data['question'] = $data['questionSecrete'];
-                }
-
-                $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte/', $data);
-
-                if($response['httpcode'] == 201){
-                    $credentials['username'] = $response['data']->login;
-                    $credentials['password'] = $data['password'];
-
-                    $user = $APIToolbox->autoLogin($credentials);
-
-                    //Route pour la redirection après login
-                    $session->set('_security.main.target_path', $this->generateUrl('app_compte_etape5_sucess'));
-
-                    return $guardAuthenticatorHandler
-                        ->authenticateUserAndHandleSuccess(
-                            $user,
-                            $request,
-                            $loginFormAuthenticator,
-                            'main'
-                        );
-                } else {
-                    $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
-                }
-            }
         }
-        return $this->render('ouverture_compte/etape5_securite.html.twig', ['form' => $form->createView()]);
 
+        $form = $this->createFormBuilder()
+            ->add('password', RepeatedType::class, [
+                'first_options'  => ['label' => $translator->trans('Mot de passe')],
+                'second_options' => ['label' => $translator->trans('Confirmer le mot de passe')],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 4, 'max'=> 12]),
+                ],
+                'type' => PasswordType::class,
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+            ])
+            ->add('pin_code', RepeatedType::class, [
+                'first_options'  => ['label' => 'Code PIN (4 chiffres)'],
+                'second_options' => ['label' => 'Confirmer le code'],
+                'constraints' => [
+                    new NotBlank(),
+                    new Assert\Positive(),
+                    new Length(['min' => 4, 'max'=> 4]),
+                ],
+                'type' => PasswordType::class,
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+            ])
+            ->add('questionSecrete', ChoiceType::class, [
+                'label' => $translator->trans('Question secrète'),
+                'required' => true,
+                'choices' => $questions
+            ])
+            ->add('questionPerso', TextType::class, ['label' => $translator->trans('Votre question personnalisée'), 'required' => false])
+            ->add('answer', TextType::class, [
+                'label' => $translator->trans('Réponse'),
+                'required' => true,
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            if($data['questionSecrete'] == 'autre'){
+                $data['question'] = $data['questionPerso'];
+            } else {
+                $data['question'] = $data['questionSecrete'];
+            }
+            $data = array_merge($session->get('utilisateur'), $data);
+            $session->set('utilisateur', $data);
+
+            return $this->redirectToRoute('app_compte_etape8_choix_asso');
+        }
+
+        return $this->render('ouverture_compte/etape7_securite.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @Route("/{_locale}/ouverture-compte/bienvenue", name="app_compte_etape5_sucess")
+     * @Route("/{_locale}/ouverture-compte/choix-asso", name="app_compte_etape8_choix_asso")
      */
-    public function etape5Success(APIToolbox $APIToolbox, Request $request)
+    public function etape8ChoixAsso(APIToolbox $APIToolbox,
+                                    Request $request,
+                                    SessionInterface $session,
+                                    TranslatorInterface $translator,
+                                    LoginFormAuthenticator $loginFormAuthenticator,
+                                    GuardAuthenticatorHandler $guardAuthenticatorHandler,
+                                    AuthenticationManagerInterface $authenticationManager)
     {
-        return $this->render('ouverture_compte/etape5_success.html.twig', ['title' => "Bienvenue"]);
+        $session->start();
+
+        $tabAssos = [];
+        $response = $APIToolbox->curlWithoutToken('GET', '/associations/');
+        if($response['httpcode'] == 200) {
+            foreach ($response['data'] as $asso){
+                $tabAssos[$asso->nom] = $asso->id;
+            }
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('asso_id', ChoiceType::class,
+                [
+                    'required' => false,
+                    'label' => $translator->trans("Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :"),
+                    'multiple' => false,
+                    'expanded' => false,
+                    'choices' => $tabAssos,
+                ])
+            ->add('asso_saisie_libre', TextType::class,
+                [
+                    'required' => false,
+                    'label' => $translator->trans("ou indiquez le nom d'une autre association de votre choix :"),
+                ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $data = array_merge($session->get('utilisateur'), $data);
+            $session->set('utilisateur', $data);
+
+            $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte/', $data);
+
+            if($response['httpcode'] == 201) {
+                $credentials['username'] = $response['data']->login;
+                $credentials['password'] = $data['password'];
+
+                $user = $APIToolbox->autoLogin($credentials);
+
+                $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
+
+                return $guardAuthenticatorHandler
+                    ->authenticateUserAndHandleSuccess(
+                        $user,
+                        $request,
+                        $loginFormAuthenticator,
+                        'main'
+                    );
+            } else {
+                $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+            }
+        }
+
+        return $this->render('ouverture_compte/etape8_choix_asso.html.twig', ['title' => "Choix d'une association", 'form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/{_locale}/ouverture-compte/bienvenue", name="app_compte_ecran_de_fin")
+     */
+    public function fin()
+    {
+        return $this->render('ouverture_compte/fin.html.twig');
     }
 
 }

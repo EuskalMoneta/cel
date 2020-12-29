@@ -537,7 +537,7 @@
         <source>Confirmation paiement</source>
         <target>Ordainketaren baieztapena</target>
       </trans-unit>
-      <trans-unit id="3eVQeiO" resname="Montant">
+      <trans-unit id="lHzAfis" resname="Montant">
         <source>Montant</source>
         <target>Zenbatekoa</target>
       </trans-unit>
@@ -549,7 +549,7 @@
         <source>Association parainée</source>
         <target>Sustengatzen duzun elkartea</target>
       </trans-unit>
-      <trans-unit id="o0KoqLS" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
+      <trans-unit id="IF8y1w_" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
         <source>Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.</source>
         <target>Hilabetean 2 edo 3 email jasoko ditut Euskoaren aktualitateaz jakinean izaiteko.</target>
       </trans-unit>
@@ -669,10 +669,6 @@
         <source>Ou importer un tableur (fichier .xlsx / .xls / .ods)</source>
         <target>Edo taula bat inportatu (.xlsx / .xls / .ods fitxategia)</target>
       </trans-unit>
-      <trans-unit id="lHzAfis" resname="Montant">
-        <source>Montant</source>
-        <target>Zenbatekoa</target>
-      </trans-unit>
       <trans-unit id="o668flu" resname="Libellé de l'opération">
         <source>Libellé de l'opération</source>
         <target>Deskribapena</target>
@@ -781,7 +777,7 @@
         <source>Pièce d'identité</source>
         <target>Nortasun agiria</target>
       </trans-unit>
-      <trans-unit id="F8TCC51" resname="Montant du change automatique mensuel">
+      <trans-unit id="yf4szod" resname="Montant du change automatique mensuel">
         <source>Montant du change automatique mensuel</source>
         <target>Hilabetero trukatuko duzun diru kopurua</target>
       </trans-unit>
@@ -789,8 +785,8 @@
         <source>Coordonnées du compte à prélever (IBAN)</source>
         <target>Dirua hartzeko erabiliko den kontuaren IBAN zenbakia</target>
       </trans-unit>
-      <trans-unit id="efC3Aaq" resname="Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.">
-        <source>Après avoir cliqué sur Valider, vous serez orientés vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.</source>
+      <trans-unit id="8DE7K1S" resname="Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.">
+        <source>Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.</source>
         <target>Bali egin botoian klik egin ondoan, Yousign plataforma segurura igorria izanen zara, kentze automatikoaren baimena izenpetzeko.</target>
       </trans-unit>
       <trans-unit id="pwLqjHU" resname="Change automatique mensuel">
@@ -823,11 +819,8 @@
         <source>ETAPE 3/5</source>
         <target>3/5 URRATSA</target>
       </trans-unit>
-      <trans-unit id="Po3.G8h" resname="piece_d_identite.explication">
-        <source>Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.&lt;br /&gt;&lt;br /&gt;
-                        Vous pouvez importer un scan ou une photo de votre &lt;b&gt;carte d'identité&lt;/b&gt; ou de votre &lt;b&gt;passeport&lt;/b&gt; : &lt;br /&gt;&lt;br /&gt;
-                        - Le document ne doit pas être flou &lt;br /&gt;
-                        - Votre photo doit apparaître sur le document &lt;br /&gt;</source>
+      <trans-unit id="RHLUtGL" resname="piece_d_identite.explication">
+        <source>piece_d_identite.explication</source>
         <target><![CDATA[Zure kontua bali egiteko, bankuko erregulazioak behartzen gaitu nortasun agiri baten egiaztatzera.<br /><br />
                         Zure <b>nortasun agiria</b> edo <b>pasaportea</b> argazkitan hartu edo eskaneatu eta inporta dezakezu: <br /><br />
                         - Dokumentua ez da lausoa izan behar <br />
@@ -837,9 +830,9 @@
         <source>La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.</source>
         <target>Zure nortasun agiriaren egiaztatzeak hamar segundo arte har ditzake.</target>
       </trans-unit>
-      <trans-unit id="ciioopi" resname="Importer votre pièce d'identité">
-        <source>Importer votre pièce d'identité</source>
-        <target>Zure nortasun agiria inportatu</target>
+      <trans-unit id="2ZCbZJf" resname="Importer ou prendre en photo votre pièce d'identité">
+        <source>Importer ou prendre en photo votre pièce d'identité</source>
+        <target>Zure nortasun agiria inportatu edo argazkitan hartu</target>
       </trans-unit>
       <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
         <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
@@ -892,18 +885,6 @@
       <trans-unit id="DA.SaY0" resname="Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.">
         <source>Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.</source>
         <target><![CDATA[4 zifrako PIN kodea (zure banku txartelean bezala) hauta ezazu, <strong>euskopay</strong> edo <strong>euskokart</strong> tresnen bidez eginen dituzun ordainketak babesteko.]]></target>
-      </trans-unit>
-      <trans-unit id="eUO7o44" resname="Félicitations, votre compte eusko est bien ouvert !">
-        <source>Félicitations, votre compte eusko est bien ouvert !</source>
-        <target>Biba zu, zure eusko kontua irekia da!</target>
-      </trans-unit>
-      <trans-unit id="0pSUrwh" resname="Il ne vous reste plus qu’à choisir le montant de votre cotisation annuelle, qui sera prélevée sur votre compte eusko.">
-        <source>Il ne vous reste plus qu’à choisir le montant de votre cotisation annuelle, qui sera prélevée sur votre compte eusko.</source>
-        <target>Orain, aski duzu zure eusko kontutik hartuko zaizun urtesariaren kopurua hautatzea.</target>
-      </trans-unit>
-      <trans-unit id="0g6cGQI" resname="Choisir ma cotisation annuelle">
-        <source>Choisir ma cotisation annuelle</source>
-        <target>Nire urtesariaren kopurua hautatu</target>
       </trans-unit>
       <trans-unit id="WZlidAl" resname="ETAPE 1/5">
         <source>ETAPE 1/5</source>
@@ -1196,6 +1177,94 @@
       <trans-unit id="OUHtg_x" resname="Passer commande">
         <source>Passer commande</source>
         <target>Manatu</target>
+      </trans-unit>
+      <trans-unit id="9epWKNk" resname="Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.">
+        <source>Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.</source>
+        <target>__Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.</target>
+      </trans-unit>
+      <trans-unit id="giTpb08" resname="Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.">
+        <source>Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.</source>
+        <target>__Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.</target>
+      </trans-unit>
+      <trans-unit id="mhKGS4C" resname="ETAPE 7/8">
+        <source>ETAPE 7/8</source>
+        <target>7/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="XLLWU9C" resname="ETAPE 4/8">
+        <source>ETAPE 4/8</source>
+        <target>4/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="FAmrvrS" resname="change_automatique.explication">
+        <source>change_automatique.explication</source>
+        <target>__change_automatique.explication</target>
+      </trans-unit>
+      <trans-unit id="UFmrtUi" resname="change_automatique.explication2">
+        <source>change_automatique.explication2</source>
+        <target>__change_automatique.explication2</target>
+      </trans-unit>
+      <trans-unit id="W6cfBV4" resname="ETAPE 3/8">
+        <source>ETAPE 3/8</source>
+        <target>3/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="k9x.Swz" resname="ouverture_compte.fin.felicitations">
+        <source>ouverture_compte.fin.felicitations</source>
+        <target>__ouverture_compte.fin.felicitations</target>
+      </trans-unit>
+      <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
+        <source>ouverture_compte.fin.explication</source>
+        <target>__ouverture_compte.fin.explication</target>
+      </trans-unit>
+      <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">
+        <source>ouverture_compte.fin.bouton</source>
+        <target>__ouverture_compte.fin.bouton</target>
+      </trans-unit>
+      <trans-unit id="BtPHhtA" resname="ETAPE 6/8">
+        <source>ETAPE 6/8</source>
+        <target>6/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="hh_TNdX" resname="ETAPE 5/8">
+        <source>ETAPE 5/8</source>
+        <target>5/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="khjuLb7" resname="Signature du mandat SEPA pour votre change automatique mensuel">
+        <source>Signature du mandat SEPA pour votre change automatique mensuel</source>
+        <target>__Signature du mandat SEPA pour votre change automatique mensuel</target>
+      </trans-unit>
+      <trans-unit id="Dtrvtq8" resname="ETAPE 2/8">
+        <source>ETAPE 2/8</source>
+        <target>2/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="2Sh5DDs" resname="ETAPE 1/8">
+        <source>ETAPE 1/8</source>
+        <target>1/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="KTVlGmD" resname="identite.explication">
+        <source>identite.explication</source>
+        <target>__identite.explication</target>
+      </trans-unit>
+      <trans-unit id="ciioopi" resname="Importer votre pièce d'identité">
+        <source>Importer votre pièce d'identité</source>
+        <target>__Importer votre pièce d'identité</target>
+      </trans-unit>
+      <trans-unit id="eUO7o44" resname="Félicitations, votre compte eusko est bien ouvert !">
+        <source>Félicitations, votre compte eusko est bien ouvert !</source>
+        <target>__Félicitations, votre compte eusko est bien ouvert !</target>
+      </trans-unit>
+      <trans-unit id="ZMkSx6a" resname="Êtes-vous sûr de vouloir supprimer le mandat de :">
+        <source>Êtes-vous sûr de vouloir supprimer le mandat de :</source>
+        <target>__Êtes-vous sûr de vouloir supprimer le mandat de :</target>
+      </trans-unit>
+      <trans-unit id="bslvPko" resname="ou indiquez le nom d'une autre association de votre choix :">
+        <source>ou indiquez le nom d'une autre association de votre choix :</source>
+        <target>__ou indiquez le nom d'une autre association de votre choix :</target>
+      </trans-unit>
+      <trans-unit id="sDOwrXS" resname="ETAPE 8/8">
+        <source>ETAPE 8/8</source>
+        <target>8/8 URRATSA</target>
+      </trans-unit>
+      <trans-unit id="Z4vDfyL" resname="cotisation.explication">
+        <source>cotisation.explication</source>
+        <target>__cotisation.explication</target>
       </trans-unit>
     </body>
   </file>

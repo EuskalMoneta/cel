@@ -16,35 +16,7 @@
                     </div>
 
                     <div class="col pl-4">
-                        <div class="row">
-                            <div class="col-2 text-right">
-                                <img src="{{ asset('images/asso-troispercent.png') }}" style="width: 100%; max-width: 50px; margin-left: 15px">
-                            </div>
-                            <div class="col-9">
-                                <h3 class="main-color mb-2">{{ "3% de votre change reversé" | trans }}</h3>
-                                <p class="secondary-color"> {{ "Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix." | trans  }}</p>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-2 text-right">
-                                <img src="{{ asset('images/asso-calendar.png') }}" style="width: 100%; max-width: 50px; margin-left: 15px">
-                            </div>
-                            <div class="col-9">
-                                <h3 class="main-color mb-2">{{ "Versements annuels" | trans }}</h3>
-                                <p class="secondary-color"> {{ "Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés." | trans  }}</p>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-2 text-right">
-                                <img src="{{ asset('images/asso-change.png') }}" style="width: 100%; max-width: 50px; margin-left: 15px">
-                            </div>
-                            <div class="col-9">
-                                <h3 class="main-color mb-2">{{ "Changement d'association" | trans }}</h3>
-                                <p class="secondary-color"> {{ "Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)" | trans  }}</p>
-                            </div>
-                        </div>
+                        {% include 'asso/explication-3-pourcent.html.twig' %}
                     </div>
 
                     {{ form(form) }}

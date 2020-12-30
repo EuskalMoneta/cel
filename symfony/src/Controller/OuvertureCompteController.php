@@ -334,7 +334,10 @@ class OuvertureCompteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
+            // si l'utilisateur choisit le prélèvement mensuel, il faut diviser le montant de la cotisation par 12
+            if ($data['subscription_periodicity'] == 1) {
+                $data['subscription_amount'] = $data['subscription_amount'] / 12;
+            }
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 

@@ -39,11 +39,10 @@
                             <div class="row">
                                 <div class="col">
                                     {{ form_row(form.iban) }}
-
-                                    <br />
-                                    <p class="text-subtitle">{{ "Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement." | trans}}</p>
                                 </div>
                             </div>
+
+                            <p class="text-subtitle">{{ "change_automatique.explication3" | trans | raw }}</p>
 
                             {{ form_end(form) }}
 

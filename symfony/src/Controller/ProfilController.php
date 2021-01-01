@@ -181,27 +181,27 @@ class ProfilController extends AbstractController
 
             $form = $this->createFormBuilder()
                 ->add('options_prelevement_cotisation_montant', ChoiceType::class, [
-                    'label' => 'Montant de la cotisation',
+                    'label' => $translator->trans('cotisation.montant'),
                     'attr' => ['class' => 'chk'],
                     'required' => true,
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        '2 eusko par mois / 24 eusko par an' => '24',
-                        '3 eusko par mois / 36 eusko par an' => '36',
-                        '5 eusko par mois / 60 eusko par an' => '60',
-                        '5 eusko par an (chômeurs, allocataires de minima sociaux, étudiants)' => '5'
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24']) => '24',
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36']) => '36',
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60']) => '60',
+                        $translator->trans('cotisation.montant_par_an', ['par_an' => '5']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
                     ],
                     'data' => round($defaultData, 0)
                 ])
                 ->add('options_prelevement_cotisation_periodicite', ChoiceType::class, [
-                    'label' => 'Périodicité du prélèvement',
+                    'label' => $translator->trans('cotisation.periodicite'),
                     'required' => true,
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        'Annuel' => '12',
-                        'Mensuel (entre le 10 et le 15 du mois)' => '1',
+                        $translator->trans('cotisation.periodicite.annuel') => '12',
+                        $translator->trans('cotisation.periodicite.mensuel') => '1',
                     ],
                     'data' => round($membre->array_options->options_prelevement_cotisation_periodicite, 0)
                 ])

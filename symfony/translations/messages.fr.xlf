@@ -1019,6 +1019,10 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>change_automatique.explication2</source>
         <target>Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois, et votre compte eusko sera crédité du même montant sous 24h (hors week-end).</target>
       </trans-unit>
+      <trans-unit id="3Ji_Eti" resname="change_automatique.explication3">
+        <source>change_automatique.explication3</source>
+        <target>Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.</target>
+      </trans-unit>
       <trans-unit id="fAez1y5" resname="ETAPE 2/5">
         <source>ETAPE 2/5</source>
         <target>ETAPE 2/5</target>
@@ -1226,7 +1230,12 @@ Vous êtes à deux clics d’utiliser la monnaie locale du Pays Basque&nbsp;!]]>
       </trans-unit>
       <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
         <source>ouverture_compte.fin.explication</source>
-        <target>Il ne vous reste plus qu'à accéder à votre compte eusko pour le recharger (se fait instantanément via HelloAsso), puis télécharger l'application de paiement euskopay, ou aller retirer des billets en bureau de change !</target>
+        <target><![CDATA[Il ne vous reste plus qu'à accéder à votre compte eusko pour le charger (instantanément et sans frais via HelloAsso) puis choisir votre moyen de paiement favori&nbsp;:
+<ul>
+<li>l'application de paiement par téléphone euskopay, à télécharger gratuitement</li>
+<li>les billets eusko, à retirer en bureau de change</li>
+<li>l'euskokart, qui vous sera envoyée sous 10 jours</li>
+</ul>]]></target>
       </trans-unit>
       <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">
         <source>ouverture_compte.fin.bouton</source>
@@ -1266,13 +1275,97 @@ Vous êtes à deux clics d’utiliser la monnaie locale du Pays Basque&nbsp;!]]>
 <br>
 Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera prélevée sur votre compte eusko en début d'année ou entre le 10 et le 15 de chaque mois.]]></target>
       </trans-unit>
-      <trans-unit id="bslvPko" resname="ou indiquez le nom d'une autre association de votre choix :">
-        <source>ou indiquez le nom d'une autre association de votre choix :</source>
-        <target>ou indiquez le nom d'une autre association de votre choix :</target>
-      </trans-unit>
       <trans-unit id="sDOwrXS" resname="ETAPE 8/8">
         <source>ETAPE 8/8</source>
         <target>ETAPE 8/8</target>
+      </trans-unit>
+      <trans-unit id="nak2sQi" resname="identite.nom">
+        <source>identite.nom</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="wnQ0QJh" resname="identite.prenom">
+        <source>identite.prenom</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="2iUFuDa" resname="identite.email">
+        <source>identite.email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="ryc8DyP" resname="coordonnees.adresse">
+        <source>coordonnees.adresse</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="YqzIj6i" resname="coordonnees.code_postal">
+        <source>coordonnees.code_postal</source>
+        <target>Code postal</target>
+      </trans-unit>
+      <trans-unit id="hhuM3WQ" resname="coordonnees.ville">
+        <source>coordonnees.ville</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="C_UdWxq" resname="coordonnees.pays">
+        <source>coordonnees.pays</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="l4W2jC1" resname="coordonnees.telephone_portable">
+        <source>coordonnees.telephone_portable</source>
+        <target>Téléphone portable</target>
+      </trans-unit>
+      <trans-unit id="AUFmoiQ" resname="sepa.montant">
+        <source>sepa.montant</source>
+        <target>Montant du change automatique mensuel</target>
+      </trans-unit>
+      <trans-unit id="WZUd2sb" resname="sepa.iban">
+        <source>sepa.iban</source>
+        <target>Coordonnées du compte à prélever (IBAN)</target>
+      </trans-unit>
+      <trans-unit id="E7WyRVz" resname="sepa.iban_invalide">
+        <source>sepa.iban_invalide</source>
+        <target>Il semblerait que vos coordonnées bancaires soient incorrectes, merci de les vérifier.</target>
+      </trans-unit>
+      <trans-unit id="c7KEw7z" resname="cotisation.montant">
+        <source>cotisation.montant</source>
+        <target>Montant de la cotisation</target>
+      </trans-unit>
+      <trans-unit id="rylRtpa" resname="cotisation.montant_par_mois_par_an">
+        <source>cotisation.montant_par_mois_par_an</source>
+        <target>par_mois eusko par mois / par_an eusko par an</target>
+      </trans-unit>
+      <trans-unit id="Ub_b7Mq" resname="cotisation.montant_par_an">
+        <source>cotisation.montant_par_an</source>
+        <target>par_an eusko par an</target>
+      </trans-unit>
+      <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
+        <source>cotisation.cas_de_figure_cotisation_sociale</source>
+        <target> (chômeurs, allocataires de minima sociaux, étudiants)</target>
+      </trans-unit>
+      <trans-unit id="N.O5yK0" resname="cotisation.periodicite">
+        <source>cotisation.periodicite</source>
+        <target>Périodicité du prélèvement</target>
+      </trans-unit>
+      <trans-unit id="rgLa.IO" resname="cotisation.periodicite.annuel">
+        <source>cotisation.periodicite.annuel</source>
+        <target>Annuel</target>
+      </trans-unit>
+      <trans-unit id="FL61I2V" resname="cotisation.periodicite.mensuel">
+        <source>cotisation.periodicite.mensuel</source>
+        <target>Mensuel (entre le 10 et le 15 du mois)</target>
+      </trans-unit>
+      <trans-unit id="8SXLe6." resname="Question personnalisée">
+        <source>Question personnalisée</source>
+        <target>Question personnalisée</target>
+      </trans-unit>
+      <trans-unit id="oLyAMVr" resname="choix_asso.choisissez_une_asso">
+        <source>choix_asso.choisissez_une_asso</source>
+        <target><![CDATA[Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta&nbsp;:]]></target>
+      </trans-unit>
+      <trans-unit id="FN78rlh" resname="choix_asso.saisie_libre">
+        <source>choix_asso.saisie_libre</source>
+        <target><![CDATA[ou indiquez le nom d'une autre association de votre choix&nbsp;:]]></target>
+      </trans-unit>
+      <trans-unit id="hk7xLGN" resname="choix_asso.titre">
+        <source>choix_asso.titre</source>
+        <target>Choix d'une association</target>
       </trans-unit>
     </body>
   </file>

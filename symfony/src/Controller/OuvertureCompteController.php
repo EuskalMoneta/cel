@@ -153,9 +153,9 @@ class OuvertureCompteController extends AbstractController
         $session->set('utilisateur', []);
 
         $form = $this->createFormBuilder()
-            ->add('lastname', TextType::class, ['label' => 'Nom', 'required' => true, 'constraints' => [ new NotBlank(),]])
-            ->add('firstname', TextType::class, ['label' => 'Prénom', 'required' => true, 'constraints' => [ new NotBlank(),]])
-            ->add('email', EmailType::class, ['label' => 'Email', 'required' => true, 'constraints' => [ new NotBlank() ] ])
+            ->add('lastname', TextType::class, ['label' => $translator->trans('identite.nom'), 'required' => true, 'constraints' => [ new NotBlank() ]])
+            ->add('firstname', TextType::class, ['label' => $translator->trans('identite.prenom'), 'required' => true, 'constraints' => [ new NotBlank() ]])
+            ->add('email', EmailType::class, ['label' => $translator->trans('identite.email'), 'required' => true, 'constraints' => [ new NotBlank() ]])
             ->add('valide', CheckboxType::class, ['label' => " ", 'required' => true])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
@@ -189,11 +189,11 @@ class OuvertureCompteController extends AbstractController
         }
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']])
-            ->add('address', TextareaType::class, ['required' => true])
-            ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
-            ->add('town', TextType::class, ['required' => true])
-            ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
-            ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
+            ->add('address', TextareaType::class, ['label' => $translator->trans('coordonnees.adresse'), 'required' => true])
+            ->add('zip', TextType::class, ['label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'basicAutoComplete']])
+            ->add('town', TextType::class, ['label' => $translator->trans('coordonnees.ville'), 'required' => true])
+            ->add('country_id', ChoiceType::class, ['label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries])
+            ->add('phone', TextType::class, ['label' => $translator->trans('coordonnees.telephone_portable'), 'required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
@@ -247,7 +247,7 @@ class OuvertureCompteController extends AbstractController
             ->add('automatic_change_amount', ChoiceType::class,
                 [
                     'required' => true,
-                    'label' => $translator->trans("Montant du change automatique mensuel"),
+                    'label' => $translator->trans('sepa.montant'),
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
@@ -259,8 +259,7 @@ class OuvertureCompteController extends AbstractController
             )
             ->add('iban', TextType::class, [
                 'required' => true,
-                'label' => $translator->trans("Coordonnées du compte à prélever (IBAN)"),
-
+                'label' => $translator->trans('sepa.iban'),
                 'constraints' => [
                     new NotBlank(),
                 ]])
@@ -279,7 +278,7 @@ class OuvertureCompteController extends AbstractController
 
                 return $this->redirectToRoute('ouverture_compte_signature_sepa');
             } else {
-                $this->addFlash('warning', $translator->trans("Votre IBAN n'est pas valide"));
+                $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
         }
 
@@ -290,7 +289,7 @@ class OuvertureCompteController extends AbstractController
     /**
      * @Route("/{_locale}/ouverture-compte/cotisation", name="app_compte_etape6_cotisation")
      */
-    public function etape5Cotisation(EntityManagerInterface $em, Request $request, SessionInterface $session, TranslatorInterface $translator)
+    public function etape6Cotisation(EntityManagerInterface $em, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
 
@@ -306,26 +305,26 @@ class OuvertureCompteController extends AbstractController
         //on continue avec la cotisation
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'cotisation']])
             ->add('subscription_amount', ChoiceType::class, [
-                'label' => 'Montant de la cotisation',
+                'label' => $translator->trans('cotisation.montant'),
                 'attr' => ['class' => 'chk'],
                 'required' => true,
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    '2 eusko par mois / 24 eusko par an' => '24',
-                    '3 eusko par mois / 36 eusko par an' => '36',
-                    '5 eusko par mois / 60 eusko par an' => '60',
-                    '5 eusko par an (chômeurs, allocataires de minima sociaux, étudiants)' => '5'
+                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24']) => '24',
+                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36']) => '36',
+                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60']) => '60',
+                    $translator->trans('cotisation.montant_par_an', ['par_an' => '5']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
                 ],
             ])
             ->add('subscription_periodicity', ChoiceType::class, [
-                'label' => 'Périodicité du prélèvement',
+                'label' => $translator->trans('cotisation.periodicite'),
                 'required' => true,
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    'Annuel' => '12',
-                    'Mensuel (entre le 10 et le 15 du mois)' => '1',
+                    $translator->trans('cotisation.periodicite.annuel') => '12',
+                    $translator->trans('cotisation.periodicite.mensuel') => '1',
                 ],
             ])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
@@ -363,7 +362,7 @@ class OuvertureCompteController extends AbstractController
             foreach ($response['data'] as $question){
                 $questions[$question->question]=$question->question;
             }
-            $questions['Question personnalisée'] = 'autre';
+            $questions[$translator->trans('Question personnalisée')] = 'autre';
         }
 
         $form = $this->createFormBuilder()
@@ -448,7 +447,7 @@ class OuvertureCompteController extends AbstractController
             ->add('asso_id', ChoiceType::class,
                 [
                     'required' => false,
-                    'label' => $translator->trans("Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :"),
+                    'label' => $translator->trans('choix_asso.choisissez_une_asso'),
                     'multiple' => false,
                     'expanded' => false,
                     'choices' => $tabAssos,
@@ -456,7 +455,7 @@ class OuvertureCompteController extends AbstractController
             ->add('asso_saisie_libre', TextType::class,
                 [
                     'required' => false,
-                    'label' => $translator->trans("ou indiquez le nom d'une autre association de votre choix :"),
+                    'label' => $translator->trans('choix_asso.saisie_libre'),
                 ])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
@@ -489,7 +488,7 @@ class OuvertureCompteController extends AbstractController
             }
         }
 
-        return $this->render('ouverture_compte/etape8_choix_asso.html.twig', ['title' => "Choix d'une association", 'form' => $form->createView()]);
+        return $this->render('ouverture_compte/etape8_choix_asso.html.twig', ['title' => $translator->trans('choix_asso.titre'), 'form' => $form->createView()]);
     }
 
     /**

@@ -821,10 +821,13 @@
       </trans-unit>
       <trans-unit id="RHLUtGL" resname="piece_d_identite.explication">
         <source>piece_d_identite.explication</source>
-        <target><![CDATA[Zure kontua bali egiteko, bankuko erregulazioak behartzen gaitu nortasun agiri baten egiaztatzera.<br /><br />
-                        Zure <b>nortasun agiria</b> edo <b>pasaportea</b> argazkitan hartu edo eskaneatu eta inporta dezakezu: <br /><br />
-                        - Dokumentua ez da lausoa izan behar <br />
-                        - Zure argazkia ageri izan behar da dokumentuan <br />]]></target>
+        <target><![CDATA[Zure kontua bali egiteko, banku erregulazioak nortasun agiri baten egiaztatzera behartzen gaitu.<br>
+<br>
+Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan hartu edo eskaneatu eta inporta dezakezu:
+<ul>
+<li>Dokumentua ez da lausoa izan behar</li>
+<li>Zure argazkia ageri izan behar da dokumentuan</li>
+</ul>]]></target>
       </trans-unit>
       <trans-unit id="IlPIIeV" resname="La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.">
         <source>La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.</source>
@@ -1180,11 +1183,11 @@
       </trans-unit>
       <trans-unit id="9epWKNk" resname="Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.">
         <source>Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.</source>
-        <target>__Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.</target>
+        <target>Akats bat izan da zure datuen baieztatzean, otoi berriz saiatu edo administratzaile batekin harremanetan sartu.</target>
       </trans-unit>
       <trans-unit id="giTpb08" resname="Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.">
         <source>Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.</source>
-        <target>__Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.</target>
+        <target>Pasahitza aldatua izan da, zure kodeekin konektatzen ahal zara.</target>
       </trans-unit>
       <trans-unit id="mhKGS4C" resname="ETAPE 7/8">
         <source>ETAPE 7/8</source>
@@ -1196,11 +1199,19 @@
       </trans-unit>
       <trans-unit id="FAmrvrS" resname="change_automatique.explication">
         <source>change_automatique.explication</source>
-        <target>__change_automatique.explication</target>
+        <target><![CDATA[Tokiko monetak gero eta gehiago erabili, orduan eta onuragarriagoak dira lurraldea eta ingurumenarentzat. Horregatik, <strong>hilabeteroko trukatze automatiko baten egitea galdegiten dizugu, gutienez 20 eurokoa</strong>. Horri esker, hilabetero, zure kontuan euskoak izanen dituzu.<br>
+<br>
+<strong>Ipar Euskal Herri osoan 1100 profesional baino gehiago kondatzen dituen sarean, eusko hauek fite erabiliko dituzu!</strong> Jatetxea, erosketak, kantina, elkarteen kotizazioak, liburuak, jantziak, zerbitzu informatikoak, surf ikastaroak, laborari saskiak, etab.: hautu handia duzu!<br>
+<br>
+<strong>Gure aholkua: hasi hilabetean 60 eusko ezarriz</strong>, gero truke automatikoaren zenbatekoa errazki aldatzen ahalku duzu zure kontuan sartuz.]]></target>
       </trans-unit>
       <trans-unit id="UFmrtUi" resname="change_automatique.explication2">
         <source>change_automatique.explication2</source>
-        <target>__change_automatique.explication2</target>
+        <target>Zure banku kontuan hilabeteko 10ean hartuko zaizu, eta zenbateko berdina gehituko zaizu zure eusko kontuan 24 oren barne (asteburuetatik kanpo).</target>
+      </trans-unit>
+      <trans-unit id="3Ji_Eti" resname="change_automatique.explication3">
+        <source>change_automatique.explication3</source>
+        <target>Baieztatu botoian klik egin ondoan, Yousign plataforma segurura igorria izanen zara, kentze automatikoaren baimena izenpetzeko.</target>
       </trans-unit>
       <trans-unit id="W6cfBV4" resname="ETAPE 3/8">
         <source>ETAPE 3/8</source>
@@ -1208,15 +1219,21 @@
       </trans-unit>
       <trans-unit id="k9x.Swz" resname="ouverture_compte.fin.felicitations">
         <source>ouverture_compte.fin.felicitations</source>
-        <target>__ouverture_compte.fin.felicitations</target>
+        <target><![CDATA[Zorionak!<br>
+Euskal Herriko tokiko moneta erabiltzeko bi klik baizik ez dituzu eskas!]]></target>
       </trans-unit>
       <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
         <source>ouverture_compte.fin.explication</source>
-        <target>__ouverture_compte.fin.explication</target>
+        <target><![CDATA[Azken urratsa, zure eusko kontuan sartu kargatzeko (berehala eta dohain, HelloAssoren bidez) eta ondotik, ordaintzeko metodo gogokoena hautatu:
+<ul>
+<li>euskopay telefono bidezko ordaintzeko aplikazioa, dohain telekargatzeko</li>
+<li>eusko billeteak, hauen ukaiteko aldaguneetara joan</li>
+<li>euskokarta, 10 egun barne bidaliko dizugu</li>
+</ul>]]></target>
       </trans-unit>
       <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">
         <source>ouverture_compte.fin.bouton</source>
-        <target>__ouverture_compte.fin.bouton</target>
+        <target>Jarraitu nire kontuan sartzeko</target>
       </trans-unit>
       <trans-unit id="BtPHhtA" resname="ETAPE 6/8">
         <source>ETAPE 6/8</source>
@@ -1228,7 +1245,7 @@
       </trans-unit>
       <trans-unit id="khjuLb7" resname="Signature du mandat SEPA pour votre change automatique mensuel">
         <source>Signature du mandat SEPA pour votre change automatique mensuel</source>
-        <target>__Signature du mandat SEPA pour votre change automatique mensuel</target>
+        <target>SEPA aginduaren izenpedura, hilabeteko truke automatikoarentzat</target>
       </trans-unit>
       <trans-unit id="Dtrvtq8" resname="ETAPE 2/8">
         <source>ETAPE 2/8</source>
@@ -1240,23 +1257,23 @@
       </trans-unit>
       <trans-unit id="KTVlGmD" resname="identite.explication">
         <source>identite.explication</source>
-        <target>__identite.explication</target>
+        <target><![CDATA[Euskal Herri ekologikoago, euskaldunago eta solidarioago baten eraikitzean parte hartu nahi duzu? Leku egokian zira!<br>
+<br>
+Zure banku datuak hartu (IZAERA/RIB), nortasun agiria eta utzi gidatzen.<br>
+<br>
+Minutu guti barru Euskal Herriko moneta erabiltzen ahalko duzu!]]></target>
       </trans-unit>
       <trans-unit id="ciioopi" resname="Importer votre pièce d'identité">
         <source>Importer votre pièce d'identité</source>
-        <target>__Importer votre pièce d'identité</target>
+        <target>Zure nortasun agiria inportatu</target>
       </trans-unit>
       <trans-unit id="eUO7o44" resname="Félicitations, votre compte eusko est bien ouvert !">
         <source>Félicitations, votre compte eusko est bien ouvert !</source>
-        <target>__Félicitations, votre compte eusko est bien ouvert !</target>
+        <target>Zorionak, zure eusko kontua idekia da!</target>
       </trans-unit>
       <trans-unit id="ZMkSx6a" resname="Êtes-vous sûr de vouloir supprimer le mandat de :">
         <source>Êtes-vous sûr de vouloir supprimer le mandat de :</source>
-        <target>__Êtes-vous sûr de vouloir supprimer le mandat de :</target>
-      </trans-unit>
-      <trans-unit id="bslvPko" resname="ou indiquez le nom d'une autre association de votre choix :">
-        <source>ou indiquez le nom d'une autre association de votre choix :</source>
-        <target>__ou indiquez le nom d'une autre association de votre choix :</target>
+        <target>Segur al zaude pertsona horren mandatua ezabatu nahi duzula?</target>
       </trans-unit>
       <trans-unit id="sDOwrXS" resname="ETAPE 8/8">
         <source>ETAPE 8/8</source>
@@ -1264,7 +1281,97 @@
       </trans-unit>
       <trans-unit id="Z4vDfyL" resname="cotisation.explication">
         <source>cotisation.explication</source>
-        <target>__cotisation.explication</target>
+        <target><![CDATA[Eusko kontu bat idekitzean, Euskal Moneta elkarteko kide bilakatzen zara. <strong>Elkartearen autofinantzamendu iturri nagusia bere kideen urtesariek osatzen dute. Zure urtesariarekin, Euskoaren garapena sustengatzen duzu!</strong><br>
+<br>
+Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da urte hastapenean edo hilabetero 10a eta 15a artean.]]></target>
+      </trans-unit>
+      <trans-unit id="nak2sQi" resname="identite.nom">
+        <source>identite.nom</source>
+        <target>Deitura</target>
+      </trans-unit>
+      <trans-unit id="wnQ0QJh" resname="identite.prenom">
+        <source>identite.prenom</source>
+        <target>Izena</target>
+      </trans-unit>
+      <trans-unit id="2iUFuDa" resname="identite.email">
+        <source>identite.email</source>
+        <target>Emaila</target>
+      </trans-unit>
+      <trans-unit id="ryc8DyP" resname="coordonnees.adresse">
+        <source>coordonnees.adresse</source>
+        <target>Helbidea</target>
+      </trans-unit>
+      <trans-unit id="YqzIj6i" resname="coordonnees.code_postal">
+        <source>coordonnees.code_postal</source>
+        <target>Posta kodea</target>
+      </trans-unit>
+      <trans-unit id="hhuM3WQ" resname="coordonnees.ville">
+        <source>coordonnees.ville</source>
+        <target>Herria</target>
+      </trans-unit>
+      <trans-unit id="C_UdWxq" resname="coordonnees.pays">
+        <source>coordonnees.pays</source>
+        <target>Herrialdea</target>
+      </trans-unit>
+      <trans-unit id="l4W2jC1" resname="coordonnees.telephone_portable">
+        <source>coordonnees.telephone_portable</source>
+        <target>Sakelako telefonoa</target>
+      </trans-unit>
+      <trans-unit id="AUFmoiQ" resname="sepa.montant">
+        <source>sepa.montant</source>
+        <target>Hilabetero trukatuko duzun diru kopurua</target>
+      </trans-unit>
+      <trans-unit id="WZUd2sb" resname="sepa.iban">
+        <source>sepa.iban</source>
+        <target>Dirua hartzeko erabiliko den kontuaren IBAN zenbakia</target>
+      </trans-unit>
+      <trans-unit id="E7WyRVz" resname="sepa.iban_invalide">
+        <source>sepa.iban_invalide</source>
+        <target>Zure banku datuak okerrak direla ematen du; otoi egiaztatu itzazu.</target>
+      </trans-unit>
+      <trans-unit id="c7KEw7z" resname="cotisation.montant">
+        <source>cotisation.montant</source>
+        <target>Urtesariaren zenbatekoa</target>
+      </trans-unit>
+      <trans-unit id="rylRtpa" resname="cotisation.montant_par_mois_par_an">
+        <source>cotisation.montant_par_mois_par_an</source>
+        <target>par_mois eusko hilabetean / par_an eusko urtean</target>
+      </trans-unit>
+      <trans-unit id="Ub_b7Mq" resname="cotisation.montant_par_an">
+        <source>cotisation.montant_par_an</source>
+        <target>par_an eusko urtean</target>
+      </trans-unit>
+      <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
+        <source>cotisation.cas_de_figure_cotisation_sociale</source>
+        <target> (langabeak, gutiengo sozialak dituzten pertsonak, ikasleak)</target>
+      </trans-unit>
+      <trans-unit id="N.O5yK0" resname="cotisation.periodicite">
+        <source>cotisation.periodicite</source>
+        <target>Diru kentzea noiz egin</target>
+      </trans-unit>
+      <trans-unit id="rgLa.IO" resname="cotisation.periodicite.annuel">
+        <source>cotisation.periodicite.annuel</source>
+        <target>Urtero</target>
+      </trans-unit>
+      <trans-unit id="FL61I2V" resname="cotisation.periodicite.mensuel">
+        <source>cotisation.periodicite.mensuel</source>
+        <target>Hilabetero (hilabeteko 10a eta 15a artean)</target>
+      </trans-unit>
+      <trans-unit id="8SXLe6." resname="Question personnalisée">
+        <source>Question personnalisée</source>
+        <target>Galdera pertsonalizatua</target>
+      </trans-unit>
+      <trans-unit id="oLyAMVr" resname="choix_asso.choisissez_une_asso">
+        <source>choix_asso.choisissez_une_asso</source>
+        <target>Aukeratu elkarte bat jadanik Euskal Monetako kide direnen artean:</target>
+      </trans-unit>
+      <trans-unit id="FN78rlh" resname="choix_asso.saisie_libre">
+        <source>choix_asso.saisie_libre</source>
+        <target>edo zure hautuko beste elkarte bat izendatu:</target>
+      </trans-unit>
+      <trans-unit id="hk7xLGN" resname="choix_asso.titre">
+        <source>choix_asso.titre</source>
+        <target>Elkarte baten hautatzea</target>
       </trans-unit>
     </body>
   </file>

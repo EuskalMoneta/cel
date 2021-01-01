@@ -1367,6 +1367,63 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
         <source>choix_asso.titre</source>
         <target>Choix d'une association</target>
       </trans-unit>
+      <trans-unit id="veQMBaR" resname="releves.periode">
+        <source>releves.periode</source>
+        <target>Période</target>
+      </trans-unit>
+      <trans-unit id="UW_kJcM" resname="releves.periode.ce_mois_ci">
+        <source>releves.periode.ce_mois_ci</source>
+        <target>Ce mois-ci</target>
+      </trans-unit>
+      <trans-unit id="TGggYDa" resname="releves.periode.le_mois_dernier">
+        <source>releves.periode.le_mois_dernier</source>
+        <target>Le mois dernier</target>
+      </trans-unit>
+      <trans-unit id="mHUbite" resname="releves.periode.cette_annee">
+        <source>releves.periode.cette_annee</source>
+        <target>Cette année</target>
+      </trans-unit>
+      <trans-unit id="mP_wofr" resname="releves.date_debut">
+        <source>releves.date_debut</source>
+        <target>Début</target>
+      </trans-unit>
+      <trans-unit id="NMHVa7k" resname="releves.date_fin">
+        <source>releves.date_fin</source>
+        <target>Fin</target>
+      </trans-unit>
+      <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
+        <source>profil.mot_de_passe.ancien_mot_de_passe</source>
+        <target>Ancien mot de passe</target>
+      </trans-unit>
+      <trans-unit id="IlzslI." resname="profil.mot_de_passe.nouveau_mot_de_passe">
+        <source>profil.mot_de_passe.nouveau_mot_de_passe</source>
+        <target>Nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="DcUVpGp" resname="profil.mot_de_passe.confirmer_nouveau_mot_de_passe">
+        <source>profil.mot_de_passe.confirmer_nouveau_mot_de_passe</source>
+        <target>Confirmer le nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="UhcxV92" resname="profil.question_secrete.question">
+        <source>profil.question_secrete.question</source>
+        <target>Votre question secrète</target>
+      </trans-unit>
+      <trans-unit id="jCHGTOB" resname="profil.question_secrete.reponse">
+        <source>profil.question_secrete.reponse</source>
+        <target>Réponse</target>
+      </trans-unit>
+      <trans-unit id="ucLE3oh" resname="aide.titre">
+        <source>aide.titre</source>
+        <target>Aide</target>
+      </trans-unit>
+      <trans-unit id="ZMQL3tR" resname="aide.texte">
+        <source>aide.texte</source>
+        <target><![CDATA[Pour toute question sur votre compte eusko, contactez-nous&nbsp;:
+<ul>
+<li>par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h</li>
+<li>en écrivant à support@euskalmoneta.org</li>
+</ul>
+Merci de nous communiquer dans votre demande votre numéro d'adhérent&nbsp:]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

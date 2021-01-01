@@ -63,10 +63,10 @@ class ProfilController extends AbstractController
             $membre = $responseMember['data'][0];
 
             $form = $this->createFormBuilder()
-                ->add('old_password', PasswordType::class, ['label' => 'Ancien mot de passe'])
+                ->add('old_password', PasswordType::class, ['label' => $translator->trans('profil.mot_de_passe.ancien_mot_de_passe')])
                 ->add('new_password', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Nouveau mot de passe'],
-                    'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                    'first_options'  => ['label' => $translator->trans('profil.mot_de_passe.nouveau_mot_de_passe')],
+                    'second_options' => ['label' => $translator->trans('profil.mot_de_passe.confirmer_nouveau_mot_de_passe')],
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max'=> 12]),
@@ -248,7 +248,7 @@ class ProfilController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            $questions = ['' => '','autre' => 'autre'];
+            $questions = ['' => '', $translator->trans('Question personnalisée') => 'autre'];
             $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getSession()->get('_locale'));
 
             if($response['httpcode'] == 200){
@@ -259,13 +259,13 @@ class ProfilController extends AbstractController
 
                 $form = $this->createFormBuilder()
                     ->add('questionSecrete', ChoiceType::class, [
-                        'label' => 'Votre question secrète',
+                        'label' => $translator->trans('profil.question_secrete.question'),
                         'required' => true,
                         'choices' => $questions
                     ])
                     ->add('questionPerso', TextType::class, ['label' => 'Votre question personnalisée', 'required' => false])
                     ->add('reponse', TextType::class, [
-                        'label' => 'Reponse',
+                        'label' => $translator->trans('profil.question_secrete.reponse'),
                         'required' => true,
                         'constraints' => [
                             new NotBlank()

@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="KSkm37Y" resname="Rechercher par n° de compte">
         <source>Rechercher par n° de compte</source>
-        <target>Kontu zbakia bilatu</target>
+        <target>Kontu zenbakia bilatu</target>
       </trans-unit>
       <trans-unit id="L_BX65B" resname="rechercher">
         <source>rechercher</source>
@@ -107,7 +107,7 @@
       </trans-unit>
       <trans-unit id="IhQHL54" resname="Compte n°">
         <source>Compte n°</source>
-        <target>Kontu zbakia</target>
+        <target>Kontu zenbakia</target>
       </trans-unit>
       <trans-unit id="QuN2BLY" resname="Modifier">
         <source>Modifier</source>
@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="nZ7fwPa" resname="Mon solde">
         <source>Mon solde</source>
-        <target>Nire kopurua</target>
+        <target>Nire saldoa</target>
       </trans-unit>
       <trans-unit id="hl3zMkr" resname="Historique">
         <source>Historique</source>
@@ -363,7 +363,7 @@
       </trans-unit>
       <trans-unit id="_M5HfI_" resname="N° d'adhérent">
         <source>N° d'adhérent</source>
-        <target>Kide zbakia</target>
+        <target>Kide zenbakia</target>
       </trans-unit>
       <trans-unit id="zYxbDID" resname="Accès à mon compte">
         <source>Accès à mon compte</source>
@@ -371,7 +371,7 @@
       </trans-unit>
       <trans-unit id="4mli900" resname="Mon euskokart">
         <source>Mon euskokart</source>
-        <target>Nire Euskokarta</target>
+        <target>Nire euskokarta</target>
       </trans-unit>
       <trans-unit id="MmNTfah" resname="Mon code PIN">
         <source>Mon code PIN</source>
@@ -1095,7 +1095,7 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="ssEkU20" resname="Nom">
         <source>Nom</source>
-        <target>Deitura / Abizena</target>
+        <target>Izena</target>
       </trans-unit>
       <trans-unit id="4yW.j5A" resname="Prénom">
         <source>Prénom</source>
@@ -1372,6 +1372,63 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
       <trans-unit id="hk7xLGN" resname="choix_asso.titre">
         <source>choix_asso.titre</source>
         <target>Elkarte baten hautatzea</target>
+      </trans-unit>
+      <trans-unit id="veQMBaR" resname="releves.periode">
+        <source>releves.periode</source>
+        <target>Epea</target>
+      </trans-unit>
+      <trans-unit id="UW_kJcM" resname="releves.periode.ce_mois_ci">
+        <source>releves.periode.ce_mois_ci</source>
+        <target>Hilabate hau</target>
+      </trans-unit>
+      <trans-unit id="TGggYDa" resname="releves.periode.le_mois_dernier">
+        <source>releves.periode.le_mois_dernier</source>
+        <target>Joan den hilabetea</target>
+      </trans-unit>
+      <trans-unit id="mHUbite" resname="releves.periode.cette_annee">
+        <source>releves.periode.cette_annee</source>
+        <target>Urte hau</target>
+      </trans-unit>
+      <trans-unit id="mP_wofr" resname="releves.date_debut">
+        <source>releves.date_debut</source>
+        <target>Hastapena</target>
+      </trans-unit>
+      <trans-unit id="NMHVa7k" resname="releves.date_fin">
+        <source>releves.date_fin</source>
+        <target>Bukaera</target>
+      </trans-unit>
+      <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
+        <source>profil.mot_de_passe.ancien_mot_de_passe</source>
+        <target>Pasahitza zaharra</target>
+      </trans-unit>
+      <trans-unit id="IlzslI." resname="profil.mot_de_passe.nouveau_mot_de_passe">
+        <source>profil.mot_de_passe.nouveau_mot_de_passe</source>
+        <target>Pasahitza berria</target>
+      </trans-unit>
+      <trans-unit id="DcUVpGp" resname="profil.mot_de_passe.confirmer_nouveau_mot_de_passe">
+        <source>profil.mot_de_passe.confirmer_nouveau_mot_de_passe</source>
+        <target>Pasahitza berria berretsi</target>
+      </trans-unit>
+      <trans-unit id="UhcxV92" resname="profil.question_secrete.question">
+        <source>profil.question_secrete.question</source>
+        <target>Zure galdera sekretua</target>
+      </trans-unit>
+      <trans-unit id="jCHGTOB" resname="profil.question_secrete.reponse">
+        <source>profil.question_secrete.reponse</source>
+        <target>Erantzuna</target>
+      </trans-unit>
+      <trans-unit id="ucLE3oh" resname="aide.titre">
+        <source>aide.titre</source>
+        <target>Laguntza</target>
+      </trans-unit>
+      <trans-unit id="ZMQL3tR" resname="aide.texte">
+        <source>aide.texte</source>
+        <target><![CDATA[Zure eusko kontuari buruz galderarik baldin baduzu, gurekin harremanetan sar zaite:
+<ul>
+<li>telefonoz 05 33 47 54 11 zenbakira deituz, astelehenetik ortziralera, 9:00 eta 13:00 artean edo 14:00 eta 17:00 artean</li>
+<li>support@euskalmoneta.org-ra idatziz</li>
+</ul>
+Zure eskaeran, zure kide zenbakia jakinarazi iezaguzu otoi:]]></target>
       </trans-unit>
     </body>
   </file>

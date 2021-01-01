@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
+{% block cssBefore %}
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@600&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3">
                 <div class="row">
-                    <div class="col"><h2 class="secondary-color mb-4"> {{"Aide" | trans }} </h2></div>
+                    <div class="col"><h2 class="secondary-color mb-4"> {{"aide.titre" | trans }} </h2></div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <p class="text-semi-bold"> Pour toute question sur votre compte Eusko, contactez-nous :<br />
-                            - par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h<br />
-                            - en écrivant à support@euskalmoneta.org
-                            <br /><br />
-                            Merci de nous communiquer dans votre demande votre numéro d'adhérent : {{ app.user }}</p>
+                        <p>{{"aide.texte" | trans | raw }} <span class="consolas">{{ app.user }}</span></p>
                     </div>
                 </div>
 

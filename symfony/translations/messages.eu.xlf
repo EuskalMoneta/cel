@@ -1367,7 +1367,7 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
       </trans-unit>
       <trans-unit id="FN78rlh" resname="choix_asso.saisie_libre">
         <source>choix_asso.saisie_libre</source>
-        <target>edo zure hautuko beste elkarte bat izendatu:</target>
+        <target>Edo zure hautuko beste elkarte bat izendatu:</target>
       </trans-unit>
       <trans-unit id="hk7xLGN" resname="choix_asso.titre">
         <source>choix_asso.titre</source>

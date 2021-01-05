@@ -1357,11 +1357,11 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
       </trans-unit>
       <trans-unit id="oLyAMVr" resname="choix_asso.choisissez_une_asso">
         <source>choix_asso.choisissez_une_asso</source>
-        <target><![CDATA[Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta&nbsp;:]]></target>
+        <target>Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :</target>
       </trans-unit>
       <trans-unit id="FN78rlh" resname="choix_asso.saisie_libre">
         <source>choix_asso.saisie_libre</source>
-        <target><![CDATA[ou indiquez le nom d'une autre association de votre choix&nbsp;:]]></target>
+        <target>Ou indiquez le nom d'une autre association de votre choix :</target>
       </trans-unit>
       <trans-unit id="hk7xLGN" resname="choix_asso.titre">
         <source>choix_asso.titre</source>

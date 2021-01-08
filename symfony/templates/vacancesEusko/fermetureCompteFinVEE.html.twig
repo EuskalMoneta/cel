@@ -1,23 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ "Fermeture compte" | trans }}{% endblock %}
-
- {% block menu_top %}
-     <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
-         <div class="container">
-             <a class="navbar-brand" href="{{ path('app_login') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
-             <div class="navbar-right">
-
-                 {% if app.user %}
-                     <a href="{{ path('app_logout') }}">
-                         <i class="fal fa-sign-out cel-menu-icon"></i>
-                         <br /> Quitter
-                     </a>
-                 {% endif %}
-             </div>
-         </div>
-     </nav>
- {% endblock %}
+{% block menu_top %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-eusko static-top fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_login') }}"><img src="{{ asset('images/logo-eusko-topbar.png') }}" alt="eusko logo" style="width: 60px;"></a>
+            <div class="navbar-right">
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}">
+                        <i class="fal fa-sign-out cel-menu-icon"></i>
+                        <br /> Quitter
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
 
 {% block menu_footer %}
 {% endblock %}
@@ -39,11 +36,3 @@
         </div>
     </div>
 {% endblock %}
-
-
-{% block js %}
-    <script type="text/javascript">
-
-    </script>
-{% endblock %}
-

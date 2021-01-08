@@ -2,8 +2,6 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block title %}{{ title | trans }}{% endblock %}
-
 {% block cssBefore %}
     <link href="{{ asset('css/intlTelInput.min.css') }}" rel="stylesheet"  type='text/css'>
 {% endblock %}
@@ -58,4 +56,3 @@
         });
     </script>
 {% endblock %}
-

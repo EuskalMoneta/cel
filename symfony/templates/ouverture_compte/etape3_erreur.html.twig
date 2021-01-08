@@ -1,11 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title | trans }}{% endblock %}
-
-
-{% block css %}
-{% endblock %}
-
 {% block body %}
     <div class="container">
         <div class="row">
@@ -18,18 +12,9 @@
                         <p class="text-subtitle">{{ "Vous pouvez contacter le support téléphonique :<br />" | trans | raw }}</p>
                         <p class="text-subtitle">{{ "- par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h" | trans }}</p>
                         <p class="text-subtitle">{{ "- en écrivant à support@euskalmoneta.org" | trans }}</p>
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
-
-
-{% block js %}
-    <script type="text/javascript">
-    </script>
-{% endblock %}
-

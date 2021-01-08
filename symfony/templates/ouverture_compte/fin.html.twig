@@ -28,10 +28,6 @@
 
 
 {% block menu_footer %}
-
+{# On supprime le menu du bas. Sinon le menu de l'application serait
+affiché car à cette étape l'utilisateur est authentifié. #}
 {% endblock %}
-
-{% block js %}
-    <script type="text/javascript"></script>
-{% endblock %}
-

@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ "Fermeture compte" | trans }}{% endblock %}
-
 {% block body %}
     <div class="container">
         <div class="row">
@@ -70,7 +68,6 @@
                 placeholder: '____ ____ ____ ____ ____ ____ ___'
             });
 
-
             $('#form-don').submit(function (e){
                 if($('#confirm-modal').hasClass('fade')){
                     $('#confirm-modal').modal('show');
@@ -80,8 +77,8 @@
                     $("#form_submit").unbind('click').click();
                     $(this).submit();
                 }
-
             });
+
             $('#modal-valid').click(function (e){
                 $("#form_guard_check").val('ok');
                 $('form').unbind('submit').submit();
@@ -91,4 +88,3 @@
 
     </script>
 {% endblock %}
-

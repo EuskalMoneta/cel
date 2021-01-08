@@ -2,8 +2,6 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block title %}{{ "Première connexion" | trans }}{% endblock %}
-
 {% block body %}
 <div class="container">
     <div class="row">
@@ -93,8 +91,6 @@
                 $('#spinner').removeClass('d-none');
                 return true;
             });
-
-
         });
     </script>
 {% endblock %}

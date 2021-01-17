@@ -1,26 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_ouverture_compte.html.twig' %}
 
-{% block body %}
-    <div class="container">
-        <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
-        <div style="width: 80%">
-            <div>{{ "ETAPE 5/8" | trans }}</div>
-            <h1 class="mb-3">{{ "Signature du mandat SEPA pour votre change automatique mensuel" | trans }}</h1>
+{% block content %}
+    {% if webHook != 0 %}
+    <iframe src="{{ yousign_url }}/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>
+    {% else %}
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="text-center">
+            <a class="btn btn-outline-primary" href="{{ path('ouverture_compte_signature_sepa') }}"> Recharger la page </a>
         </div>
-
-        {% if webHook != 0 %}
-        <iframe src="{{ yousign_url }}/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>
-        {% else %}
-            <br />
-            <br />
-            <br />
-            <br />
-            <div class="text-center">
-                <a class="btn btn-outline-primary" href="{{ path('ouverture_compte_signature_sepa') }}"> Recharger la page </a>
-            </div>
-        {% endif %}
-
-    </div>
+    {% endif %}
 {% endblock %}
 
 

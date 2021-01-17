@@ -1430,6 +1430,52 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
 </ul>
 Zure eskaeran, zure kide zenbakia jakinarazi iezaguzu otoi:]]></target>
       </trans-unit>
+      <trans-unit id="s0skKkE" resname="signature_sepa_change_automatique.titre">
+        <source>signature_sepa_change_automatique.titre</source>
+        <target>SEPA aginduaren izenpedura, hilabeteko truke automatikoarentzat</target>
+      </trans-unit>
+      <trans-unit id="ZHI54Xa" resname="identite.titre">
+        <source>identite.titre</source>
+        <target>Nortasuna</target>
+      </trans-unit>
+      <trans-unit id="EInEaGB" resname="coordonnees.titre">
+        <source>coordonnees.titre</source>
+        <target>Helbidea</target>
+      </trans-unit>
+      <trans-unit id="_LKQhKF" resname="piece_d_identite.titre">
+        <source>piece_d_identite.titre</source>
+        <target>Nortasun agiria</target>
+      </trans-unit>
+      <trans-unit id="wL7FxdI" resname="piece_d_identite_echec.titre">
+        <source>piece_d_identite_echec.titre</source>
+        <target>Egiaztatzeak huts egin du</target>
+      </trans-unit>
+      <trans-unit id="gPdhLgE" resname="change_automatique.titre">
+        <source>change_automatique.titre</source>
+        <target>Hilabeteroko trukatze automatikoa</target>
+      </trans-unit>
+      <trans-unit id="cpw6y8K" resname="cotisation.titre">
+        <source>cotisation.titre</source>
+        <target>Urtesaria</target>
+      </trans-unit>
+      <trans-unit id="PkpJGRH" resname="securite.titre">
+        <source>securite.titre</source>
+        <target>Segurtasuna</target>
+      </trans-unit>
+      <trans-unit id="9CU1nPh" resname="piece_d_identite_echec.texte">
+        <source>piece_d_identite_echec.texte</source>
+        <target><![CDATA[<p>Ezin izan dugu zure nortasun agiria automatikoki egiazkotu.</p>
+<p>Laguntza telefonikoa dei dezakezu:
+<ul>
+<li>telefonoz 05 33 47 54 11 zenbakira deituz, astelehenetik ortziralera, 9:00 eta 13:00 artean edo 14:00 eta 17:00 artean</li>
+<li>support@euskalmoneta.org-ra idatziz</li>
+</ul>
+</p>]]></target>
+      </trans-unit>
+      <trans-unit id="2ibLSZW" resname="ETAPE">
+        <source>ETAPE</source>
+        <target>%numero_etape%/%nb_etapes% URRATSA</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

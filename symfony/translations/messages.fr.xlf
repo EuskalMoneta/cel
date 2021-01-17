@@ -1424,6 +1424,52 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
 </ul>
 Merci de nous communiquer dans votre demande votre numéro d'adhérent&nbsp:]]></target>
       </trans-unit>
+      <trans-unit id="s0skKkE" resname="signature_sepa_change_automatique.titre">
+        <source>signature_sepa_change_automatique.titre</source>
+        <target>Signature du mandat SEPA pour votre change automatique mensuel</target>
+      </trans-unit>
+      <trans-unit id="ZHI54Xa" resname="identite.titre">
+        <source>identite.titre</source>
+        <target>Identité</target>
+      </trans-unit>
+      <trans-unit id="EInEaGB" resname="coordonnees.titre">
+        <source>coordonnees.titre</source>
+        <target>Coordonnées</target>
+      </trans-unit>
+      <trans-unit id="_LKQhKF" resname="piece_d_identite.titre">
+        <source>piece_d_identite.titre</source>
+        <target>Pièce d'identité</target>
+      </trans-unit>
+      <trans-unit id="wL7FxdI" resname="piece_d_identite_echec.titre">
+        <source>piece_d_identite_echec.titre</source>
+        <target>Echec de la vérification</target>
+      </trans-unit>
+      <trans-unit id="gPdhLgE" resname="change_automatique.titre">
+        <source>change_automatique.titre</source>
+        <target>Change automatique mensuel</target>
+      </trans-unit>
+      <trans-unit id="cpw6y8K" resname="cotisation.titre">
+        <source>cotisation.titre</source>
+        <target>Cotisation</target>
+      </trans-unit>
+      <trans-unit id="PkpJGRH" resname="securite.titre">
+        <source>securite.titre</source>
+        <target>Sécurité</target>
+      </trans-unit>
+      <trans-unit id="9CU1nPh" resname="piece_d_identite_echec.texte">
+        <source>piece_d_identite_echec.texte</source>
+        <target><![CDATA[<p>Nous n'avons pas réussi à valider votre pièce d'identité automatiquement.</p>
+<p>Vous pouvez contacter le support téléphonique&nbsp;:
+<ul>
+<li>par téléphone au 05 33 47 54 11, du lundi au vendredi, de 9h à 13h ou de 14h à 17h</li>
+<li>en écrivant à support@euskalmoneta.org</li>
+</ul>
+</p>]]></target>
+      </trans-unit>
+      <trans-unit id="2ibLSZW" resname="ETAPE">
+        <source>ETAPE</source>
+        <target>ETAPE %numero_etape%/%nb_etapes%</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,26 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_ouverture_compte.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
-
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6 offset-md-3 mt-2">
-                <div class="mt-md-4">
-                    <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
-                    <div style="width: 80%">
-                        <div>{{ "ETAPE 8/8" | trans }}</div>
-                        <h1 class="mb-3">{{ title }}</h1>
-                    </div>
-
-                    <div class="col pl-4">
-                        {% include 'asso/explication-3-pourcent.html.twig' %}
-                    </div>
-
-                    {{ form(form) }}
-
-                </div>
-            </div>
-        </div>
+{% block content %}
+    <div class="col pl-4">
+        {% include 'asso/explication-3-pourcent.html.twig' %}
     </div>
+
+    {{ form(form) }}
 {% endblock %}

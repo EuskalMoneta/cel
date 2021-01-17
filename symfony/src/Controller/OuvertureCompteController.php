@@ -36,6 +36,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OuvertureCompteController extends AbstractController
 {
+    const SURTITRE = "Ouverture de votre compte eusko";
+    const NB_ETAPES = 8;
 
     /**
      * @Route("/webhook", name="ouverture_web_hook")
@@ -139,6 +141,10 @@ class OuvertureCompteController extends AbstractController
 
 
         return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 5,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('signature_sepa_change_automatique.titre'),
             'memberToken' => $member->id,
             'webHook' => $identifiantWebHook
         ]);
@@ -168,9 +174,15 @@ class OuvertureCompteController extends AbstractController
             $session->set('compteur', 1);
 
             return $this->redirectToRoute('app_compte_etape2_coordonnees');
-
         }
-        return $this->render('ouverture_compte/etape_identite.html.twig', ['title' => "Identité", 'form' => $form->createView()]);
+
+        return $this->render('ouverture_compte/etape_identite.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 1,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('identite.titre'),
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -206,7 +218,14 @@ class OuvertureCompteController extends AbstractController
 
             return $this->redirectToRoute('app_compte_etape3_justificatif');
         }
-        return $this->render('ouverture_compte/etape2_coordonnees.html.twig', ['title' => "Coordonnées", 'form' => $form->createView()]);
+
+        return $this->render('ouverture_compte/etape2_coordonnees.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 2,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('coordonnees.titre'),
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -232,9 +251,21 @@ class OuvertureCompteController extends AbstractController
                 ->add('submit', SubmitType::class, ['label' => 'Valider'])
                 ->getForm();
 
-            return $this->render('ouverture_compte/etape3_justificatif.html.twig', ['title' => $translator->trans("Pièce d'identité"), 'form' => $form->createView()]);
+            return $this->render('ouverture_compte/etape3_justificatif.html.twig', [
+                'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+                'numero_etape' => 3,
+                'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+                'titre' => $translator->trans('piece_d_identite.titre'),
+                'form' => $form->createView()
+            ]);
+        } else {
+            return $this->render('ouverture_compte/etape3_erreur.html.twig', [
+                'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+                'numero_etape' => 3,
+                'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+                'titre' => $translator->trans('piece_d_identite_echec.titre')
+            ]);
         }
-        return $this->render('ouverture_compte/etape3_erreur.html.twig');
     }
 
     /**
@@ -282,8 +313,13 @@ class OuvertureCompteController extends AbstractController
             }
         }
 
-        return $this->render('ouverture_compte/etape4_sepaIban.html.twig', ['title' => $translator->trans('Change automatique mensuel'), 'form' => $form->createView()]);
-
+        return $this->render('ouverture_compte/etape4_sepaIban.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 4,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('change_automatique.titre'),
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -342,7 +378,14 @@ class OuvertureCompteController extends AbstractController
 
             return $this->redirectToRoute('app_compte_etape7_securite');
         }
-        return $this->render('ouverture_compte/etape6_cotisation.html.twig', ['title' => "Cotisation", 'form' => $form->createView()]);
+
+        return $this->render('ouverture_compte/etape6_cotisation.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 6,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('cotisation.titre'),
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -419,7 +462,13 @@ class OuvertureCompteController extends AbstractController
             return $this->redirectToRoute('app_compte_etape8_choix_asso');
         }
 
-        return $this->render('ouverture_compte/etape7_securite.html.twig', ['form' => $form->createView()]);
+        return $this->render('ouverture_compte/etape7_securite.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 7,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('securite.titre'),
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -488,7 +537,13 @@ class OuvertureCompteController extends AbstractController
             }
         }
 
-        return $this->render('ouverture_compte/etape8_choix_asso.html.twig', ['title' => $translator->trans('choix_asso.titre'), 'form' => $form->createView()]);
+        return $this->render('ouverture_compte/etape8_choix_asso.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 8,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('choix_asso.titre'),
+            'form' => $form->createView()
+        ]);
     }
 
     /**

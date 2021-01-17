@@ -1,54 +1,36 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_ouverture_compte.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 mt-4">
 
-{% block body %}
-    <div class="container">
-        <div class="row">
+            {{ form_start(form) }}
+            {% if  form_errors(form) != '' %}
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+                </div>
+            {% endif %}
 
-            <div class="col-12 col-md-6 offset-md-3 mt-2">
+            <p class="text-subtitle">{{ "change_automatique.explication" | trans | raw }}</p>
 
-                <div class="mt-md-4">
-                    <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
-
-                        <div>{{ "ETAPE 4/8" | trans }}</div>
-                        <h1 class="mb-3">{{ title | trans }}</h1>
-
-                    <div class="row">
-                        <div class="col-sm-12 mt-4">
-
-                            {{ form_start(form) }}
-                            {% if  form_errors(form) != '' %}
-                                <div class="alert alert-dismissible alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
-                                </div>
-                            {% endif %}
-
-                            <p class="text-subtitle">{{ "change_automatique.explication" | trans | raw }}</p>
-
-                            <div class="row">
-                                <div class="col">
-                                    {{ form_row(form.automatic_change_amount) }}
-                                </div>
-                            </div>
-
-                            <p class="text-subtitle">{{ "change_automatique.explication2" | trans | raw }}</p>
-
-                            <div class="row">
-                                <div class="col">
-                                    {{ form_row(form.iban) }}
-                                </div>
-                            </div>
-
-                            <p class="text-subtitle">{{ "change_automatique.explication3" | trans | raw }}</p>
-
-                            {{ form_end(form) }}
-
-                        </div>
-                    </div>
-
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.automatic_change_amount) }}
                 </div>
             </div>
+
+            <p class="text-subtitle">{{ "change_automatique.explication2" | trans | raw }}</p>
+
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.iban) }}
+                </div>
+            </div>
+
+            <p class="text-subtitle">{{ "change_automatique.explication3" | trans | raw }}</p>
+
+            {{ form_end(form) }}
+
         </div>
     </div>
 {% endblock %}

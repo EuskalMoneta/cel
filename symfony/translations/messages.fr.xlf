@@ -1482,7 +1482,7 @@ Ici vous pouvez adhérer ou renouveler votre adhésion à la monnaie locale du P
       </trans-unit>
       <trans-unit id="bOX7f6c" resname="signature_sepa.adhesion.titre">
         <source>signature_sepa.adhesion.titre</source>
-        <target>__signature_sepa.adhesion.titre</target>
+        <target>Signature du mandat SEPA pour votre cotisation</target>
       </trans-unit>
       <trans-unit id="yVHA8mv" resname="adhesion.cotisation.explication">
         <source>adhesion.cotisation.explication</source>

@@ -1488,7 +1488,7 @@ Hemen Euskal Herriko monetaren kide egiten ahal zara, edo zure kidetza berritu.]
       </trans-unit>
       <trans-unit id="bOX7f6c" resname="signature_sepa.adhesion.titre">
         <source>signature_sepa.adhesion.titre</source>
-        <target>__signature_sepa.adhesion.titre</target>
+        <target>SEPA aginduaren izenpedura zure urtesariarentzat</target>
       </trans-unit>
       <trans-unit id="yVHA8mv" resname="adhesion.cotisation.explication">
         <source>adhesion.cotisation.explication</source>

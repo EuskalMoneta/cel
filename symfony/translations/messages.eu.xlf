@@ -1209,8 +1209,8 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>change_automatique.explication2</source>
         <target>Zure banku kontuan hilabeteko 10ean hartuko zaizu, eta zenbateko berdina gehituko zaizu zure eusko kontuan 24 oren barne (asteburuetatik kanpo).</target>
       </trans-unit>
-      <trans-unit id="3Ji_Eti" resname="change_automatique.explication3">
-        <source>change_automatique.explication3</source>
+      <trans-unit id="Fuxkj4u" resname="redirection_yousign_pour_signature">
+        <source>redirection_yousign_pour_signature</source>
         <target>Baieztatu botoian klik egin ondoan, Yousign plataforma segurura igorria izanen zara, kentze automatikoaren baimena izenpetzeko.</target>
       </trans-unit>
       <trans-unit id="W6cfBV4" resname="ETAPE 3/8">
@@ -1335,11 +1335,11 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
       </trans-unit>
       <trans-unit id="rylRtpa" resname="cotisation.montant_par_mois_par_an">
         <source>cotisation.montant_par_mois_par_an</source>
-        <target>par_mois eusko hilabetean / par_an eusko urtean</target>
+        <target>par_mois monnaie hilabetean / par_an monnaie urtean</target>
       </trans-unit>
       <trans-unit id="Ub_b7Mq" resname="cotisation.montant_par_an">
         <source>cotisation.montant_par_an</source>
-        <target>par_an eusko urtean</target>
+        <target>par_an monnaie urtean</target>
       </trans-unit>
       <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
         <source>cotisation.cas_de_figure_cotisation_sociale</source>
@@ -1475,6 +1475,35 @@ Zure eskaeran, zure kide zenbakia jakinarazi iezaguzu otoi:]]></target>
       <trans-unit id="2ibLSZW" resname="ETAPE">
         <source>ETAPE</source>
         <target>%numero_etape%/%nb_etapes% URRATSA</target>
+      </trans-unit>
+      <trans-unit id="xmcaZ0e" resname="identite.date_naissance">
+        <source>identite.date_naissance</source>
+        <target>Sorteguna</target>
+      </trans-unit>
+      <trans-unit id="zSzge8f" resname="adhesion.identite.explication">
+        <source>adhesion.identite.explication</source>
+        <target><![CDATA[Euskal Herri ekologikoago, euskaldunago eta solidarioago baten eraikitzean parte hartu nahi duzu? Leku egokian zira!<br>
+<br>
+Hemen Euskal Herriko monetaren kide egiten ahal zara, edo zure kidetza berritu.]]></target>
+      </trans-unit>
+      <trans-unit id="bOX7f6c" resname="signature_sepa.adhesion.titre">
+        <source>signature_sepa.adhesion.titre</source>
+        <target>__signature_sepa.adhesion.titre</target>
+      </trans-unit>
+      <trans-unit id="yVHA8mv" resname="adhesion.cotisation.explication">
+        <source>adhesion.cotisation.explication</source>
+        <target><![CDATA[<strong>Elkartearen autofinantzamendu iturri nagusia bere kideen urtesariek osatzen dute. Zure urtesariarekin, Euskoaren garapena sustengatzen duzu!</strong><br>
+<br>
+Zure urtesariaren zenbatekoa hauta ezazu. Zure banku kontutik kendua izanen da urte hastapenean edo hilabetero, zure hautuaren arabera.]]></target>
+      </trans-unit>
+      <trans-unit id="EqRxCK2" resname="adhesion.fin.felicitations">
+        <source>adhesion.fin.felicitations</source>
+        <target><![CDATA[Zorionak!<br>
+Orain Euskal Herriko tokiko moneta erabiltzen ahal duzu!]]></target>
+      </trans-unit>
+      <trans-unit id=".Hnf.zF" resname="adhesion.fin.explication">
+        <source>adhesion.fin.explication</source>
+        <target><![CDATA[Horretarako, Euskoaren aldagune batera joaitea besterik ez duzu behar, euro batzu euskotan trukatzeko!]]></target>
       </trans-unit>
     </body>
   </file>

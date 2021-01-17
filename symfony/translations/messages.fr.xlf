@@ -1019,8 +1019,8 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>change_automatique.explication2</source>
         <target>Le prélèvement sur votre compte bancaire sera réalisé le 10 de chaque mois, et votre compte eusko sera crédité du même montant sous 24h (hors week-end).</target>
       </trans-unit>
-      <trans-unit id="3Ji_Eti" resname="change_automatique.explication3">
-        <source>change_automatique.explication3</source>
+      <trans-unit id="Fuxkj4u" resname="redirection_yousign_pour_signature">
+        <source>redirection_yousign_pour_signature</source>
         <target>Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.</target>
       </trans-unit>
       <trans-unit id="fAez1y5" resname="ETAPE 2/5">
@@ -1329,11 +1329,11 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
       </trans-unit>
       <trans-unit id="rylRtpa" resname="cotisation.montant_par_mois_par_an">
         <source>cotisation.montant_par_mois_par_an</source>
-        <target>par_mois eusko par mois / par_an eusko par an</target>
+        <target>par_mois monnaie par mois / par_an monnaie par an</target>
       </trans-unit>
       <trans-unit id="Ub_b7Mq" resname="cotisation.montant_par_an">
         <source>cotisation.montant_par_an</source>
-        <target>par_an eusko par an</target>
+        <target>par_an monnaie par an</target>
       </trans-unit>
       <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
         <source>cotisation.cas_de_figure_cotisation_sociale</source>
@@ -1469,6 +1469,35 @@ Merci de nous communiquer dans votre demande votre numéro d'adhérent&nbsp:]]><
       <trans-unit id="2ibLSZW" resname="ETAPE">
         <source>ETAPE</source>
         <target>ETAPE %numero_etape%/%nb_etapes%</target>
+      </trans-unit>
+      <trans-unit id="xmcaZ0e" resname="identite.date_naissance">
+        <source>identite.date_naissance</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="zSzge8f" resname="adhesion.identite.explication">
+        <source>adhesion.identite.explication</source>
+        <target><![CDATA[Vous souhaitez participer à la construction d'un Pays Basque plus écologique, euskaldun et solidaire ? Vous êtes au bon endroit !<br>
+<br>
+Ici vous pouvez adhérer ou renouveler votre adhésion à la monnaie locale du Pays Basque.]]></target>
+      </trans-unit>
+      <trans-unit id="bOX7f6c" resname="signature_sepa.adhesion.titre">
+        <source>signature_sepa.adhesion.titre</source>
+        <target>__signature_sepa.adhesion.titre</target>
+      </trans-unit>
+      <trans-unit id="yVHA8mv" resname="adhesion.cotisation.explication">
+        <source>adhesion.cotisation.explication</source>
+        <target><![CDATA[<strong>Les cotisations de ses adhérent-e-s sont la principale source d'autofinancement de l'association. Par votre cotisation, vous soutenez le développement de l'Eusko !</strong><br>
+<br>
+Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera prélevée sur votre compte bancaire en début d'année ou chaque mois, à votre convenance.]]></target>
+      </trans-unit>
+      <trans-unit id="EqRxCK2" resname="adhesion.fin.felicitations">
+        <source>adhesion.fin.felicitations</source>
+        <target><![CDATA[Félicitations&nbsp;!<br>
+Vous pouvez maintenant utiliser la monnaie locale du Pays Basque&nbsp;!]]></target>
+      </trans-unit>
+      <trans-unit id=".Hnf.zF" resname="adhesion.fin.explication">
+        <source>adhesion.fin.explication</source>
+        <target><![CDATA[Il vous suffit de vous rendre dans un des bureaux de change de l'Eusko et de changer des euros en eusko&nbsp;!]]></target>
       </trans-unit>
     </body>
   </file>

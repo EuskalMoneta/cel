@@ -1,0 +1,44 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    {% if webHook != 0 %}
+    <iframe src="{{ yousign_url }}/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>
+    {% else %}
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="text-center">
+            <a class="btn btn-outline-primary" href="{{ path('adhesion_signature_sepa') }}"> Recharger la page </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+        $( document ).ready(function() {
+            var tid = setInterval(ajaxCall, 5000);
+            function ajaxCall() {
+                $.ajax({
+                        method: "POST",
+                        url: "{{ path('ajax_yousign_webhook') }}",
+                        data: { name: {{ webHook }} }
+                    })
+                    .done(function( msg ) {
+                        if(msg === 'ok'){
+                            abortTimer();
+                            window.location.href='{{ path('app_adhesion_etape5_choix_asso') }}';
+                        } else {
+                            console.log('pas bon');
+                        }
+                    });
+            }
+            function abortTimer() {
+                clearInterval(tid);
+            }
+        });
+
+    </script>
+{% endblock %}

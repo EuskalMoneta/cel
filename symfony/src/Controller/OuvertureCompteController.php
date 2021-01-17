@@ -82,7 +82,7 @@ class OuvertureCompteController extends AbstractController
     /**
      * @Route("/{_locale}/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
      */
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf)
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator)
     {
         $session->start();
         $user = $session->get('utilisateur');
@@ -181,6 +181,8 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 1,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
+            'explication' => $translator->trans('identite.explication'),
+            'valide_cgu' => true,
             'form' => $form->createView()
         ]);
     }
@@ -347,10 +349,10 @@ class OuvertureCompteController extends AbstractController
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24']) => '24',
-                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36']) => '36',
-                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60']) => '60',
-                    $translator->trans('cotisation.montant_par_an', ['par_an' => '5']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
+                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24', 'monnaie' => 'eusko']) => '24',
+                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36', 'monnaie' => 'eusko']) => '36',
+                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60', 'monnaie' => 'eusko']) => '60',
+                    $translator->trans('cotisation.montant_par_an', ['par_an' => '5', 'monnaie' => 'eusko']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
                 ],
             ])
             ->add('subscription_periodicity', ChoiceType::class, [

@@ -187,10 +187,10 @@ class ProfilController extends AbstractController
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24']) => '24',
-                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36']) => '36',
-                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60']) => '60',
-                        $translator->trans('cotisation.montant_par_an', ['par_an' => '5']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24', 'monnaie' => 'eusko']) => '24',
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36', 'monnaie' => 'eusko']) => '36',
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60', 'monnaie' => 'eusko']) => '60',
+                        $translator->trans('cotisation.montant_par_an', ['par_an' => '5', 'monnaie' => 'eusko']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
                     ],
                     'data' => round($defaultData, 0)
                 ])

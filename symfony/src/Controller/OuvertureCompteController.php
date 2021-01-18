@@ -214,7 +214,6 @@ class OuvertureCompteController extends AbstractController
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
             'explication' => $translator->trans('identite.explication'),
-            'valide_cgu' => true,
             'form' => $form->createView()
         ]);
     }

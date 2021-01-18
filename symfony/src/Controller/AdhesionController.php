@@ -94,7 +94,6 @@ class AdhesionController extends AbstractController
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
             'explication' => $translator->trans('adhesion.identite.explication'),
-            'valide_cgu' => false,
             'form' => $form->createView()
         ]);
     }

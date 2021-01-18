@@ -14,7 +14,7 @@
         {{ form_row(form.lastname) }}
         {{ form_row(form.email) }}
 
-        {% if valide_cgu %}
+        {% if form.valide is defined %}
         <div>
 
             {{ form_errors(form.valide) }}

@@ -28,14 +28,41 @@ class AdhesionController extends AbstractController
     /**
      * @Route("/{_locale}/adhesion", name="app_adhesion_etape1_identite")
      */
-    public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session)
+    public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $session->start();
         $session->set('utilisateur', []);
 
-        $form = $this->createFormBuilder()
-            ->add('lastname', TextType::class, ['label' => $translator->trans('identite.nom'), 'required' => true, 'constraints' => [ new NotBlank() ]])
-            ->add('firstname', TextType::class, ['label' => $translator->trans('identite.prenom'), 'required' => true, 'constraints' => [ new NotBlank() ]])
+        // Le paramètre optionnel "token" permet de charger le formulaire pour un adhérent existant.
+        $member = null;
+        $token = $request->query->get('token');
+        $response = $APIToolbox->curlWithoutToken('GET', '/members/?token='.$token);
+        if ($response['httpcode'] == 200) {
+            $member = $response['data'][0];
+        }
+
+        $formBuilder = $this->createFormBuilder();
+        if ($member) {
+            $formBuilder->add('login', TextType::class, [
+                'label' => $translator->trans("N° d'adhérent"),
+                'required' => true,
+                'attr' => [ 'readonly' => true ],
+                'data' => $member->login,
+            ]);
+        }
+        $formBuilder
+            ->add('lastname', TextType::class, [
+                'label' => $translator->trans('identite.nom'),
+                'required' => true,
+                'constraints' => [ new NotBlank() ],
+                'data' => ($member == null) ? '' : $member->lastname,
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => $translator->trans('identite.prenom'),
+                'required' => true,
+                'constraints' => [ new NotBlank() ],
+                'data' => ($member == null) ? '' : $member->firstname,
+            ])
             ->add('birth', DateType::class, [
                 'label' => $translator->trans('identite.date_naissance'),
                 'required' => true,
@@ -43,9 +70,14 @@ class AdhesionController extends AbstractController
                 'widget' => 'single_text',
                 'input' => 'string',
             ])
-            ->add('email', EmailType::class, ['label' => $translator->trans('identite.email'), 'required' => true, 'constraints' => [ new NotBlank() ]])
-            ->add('submit', SubmitType::class, ['label' => 'Valider'])
-            ->getForm();
+            ->add('email', EmailType::class, [
+                'label' => $translator->trans('identite.email'),
+                'required' => true,
+                'constraints' => [ new NotBlank() ],
+                'data' => ($member == null) ? '' : $member->email,
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider']);
+        $form = $formBuilder->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -7,6 +7,9 @@
     <form method="post">
         {{ form_start(form) }}
 
+        {% if form.login is defined %}
+            {{ form_row(form.login) }}
+        {% endif%}
         {{ form_row(form.firstname) }}
         {{ form_row(form.lastname) }}
         {{ form_row(form.email) }}

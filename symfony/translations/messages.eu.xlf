@@ -1505,6 +1505,27 @@ Orain Euskal Herriko tokiko moneta erabiltzen ahal duzu!]]></target>
         <source>adhesion.fin.explication</source>
         <target><![CDATA[Horretarako, Euskoaren aldagune batera joaitea besterik ez duzu behar, euro batzu euskotan trukatzeko!]]></target>
       </trans-unit>
+      <trans-unit id="U3HccU5" resname="coordonnees.nom">
+        <source>coordonnees.nom</source>
+        <target>Izena</target>
+      </trans-unit>
+      <trans-unit id="aSgDt0c" resname="signature_mandat_cotisation.cotisation.explication">
+        <source>signature_mandat_cotisation.cotisation.explication</source>
+        <target><![CDATA[Zure kotizazioa urtean behin edo hilabetean behin hartua izanen da. Diru kentze hori nahi duzularik gelditzen ahalko duzu, gurekin harremanetan sartuz.<br>
+Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen dituen gastuen ttipitzeko.]]></target>
+      </trans-unit>
+      <trans-unit id="tiZI7UR" resname="Entreprise / Association">
+        <source>Entreprise / Association</source>
+        <target>Enpresa / Elkartea</target>
+      </trans-unit>
+      <trans-unit id="HKErrsX" resname="mandat_sepa.titre">
+        <source>mandat_sepa.titre</source>
+        <target>SEPA agindua</target>
+      </trans-unit>
+      <trans-unit id="CYYAaDb" resname="Signature d'un mandat de prélèvement SEPA pour la cotisation">
+        <source>Signature d'un mandat de prélèvement SEPA pour la cotisation</source>
+        <target>SEPA agindu baten izenpetzea kotizazioarentzat</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

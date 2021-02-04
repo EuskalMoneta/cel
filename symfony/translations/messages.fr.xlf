@@ -1317,7 +1317,7 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
       </trans-unit>
       <trans-unit id="WZUd2sb" resname="sepa.iban">
         <source>sepa.iban</source>
-        <target>Coordonnées du compte à prélever (IBAN)</target>
+        <target>Coordonnées du compte à débiter (IBAN)</target>
       </trans-unit>
       <trans-unit id="E7WyRVz" resname="sepa.iban_invalide">
         <source>sepa.iban_invalide</source>
@@ -1498,6 +1498,27 @@ Vous pouvez maintenant utiliser la monnaie locale du Pays Basque&nbsp;!]]></targ
       <trans-unit id=".Hnf.zF" resname="adhesion.fin.explication">
         <source>adhesion.fin.explication</source>
         <target><![CDATA[Il vous suffit de vous rendre dans un des bureaux de change de l'Eusko et de changer des euros en eusko&nbsp;!]]></target>
+      </trans-unit>
+      <trans-unit id="U3HccU5" resname="coordonnees.nom">
+        <source>coordonnees.nom</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="aSgDt0c" resname="signature_mandat_cotisation.cotisation.explication">
+        <source>signature_mandat_cotisation.cotisation.explication</source>
+        <target><![CDATA[Votre cotisation sera prélevée une fois par an ou avec un prélèvement mensuel. Vous pourrez arrêter ce prélèvement automatique sur simple demande en nous contactant.<br>
+Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduire les frais engendrés pour l'association.]]></target>
+      </trans-unit>
+      <trans-unit id="tiZI7UR" resname="Entreprise / Association">
+        <source>Entreprise / Association</source>
+        <target>Entreprise / Association</target>
+      </trans-unit>
+      <trans-unit id="HKErrsX" resname="mandat_sepa.titre">
+        <source>mandat_sepa.titre</source>
+        <target>Mandat SEPA</target>
+      </trans-unit>
+      <trans-unit id="CYYAaDb" resname="Signature d'un mandat de prélèvement SEPA pour la cotisation">
+        <source>Signature d'un mandat de prélèvement SEPA pour la cotisation</source>
+        <target>Signature d'un mandat de prélèvement SEPA pour la cotisation</target>
       </trans-unit>
     </body>
   </file>

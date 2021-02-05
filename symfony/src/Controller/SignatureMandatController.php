@@ -244,7 +244,7 @@ class SignatureMandatController extends AbstractController
 
         $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
 
-        $response = $APIToolbox->curlWithoutToken('POST', '/enregistrer-mandat/', $data);
+        $response = $APIToolbox->curlWithoutToken('POST', '/enregistrer-mandat-cotisation/', $data);
 
         if ($response['httpcode'] == 200) {
             return $this->render('signature_mandat_cotisation/fin.html.twig');

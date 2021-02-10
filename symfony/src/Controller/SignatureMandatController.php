@@ -52,88 +52,86 @@ class SignatureMandatController extends AbstractController
         }
 
         $formBuilder = $this->createFormBuilder();
-        if ($member) {
+        $formBuilder
+            ->add('login', TextType::class, [
+                'label' => $translator->trans("N° d'adhérent"),
+                'required' => true,
+                'attr' => [ 'readonly' => true ],
+                'data' => $member ? $member->login : '',
+            ]);
+        if ($member and $member->login[0] == 'Z') {
             $formBuilder
-                ->add('login', TextType::class, [
-                    'label' => $translator->trans("N° d'adhérent"),
+                ->add('company', TextType::class, [
+                    'label' => $translator->trans("Entreprise / Association"),
                     'required' => true,
-                    'attr' => [ 'readonly' => true ],
-                    'data' => $member->login,
+                    'constraints' => [ new NotBlank() ],
+                    'data' => $member->company,
                 ]);
-            if ($member->login[0] == 'Z') {
-                $formBuilder
-                    ->add('company', TextType::class, [
-                        'label' => $translator->trans("Entreprise / Association"),
-                        'required' => true,
-                        'constraints' => [ new NotBlank() ],
-                        'data' => $member->company,
-                    ]);
-            }
-            $formBuilder
-                ->add('lastname', TextType::class, [
-                    'label' => $translator->trans('identite.nom'),
-                    'required' => true,
-                    'constraints' => [ new NotBlank() ],
-                    'data' => $member->lastname,
-                ])
-                ->add('firstname', TextType::class, [
-                    'label' => $translator->trans('identite.prenom'),
-                    'required' => true,
-                    'constraints' => [ new NotBlank() ],
-                    'data' => $member->firstname,
-                ])
-                ->add('address', TextareaType::class, [
-                    'label' => $translator->trans('coordonnees.adresse'),
-                    'required' => true,
-                    'data' => $member->address,
-                ])
-                ->add('zip', TextType::class, [
-                    'label' => $translator->trans('coordonnees.code_postal'),
-                    'required' => true,
-                    'attr' => ['class' => 'basicAutoComplete'],
-                    'data' => $member->zip,
-                ])
-                ->add('town', TextType::class, [
-                    'label' => $translator->trans('coordonnees.ville'),
-                    'required' => true,
-                    'data' => $member->town,
-                ])
-                ->add('country_id', ChoiceType::class, [
-                    'label' => $translator->trans('coordonnees.pays'),
-                    'required' => true,
-                    'choices' => $tabCountries,
-                    'data' => $member->country_id,
-                ])
-                ->add('phone', TextType::class, [
-                    'label' => $translator->trans('coordonnees.telephone_portable'),
-                    'required' => true,
-                    'attr' => array('id'=>'phone', 'placeholder' => ''),
-                ])
-                ->add('email', EmailType::class, [
-                    'label' => $translator->trans('identite.email'),
-                    'required' => true,
-                    'constraints' => [ new NotBlank() ],
-                    'data' => ($member == null) ? '' : $member->email,
-                ])
-                ->add('iban', TextType::class, [
-                    'required' => true,
-                    'label' => $translator->trans('sepa.iban'),
-                    'constraints' => [
-                        new NotBlank(),
-                    ]
-                ])
-                ->add('subscription_periodicity', ChoiceType::class, [
-                    'label' => $translator->trans('cotisation.periodicite'),
-                    'required' => true,
-                    'multiple' => false,
-                    'expanded' => true,
-                    'choices' => [
-                        $translator->trans('cotisation.periodicite.annuel') => '12',
-                        $translator->trans('cotisation.periodicite.mensuel') => '1',
-                    ],
-                ])
-                ->add('submit', SubmitType::class, ['label' => 'Valider']);
         }
+        $formBuilder
+            ->add('lastname', TextType::class, [
+                'label' => $translator->trans('identite.nom'),
+                'required' => true,
+                'constraints' => [ new NotBlank() ],
+                'data' => $member ? $member->lastname : '',
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => $translator->trans('identite.prenom'),
+                'required' => true,
+                'constraints' => [ new NotBlank() ],
+                'data' => $member ? $member->firstname : '',
+            ])
+            ->add('address', TextareaType::class, [
+                'label' => $translator->trans('coordonnees.adresse'),
+                'required' => true,
+                'data' => $member ? $member->address : '',
+            ])
+            ->add('zip', TextType::class, [
+                'label' => $translator->trans('coordonnees.code_postal'),
+                'required' => true,
+                'attr' => ['class' => 'basicAutoComplete'],
+                'data' => $member ? $member->zip : '',
+            ])
+            ->add('town', TextType::class, [
+                'label' => $translator->trans('coordonnees.ville'),
+                'required' => true,
+                'data' => $member ? $member->town : '',
+            ])
+            ->add('country_id', ChoiceType::class, [
+                'label' => $translator->trans('coordonnees.pays'),
+                'required' => true,
+                'choices' => $tabCountries,
+                'data' => $member ? $member->country_id : '',
+            ])
+            ->add('phone', TextType::class, [
+                'label' => $translator->trans('coordonnees.telephone_portable'),
+                'required' => true,
+                'attr' => array('id'=>'phone', 'placeholder' => ''),
+            ])
+            ->add('email', EmailType::class, [
+                'label' => $translator->trans('identite.email'),
+                'required' => true,
+                'constraints' => [ new NotBlank() ],
+                'data' => $member ? $member->email : '',
+            ])
+            ->add('iban', TextType::class, [
+                'required' => true,
+                'label' => $translator->trans('sepa.iban'),
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('subscription_periodicity', ChoiceType::class, [
+                'label' => $translator->trans('cotisation.periodicite'),
+                'required' => true,
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    $translator->trans('cotisation.periodicite.annuel') => '12',
+                    $translator->trans('cotisation.periodicite.mensuel') => '1',
+                ],
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider']);
         $form = $formBuilder->getForm();
 
         $form->handleRequest($request);

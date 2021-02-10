@@ -1503,7 +1503,7 @@ Orain Euskal Herriko tokiko moneta erabiltzen ahal duzu!]]></target>
       </trans-unit>
       <trans-unit id=".Hnf.zF" resname="adhesion.fin.explication">
         <source>adhesion.fin.explication</source>
-        <target><![CDATA[Horretarako, Euskoaren aldagune batera joaitea besterik ez duzu behar, euro batzu euskotan trukatzeko!]]></target>
+        <target>Horretarako, Euskoaren aldagune batera joaitea besterik ez duzu behar, euro batzu euskotan trukatzeko!</target>
       </trans-unit>
       <trans-unit id="U3HccU5" resname="coordonnees.nom">
         <source>coordonnees.nom</source>
@@ -1525,6 +1525,10 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       <trans-unit id="CYYAaDb" resname="Signature d'un mandat de prélèvement SEPA pour la cotisation">
         <source>Signature d'un mandat de prélèvement SEPA pour la cotisation</source>
         <target>SEPA agindu baten izenpetzea kotizazioarentzat</target>
+      </trans-unit>
+      <trans-unit id="F2aKiN6" resname="signature_mandat_cotisation.fin">
+        <source>signature_mandat_cotisation.fin</source>
+        <target>Zure SEPA agindua ongi grabatua izan da, milesker!</target>
       </trans-unit>
     </body>
   </file>

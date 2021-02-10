@@ -231,7 +231,7 @@ class SignatureMandatController extends AbstractController
     /**
      * @Route("/{_locale}/signature-mandat-cotisation/fin", name="app_signature_mandat_cotisation_fin")
      */
-    public function fin()
+    public function fin(SessionInterface $session, EntityManagerInterface $em, APIToolbox $APIToolbox)
     {
         $session->start();
 

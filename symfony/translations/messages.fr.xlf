@@ -1520,6 +1520,10 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
         <source>Signature d'un mandat de prélèvement SEPA pour la cotisation</source>
         <target>Signature d'un mandat de prélèvement SEPA pour la cotisation</target>
       </trans-unit>
+      <trans-unit id="F2aKiN6" resname="signature_mandat_cotisation.fin">
+        <source>signature_mandat_cotisation.fin</source>
+        <target><![CDATA[Votre mandat de prélèvement SEPA a bien été enregistré, merci&nbsp;!]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

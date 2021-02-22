@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\VirementType;
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -11,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
@@ -21,9 +23,54 @@ class VirementController extends AbstractController
 {
 
     /**
+     * @Route("/confirm-virement", name="app_virement_confirm")
+     */
+    public function confirmAction(Request $request,
+                                  APIToolbox $APIToolbox,
+                                  TranslatorInterface $translator,
+                                  SessionInterface $session)
+    {
+        $data = $session->get('virementData');
+
+        if(empty($data)){
+            $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
+            return $this->redirectToRoute('app_virement');
+        }
+        if($request->isMethod('post')){
+            if($session->get('virementBool')){
+                unset($data['account_name']);
+
+                //prevent multiple form submit
+                $session->set('virementData', []);
+                $session->set('virementBool', false);
+
+                //API CALL
+                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
+                if($responseVirement['httpcode'] == 200) {
+
+                    $resultats = $responseVirement['data'];
+                    foreach($resultats as $resultat){
+                        if($resultat->status == 1){
+                            $this->addFlash('success',$translator->trans("Virement effectué"));
+
+                        } else {
+                            $this->addFlash('danger',$translator->trans($resultat->message));
+                        }
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
+                }
+                return $this->redirectToRoute('app_virement');
+            }
+        }
+
+        return $this->render('utils/confirm_action.html.twig', ['data' => $data]);
+    }
+
+    /**
      * @Route("/virement", name="app_virement")
      */
-    public function virement(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function virement(Request $request, APIToolbox $APIToolbox, SessionInterface $session)
     {
         //GET beneficiaires
         $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
@@ -37,41 +84,21 @@ class VirementController extends AbstractController
         }
 
         //Form generation
-        $destinataire ='';
-        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
-            ->add('amount', NumberType::class, ['required' => true, 'label' => $translator->trans("Montant")])
-            ->add('guard_check', HiddenType::class, ['required' => false])
-            ->add('description', TextType::class, ['required' => true, 'label' => $translator->trans("Libellé de l'opération")])
-            ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
-            ->getForm();
+        $form = $this->createForm(VirementType::class, null,  []);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //prepare payload
             $data = $form->getData();
-            $data['account'] = $request->get('destinataire');
+            $data['account'] = explode('_', $request->get('destinataire'))[0];
+            $data['account_name'] = explode('_', $request->get('destinataire'))[1];
 
-            //check if the guard has been submitted, prevent double submit bug
-            if($data['guard_check'] == 'ok'){
-                unset($data['guard_check']);
-                //API CALL
-                $responseVirement = $APIToolbox->curlRequest('POST', '/execute-virements/', [$data]);
-                if($responseVirement['httpcode'] == 200) {
-                    $resultats = $responseVirement['data'];
-                    foreach($resultats as $resultat){
-                        if($resultat->status == 1){
-                            $this->addFlash('success',$translator->trans("Virement effectué"));
-                            return $this->redirectToRoute('app_virement');
-                        } else {
-                            $this->addFlash('danger',$translator->trans($resultat->message));
-                        }
-                    }
-                } else {
-                    $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
-                }
-            }
+            $session->set('virementData', $data);
+            $session->set('virementBool', true);
+
+            return $this->redirectToRoute('app_virement_confirm');
         }
-        return $this->render('virement/virement.html.twig', ['form' => $form->createView(), 'destinataire' => $destinataire, 'beneficiaires' => $beneficiaires]);
+        return $this->render('virement/virement.html.twig', ['form' => $form->createView(),'beneficiaires' => $beneficiaires]);
     }
 
     /**

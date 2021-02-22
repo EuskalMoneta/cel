@@ -75,6 +75,7 @@ legend {
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
 .text-semi-bold { font-family: 'Montserrat-semi-bold', Arial, sans-serif;}
 .text-light { font-family: 'Montserrat-light', Arial, sans-serif;}
+.title-light { color: #92949D; font-family: 'Montserrat-light', Arial, sans-serif; text-transform: uppercase;}
 .big-solde{
     font-size:34px;
     font-family: 'Montserrat-bold', Arial, sans-serif;

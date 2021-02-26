@@ -1530,8 +1530,11 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
         <source>signature_mandat_cotisation.fin</source>
         <target>Zure SEPA agindua ongi grabatua izan da, milesker!</target>
       </trans-unit>
-
-      <trans-unit id="F2RRiN6" resname="virement.confirm.soustitre">
+      <trans-unit id="UBRnkaY" resname="virement.confirm.titre">
+        <source>virement.confirm.titre</source>
+        <target>Biramendua</target>
+      </trans-unit>
+      <trans-unit id="6fYQ17g" resname="virement.confirm.soustitre">
         <source>virement.confirm.soustitre</source>
         <target>Ordainketa baieztatzen duzula segur zaude?</target>
       </trans-unit>

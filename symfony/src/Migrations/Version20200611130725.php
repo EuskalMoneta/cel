@@ -32,4 +32,9 @@ final class Version20200611130725 extends AbstractMigration
 
         $this->addSql('ALTER TABLE web_hook_event CHANGE file file LONGBLOB DEFAULT NULL');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

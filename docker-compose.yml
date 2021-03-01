@@ -10,6 +10,8 @@ services:
             MYSQL_DATABASE: symfony
             MYSQL_USER: symfony
             MYSQL_PASSWORD: symfony
+        networks:
+            - eusko_net
     php:
         build: ./php-fpm
         ports:
@@ -19,6 +21,12 @@ services:
             - ./logs/symfony:/var/www/symfony/var/log:cached
         links:
             - db
+        environment:
+            - API_PUBLIC_URL=http://localhost:8000
+            - API_INTERNAL_URL=http://api:8000
+        networks:
+            - eusko_net
+
     nginx:
         build: ./nginx
         ports:
@@ -28,3 +36,10 @@ services:
         volumes:
             - ./logs/nginx:/var/log/nginx:cached
             - ./symfony:/var/www/symfony:cached
+        networks:
+            - eusko_net
+
+networks:
+    eusko_net:
+        external:
+            name: api_eusko_net

@@ -32,4 +32,9 @@ final class Version20200605153110 extends AbstractMigration
 
         $this->addSql('DROP TABLE bon_plan');
     }
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
 }

@@ -24,6 +24,7 @@ class MainController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker, EntityManagerInterface $em)
     {
+
         //Check if CGU are accepted, redirect otherwise
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         $membre = $responseMember['data'][0];

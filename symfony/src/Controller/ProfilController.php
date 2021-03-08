@@ -89,6 +89,7 @@ class ProfilController extends AbstractController
 
                 if($responseProfile['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -146,6 +147,7 @@ class ProfilController extends AbstractController
                 if ($forcedPin) {
                     return $this->redirectToRoute('app_homepage');
                 }
+                return $this->redirectToRoute('app_profil');
             } else {
                 $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
             }
@@ -217,6 +219,7 @@ class ProfilController extends AbstractController
                     //To get the amount per month and not annualy
                     $data['options_prelevement_cotisation_montant'] = $data['options_prelevement_cotisation_montant'] / 12;
                 }
+
                 if(!($data['options_prelevement_cotisation_periodicite'] == 1 && $data['options_prelevement_cotisation_montant'] == 5)){
                     $responseProfile = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
@@ -226,6 +229,7 @@ class ProfilController extends AbstractController
                         if($forcedCotisation){
                             return $this->redirectToRoute('app_homepage');
                         }
+                        return $this->redirectToRoute('app_profil');
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
@@ -290,6 +294,7 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                        return $this->redirectToRoute('app_profil');
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
@@ -359,10 +364,11 @@ class ProfilController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $data['birth'] = $data['birth']->format('d/m/Y');
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                $responseMember = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
-                if($responseLang['httpcode'] == 200) {
+                if($responseMember['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -405,7 +411,7 @@ class ProfilController extends AbstractController
                 if($responseLang['httpcode'] == 200) {
                     $session->set('_locale', $data['langue']);
                     $this->addFlash('success',$translator->trans('Langue mise à jour.', [], null, $data['langue']));
-                    return $this->redirectToRoute('app_profil_langue');
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans('Le changement de langue n\'a pas pu être effectué', [], null, $data['langue']));
                 }
@@ -442,10 +448,11 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
 
-                if($responseLang['httpcode'] == 200) {
+                if($response['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -484,10 +491,11 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $data['news']]);
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $data['news']]);
 
-                if($responseLang['httpcode'] == 200) {
+                if($response['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -511,9 +519,9 @@ class ProfilController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $booleen]);
+            $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $booleen]);
 
-            if($responseLang['httpcode'] == 200) {
+            if($response['httpcode'] == 200) {
                 return new JsonResponse(true);
             } else {
                 return new JsonResponse(false);
@@ -555,11 +563,12 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
-                if($responseLang['httpcode'] == 200) {
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                if($response['httpcode'] == 200) {
 
 
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }

@@ -1532,6 +1532,30 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
         <source>virement.confirm.soustitre</source>
         <target>Êtes-vous sûr de valider le paiement ?</target>
       </trans-unit>
+      <trans-unit id="6fYVFG" resname="profil.langue.eu">
+        <source>profil.langue.eu</source>
+        <target>Basque</target>
+      </trans-unit>
+      <trans-unit id="6zzVFG" resname="profil.langue.fr">
+        <source>profil.langue.fr</source>
+        <target>Français</target>
+      </trans-unit>
+      <trans-unit id="998VFG" resname="profil.newsletter.abonne">
+        <source>profil.newsletter.abonne</source>
+        <target>Abonné à la newsletter</target>
+      </trans-unit>
+      <trans-unit id="998rrr" resname="profil.newsletter.bonplans">
+        <source>profil.newsletter.bonplans</source>
+        <target>Afficher les bons plans</target>
+      </trans-unit>
+      <trans-unit id="95111q" resname="profil.booleen.1">
+        <source>profil.booleen.1</source>
+        <target>Oui</target>
+      </trans-unit>
+      <trans-unit id="95111e" resname="profil.booleen.0">
+        <source>profil.booleen.0</source>
+        <target>Non</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

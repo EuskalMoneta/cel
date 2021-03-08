@@ -93,6 +93,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
+            $data['adherent'] = strtoupper($data['adherent']);
             $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
 
             if($data['adherent'][0] == 'T'){

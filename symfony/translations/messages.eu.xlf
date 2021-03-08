@@ -1538,6 +1538,30 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
         <source>virement.confirm.soustitre</source>
         <target>Ordainketa baieztatzen duzula segur zaude?</target>
       </trans-unit>
+      <trans-unit id="6fYVFG" resname="profil.langue.eu">
+        <source>profil.langue.eu</source>
+        <target>Euskara</target>
+      </trans-unit>
+      <trans-unit id="6zzVFG" resname="profil.langue.fr">
+        <source>profil.langue.fr</source>
+        <target>Frantsesa</target>
+      </trans-unit>
+     <trans-unit id="998VFG" resname="profil.newsletter.abonne">
+       <source>profil.newsletter.abonne</source>
+       <target>Abonné à la newsletter</target>
+     </trans-unit>
+      <trans-unit id="998rrr" resname="profil.newsletter.bonplans">
+        <source>profil.newsletter.bonplans</source>
+        <target>Afficher les bons plans</target>
+      </trans-unit>
+      <trans-unit id="95111q" resname="profil.booleen.1">
+        <source>profil.booleen.1</source>
+        <target>Oui</target>
+      </trans-unit>
+      <trans-unit id="95111e" resname="profil.booleen.0">
+        <source>profil.booleen.0</source>
+        <target>Non</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

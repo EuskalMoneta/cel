@@ -302,6 +302,12 @@ class VacancesEuskoController extends AbstractController
                 $idCheckUID = $dataCard->uid;
 
                 $naissance = $dataCard->holderDetail->birthDate;
+                $gender = $dataCard->holderDetail->gender;
+                if($gender == 'M'){
+                    $data['civility_id'] = 'MR';
+                } else {
+                    $data['civility_id'] = 'MME';
+                }
                 $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
 
                 $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;

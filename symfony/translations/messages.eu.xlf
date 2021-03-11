@@ -1566,6 +1566,10 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
         <source>ouverture_compte.change.autre_montant</source>
         <target>Autre montant</target>
       </trans-unit>
+      <trans-unit id="gth541" resname="identite.civilite">
+        <source>identite.civilite</source>
+        <target>Civilité</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

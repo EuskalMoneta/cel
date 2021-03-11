@@ -1,5 +1,9 @@
 {% extends 'base_ouverture_compte.html.twig' %}
 
+{% block column_size %}
+    <div class="col-12">
+{% endblock %}
+
 {% block content %}
     {% if webHook != 0 %}
     <iframe src="{{ yousign_url }}/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>

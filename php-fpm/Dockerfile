@@ -33,6 +33,7 @@ RUN apk add --update --no-cache \
     php7-xmlreader \
     php7-xmlwriter \
     make \
+    wkhtmltopdf xvfb \
     curl
 
 RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \

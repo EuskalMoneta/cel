@@ -515,9 +515,11 @@ class ProfilController extends AbstractController
     public function setBonPlans($booleen, Request $request, APIToolbox $APIToolbox)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+
         if($responseMember['httpcode'] == 200) {
 
             $membre = $responseMember['data'][0];
+
 
             $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $booleen]);
 

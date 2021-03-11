@@ -307,7 +307,7 @@ class OuvertureCompteController extends AbstractController
     public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
         
-        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
+        $form = $this->createFormBuilder(['autre_montant' => 20], ['attr' => ['id' => 'form-virement']])
             ->add('automatic_change_amount', ChoiceType::class,
                 [
                     'required' => true,
@@ -318,6 +318,17 @@ class OuvertureCompteController extends AbstractController
                         '100 eusko' => '100',
                         '60 eusko' => '60',
                         '20 eusko' => '20',
+                        $translator->trans('ouverture_compte.change.autre_montant') => 'autre',
+                    ],
+                ]
+            )
+            ->add('autre_montant', NumberType::class,
+                [
+                    'required' => true,
+                    'label' => $translator->trans("Montant"),
+                    'constraints' => [
+                        new NotBlank(),
+                        new GreaterThanOrEqual(['value' => 20]),
                     ],
                 ]
             )
@@ -339,6 +350,11 @@ class OuvertureCompteController extends AbstractController
             if ($vacancesEuskoController->isValidIBAN($iban)) {
                 $data = array_merge($session->get('utilisateur'), $data);
                 $session->set('utilisateur', $data);
+
+                if($data['automatic_change_amount'] == 'autre'){
+                    $data['automatic_change_amount'] = $data['autre_montant'];
+                    unset($data['autre_montant']);
+                }
 
                 return $this->redirectToRoute('ouverture_compte_signature_sepa');
             } else {

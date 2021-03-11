@@ -16,6 +16,11 @@
             <div class="row">
                 <div class="col">
                     {{ form_row(form.automatic_change_amount) }}
+
+                    <div id="autre_montant">
+                        {{ form_row(form.autre_montant) }}
+
+                    </div>
                 </div>
             </div>
 
@@ -43,6 +48,22 @@
         $( document ).ready(function() {
             $('#form_iban').mask('SS00 AAAA AAAA AAAA AAAA AAAA AAA', {
                 placeholder: '____ ____ ____ ____ ____ ____ ___'
+            });
+
+            {% if form_errors(form.autre_montant) != "" %}
+                $("#autre_montant").show();
+            {% else %}
+                $("#autre_montant").hide();
+
+            {% endif %}
+
+            $('input[type=radio][name="form[automatic_change_amount]"]').change(function (){
+                if (this.value == 'autre') {
+                    $("#autre_montant").show();
+                } else {
+                    $("#autre_montant").hide();
+                    $("#form_autre_montant").val('20');
+                }
             });
         });
 

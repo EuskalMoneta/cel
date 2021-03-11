@@ -1556,6 +1556,11 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
         <source>profil.booleen.0</source>
         <target>Non</target>
       </trans-unit>
+      <trans-unit id="65411q" resname="ouverture_compte.change.autre_montant">
+        <source>ouverture_compte.change.autre_montant</source>
+        <target>Autre montant</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

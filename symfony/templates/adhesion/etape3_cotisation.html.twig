@@ -11,9 +11,11 @@
     <p class="text-subtitle">{{ "adhesion.cotisation.explication" | trans | raw }}</p>
 
     <div class="row">
-        <div class="col">
+        <div class="col cotisation_form">
             {{ form_row(form.subscription_amount) }}
+            <br/>
             {{ form_row(form.subscription_periodicity) }}
+            <br/>
             {{ form_row(form.iban) }}
         </div>
     </div>

@@ -66,12 +66,16 @@ strong{
     font-size: 15px;
 }
 .col-form-label {
-    padding-top: calc(0.75rem + 0px);
-    padding-bottom: calc(0.75rem + 0px);
-    margin-bottom: 0;
-    font-size: 22px;
-    line-height: 1.5;
+    padding-bottom: 0px;
+    font-size: 15px;
+    color: #47525E;
+    font-family: 'Montserrat-bold', arial, sans-serif;
 }
+.cotisation_form .form-check-label{
+    font-family: 'Montserrat', arial, sans-serif;
+    font-size: 15px;
+}
+
 legend {
     font-family: Montserrat, sans-serif;
 

@@ -2,7 +2,9 @@
 
 {% block content %}
     <p class="text-subtitle">{{ "cotisation.explication" | trans | raw }}</p>
-    {{ form(form) }}
+    <div class="cotisation_form">
+        {{ form(form) }}
+    </div>
 {% endblock %}
 
 

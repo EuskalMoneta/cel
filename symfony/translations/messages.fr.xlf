@@ -1039,9 +1039,9 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</source>
         <target>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</target>
       </trans-unit>
-      <trans-unit id="DA.SaY0" resname="Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.">
-        <source>Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.</source>
-        <target><![CDATA[Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong>euskopay</strong> ou <strong>euskokart</strong>.]]></target>
+      <trans-unit id="DA.SaY0" resname="ouverture_compte.securite.label_code_pin">
+        <source>ouverture_compte.securite.label_code_pin</source>
+        <target><![CDATA[Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong data-toggle="tooltip" data-placement="top" title="l'application de paiement eusko par téléphone">euskopay</strong> ou <strong data-toggle="tooltip" data-placement="top" title="la carte de paiement eusko">euskokart</strong>.]]></target>
       </trans-unit>
       <trans-unit id="WZlidAl" resname="ETAPE 1/5">
         <source>ETAPE 1/5</source>

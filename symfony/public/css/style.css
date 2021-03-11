@@ -61,6 +61,10 @@ h3 {
     font-family: Montserrat-semi-bold, sans-serif;
     font-size: 15px;
 }
+strong{
+    font-family: Montserrat-semi-bold, sans-serif;
+    font-size: 15px;
+}
 .col-form-label {
     padding-top: calc(0.75rem + 0px);
     padding-bottom: calc(0.75rem + 0px);

@@ -38,7 +38,8 @@
     </div>
 
     <h1 class="h3 mt-4 font-weight-normal">{{ "Code PIN" | trans }}</h1>
-    <p class="text-subtitle">{{"Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong>euskopay</strong> ou <strong>euskokart</strong>." | trans | raw }}</p>
+    <p class="text-subtitle">{{ "ouverture_compte.securite.label_code_pin" | trans | raw }}</p>
+
     <div class="row">
         <div class="col-6">
             {{ form_row(form.pin_code) }}
@@ -51,6 +52,9 @@
 {% block js %}
     <script type="text/javascript">
         $(document).ready(function(){
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
             //If refresh
             if($("#form_questionSecrete").val() == 'autre'){
                 $('#questionPerso').removeClass('d-none');

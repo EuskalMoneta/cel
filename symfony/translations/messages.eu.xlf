@@ -885,9 +885,9 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>Code PIN</source>
         <target>PIN kodea</target>
       </trans-unit>
-      <trans-unit id="DA.SaY0" resname="Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.">
-        <source>Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par &lt;strong&gt;euskopay&lt;/strong&gt; ou &lt;strong&gt;euskokart&lt;/strong&gt;.</source>
-        <target><![CDATA[4 zifrako PIN kodea (zure banku txartelean bezala) hauta ezazu, <strong>euskopay</strong> edo <strong>euskokart</strong> tresnen bidez eginen dituzun ordainketak babesteko.]]></target>
+      <trans-unit id="DA.SaY0" resname="ouverture_compte.securite.label_code_pin">
+        <source>ouverture_compte.securite.label_code_pin</source>
+        <target><![CDATA[4 zifrako PIN kodea (zure banku txartelean bezala) hauta ezazu, <strong data-toggle="tooltip" data-placement="top" title="l'application de paiement eusko par téléphone">euskopay</strong> edo <strong data-toggle="tooltip" data-placement="top" title="la carte de paiement eusko">euskokart</strong> tresnen bidez eginen dituzun ordainketak babesteko.]]></target>
       </trans-unit>
       <trans-unit id="WZlidAl" resname="ETAPE 1/5">
         <source>ETAPE 1/5</source>

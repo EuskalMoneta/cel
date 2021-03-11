@@ -98,7 +98,7 @@ class AdhesionController extends AbstractController
             return $this->redirectToRoute('app_adhesion_etape2_coordonnees');
         }
 
-        return $this->render('ouverture_compte/etape_identite.html.twig', [
+        return $this->render('adhesion/etape1_identite.html.twig', [
             'surtitre' => $translator->trans($this::SURTITRE),
             'numero_etape' => 1,
             'nb_etapes' => $this::NB_ETAPES,

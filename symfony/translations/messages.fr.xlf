@@ -137,10 +137,6 @@
         <source>Obtenir un relevé de compte</source>
         <target>Obtenir un relevé de compte</target>
       </trans-unit>
-      <trans-unit id="Id7QvzY" resname="Change automatique">
-        <source>Change automatique</source>
-        <target>Change automatique</target>
-      </trans-unit>
       <trans-unit id="XvUjrEf" resname="mois">
         <source>mois</source>
         <target>mois</target>
@@ -971,8 +967,8 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Montant du change automatique mensuel</source>
         <target>Montant du change automatique mensuel</target>
       </trans-unit>
-      <trans-unit id="9ExyRDW" resname="Coordonnées du compte à prélever (IBAN)">
-        <source>Coordonnées du compte à prélever (IBAN)</source>
+      <trans-unit id="9ExyRDW" resname="change.coordonnees.compte">
+        <source>change.coordonnees.compte</source>
         <target>Coordonnées du compte à prélever (IBAN)</target>
       </trans-unit>
       <trans-unit id="8DE7K1S" resname="Après avoir cliqué sur Valider, vous serez orienté vers la plateforme sécurisée Yousign pour signer l’autorisation de prélèvement.">
@@ -1563,6 +1559,14 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
       <trans-unit id="gth541" resname="identite.civilite">
         <source>identite.civilite</source>
         <target>Civilité</target>
+      </trans-unit>
+      <trans-unit id="555h541" resname="change.modifier.arret">
+        <source>change.modifier.arret</source>
+        <target><![CDATA[ Si vous souhaitez suspendre ou arrêter votre change automatique, veuillez <a href="{{ path('app_aide') }}"> nous contacter</a>. ]]></target>
+      </trans-unit>
+      <trans-unit id="5598aa1" resname="change.montant.soustitre">
+        <source>change.montant.soustitre</source>
+        <target>Montant de votre change automatique mensuel</target>
       </trans-unit>
 
 

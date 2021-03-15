@@ -21,11 +21,42 @@
 
                 {% if not is_granted('ROLE_TOURISTE') %}
                 <div style="margin-top: -40px">
-                    <h2 class="secondary-color mb-2"> {{ "Change automatique" | trans }} </h2>
+                    <h2 class="secondary-color mb-2"> {{ "change_automatique.titre" | trans }} </h2>
 
-                    <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} {{ "eusko par mois" | trans }}</div>
+                    <p>
+                        {{ "Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire." | trans }}<br />
+                        {{ "Les prélèvements sont effectués le 10 de chaque mois." | trans }}  ({{"Nom du créancier" | trans }} : Association Euskal Moneta - Monnaie Locale du Pays Basque / FR49ZZZ663869 )
+                    </p>
 
-                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_change_modifier') }}">{{ "Modifier" | trans }} </a>
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <p class="main-color text-semi-bold">
+                                    {{ "change.montant.soustitre" | trans }}<br />
+                                    {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} eusko / {{ "mois" | trans }}
+                                </p>
+                            </td>
+                            <td class="text-right"><a href="{{ path('app_change_modifier') }}" class="btn btn-primary"> Modifier</a> </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="main-color text-semi-bold">
+                                    {{ "change.coordonnees.compte" | trans }}<br />
+                                    {{ membre.array_options.options_iban }}
+                                </p>
+                            </td>
+                            <td class="text-right"><a href="{{ path('app_change_modifier_iban') }}" class="btn btn-primary"> Modifier</a> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                    <p>
+                        {{ "change.modifier.arret" | trans | raw }}
+                    </p>
+
                 </div>
                 {% endif %}
 

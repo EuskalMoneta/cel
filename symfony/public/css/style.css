@@ -71,10 +71,6 @@ strong{
     color: #47525E;
     font-family: 'Montserrat-bold', arial, sans-serif;
 }
-.cotisation_form .form-check-label{
-    font-family: 'Montserrat', arial, sans-serif;
-    font-size: 15px;
-}
 
 legend {
     font-family: Montserrat, sans-serif;
@@ -237,7 +233,7 @@ main{
     padding-right: 15px;
     padding-left: 15px;
 }
-.form-group label{
+.form-group label:not(.form-check-label) {
     color: #47525E;
     font-family: 'Montserrat-bold', arial, sans-serif;
 }
@@ -607,4 +603,8 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
 }
 .colored-tab > div:nth-child(2n) {
     background-color: #f0f0f0;
+}
+.form-check-label{
+    font-family: 'Montserrat', arial, sans-serif;
+    font-size: 15px;
 }

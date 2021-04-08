@@ -53,8 +53,8 @@ class AdhesionController extends AbstractController
         $formBuilder
             ->add('civility_id', ChoiceType::class, [
                 'choices' => [
-                    'Madame' => 'MME',
-                    'Monsieur' => 'MR'
+                    $translator->trans('identite.madame') => 'MME',
+                    $translator->trans('identite.monsieur') => 'MR'
                 ],
                 'label' => $translator->trans('identite.civilite'),
                 'required' => true,

@@ -1562,9 +1562,17 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
         <source>ouverture_compte.change.autre_montant</source>
         <target>Autre montant</target>
       </trans-unit>
+      <trans-unit id="radbaf" resname="identite.madame">
+        <source>identite.madame</source>
+        <target>Anderea</target>
+      </trans-unit>
+      <trans-unit id="Durd8E" resname="identite.monsieur">
+        <source>identite.monsieur</source>
+        <target>Jauna</target>
+      </trans-unit>
       <trans-unit id="gth541" resname="identite.civilite">
         <source>identite.civilite</source>
-        <target>Civilité</target>
+        <target>Titulua</target>
       </trans-unit>
       <trans-unit id="ebBuct" resname="change_automatique_mensuel.explication">
         <source>change_automatique_mensuel.explication</source>

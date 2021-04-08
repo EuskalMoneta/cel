@@ -40,10 +40,10 @@ class AdminController extends AbstractController
             $start = $data['debut'];
             /** @var \DateTime $end */
             $end = $data['fin'];
-
+            $end->modify('+ 1 day');
             $stringS = $start->format('Y-m-d');
             $stringE = $end->format('Y-m-d');
-
+            
             $results = $statRepository->getExportQueryDateOnly($stringS, $stringE, "connexion");
 
             $cpt =0;

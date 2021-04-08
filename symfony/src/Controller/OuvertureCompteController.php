@@ -349,12 +349,11 @@ class OuvertureCompteController extends AbstractController
             $iban = str_replace(' ', '', $data['iban']);
             if ($vacancesEuskoController->isValidIBAN($iban)) {
                 $data = array_merge($session->get('utilisateur'), $data);
-                $session->set('utilisateur', $data);
-
                 if($data['automatic_change_amount'] == 'autre'){
                     $data['automatic_change_amount'] = $data['autre_montant'];
                     unset($data['autre_montant']);
                 }
+                $session->set('utilisateur', $data);
 
                 return $this->redirectToRoute('ouverture_compte_signature_sepa');
             } else {

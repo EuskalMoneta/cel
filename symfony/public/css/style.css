@@ -241,10 +241,9 @@ main{
     color: #47525E;
     font-family: 'Montserrat-bold', arial, sans-serif;
 }
-label.required:before {
+label.required:before, legend.required::before{
     content: "*";
 }
-
 .before-footer{
     margin-bottom: 60px;
     z-index: 1;

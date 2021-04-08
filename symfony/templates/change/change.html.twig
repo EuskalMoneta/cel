@@ -24,8 +24,7 @@
                     <h2 class="secondary-color mb-2"> {{ "change_automatique.titre" | trans }} </h2>
 
                     <p>
-                        {{ "Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire." | trans }}<br />
-                        {{ "Les prélèvements sont effectués le 10 de chaque mois." | trans }}  ({{"Nom du créancier" | trans }} : Association Euskal Moneta - Monnaie Locale du Pays Basque / FR49ZZZ663869 )
+                        {{ "change_automatique_mensuel.explication" | trans | raw }}
                     </p>
 
 
@@ -34,27 +33,32 @@
                         <tr>
                             <td>
                                 <p class="main-color text-semi-bold">
-                                    {{ "change.montant.soustitre" | trans }}<br />
-                                    {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} eusko / {{ "mois" | trans }}
+                                    {{ "change_automatique_mensuel.montant" | trans }}<br />
+                                    {{ membre.array_options.options_prelevement_change_montant | number_format(0) }} {{ "eusko par mois" | trans }}
                                 </p>
                             </td>
-                            <td class="text-right"><a href="{{ path('app_change_modifier') }}" class="btn btn-primary"> Modifier</a> </td>
+                            <td class="text-right"><a href="{{ path('app_change_modifier') }}" class="btn btn-primary">{{ "Modifier" | trans }}</a> </td>
                         </tr>
                         <tr>
                             <td>
                                 <p class="main-color text-semi-bold">
-                                    {{ "change.coordonnees.compte" | trans }}<br />
+                                    {{ "change_automatique_mensuel.iban" | trans }}<br />
                                     {{ membre.array_options.options_iban }}
                                 </p>
                             </td>
-                            <td class="text-right"><a href="{{ path('app_change_modifier_iban') }}" class="btn btn-primary"> Modifier</a> </td>
+                            <td class="text-right"><a href="{{ path('app_change_modifier_iban') }}" class="btn btn-primary">{{ "Modifier" | trans }}</a> </td>
                         </tr>
                         </tbody>
                     </table>
 
-
+                    <h3 class="mt-4"> {{"Informations sur le mandat de prélèvement" | trans }}</h3>
                     <p>
-                        {{ "change.modifier.arret" | trans | raw }}
+                        {{"Nom du créancier" | trans }} : Association Euskal Moneta - Monnaie Locale du Pays Basque <br />
+                        {{"Identifiant du créancier" | trans }} : FR49ZZZ663869<br />
+                        {{"Référence Unique du Mandat" | trans }} : {{ membre.array_options.options_prelevement_change_rum }}<br />
+                    </p>
+                    <p>
+                        {{ "change_automatique_mensuel.arret" | trans({'url': path('app_aide')}) | raw }}
                     </p>
 
                 </div>

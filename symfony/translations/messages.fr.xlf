@@ -1560,16 +1560,23 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
         <source>identite.civilite</source>
         <target>Civilité</target>
       </trans-unit>
-      <trans-unit id="555h541" resname="change.modifier.arret">
-        <source>change.modifier.arret</source>
-        <target><![CDATA[ Si vous souhaitez suspendre ou arrêter votre change automatique, veuillez <a href="{{ path('app_aide') }}"> nous contacter</a>. ]]></target>
+      <trans-unit id="ebBuct" resname="change_automatique_mensuel.explication">
+        <source>change_automatique_mensuel.explication</source>
+        <target><![CDATA[Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.<br>
+Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko est crédité du même montant sous 24h (hors week-end).]]></target>
       </trans-unit>
-      <trans-unit id="5598aa1" resname="change.montant.soustitre">
-        <source>change.montant.soustitre</source>
-        <target>Montant de votre change automatique mensuel</target>
+      <trans-unit id="MOC70uw" resname="change_automatique_mensuel.montant">
+        <source>change_automatique_mensuel.montant</source>
+        <target>Montant du change automatique mensuel</target>
       </trans-unit>
-
-
+      <trans-unit id="Layn0Bl" resname="change_automatique_mensuel.iban">
+        <source>change_automatique_mensuel.iban</source>
+        <target>Coordonnées du compte à débiter (IBAN)</target>
+      </trans-unit>
+      <trans-unit id="sX3xrlH" resname="change_automatique_mensuel.arret">
+        <source>change_automatique_mensuel.arret</source>
+        <target><![CDATA[ Si vous souhaitez suspendre ou arrêter votre change automatique, veuillez <a href="url"> nous contacter</a>. ]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

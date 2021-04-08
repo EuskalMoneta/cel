@@ -883,7 +883,7 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="DA.SaY0" resname="ouverture_compte.securite.label_code_pin">
         <source>ouverture_compte.securite.label_code_pin</source>
-        <target><![CDATA[4 zifrako PIN kodea (zure banku txartelean bezala) hauta ezazu, <strong data-toggle="tooltip" data-placement="top" title="l'application de paiement eusko par téléphone">euskopay</strong> edo <strong data-toggle="tooltip" data-placement="top" title="la carte de paiement eusko">euskokart</strong> tresnen bidez eginen dituzun ordainketak babesteko.]]></target>
+        <target><![CDATA[4 zifrako PIN kodea (zure banku txartelean bezala) hauta ezazu, <strong data-toggle="tooltip" data-placement="top" title="telefonarekin euskoz ordaintzeko aplikazioa">euskopay</strong> edo <strong data-toggle="tooltip" data-placement="top" title="eusko ordainketa txartela">euskokart</strong> tresnen bidez eginen dituzun ordainketak babesteko.]]></target>
       </trans-unit>
       <trans-unit id="WZlidAl" resname="ETAPE 1/5">
         <source>ETAPE 1/5</source>
@@ -1542,10 +1542,10 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
         <source>profil.langue.fr</source>
         <target>Frantsesa</target>
       </trans-unit>
-     <trans-unit id="998VFG" resname="profil.newsletter.abonne">
-       <source>profil.newsletter.abonne</source>
-       <target>Abonné à la newsletter</target>
-     </trans-unit>
+      <trans-unit id="998VFG" resname="profil.newsletter.abonne">
+        <source>profil.newsletter.abonne</source>
+        <target>Abonné à la newsletter</target>
+      </trans-unit>
       <trans-unit id="998rrr" resname="profil.newsletter.bonplans">
         <source>profil.newsletter.bonplans</source>
         <target>Afficher les bons plans</target>
@@ -1566,13 +1566,22 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
         <source>identite.civilite</source>
         <target>Civilité</target>
       </trans-unit>
-      <trans-unit id="555h541" resname="change.modifier.arret">
-        <source>change.modifier.arret</source>
-        <target><![CDATA[ Si vous souhaitez suspendre ou arrêter votre change automatique, veuillez <a href="{{ path('app_aide') }}"> nous contacter</a>. ]]></target>
+      <trans-unit id="ebBuct" resname="change_automatique_mensuel.explication">
+        <source>change_automatique_mensuel.explication</source>
+        <target><![CDATA[Hilabetero euroak euskoz aldatzen dituzu zure kontu korrentean egiten den diru kentze automatiko bati esker.<br>
+Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne kargatua da (asteburutik kanpo).]]></target>
       </trans-unit>
-      <trans-unit id="5598aa1" resname="change.montant.soustitre">
-        <source>change.montant.soustitre</source>
-        <target>Montant de votre change automatique mensuel</target>
+      <trans-unit id="MOC70uw" resname="change_automatique_mensuel.montant">
+        <source>change_automatique_mensuel.montant</source>
+        <target>Hilabetero trukatzen duzun diru kopuru</target>
+      </trans-unit>
+      <trans-unit id="Layn0Bl" resname="change_automatique_mensuel.iban">
+        <source>change_automatique_mensuel.iban</source>
+        <target>Dirua hartzeko erabiltzen den kontua (IBAN)</target>
+      </trans-unit>
+      <trans-unit id="sX3xrlH" resname="change_automatique_mensuel.arret">
+        <source>change_automatique_mensuel.arret</source>
+        <target><![CDATA[ Zure trukatze automatikoa memento batez edo betiko gelditu nahi baldin baduzu, gurekin <a href="url">harremanetan sar zaite</a>. ]]></target>
       </trans-unit>
     </body>
   </file>

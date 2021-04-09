@@ -247,7 +247,7 @@
       </trans-unit>
       <trans-unit id="BJHAmFP" resname="Virement effectué">
         <source>Virement effectué</source>
-        <target>Virement effectué</target>
+        <target>Virement effectué !</target>
       </trans-unit>
       <trans-unit id="aL9wfk6" resname="Le virement n'a pas pu être effectué">
         <source>Le virement n'a pas pu être effectué</source>
@@ -1584,6 +1584,14 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
       <trans-unit id="sX3xrlH" resname="change_automatique_mensuel.arret">
         <source>change_automatique_mensuel.arret</source>
         <target><![CDATA[ Si vous souhaitez suspendre ou arrêter votre change automatique, veuillez <a href="url"> nous contacter</a>. ]]></target>
+      </trans-unit>
+      <trans-unit id="sX347lH" resname="virement.fin.retour">
+        <source>virement.fin.retour</source>
+        <target>Retourner à l'accueil</target>
+      </trans-unit>
+      <trans-unit id="s8947lH" resname="virement.fin.autre">
+        <source>virement.fin.autre</source>
+        <target>Réaliser un autre virement</target>
       </trans-unit>
     </body>
   </file>

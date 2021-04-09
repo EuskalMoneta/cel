@@ -31,7 +31,7 @@ class VirementController extends AbstractController
                                   SessionInterface $session)
     {
         $data = $session->get('virementData');
-
+        $dataSuccess = $data;
         if(empty($data)){
             $this->addFlash('danger', $translator->trans("Le virement n'a pas pu être effectué"));
             return $this->redirectToRoute('app_virement');
@@ -52,6 +52,7 @@ class VirementController extends AbstractController
                     foreach($resultats as $resultat){
                         if($resultat->status == 1){
                             $this->addFlash('success',$translator->trans("Virement effectué"));
+                            return $this->render('virement/success_action.html.twig', ['data' => $dataSuccess]);
 
                         } else {
                             $this->addFlash('danger',$translator->trans($resultat->message));
@@ -64,7 +65,7 @@ class VirementController extends AbstractController
             }
         }
 
-        return $this->render('utils/confirm_action.html.twig', ['data' => $data]);
+        return $this->render('virement/confirm_action.html.twig', ['data' => $data]);
     }
 
     /**

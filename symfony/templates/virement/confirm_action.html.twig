@@ -7,29 +7,33 @@
 
                 <h2 class="mb-2 main-color"> {{ "virement.confirm.titre" | trans }} </h2>
                 <div class="mb-4">
-                    <p class="text-subtitle">{{ "virement.confirm.soustitre" | trans }}</p>
+
 
                     <div class="row mt-5" style="padding-bottom: 20px; ">
-                        <div class="col text-center" style="border-right: #cecece 1px solid;">
+                        <div class="col text-center" style="">
+
                             <h3 class="title-light">{{ "Destinataire" | trans }}</h3>
                             <h2 class="main-color mt-2">
                                 {{ data["account_name"] }}
                             </h2>
-                        </div>
-                        <div class="col text-center">
+                            <br />
                             <h3 class="title-light">{{ "Montant" | trans }}</h3>
                             <div class="main-color big-solde"> {{ data["amount"] }} eusko</div>
+                            <div class="col-12 mt-3">
+                                <i>"{{ data["description"] }}"</i>
+                            </div>
                         </div>
-                        <div class="col-12 mt-3">
-                            <i>"{{ data["description"] }}"</i>
-                        </div>
+
                     </div>
 
                     <div class="row mt-4">
                         <div class="col text-center">
                             <form method="post">
-                                <a href="{{ path('app_virement') }}" class="btn btn-secondary" style="margin-right: 30px;">{{ "Annuler" | trans }}</a>
+                                <p class="text-subtitle">{{ "virement.confirm.soustitre" | trans }}</p>
+
                                 <input  type="submit" class="btn btn-success"  value={{ "Valider" | trans }} />
+                                <br /><br />
+                                <a href="{{ path('app_virement') }}" class="btn btn-outline-primary">{{ "Annuler" | trans }}</a>
                             </form>
                         </div>
                     </div>

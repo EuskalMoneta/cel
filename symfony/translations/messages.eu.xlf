@@ -1591,6 +1591,15 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>change_automatique_mensuel.arret</source>
         <target><![CDATA[ Zure trukatze automatikoa memento batez edo betiko gelditu nahi baldin baduzu, gurekin <a href="url">harremanetan sar zaite</a>. ]]></target>
       </trans-unit>
+      <trans-unit id="sX347lH" resname="virement.fin.retour">
+        <source>virement.fin.retour</source>
+        <target>Retourner à l'accueil</target>
+      </trans-unit>
+      <trans-unit id="s8947lH" resname="virement.fin.autre">
+        <source>virement.fin.autre</source>
+        <target>Réaliser un autre virement</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

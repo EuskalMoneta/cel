@@ -48,19 +48,21 @@ class AdminController extends AbstractController
 
             $cpt =0;
             $moyenne = 0;
+            $soustotal = 0;
             /** @var Statistique $stat */
             foreach ($results as $stat){
                 $cpt ++;
-                $moyenne = $moyenne + $stat['count'];
+                $soustotal = $soustotal + $stat['count'];
             }
 
-            $moyenne = $moyenne / $cpt;
+            $moyenne = $soustotal / $cpt;
 
             return $this->render('admin/visuStats.html.twig', [
                 'form' => $form->createView(),
                 'data' => $data,
                 'moyenne' => $moyenne,
                 'userUnique' => $cpt,
+                'total' => $soustotal,
                 'results' => $results
             ]);
 

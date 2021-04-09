@@ -19,9 +19,11 @@
                             <br />
                             <h3 class="title-light">{{ "Montant" | trans }}</h3>
                             <div class="main-color big-solde"> {{ data["amount"] }} eusko</div>
-                            <div class="col-12 mt-3">
-                                <i>"{{ data["description"] }}"</i>
-                            </div>
+                            <br />
+                            <h3 class="title-light">{{ "Libellé" | trans }}</h3>
+                            <h2 class="main-color mt-2">
+                                {{ data["description"] }}
+                            </h2>
                         </div>
 
                     </div>
@@ -31,9 +33,10 @@
                             <form method="post">
                                 <p class="text-subtitle">{{ "virement.confirm.soustitre" | trans }}</p>
 
-                                <input  type="submit" class="btn btn-success"  value={{ "Valider" | trans }} />
-                                <br /><br />
-                                <a href="{{ path('app_virement') }}" class="btn btn-outline-primary">{{ "Annuler" | trans }}</a>
+                                <div class="col-md-4 offset-md-4">
+                                    <input  type="submit" class="btn btn-success btn-block"  value={{ "Valider" | trans }} />
+                                    <a href="{{ path('app_virement') }}" class="btn btn-outline-primary btn-block">{{ "Annuler" | trans }}</a>
+                                </div>
                             </form>
                         </div>
                     </div>

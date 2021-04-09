@@ -51,9 +51,7 @@ class VirementController extends AbstractController
                     $resultats = $responseVirement['data'];
                     foreach($resultats as $resultat){
                         if($resultat->status == 1){
-                            $this->addFlash('success',$translator->trans("Virement effectué"));
                             return $this->render('virement/success_action.html.twig', ['data' => $dataSuccess]);
-
                         } else {
                             $this->addFlash('danger',$translator->trans($resultat->message));
                         }

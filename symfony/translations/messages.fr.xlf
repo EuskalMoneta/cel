@@ -247,7 +247,7 @@
       </trans-unit>
       <trans-unit id="BJHAmFP" resname="Virement effectué">
         <source>Virement effectué</source>
-        <target>Virement effectué !</target>
+        <target>Virement effectué</target>
       </trans-unit>
       <trans-unit id="aL9wfk6" resname="Le virement n'a pas pu être effectué">
         <source>Le virement n'a pas pu être effectué</source>
@@ -1522,11 +1522,7 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
       </trans-unit>
       <trans-unit id="UBRnkaY" resname="virement.confirm.titre">
         <source>virement.confirm.titre</source>
-        <target>Virement</target>
-      </trans-unit>
-      <trans-unit id="6fYQ17g" resname="virement.confirm.soustitre">
-        <source>virement.confirm.soustitre</source>
-        <target>Êtes-vous sûr de valider le paiement ?</target>
+        <target>Confirmer le virement</target>
       </trans-unit>
       <trans-unit id="6fYVFG" resname="profil.langue.eu">
         <source>profil.langue.eu</source>
@@ -1592,6 +1588,10 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
       <trans-unit id="s8947lH" resname="virement.fin.autre">
         <source>virement.fin.autre</source>
         <target>Réaliser un autre virement</target>
+      </trans-unit>
+      <trans-unit id="IcGeb3F" resname="Libellé">
+        <source>Libellé</source>
+        <target>Libellé</target>
       </trans-unit>
     </body>
   </file>

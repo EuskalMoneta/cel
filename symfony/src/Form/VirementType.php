@@ -23,7 +23,7 @@ class VirementType extends AbstractType
     {
         $builder
             ->add('amount', NumberType::class, ['required' => true, 'label' => $this->translator->trans("Montant")])
-            ->add('description', TextType::class, ['required' => true, 'label' => $this->translator->trans("Libellé de l'opération")])
+            ->add('description', TextType::class, ['required' => true, 'label' => $this->translator->trans("Libellé")])
             ->add('submit', SubmitType::class, ['label' => $this->translator->trans("Valider")])
         ;
     }

@@ -1528,11 +1528,7 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       </trans-unit>
       <trans-unit id="UBRnkaY" resname="virement.confirm.titre">
         <source>virement.confirm.titre</source>
-        <target>Biramendua</target>
-      </trans-unit>
-      <trans-unit id="6fYQ17g" resname="virement.confirm.soustitre">
-        <source>virement.confirm.soustitre</source>
-        <target>Ordainketa baieztatzen duzula segur zaude?</target>
+        <target>Biramendua baieztatu</target>
       </trans-unit>
       <trans-unit id="6fYVFG" resname="profil.langue.eu">
         <source>profil.langue.eu</source>
@@ -1593,13 +1589,16 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
       </trans-unit>
       <trans-unit id="sX347lH" resname="virement.fin.retour">
         <source>virement.fin.retour</source>
-        <target>Retourner à l'accueil</target>
+        <target>Harrerara itzuli</target>
       </trans-unit>
       <trans-unit id="s8947lH" resname="virement.fin.autre">
         <source>virement.fin.autre</source>
-        <target>Réaliser un autre virement</target>
+        <target>Beste biramendu bat egin</target>
       </trans-unit>
-
+      <trans-unit id="IcGeb3F" resname="Libellé">
+        <source>Libellé</source>
+        <target>Deskribapena</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

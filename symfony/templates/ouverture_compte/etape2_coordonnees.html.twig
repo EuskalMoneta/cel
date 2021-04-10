@@ -1,29 +1,11 @@
-{% extends 'base.html.twig' %}
-
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
-
-{% block title %}{{ title | trans }}{% endblock %}
+{% extends 'base_ouverture_compte.html.twig' %}
 
 {% block cssBefore %}
     <link href="{{ asset('css/intlTelInput.min.css') }}" rel="stylesheet"  type='text/css'>
 {% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6 offset-md-3 mt-2">
-                <div class="mt-md-4">
-                    <h1 class="sur-titre-ouverture">{{ 'Ouverture de votre compte eusko' | trans }}</h1>
-                    <div style="width: 80%">
-                        <div>{{ "ETAPE 2/5" | trans }}</div>
-                        <h1 class="mb-3">{{ title | trans }}</h1>
-                    </div>
-
-                    {{ form(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
+{% block content %}
+    {{ form(form) }}
 {% endblock %}
 
 
@@ -58,4 +40,3 @@
         });
     </script>
 {% endblock %}
-

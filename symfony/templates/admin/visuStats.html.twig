@@ -1,0 +1,83 @@
+{% extends 'standard_layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+        <span class="navbar-brand">
+            VisuStats nombre de connexions
+        </span>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-left">
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+    </nav>
+{% endblock sonata_page_content_header %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+    {% endblock notice %}
+
+    {% for message in app.session.flashbag.get('info') %}
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message|raw }}
+        </div>
+    {% endfor %}
+
+    <div class="">
+
+        <section class="content" style="padding: 20px 40px;">
+
+            <div class="row" style="
+                                padding: 20px 40px;
+                                background-color: #FFF;
+                                -webkit-box-shadow: 2px 2px 3px 0 rgba(50, 50, 50, 0.30);
+                                -moz-box-shadow:    2px 2px 3px 0 rgba(50, 50, 50, 0.30);
+                                box-shadow:         2px 2px 3px 0 rgba(50, 50, 50, 0.30);" >
+                <h4></h4>
+
+                <div class="col-md-4">
+                    <h4>Sélection de la période</h4>
+
+
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                    <section class="content" style="padding: 20px 40px;">
+
+                        <h3>du : </h3>
+                        <div style="width: 200px;">
+                            {{ form_widget(form.debut) }}
+                        </div>
+
+
+                        <h3>au : </h3>
+                        <div style="width: 200px;">
+                            {{ form_widget(form.fin) }}
+                        </div>
+
+                        <div class="row">
+                            <br />
+                            {{ form_widget(form.save, {'attr': { 'class': 'btn btn-success' }, 'label': 'Exporter' }) }}
+                        </div>
+
+                    </section>
+                    {{ form_rest(form) }}
+
+                    {{ form_end(form) }}
+
+                </div>
+                <div class="col-md-8">
+                    {% if data is defined %}
+                    <h2> Moyenne de connexion : {{ moyenne }}</h2>
+                    <h2> Nombre d'utilisateurs uniques: {{ userUnique }}</h2>
+                    <h2> Nombre total de connexions: {{ total }}</h2>
+                    {% endif %}
+
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

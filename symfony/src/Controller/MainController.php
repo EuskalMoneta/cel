@@ -24,6 +24,7 @@ class MainController extends AbstractController
      */
     public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker, EntityManagerInterface $em)
     {
+
         //Check if CGU are accepted, redirect otherwise
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         $membre = $responseMember['data'][0];
@@ -230,16 +231,19 @@ class MainController extends AbstractController
         //form generation
         $form = $this->createFormBuilder()
             ->add('periode', ChoiceType::class,
-                ['choices' => [
-                    //'Les 7 derniers jours' => $now.'#'.$startOfWeek,
-                    'Ce mois ci' => $now.'#'.$startOfMonth,
-                    'Le mois dernier' => $endOfLastMonth.'#'.$startOfLastMonth,
-                    $translator->trans('Cette année') => $endOfThisYear.'#'.$startOfThisYear,],
+                [
+                    'label' => $translator->trans('releves.periode'),
+                    'choices' => [
+                        //'Les 7 derniers jours' => $now.'#'.$startOfWeek,
+                        $translator->trans('releves.periode.ce_mois_ci') => $now.'#'.$startOfMonth,
+                        $translator->trans('releves.periode.le_mois_dernier') => $endOfLastMonth.'#'.$startOfLastMonth,
+                        $translator->trans('releves.periode.cette_annee') => $endOfThisYear.'#'.$startOfThisYear,
+                    ],
                     'required' => false
                 ]
             )
-            ->add('dateDebut', DateType::class, ['widget' => 'single_text', 'required' => true])
-            ->add('dateFin', DateType::class, ['widget' => 'single_text', 'required' => true])
+            ->add('dateDebut', DateType::class, ['widget' => 'single_text', 'required' => true, 'label' => $translator->trans('releves.date_debut'),])
+            ->add('dateFin', DateType::class, ['widget' => 'single_text', 'required' => true, 'label' => $translator->trans('releves.date_fin'),])
             ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
             ->getForm();
 

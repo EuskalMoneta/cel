@@ -1,0 +1,71 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {% if  form_errors(form) != '' %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mt-4 font-weight-normal">{{ "Mot de passe" | trans }}</h1>
+    <p class="text-subtitle">{{ "Choisissez le mot de passe pour sécuriser l'accès à votre compte." | trans }}</p>
+
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.password) }}
+        </div>
+    </div>
+
+    <p class="text-subtitle">{{"Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez" | trans }}</p>
+
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.questionSecrete) }}
+        </div>
+    </div>
+
+    <div id="questionPerso" class="row d-none">
+        <div class="col">
+            {{ form_row(form.questionPerso) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.answer) }}
+        </div>
+    </div>
+
+    <h1 class="h3 mt-4 font-weight-normal">{{ "Code PIN" | trans }}</h1>
+    <p class="text-subtitle">{{ "ouverture_compte.securite.label_code_pin" | trans | raw }}</p>
+
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.pin_code) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+            //If refresh
+            if($("#form_questionSecrete").val() == 'autre'){
+                $('#questionPerso').removeClass('d-none');
+            }
+            $("#form_questionSecrete").change(function(){
+                if($(this).children("option:selected").val() == 'autre'){
+                    $('#questionPerso').removeClass('d-none');
+                } else {
+                    $('#questionPerso').addClass('d-none');
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -16,13 +16,14 @@
 * docker-compose exec php php bin/console doctrine:migrations:migrate (puis valider y)
 
 
-Vérifier les permissions des dossiers symfony/var/cache symfony/var/log  symfony/logs et symfony/public/uploads \
+Vérifier les permissions/ownership des dossiers symfony/var/cache symfony/var/log  symfony/logs et symfony/public/uploads \
 
-
-do not forget to add `symfony.localhost` in your `/etc/hosts` file.
-You are done, you can visit your Symfony application on the following URL: `http://symfony.localhost:8000`
-
-That's all folks ! 
+### Troobleshooting
+`welcome to nginx !` s'affiche lorsque l'on visite localhost:8003 
+1. Vérifier que le fichier symfony.conf existe bien dans `docker-compose exec nginx cat /etc/nginx/conf.d/symfony.conf`
+2. Supprimer `docker-compose exec nginx rm /etc/nginx/conf.d/default.conf`
+3. Redémarrer docker compose 
+   
 
 ## Installation stack LAMP
 

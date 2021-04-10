@@ -1,0 +1,28 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    <div class="col pl-4">
+        {% include 'asso/explication-3-pourcent.html.twig' %}
+    </div>
+
+    {{ form(form) }}
+
+    <div id="spinner" class="text-center mt-4 d-none">
+        <div class="loadingio-spinner-spinner-3n6a06i025x"><div class="ldio-x8uv5a6ulc">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div></div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('form[name="form"]').submit(function () {
+                $('#form_submit').attr("disabled", true);
+                $('#spinner').removeClass('d-none');
+                return true;
+            });
+        });
+    </script>
+{% endblock %}

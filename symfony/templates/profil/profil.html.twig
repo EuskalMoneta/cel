@@ -89,20 +89,37 @@
                 <h2 class="secondary-color mt-5">{{"Autres paramètres" | trans }}</h2>
                 <table class="table">
                     <tr>
-                        <td><p class="main-color text-semi-bold"> {{"Langue" | trans }}</p></td>
+                        <td>
+                            <p class="main-color text-semi-bold">
+                                {{"Langue" | trans }} :
+                                {% if membre.array_options.options_langue %}
+                                    {{ ('profil.langue.'~membre.array_options.options_langue) | trans }}
+                                {% endif %}
+                            </p>
+
+                        </td>
                         <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
-                        <td><span class="main-color text-semi-bold"> {{ "Newsletter" | trans }}</span></td>
+                        <td>
+                            <span class="main-color text-semi-bold">
+                                {{ "profil.newsletter.abonne" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_recevoir_actus) | trans }}
+                            </span>
+                        </td>
                         <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
-                        <td><span class="main-color text-semi-bold">{{ "Notifications" | trans }}</span></td>
+                        <td><span class="main-color text-semi-bold">
+                                {{ "Notifications" | trans }}<br />
+                                {{ "Virement reçu" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_notifications_virements) | trans }}<br />
+                                {{ "Prélèvement effectué sur votre compte" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_notifications_prelevements) | trans }}<br />
+                            </span>
+                        </td>
                         <td class="text-right"><a href="{{ path('app_profil_notifications') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     {% if is_granted('ROLE_TOURISTE') or is_granted('ROLE_CLIENT') %}
                         <tr>
-                            <td><span class="main-color text-semi-bold">{{ "Bons plans" | trans }}</span></td>
+                            <td><span class="main-color text-semi-bold">{{ "profil.newsletter.bonplans" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_recevoir_bons_plans) | trans }}</span></td>
                             <td class="text-right"><a href="{{ path('app_profil_bons_plans') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                         </tr>
                     {% endif %}

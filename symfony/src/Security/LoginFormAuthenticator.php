@@ -3,6 +3,8 @@
 namespace App\Security;
 
 use App\Controller\APIToolbox;
+use App\Entity\Statistique;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,12 +26,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $urlGenerator;
     private $csrfTokenManager;
     private $apiToolBox;
+    private $em;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, APIToolbox $APIToolbox)
+    public function __construct(UrlGeneratorInterface $urlGenerator,
+                                CsrfTokenManagerInterface $csrfTokenManager,
+                                APIToolbox $APIToolbox,
+                                EntityManagerInterface $em)
     {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->apiToolBox = $APIToolbox;
+        $this->em = $em;
     }
 
     public function supports(Request $request)
@@ -41,11 +48,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
+        $username = $request->request->get('username');
+        //force username uppercase if username is not an email
+        if (strpos($username, '@') === false) {
+            $username = strtoupper($username);
+        }
+
         $credentials = [
-            'username' => $request->request->get('username'),
+            'username' => $username,
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['username']
@@ -109,6 +123,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             } else {
                 $user->setLocale('fr');
             }
+
+            $stat = new Statistique();
+            $stat->setType('connexion');
+            $stat->setDate(new \DateTime());
+            $stat->setValue($user->getUsername());
+            $this->em->persist($stat);
+            $this->em->flush();
         }
 
         return $user;

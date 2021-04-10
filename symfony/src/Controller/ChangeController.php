@@ -45,14 +45,15 @@ class ChangeController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            $form = $this->createFormBuilder(null, ['attr' => ['id' => 'form-virement']])
+            dump($membre->array_options->options_prelevement_change_montant);
+            $form = $this->createFormBuilder(['options_prelevement_change_montant' => $membre->array_options->options_prelevement_change_montant], ['attr' => ['id' => 'form-virement']])
                 ->add('options_prelevement_change_montant', NumberType::class,
                     [
                         'required' => true,
-                        'label' => $translator->trans("Montant (minimum 10)"),
+                        'label' => $translator->trans("Montant"),
                         'constraints' => [
                             new NotBlank(),
-                            new GreaterThanOrEqual(['value' => 10]),
+                            new GreaterThanOrEqual(['value' => 20]),
                         ],
                     ]
                 )
@@ -75,6 +76,56 @@ class ChangeController extends AbstractController
                 }
 
             }
+            return $this->render('change/changeModifier.html.twig', ['membre' => $membre, 'form' => $form->createView()]);
+        }
+        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
+    }
+
+    /**
+     * @Route("/change/iban/modifier", name="app_change_modifier_iban")
+     */
+    public function changeIBANModifier(APIToolbox $APIToolbox,
+                                       Request $request,
+                                       TranslatorInterface $translator,
+                                       VacancesEuskoController $vacancesEuskoController)
+    {
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+        if($responseMember['httpcode'] == 200) {
+
+            $membre = $responseMember['data'][0];
+
+            $form = $this->createFormBuilder(
+                ['options_iban' => $membre->array_options->options_iban],
+                ['attr' => ['id' => 'form-virement']]
+            )
+                ->add('options_iban', TextType::class, [
+                    'required' => true,
+                    'label' => $translator->trans('sepa.iban'),
+                    'constraints' => [
+                        new NotBlank(),
+                    ]
+                ])
+                ->add('submit', SubmitType::class, ['label' => $translator->trans("Valider")])
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $data['mode'] = 'modify';
+                if ($vacancesEuskoController->isValidIBAN($data['options_iban'])) {
+                    $responseChange = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                    if($responseChange['httpcode'] == 200) {
+                        $this->addFlash('success',$translator->trans('Votre demande a bien été prise en compte'));
+                        return $this->redirectToRoute('app_change');
+                    } else {
+                        $this->addFlash('danger', $translator->trans("Erreur lors de la demande."));
+                    }
+                } else {
+                    $this->addFlash('danger', $translator->trans("sepa.iban_invalide"));
+                }
+
+            }
+
             return $this->render('change/changeModifier.html.twig', ['membre' => $membre, 'form' => $form->createView()]);
         }
         throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

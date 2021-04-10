@@ -1,0 +1,35 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    <p class="text-subtitle">{{ "cotisation.explication" | trans | raw }}</p>
+    <div class="cotisation_form">
+        {{ form(form) }}
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            function disableMonthly() {
+                $("#form_subscription_periodicity_1").attr("disabled", true);
+                $("#form_subscription_periodicity_1").prop("checked", false);
+                $("#form_subscription_periodicity_0").prop("checked", true);
+
+            }
+            if($("#form_subscription_amount_3").prop("checked") == true){
+                disableMonthly();
+            }
+
+            $("input[name='form[subscription_amount]']").change(function() {
+                if($(this).val() == '5'){
+                    disableMonthly();
+                } else {
+                    $("#form_subscription_periodicity_1").attr("disabled", false);
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

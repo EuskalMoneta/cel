@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-3 text-center">
+
+                <h2 class="mb-2 main-color"> {{ "virement.confirm.titre" | trans }} </h2>
+                <div class="mb-4">
+
+
+                    <div class="row mt-5" style="padding-bottom: 20px; ">
+                        <div class="col text-center" style="">
+
+                            <h3 class="title-light">{{ "Destinataire" | trans }}</h3>
+                            <h2 class="main-color mt-2">
+                                {{ data["account_name"] }}
+                            </h2>
+                            <br />
+                            <h3 class="title-light">{{ "Montant" | trans }}</h3>
+                            <div class="main-color big-solde"> {{ data["amount"] }} eusko</div>
+                            <br />
+                            <h3 class="title-light">{{ "Libellé" | trans }}</h3>
+                            <h2 class="main-color mt-2">
+                                {{ data["description"] }}
+                            </h2>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col text-center">
+                            <form method="post">
+                                <div class="col-md-4 offset-md-4">
+                                    <input  type="submit" class="btn btn-success btn-block"  value={{ "Valider" | trans }} />
+                                    <a href="{{ path('app_virement') }}" class="btn btn-outline-primary btn-block">{{ "Annuler" | trans }}</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        jQuery.fn.preventDoubleSubmission = function() {
+            $(this).on('submit',function(e){
+                var $form = $(this);
+                if ($form.data('submitted') === true) {
+                    // Previously submitted - don't submit again
+                    e.preventDefault();
+                } else {
+                    // Mark it so that the next submit can be ignored
+                    $form.data('submitted', true);
+                }
+            });
+            // Keep chainability
+            return this;
+        };
+        $('form').preventDoubleSubmission();
+    </script>
+{% endblock %}

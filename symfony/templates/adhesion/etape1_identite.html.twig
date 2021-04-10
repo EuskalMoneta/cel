@@ -1,0 +1,29 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    <div style="">
+        <p class="text-subtitle">{{ explication | raw }}</p>
+    </div>
+    <form method="post">
+        {{ form_start(form) }}
+
+        {% if form.login is defined %}
+            {{ form_row(form.login) }}
+        {% endif%}
+        {{ form_row(form.civility_id) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.email) }}
+
+        {% if form.valide is defined %}
+        <div>
+
+            {{ form_errors(form.valide) }}
+            {{ form_widget(form.valide) }}
+            <label style="margin-left: 20px;display: inline;top: -19px;position: relative;" for="{{ form.valide.vars.id }}">{{ "J'ai lu et je valide les" | trans }} <a href="{{ asset('images/CGU-Particuliers.pdf') }}" target="_blank" class=""> {{ "CGU Particuliers" | trans }}</a></label>
+        </div>
+        {% endif %}
+
+        {{ form(form) }}
+    </form>
+{% endblock %}

@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.13
 
 LABEL maintainer="Vincent Composieux <vincent.composieux@gmail.com>"
 
@@ -30,8 +30,10 @@ RUN apk add --update --no-cache \
     php7-simplexml \
     php7-xdebug \
     php7-zip \
+    php7-xmlreader \
     php7-xmlwriter \
     make \
+    wkhtmltopdf xvfb \
     curl
 
 RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \

@@ -37,6 +37,8 @@ class PrelevementController extends AbstractController
         $comptes = [];
         $listSuccess = '';
         $listFail = '';
+        $rows = [];
+        $msg = '';
 
         //Create form with acount number
         $form = $this->createFormBuilder()
@@ -63,8 +65,16 @@ class PrelevementController extends AbstractController
 
                 if(!empty($file)) {
                     $rows = $this->spreadsheetToArray($file);
-                    //on supprime la première ligne du tableau
-                    $rows = array_slice($rows, 1);
+                    //extract and validate column names and length
+                    $msg = $this->validateFirstRow(array_slice($rows, 0, 1)[0], 'moneyType');
+                    if($msg != ''){
+                        $this->addFlash('danger', $msg);
+                        //init rows to cancel proccessing
+                        $rows = [];
+                    } else {
+                        //on supprime la première ligne du tableau
+                        $rows = array_slice($rows, 1);
+                    }
                 }
 
                 if(count($rows) > 0){
@@ -79,7 +89,7 @@ class PrelevementController extends AbstractController
                             $listFail .= '<li>'.$row[1].' : Montant incorrect </li>';
                         }
                     }
-                } else {
+                } elseif($msg == '') {
                     $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                 }
 
@@ -89,7 +99,7 @@ class PrelevementController extends AbstractController
 
                     foreach($resultats as $resultat){
                         if($resultat->status == 1){
-                            $listSuccess .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
+                            $listSuccess .= '<li>'.$resultat->name.'</li>';
                         } else {
                             if($resultat->name != ''){
                                 $listFail .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
@@ -251,6 +261,8 @@ class PrelevementController extends AbstractController
             $comptes = [];
             $listSuccess = '';
             $listFail = '';
+            $rows = [];
+            $msg = '';
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -265,15 +277,23 @@ class PrelevementController extends AbstractController
 
                     if(!empty($file)) {
                         $rows = $this->spreadsheetToArray($file);
-                        //on supprime la première ligne du tableau
-                        $rows = array_slice($rows, 1);
+                        //extract and validate column names and length
+                        $msg = $this->validateFirstRow(array_slice($rows, 0, 1)[0], 'personType');
+                        if($msg != ''){
+                            $this->addFlash('danger', $msg);
+                            //init rows to cancel proccessing
+                            $rows = [];
+                        } else {
+                            //on supprime la première ligne du tableau
+                            $rows = array_slice($rows, 1);
+                        }
                     }
 
                     if(count($rows) > 0){
                         foreach ($rows as $row) {
                             $comptes[] = ['numero_compte_debiteur' => str_replace(' ', '',$row[1])];
                         }
-                    } else {
+                    } elseif($msg == '') {
                         $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                     }
                 }
@@ -337,7 +357,7 @@ class PrelevementController extends AbstractController
                 $worksheet = $spreadsheet->getActiveSheet();
                 foreach ($worksheet->getRowIterator() AS $row) {
                     $cellIterator = $row->getCellIterator();
-                    $cellIterator->setIterateOnlyExistingCells(FALSE); // This loops through all cells,
+                    $cellIterator->setIterateOnlyExistingCells(TRUE); // This loops through all cells,
                     $cells = [];
                     foreach ($cellIterator as $cell) {
                         $cells[] = $cell->getValue();
@@ -350,6 +370,38 @@ class PrelevementController extends AbstractController
         }
 
         return $rows;
+    }
+
+    /**
+     * Helper function to validate columns order and title
+     *
+     * @param mixed $row
+     * @return string
+     */
+    public function validateFirstRow($row, $type)
+    {
+        $msg ='';
+
+        if($type == 'moneyType'){
+            $colEu = ['Izena', 'Kontu zenbakia', 'Zenbatekoa', 'Eragiketaren deskribapena'];
+            $colFr = ['Nom', 'N° de compte', 'Montant', "Libellé de l'opération"];
+        } elseif ($type == 'personType'){
+            $colEu = ['Izena', 'Kontu zenbakia'];
+            $colFr = ['Nom', 'N° de compte'];
+        }
+
+        if(count($colFr) != count($row)){
+            return "Le fichier envoyé ne contient pas le bon nombre de colonnes, veuillez utiliser le modèle de fichier pour Excel ou pour OpenOffice / LibreOffice.";
+        }
+
+        for($i =0; $i < count($colFr); $i++){
+            // gestion des différents types d'apostrophe
+            $row[$i] = str_replace("’", "'", $row[$i]);
+            if(!($row[$i] == $colEu[$i] || $row[$i] == $colFr[$i])){
+                $msg = "Le fichier envoyé ne contient pas les bonnes colonnes (les titres de la première ligne ne correspondent pas), veuillez utiliser le modèle de fichier pour Excel ou pour OpenOffice / LibreOffice.";
+            }
+        }
+        return $msg;
     }
 
 

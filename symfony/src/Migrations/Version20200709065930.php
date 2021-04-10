@@ -32,4 +32,9 @@ final class Version20200709065930 extends AbstractMigration
 
         $this->addSql('ALTER TABLE article DROP visible');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

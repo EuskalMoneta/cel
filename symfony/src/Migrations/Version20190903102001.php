@@ -32,4 +32,9 @@ final class Version20190903102001 extends AbstractMigration
 
         $this->addSql('ALTER TABLE promotion DROP visible');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

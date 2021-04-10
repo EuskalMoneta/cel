@@ -32,4 +32,9 @@ final class Version20200611102204 extends AbstractMigration
 
         $this->addSql('ALTER TABLE web_hook_event DROP statut');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

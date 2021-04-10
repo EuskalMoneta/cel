@@ -2,7 +2,9 @@
     <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
         <div class="col-8">
             <div class="main-color text-semi-bold">
-                {{ operation.description }}
+                {% if operation.description is defined %}
+                    {{ operation.description }}
+                {% endif %}
 
             </div>
             <div class="secondary-color">

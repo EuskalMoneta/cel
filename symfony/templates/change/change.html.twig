@@ -21,32 +21,48 @@
 
                 {% if not is_granted('ROLE_TOURISTE') %}
                 <div style="margin-top: -40px">
-                    <h2 class="secondary-color mb-2"> {{ "Change automatique" | trans }} </h2>
+                    <h2 class="secondary-color mb-2"> {{ "change_automatique.titre" | trans }} </h2>
 
-                    <div class="main-color big-solde"> {{ membre.array_options.options_prelevement_change_montant  |number_format(0) }} {{ "eusko par mois" | trans }}</div>
-
-                    <a class="btn btn-outline-primary mb-4" href="{{ path('app_change_modifier') }}">{{ "Modifier" | trans }} </a>
-
-
-                    <div class="alert  alert-info">
-                        <h2 class="secondary-color mt-4 mb-2"> {{ "Bon à savoir" | trans }} </h2>
-                        <div class="mb-4">
-
-                            <p>{{ "Vous pouvez aussi dans n'importe quel bureau de change faire un chèque ou donner des espèces pour créditer votre compte eusko. Le crédit est immédiat !
-Vous pouvez aussi dans n'importe quel bureau de change retirer des billets d'eusko depuis votre compte." | trans | nl2br }}</p>
-
-                            {% if app.request.getLocale() == 'eu' %}
-                                <a href="http://www.euskalmoneta.org/aldaguneak/?lang=eu" class="btn btn-outline-info" target="_blank"> {{"Bureaux de change" | trans }}</a>
-                            {% else %}
-                                <a href="http://www.euskalmoneta.org/bureaux-de-change/"  class="btn btn-outline-info" target="_blank"> {{"Bureaux de change" | trans }}</a>
-                            {% endif %}
+                    <p>
+                        {{ "change_automatique_mensuel.explication" | trans | raw }}
+                    </p>
 
 
-                        </div>
-                    </div>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <p class="main-color text-semi-bold">
+                                    {{ "change_automatique_mensuel.montant" | trans }}<br />
+                                    {{ membre.array_options.options_prelevement_change_montant | number_format(0) }} {{ "eusko par mois" | trans }}
+                                </p>
+                            </td>
+                            <td class="text-right"><a href="{{ path('app_change_modifier') }}" class="btn btn-primary">{{ "Modifier" | trans }}</a> </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="main-color text-semi-bold">
+                                    {{ "change_automatique_mensuel.iban" | trans }}<br />
+                                    {{ membre.array_options.options_iban }}
+                                </p>
+                            </td>
+                            <td class="text-right"><a href="{{ path('app_change_modifier_iban') }}" class="btn btn-primary">{{ "Modifier" | trans }}</a> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="mt-4"> {{"Informations sur le mandat de prélèvement" | trans }}</h3>
+                    <p>
+                        {{"Nom du créancier" | trans }} : Association Euskal Moneta - Monnaie Locale du Pays Basque <br />
+                        {{"Identifiant du créancier" | trans }} : FR49ZZZ663869<br />
+                        {{"Référence Unique du Mandat" | trans }} : {{ membre.array_options.options_prelevement_change_rum }}<br />
+                    </p>
+                    <p>
+                        {{ "change_automatique_mensuel.arret" | trans({'url': path('app_aide')}) | raw }}
+                    </p>
+
                 </div>
                 {% endif %}
-
 
             </div>
         </div>

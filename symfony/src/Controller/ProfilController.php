@@ -63,10 +63,10 @@ class ProfilController extends AbstractController
             $membre = $responseMember['data'][0];
 
             $form = $this->createFormBuilder()
-                ->add('old_password', PasswordType::class, ['label' => 'Ancien mot de passe'])
+                ->add('old_password', PasswordType::class, ['label' => $translator->trans('profil.mot_de_passe.ancien_mot_de_passe')])
                 ->add('new_password', RepeatedType::class, [
-                    'first_options'  => ['label' => 'Nouveau mot de passe'],
-                    'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                    'first_options'  => ['label' => $translator->trans('profil.mot_de_passe.nouveau_mot_de_passe')],
+                    'second_options' => ['label' => $translator->trans('profil.mot_de_passe.confirmer_nouveau_mot_de_passe')],
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max'=> 12]),
@@ -89,6 +89,7 @@ class ProfilController extends AbstractController
 
                 if($responseProfile['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -146,6 +147,7 @@ class ProfilController extends AbstractController
                 if ($forcedPin) {
                     return $this->redirectToRoute('app_homepage');
                 }
+                return $this->redirectToRoute('app_profil');
             } else {
                 $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
             }
@@ -181,27 +183,27 @@ class ProfilController extends AbstractController
 
             $form = $this->createFormBuilder()
                 ->add('options_prelevement_cotisation_montant', ChoiceType::class, [
-                    'label' => 'Montant de la cotisation',
+                    'label' => $translator->trans('cotisation.montant'),
                     'attr' => ['class' => 'chk'],
                     'required' => true,
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        '1 eusko par mois / 12 eusko par an' => '12',
-                        '2 eusko par mois / 24 eusko par an' => '24',
-                        '3 eusko par mois / 36 eusko par an' => '36',
-                        '5 eusko par an (chômeurs, minima sociaux)' => '5'
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24', 'monnaie' => 'eusko']) => '24',
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36', 'monnaie' => 'eusko']) => '36',
+                        $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60', 'monnaie' => 'eusko']) => '60',
+                        $translator->trans('cotisation.montant_par_an', ['par_an' => '5', 'monnaie' => 'eusko']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
                     ],
                     'data' => round($defaultData, 0)
                 ])
                 ->add('options_prelevement_cotisation_periodicite', ChoiceType::class, [
-                    'label' => 'Périodicité du prélèvement',
+                    'label' => $translator->trans('cotisation.periodicite'),
                     'required' => true,
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        'Annuel' => '12',
-                        'Mensuel (entre le 10 et le 15 du mois)' => '1',
+                        $translator->trans('cotisation.periodicite.annuel') => '12',
+                        $translator->trans('cotisation.periodicite.mensuel') => '1',
                     ],
                     'data' => round($membre->array_options->options_prelevement_cotisation_periodicite, 0)
                 ])
@@ -217,6 +219,7 @@ class ProfilController extends AbstractController
                     //To get the amount per month and not annualy
                     $data['options_prelevement_cotisation_montant'] = $data['options_prelevement_cotisation_montant'] / 12;
                 }
+
                 if(!($data['options_prelevement_cotisation_periodicite'] == 1 && $data['options_prelevement_cotisation_montant'] == 5)){
                     $responseProfile = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
@@ -226,6 +229,7 @@ class ProfilController extends AbstractController
                         if($forcedCotisation){
                             return $this->redirectToRoute('app_homepage');
                         }
+                        return $this->redirectToRoute('app_profil');
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
@@ -248,7 +252,7 @@ class ProfilController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            $questions = ['' => '','autre' => 'autre'];
+            $questions = ['' => '', $translator->trans('Question personnalisée') => 'autre'];
             $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getSession()->get('_locale'));
 
             if($response['httpcode'] == 200){
@@ -259,13 +263,13 @@ class ProfilController extends AbstractController
 
                 $form = $this->createFormBuilder()
                     ->add('questionSecrete', ChoiceType::class, [
-                        'label' => 'Votre question secrète',
+                        'label' => $translator->trans('profil.question_secrete.question'),
                         'required' => true,
                         'choices' => $questions
                     ])
                     ->add('questionPerso', TextType::class, ['label' => 'Votre question personnalisée', 'required' => false])
                     ->add('reponse', TextType::class, [
-                        'label' => 'Reponse',
+                        'label' => $translator->trans('profil.question_secrete.reponse'),
                         'required' => true,
                         'constraints' => [
                             new NotBlank()
@@ -290,6 +294,7 @@ class ProfilController extends AbstractController
 
                     if($responseProfile['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                        return $this->redirectToRoute('app_profil');
                     } else {
                         $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                     }
@@ -359,10 +364,11 @@ class ProfilController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $data['birth'] = $data['birth']->format('d/m/Y');
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                $responseMember = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
-                if($responseLang['httpcode'] == 200) {
+                if($responseMember['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -405,7 +411,7 @@ class ProfilController extends AbstractController
                 if($responseLang['httpcode'] == 200) {
                     $session->set('_locale', $data['langue']);
                     $this->addFlash('success',$translator->trans('Langue mise à jour.', [], null, $data['langue']));
-                    return $this->redirectToRoute('app_profil_langue');
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans('Le changement de langue n\'a pas pu être effectué', [], null, $data['langue']));
                 }
@@ -432,8 +438,7 @@ class ProfilController extends AbstractController
             $form = $this->createFormBuilder()
                 ->add('news', ChoiceType::class,
                     [
-                        'label' => $translator->trans('Je recevrai 3 ou 4 mails par mois pour rester au courant des actualités de l\'Eusko. '),
-                        'help' => 'Vous recevrez un à deux mails par semaine.',
+                        'label' => $translator->trans("Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko."),
                         'choices' => ['Oui' =>'1', 'Non' => '0'],
                         'data' => $booleanNewsletter
                     ])
@@ -443,10 +448,11 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_actus' => $data['news']]);
 
-                if($responseLang['httpcode'] == 200) {
+                if($response['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -485,10 +491,11 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $data['news']]);
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $data['news']]);
 
-                if($responseLang['httpcode'] == 200) {
+                if($response['httpcode'] == 200) {
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }
@@ -508,13 +515,15 @@ class ProfilController extends AbstractController
     public function setBonPlans($booleen, Request $request, APIToolbox $APIToolbox)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+
         if($responseMember['httpcode'] == 200) {
 
             $membre = $responseMember['data'][0];
 
-            $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $booleen]);
 
-            if($responseLang['httpcode'] == 200) {
+            $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', ['options_recevoir_bons_plans' => $booleen]);
+
+            if($response['httpcode'] == 200) {
                 return new JsonResponse(true);
             } else {
                 return new JsonResponse(false);
@@ -556,11 +565,12 @@ class ProfilController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $responseLang = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
-                if($responseLang['httpcode'] == 200) {
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                if($response['httpcode'] == 200) {
 
 
                     $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
+                    return $this->redirectToRoute('app_profil');
                 } else {
                     $this->addFlash('danger', $translator->trans("La modification n'a pas pu être effectuée"));
                 }

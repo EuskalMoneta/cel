@@ -1,0 +1,58 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {% if  form_errors(form) != '' %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button> {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <p class="text-subtitle">{{ "adhesion.cotisation.explication" | trans | raw }}</p>
+
+    <div class="row">
+        <div class="col cotisation_form">
+            {{ form_row(form.subscription_amount) }}
+            <br/>
+            {{ form_row(form.subscription_periodicity) }}
+            <br/>
+            {{ form_row(form.iban) }}
+        </div>
+    </div>
+
+    <p class="text-subtitle">{{ "redirection_yousign_pour_signature" | trans | raw }}</p>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+
+{% block js %}
+    <script src="{{ asset('js/jquery.mask.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            function disableMonthly() {
+                $("#form_subscription_periodicity_1").attr("disabled", true);
+                $("#form_subscription_periodicity_1").prop("checked", false);
+                $("#form_subscription_periodicity_0").prop("checked", true);
+
+            }
+            if($("#form_subscription_amount_3").prop("checked") == true){
+                disableMonthly();
+            }
+
+            $("input[name='form[subscription_amount]']").change(function() {
+                if($(this).val() == '5'){
+                    disableMonthly();
+                } else {
+                    $("#form_subscription_periodicity_1").attr("disabled", false);
+                }
+            });
+
+            $('#form_iban').mask('SS00 AAAA AAAA AAAA AAAA AAAA AAA', {
+                placeholder: '____ ____ ____ ____ ____ ____ ___'
+            });
+
+        });
+    </script>
+{% endblock %}

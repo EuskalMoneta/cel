@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block css %}
+    <style type="text/css">
+        body{
+            background-color: #41A528 !important;
+            color: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+                <div class="mt-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-check mb-4" style="font-size: 40px; margin-top: 50px;"></i>
+                        <h1 class="threeper" style="font-size: 24px;" >{{ "signature_mandat_cotisation.fin" | trans | raw }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

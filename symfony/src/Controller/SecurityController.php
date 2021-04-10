@@ -93,6 +93,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
+            $data['adherent'] = strtoupper($data['adherent']);
             $response = $APIToolbox->curlWithoutToken('POST', '/first-connection/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $request->getLocale()]);
 
             if($data['adherent'][0] == 'T'){
@@ -112,7 +113,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/valide-premiere-connexion", name="app_valide_first_login")
+     * @Route("/{_locale}/valide-premiere-connexion", name="app_valide_first_login")
      */
     public function validateFirstLogin(Request $request,
                                        APIToolbox $APIToolbox,
@@ -188,7 +189,7 @@ class SecurityController extends AbstractController
                             'main'
                         );
                 } else {
-                    $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+                    $this->addFlash('danger', $translator->trans('Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.'));
                 }
             }
         }
@@ -200,6 +201,7 @@ class SecurityController extends AbstractController
      */
     public function lostPassword(Request $request, APIToolbox $APIToolbox): Response
     {
+        $locale = $request->getLocale();
         $form = $this->createFormBuilder()
             ->add('adherent', TextType::class, [
                 'label' => 'N° Adhérent',
@@ -224,7 +226,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $response = $APIToolbox->curlWithoutToken('POST', '/lost-password/', ['login' => $data['adherent'], 'email' => $data['email']]);
+            $response = $APIToolbox->curlWithoutToken('POST', '/lost-password/', ['login' => $data['adherent'], 'email' => $data['email'], 'language' => $locale]);
 
             if($response['httpcode'] == 200 && $response['data']->member == 'OK'){
                 $this->addFlash('success', 'Veuillez vérifier vos emails. Vous allez recevoir un message qui vous donnera accès à un formulaire où vous pourrez choisir votre mot de passe.');
@@ -236,9 +238,9 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/valide-passe-perdu", name="app_valide_passe_perdu")
+     * @Route("/{_locale}/valide-passe-perdu", name="app_valide_passe_perdu")
      */
-    public function validatePassePerdu(Request $request, APIToolbox $APIToolbox): Response
+    public function validatePassePerdu(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): Response
     {
         $token = $request->query->get('token');
         $responseToken = $APIToolbox->curlWithoutToken('GET', '/securityqa/me/?token='.$token);
@@ -286,10 +288,10 @@ class SecurityController extends AbstractController
 
 
             if($response['httpcode'] == 200 && $response['data']->status == 'success'){
-                $this->addFlash('success', 'Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.');
+                $this->addFlash('success', $translator->trans('Mot de passe changé avec succès, vous pouvez vous connecter avec vos identifiants.'));
                 return $this->redirectToRoute('app_login');
             } else {
-                $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+                $this->addFlash('danger', $translator->trans('Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.'));
             }
         }
 

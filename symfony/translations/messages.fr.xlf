@@ -967,7 +967,7 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Montant du change automatique mensuel</source>
         <target>Montant du change automatique mensuel</target>
       </trans-unit>
-      <trans-unit id="9ExyRDW" resname="change.coordonnees.compte">
+      <trans-unit id="YrWVPCk" resname="change.coordonnees.compte">
         <source>change.coordonnees.compte</source>
         <target>Coordonnées du compte à prélever (IBAN)</target>
       </trans-unit>
@@ -1035,7 +1035,7 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</source>
         <target>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</target>
       </trans-unit>
-      <trans-unit id="DA.SaY0" resname="ouverture_compte.securite.label_code_pin">
+      <trans-unit id="re3aApZ" resname="ouverture_compte.securite.label_code_pin">
         <source>ouverture_compte.securite.label_code_pin</source>
         <target><![CDATA[Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong data-toggle="tooltip" data-placement="top" title="l'application de paiement eusko par téléphone">euskopay</strong> ou <strong data-toggle="tooltip" data-placement="top" title="la carte de paiement eusko">euskokart</strong>.]]></target>
       </trans-unit>
@@ -1524,72 +1524,72 @@ Si vous le pouvez, merci de privilégier le prélèvement annuel afin de réduir
         <source>virement.confirm.titre</source>
         <target>Confirmer le virement</target>
       </trans-unit>
-      <trans-unit id="6fYVFG" resname="profil.langue.eu">
+      <trans-unit id="Lt9zAJw" resname="profil.langue.eu">
         <source>profil.langue.eu</source>
         <target>Basque</target>
       </trans-unit>
-      <trans-unit id="6zzVFG" resname="profil.langue.fr">
+      <trans-unit id="rSOIlMQ" resname="profil.langue.fr">
         <source>profil.langue.fr</source>
         <target>Français</target>
       </trans-unit>
-      <trans-unit id="998VFG" resname="profil.newsletter.abonne">
+      <trans-unit id="z5XGJQx" resname="profil.newsletter.abonne">
         <source>profil.newsletter.abonne</source>
         <target>Abonné à la newsletter</target>
       </trans-unit>
-      <trans-unit id="998rrr" resname="profil.newsletter.bonplans">
+      <trans-unit id="xQ0w0uM" resname="profil.newsletter.bonplans">
         <source>profil.newsletter.bonplans</source>
         <target>Afficher les bons plans</target>
       </trans-unit>
-      <trans-unit id="95111q" resname="profil.booleen.1">
+      <trans-unit id="IXmrmzm" resname="profil.booleen.1">
         <source>profil.booleen.1</source>
         <target>Oui</target>
       </trans-unit>
-      <trans-unit id="95111e" resname="profil.booleen.0">
+      <trans-unit id="ngBH.Zq" resname="profil.booleen.0">
         <source>profil.booleen.0</source>
         <target>Non</target>
       </trans-unit>
-      <trans-unit id="65411q" resname="ouverture_compte.change.autre_montant">
+      <trans-unit id="piH7Hfz" resname="ouverture_compte.change.autre_montant">
         <source>ouverture_compte.change.autre_montant</source>
         <target>Autre montant</target>
       </trans-unit>
-      <trans-unit id="radbaf" resname="identite.madame">
+      <trans-unit id="m2FUILW" resname="identite.madame">
         <source>identite.madame</source>
         <target>Madame</target>
       </trans-unit>
-      <trans-unit id="Durd8E" resname="identite.monsieur">
+      <trans-unit id="1WUjZWn" resname="identite.monsieur">
         <source>identite.monsieur</source>
         <target>Monsieur</target>
       </trans-unit>
-      <trans-unit id="gth541" resname="identite.civilite">
+      <trans-unit id="dFxT5q0" resname="identite.civilite">
         <source>identite.civilite</source>
         <target>Civilité</target>
       </trans-unit>
-      <trans-unit id="ebBuct" resname="change_automatique_mensuel.explication">
+      <trans-unit id="26Kbbg2" resname="change_automatique_mensuel.explication">
         <source>change_automatique_mensuel.explication</source>
         <target><![CDATA[Vous changez mensuellement des euros en eusko grâce à un prélèvement automatique sur votre compte bancaire.<br>
 Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko est crédité du même montant sous 24h (hors week-end).]]></target>
       </trans-unit>
-      <trans-unit id="MOC70uw" resname="change_automatique_mensuel.montant">
+      <trans-unit id="6j2G8WR" resname="change_automatique_mensuel.montant">
         <source>change_automatique_mensuel.montant</source>
         <target>Montant du change automatique mensuel</target>
       </trans-unit>
-      <trans-unit id="Layn0Bl" resname="change_automatique_mensuel.iban">
+      <trans-unit id="NlLFzNd" resname="change_automatique_mensuel.iban">
         <source>change_automatique_mensuel.iban</source>
         <target>Coordonnées du compte à débiter (IBAN)</target>
       </trans-unit>
-      <trans-unit id="sX3xrlH" resname="change_automatique_mensuel.arret">
+      <trans-unit id="VuLcMZ1" resname="change_automatique_mensuel.arret">
         <source>change_automatique_mensuel.arret</source>
         <target><![CDATA[ Si vous souhaitez suspendre ou arrêter votre change automatique, veuillez <a href="url"> nous contacter</a>. ]]></target>
       </trans-unit>
-      <trans-unit id="sX347lH" resname="virement.fin.retour">
+      <trans-unit id="MBmA5C8" resname="virement.fin.retour">
         <source>virement.fin.retour</source>
         <target>Retourner à l'accueil</target>
       </trans-unit>
-      <trans-unit id="s8947lH" resname="virement.fin.autre">
+      <trans-unit id="icXSK1k" resname="virement.fin.autre">
         <source>virement.fin.autre</source>
         <target>Réaliser un autre virement</target>
       </trans-unit>
-      <trans-unit id="IcGeb3F" resname="Libellé">
+      <trans-unit id="zVuDKsX" resname="Libellé">
         <source>Libellé</source>
         <target>Libellé</target>
       </trans-unit>

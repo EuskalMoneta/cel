@@ -202,10 +202,29 @@ class OuvertureCompteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            if (!$member) {
+                //Check si l'utilisateur existe déjà
+                $response = $APIToolbox->curlWithoutToken(
+                    'POST',
+                    '/verifier-existance-compte/',
+                    ['email' => $data["email"], "language" => $request->getLocale()]
+                );
+                if ($response['httpcode'] == 200) {
+                    return $this->render('ouverture_compte/attente_reception_email.html.twig', [
+                        'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+                        'numero_etape' => 1,
+                        'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+                        'titre' => $translator->trans('attente_reception.titre'),
+                        'explication' => $translator->trans('attente_reception.explication')
+                    ]);
+                }
+            }
+
             $session->set('utilisateur', $data);
             $session->set('compteur', 1);
 
             return $this->redirectToRoute('app_compte_etape2_coordonnees');
+
         }
 
         return $this->render('ouverture_compte/etape_identite.html.twig', [

@@ -36,6 +36,10 @@
 
             {{ form_end(form) }}
 
+            {% if app.environment == 'dev' %}
+                { BLOC DEV  }<br />
+                SEPA VALIDE : FR1110096000307648457386I40 <br />
+            {% endif %}
         </div>
     </div>
 {% endblock %}

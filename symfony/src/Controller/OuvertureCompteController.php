@@ -268,7 +268,12 @@ class OuvertureCompteController extends AbstractController
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 
-            return $this->redirectToRoute('app_compte_etape3_justificatif');
+            if($_ENV["APP_ENV"] == 'dev'){
+                return $this->redirectToRoute('app_compte_etape4_sepa');
+            } else {
+                return $this->redirectToRoute('app_compte_etape3_justificatif');
+            }
+
         }
 
         return $this->render('ouverture_compte/etape2_coordonnees.html.twig', [
@@ -325,7 +330,7 @@ class OuvertureCompteController extends AbstractController
      */
     public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
-        
+
         $form = $this->createFormBuilder(['autre_montant' => 20], ['attr' => ['id' => 'form-virement']])
             ->add('automatic_change_amount', ChoiceType::class,
                 [
@@ -374,7 +379,11 @@ class OuvertureCompteController extends AbstractController
                 }
                 $session->set('utilisateur', $data);
 
-                return $this->redirectToRoute('ouverture_compte_signature_sepa');
+                if($_ENV["APP_ENV"] == 'dev'){
+                    return $this->redirectToRoute('app_compte_etape6_cotisation');
+                } else {
+                    return $this->redirectToRoute('ouverture_compte_signature_sepa');
+                }
             } else {
                 $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
@@ -396,14 +405,25 @@ class OuvertureCompteController extends AbstractController
     {
         $session->start();
 
-        //récupérer le SEPA signé et le stocker en session
-        $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
+        if($_ENV["APP_ENV"] == 'dev'){
+            $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
 
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-        $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
+            $data = array_merge(
+                $session->get('utilisateur'),
+                ['sepa_document' => $docBase64],
+                ['id_document' => $docBase64, 'idcheck_report' => $docBase64, 'civility_id'=>'MR', 'birth'=>'2019-10-10']
+            );
+            $session->set('utilisateur', $data);
+        } else {
+            //récupérer le SEPA signé et le stocker en session
+            $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
 
-        $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
-        $session->set('utilisateur', $data);
+            $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
+            $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
+
+            $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
+            $session->set('utilisateur', $data);
+        }
 
         //on continue avec la cotisation
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'cotisation']])

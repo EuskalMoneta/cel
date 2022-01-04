@@ -105,7 +105,17 @@ class VacancesEuskoController extends AbstractController
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 
-            return $this->redirectToRoute('app_vee_etape3_justificatif');
+            if($_ENV["APP_ENV"] == 'dev'){
+                $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
+                $data = array_merge(
+                    $session->get('utilisateur'),
+                    ['id_document' => $docBase64, 'idcheck_report' => $docBase64, 'civility_id'=>'MR', 'birth'=>'2019-10-10']
+                );
+                $session->set('utilisateur', $data);
+                return $this->redirectToRoute('app_vee_etape4_securite');
+            } else {
+                return $this->redirectToRoute('app_vee_etape3_justificatif');
+            }
         }
         return $this->render('vacancesEusko/etape2_coordonnees.html.twig', ['title' => "Coordonnées", 'form' => $form->createView()]);
     }

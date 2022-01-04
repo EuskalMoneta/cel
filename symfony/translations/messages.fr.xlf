@@ -1593,6 +1593,14 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>Libellé</source>
         <target>Libellé</target>
       </trans-unit>
+      <trans-unit id="zVu84aa" resname="attente_reception.titre">
+        <source>attente_reception.titre</source>
+        <target>Compte existant</target>
+      </trans-unit>
+      <trans-unit id="zVu84ab" resname="attente_reception.explication">
+        <source>attente_reception.explication</source>
+        <target>Nous avons détecté un compte existant pour l'adresse email fournie. Un email contenant un lien unique vous a été envoyé !</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

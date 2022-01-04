@@ -1599,6 +1599,14 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>Libellé</source>
         <target>Deskribapena</target>
       </trans-unit>
+      <trans-unit id="zVu84aa" resname="attente_reception.titre">
+        <source>attente_reception.titre</source>
+        <target>Compte existant</target>
+      </trans-unit>
+      <trans-unit id="zVu84ab" resname="attente_reception.explication">
+        <source>attente_reception.explication</source>
+        <target>Nous avons détecté un compte existant pour l'adresse email fournie. Un email contenant un lien unique vous a été envoyé !</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

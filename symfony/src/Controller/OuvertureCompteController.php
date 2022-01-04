@@ -206,7 +206,7 @@ class OuvertureCompteController extends AbstractController
                 //Check si l'utilisateur existe déjà
                 $response = $APIToolbox->curlWithoutToken(
                     'POST',
-                    '/verifier-existance-compte/',
+                    '/verifier-existence-compte/',
                     ['email' => $data["email"], "language" => $request->getLocale()]
                 );
                 if ($response['httpcode'] == 200) {

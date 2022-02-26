@@ -951,6 +951,10 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Phone</source>
         <target>Téléphone portable</target>
       </trans-unit>
+      <trans-unit id="Aj2ojRo" resname="Téléphone pro">
+        <source>Téléphone pro</source>
+        <target>Téléphone</target>
+      </trans-unit>
       <trans-unit id="k.FuAlz" resname="Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.">
         <source>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</source>
         <target>Tapez +33 puis votre numéro de portable sans le 0. Exemple : +33 6 01 02 03 04. Pour d’autres pays, mettre l’indicatif international de ce pays.</target>

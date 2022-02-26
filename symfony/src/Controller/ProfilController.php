@@ -345,25 +345,35 @@ class ProfilController extends AbstractController
                 }
             }
 
-            $builder = $this->createFormBuilder()
-                ->add('birth', DateType::class, [
+            $formBuilder = $this->createFormBuilder();
+            if ($membre->type === 'Particulier' || $membre->type === 'Touriste') {
+                $formBuilder->add('birth', DateType::class, [
                     'widget' => 'single_text',
                     'required' => true,
                     'data' => (new \DateTime())->setTimestamp($membre->birth)
-                ])
+                ]);
+            }
+            $formBuilder
                 ->add('address', TextareaType::class, ['required' => true, 'data' => $membre->address])
                 ->add('zip', TextType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
                 ->add('town', TextType::class, ['required' => true, 'data' => $membre->town])
-                ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $membre->country_id])
-                ->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile])
+                ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $membre->country_id]);
+            if ($membre->type === 'Particulier' || $membre->type === 'Touriste') {
+                $formBuilder->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile]);
+            } else {
+                $formBuilder->add('phone', TextType::class, ['label' => 'Téléphone pro', 'required' => true, 'data' => $membre->phone]);
+            }
+            $formBuilder
                 ->add('email', TextType::class, ['required' => true, 'data' => $membre->email])
                 ->add('submit', SubmitType::class, ['label' => 'Enregistrer']);
-            $form= $builder->getForm();
+            $form = $formBuilder->getForm();
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $data['birth'] = $data['birth']->format('d/m/Y');
+                if (isset($data['birth'])) {
+                    $data['birth'] = $data['birth']->format('d/m/Y');
+                }
                 $responseMember = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
 
                 if($responseMember['httpcode'] == 200) {

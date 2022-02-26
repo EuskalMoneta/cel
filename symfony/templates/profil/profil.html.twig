@@ -52,7 +52,11 @@
                                 {{ infosUser.nom }}<br />
                                 {{ membre.address }}<br />
                                 {{ membre.zip }} {{ membre.town }}<br /><br />
-                                {{ membre.phone_mobile }}<br />
+                                {% if membre.type == 'Particulier' or membre.type == 'Touriste' %}
+                                    {{ membre.phone_mobile }}<br />
+                                {% else %}
+                                    {{ membre.phone }}<br />
+                                {% endif %}
                                 {{ membre.email }}
                             </p>
                         </td>

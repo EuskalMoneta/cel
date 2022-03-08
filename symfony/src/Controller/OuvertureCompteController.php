@@ -167,6 +167,8 @@ class OuvertureCompteController extends AbstractController
         }
 
         $formBuilder = $this->createFormBuilder();
+
+        // Si on connait déjà l'utilisateur, on affiche le numéro d'adhérent dans le formulaire en lecture seule
         if ($member) {
             $formBuilder->add('login', TextType::class, [
                 'label' => $translator->trans("N° d'adhérent"),
@@ -203,7 +205,8 @@ class OuvertureCompteController extends AbstractController
             $data = $form->getData();
 
             if (!$member) {
-                //Check si l'utilisateur existe déjà
+                //Vérifier l'existance d'un compte dans dolibarr, si l'utilisateur existe un email est envoyé contenant
+                //le jeton d'authentification
                 $response = $APIToolbox->curlWithoutToken(
                     'POST',
                     '/verifier-existence-compte/',

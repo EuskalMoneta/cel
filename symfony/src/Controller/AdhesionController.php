@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -26,6 +27,135 @@ class AdhesionController extends AbstractController
     const NB_ETAPES = 5;
 
     /**
+     * A partir d'un numéro d'adhérent, permet de passer à l'étape 2
+     * d'une nouvelle adhésion ou ouverture de compte
+     * Fonction passerelle entre la recherche et les processus d'inscription
+     * @param string $type adhesion | compte
+     * @param string $login le numéro d'adhérent de type E00001
+     *
+     * @Route("/{_locale}/poursuiteInscription/{type}/{login}", name="app_adhesion_etape0_passerelle")
+     */
+    public function poursuiteInscription($type, $login, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    {
+        //Récupération du membre
+        $response = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&login='.$login, '');
+        if ($response['httpcode'] == 200) {
+            $member = $response['data'][0];
+            if($member){
+                if($type == 'adhesion'){
+                    $data['login'] = $login;
+                    $data['civility_id'] = $member->civility_id;
+                    $data['lastname'] = $member->lastname;
+                    $data['firstname'] =  $member->firstname;
+                    $data['email'] =  $member->email;
+                    $data['birth'] =  $member->birth;
+                    $session->set('utilisateur', $data);
+
+                    return $this->redirectToRoute('app_adhesion_etape2_coordonnees');
+
+                } elseif ($type == 'compte'){
+                    $data['login'] = $login;
+                    $data['lastname'] = $member->lastname;
+                    $data['firstname'] =  $member->firstname;
+                    $data['email'] =  $member->email;
+                    $data['valide'] =  true;
+                    $session->set('utilisateur', $data);
+                    $session->set('compteur', 1);
+
+                    return $this->redirectToRoute('app_compte_etape2_coordonnees');
+                }
+            }
+        } else {
+            $this->addFlash('warning', $translator->trans('numéro de compte en erreur'));
+        }
+
+        //si il n'y a pas eu de redirection, on redirige vers la page de recherche
+        return $this->redirectToRoute('app_adhesion_etape0_recherche');
+    }
+
+    /**
+     * Formulaire de recherche multi critères d'un adhérent
+     * renvoi une liste d'adhérents
+     * Accès réservé par mot de passe
+     * @Route("/{_locale}/adhesion-admin", name="app_adhesion_etape0_recherche")
+     */
+    public function etape0Recherche(Request $request, TranslatorInterface $translator, APIToolbox $APIToolbox)
+    {
+        $adherents = "vide";
+
+        //Création d'un formulaire de recherche, le mot de passe permet de restreindre l'accès aux données aux seul "administrateurs"
+        $formBuilder = $this->createFormBuilder();
+        $formBuilder
+            ->add('lastname', TextType::class, [
+                'label' => $translator->trans('identite.nom'),
+                'required' => false,
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => $translator->trans('identite.prenom'),
+                'required' => false,
+            ])
+            ->add('email', EmailType::class, [
+                'label' => $translator->trans('identite.email'),
+                'required' => false,
+            ])
+            ->add('motDePasse', TextType::class, [
+                'label' => $translator->trans("Mot de passe"),
+                'required' => false,
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider']);
+        $form = $formBuilder->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            //Vérification du mot de passe
+            if($data['motDePasse'] == 'TableINFO'){
+                $adherents = [];
+
+                //Recherche du membre via son nom dans dolibarr
+                if($data['lastname'] != ''){
+                    $responseLastname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name='.$data['lastname'], '');
+                    if ($responseLastname['httpcode'] == 200) {
+                        $adherents = array_merge($adherents, $responseLastname['data']);
+                    }
+                }
+
+                //Recherche du membre via son prenom dans dolibarr
+                if($data['firstname'] != '') {
+                    $responseFirstname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name=' . $data['firstname'], '');
+                    if ($responseFirstname['httpcode'] == 200) {
+                        $adherents = array_merge($adherents, $responseFirstname['data']);
+                    }
+                }
+
+                //Recherche du membre via son email dans dolibarr
+                if($data['email'] != '') {
+                    $responseEmail = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&email=' . $data['email'], '');
+                    if ($responseEmail['httpcode'] == 200) {
+                        $adherents = array_merge($adherents, [$responseEmail['data']]);
+                    }
+                }
+
+                //dédoublonner les résultats
+                $adherents = array_unique($adherents, SORT_REGULAR);
+            }
+        }
+
+        return $this->render('adhesion/etape0_recherche.html.twig', [
+            'surtitre' => $translator->trans($this::SURTITRE),
+            'numero_etape' => 0,
+            'nb_etapes' => $this::NB_ETAPES,
+            'titre' => $translator->trans('rechercher'),
+            'explication' => '',
+            'adherents' => $adherents,
+            'form' => $form->createView()
+        ]);
+
+    }
+
+    /**
+     * Première étape du processus d'adhésion, demande nom, prenom
      * @Route("/{_locale}/adhesion", name="app_adhesion_etape1_identite")
      */
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
@@ -50,6 +180,7 @@ class AdhesionController extends AbstractController
                 'data' => $member->login,
             ]);
         }
+
         $formBuilder
             ->add('civility_id', ChoiceType::class, [
                 'choices' => [

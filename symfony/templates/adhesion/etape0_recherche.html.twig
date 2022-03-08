@@ -1,0 +1,76 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block column_size %}<div class="col-12 col-md-12">{% endblock %}
+
+    {% block content %}
+        <div style="">
+            <p class="text-subtitle">{{ explication | raw }}</p>
+        </div>
+        <form method="post">
+            {{ form_start(form) }}
+
+            <div class="d-flex">
+                <div class="flex-grow-1">
+                    {{ form_row(form.lastname) }}
+                </div>
+                <div class="ml-4 flex-grow-1">
+                    {{ form_row(form.firstname) }}
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="flex-grow-1">
+                    {{ form_row(form.email) }}
+                </div>
+                <div class="ml-4 flex-grow-1">
+                    {{ form_row(form.motDePasse) }}
+                </div>
+            </div>
+
+            {{ form(form) }}
+        </form>
+
+        <div class="mt-5">
+            {% if adherents == 'vide' %}
+
+            {% elseif adherents | length > 0 %}
+                <div class="d-flex flex-wrap justify-content-between">
+                    {% for membre in adherents %}
+                        <div class="d-flex justify-content-between mb-5" style="min-width: 50%">
+                            <div>
+                                <h5>{{ membre.lastname }} {{ membre.firstname }}</h5>
+                                {% if membre.company != '' %}
+                                    {{ membre.company }}
+                                    <br />
+                                {% endif %}
+                                {{  membre.email }}<br />
+                                {{  membre.birth | date('d/m/Y') }}<br />
+                                {{  membre.town }}
+                            </div>
+                            <div class="mr-md-5 ml-4">
+                                <a class="btn btn-outline-primary" href="{{ path('app_adhesion_etape0_passerelle', {'type': 'adhesion', 'login': membre.login}) }}">
+                                    Adhésion <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                    </svg>
+                                </a>
+
+                                <div class="mt-3">
+                                    <a class="btn btn-outline-primary" href="{{ path('app_adhesion_etape0_passerelle', {'type': 'compte', 'login': membre.login}) }}">
+                                        Compte <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h3>Aucun résultat</h3>
+            {% endif %}
+        </div>
+
+        <div class="mt-5 text-center">
+            <a href="{{ path('app_ouverture_etape1_identite') }}" class="btn btn-outline-info">Nouvelle ouverture de compte</a>
+            <a href="{{ path('app_adhesion_etape1_identite') }}" class="btn btn-outline-info">Nouvelle adhésion</a>
+        </div>
+    {% endblock %}

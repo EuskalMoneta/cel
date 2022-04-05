@@ -248,6 +248,10 @@ label.required:before, legend.required::before{
     z-index: 10;
 }
 
+.table {
+    color: #090a0a;
+}
+
 .table-success td, .table-success th{
     color: #000;
 }

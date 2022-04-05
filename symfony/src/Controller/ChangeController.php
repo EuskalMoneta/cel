@@ -45,7 +45,6 @@ class ChangeController extends AbstractController
 
             $membre = $responseMember['data'][0];
 
-            dump($membre->array_options->options_prelevement_change_montant);
             $form = $this->createFormBuilder(['options_prelevement_change_montant' => $membre->array_options->options_prelevement_change_montant], ['attr' => ['id' => 'form-virement']])
                 ->add('options_prelevement_change_montant', NumberType::class,
                     [

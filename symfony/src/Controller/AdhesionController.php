@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +36,7 @@ class AdhesionController extends AbstractController
      *
      * @Route("/{_locale}/poursuiteInscription/{type}/{login}", name="app_adhesion_etape0_passerelle")
      */
-    public function poursuiteInscription($type, $login, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    public function poursuiteInscription($type, $login="", TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         //Récupération du membre
         $response = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&login='.$login, '');
@@ -63,7 +64,16 @@ class AdhesionController extends AbstractController
                     $session->set('compteur', 1);
 
                     return $this->redirectToRoute('app_compte_etape2_coordonnees');
+                } elseif ($type == 'prelevement'){
+
+                    return $this->redirectToRoute('app_signature_mandat_cotisation_etape1_coordonnees', ['token' => $member->array_options->options_token]);
                 }
+            }
+        } elseif($login == '') {
+            if ($type == 'adhesion') {
+                return $this->redirectToRoute('app_adhesion_etape1_identite');
+            } elseif ($type == 'compte'){
+                return $this->redirectToRoute('app_ouverture_etape1_identite');
             }
         } else {
             $this->addFlash('warning', $translator->trans('numéro de compte en erreur'));
@@ -74,67 +84,95 @@ class AdhesionController extends AbstractController
     }
 
     /**
-     * Formulaire de recherche multi critères d'un adhérent
-     * renvoi une liste d'adhérents
-     * Accès réservé par mot de passe
-     * @Route("/{_locale}/adhesion-admin", name="app_adhesion_etape0_recherche")
+     * Demande d'un mot de passe pour accéder à la recherche d'utilisateur
+     * Stockage dans un cookie pour une durée déterminée
+     *
+     * @Route("/{_locale}/adhesion-admin", name="app_adhesion_admin_password")
      */
-    public function etape0Recherche(Request $request, TranslatorInterface $translator, APIToolbox $APIToolbox)
+    public function demandeMotDePasse(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
-        $adherents = "vide";
-
-        //Création d'un formulaire de recherche, le mot de passe permet de restreindre l'accès aux données aux seul "administrateurs"
-        $formBuilder = $this->createFormBuilder();
-        $formBuilder
-            ->add('lastname', TextType::class, [
-                'label' => $translator->trans('identite.nom'),
-                'required' => false,
-            ])
-            ->add('firstname', TextType::class, [
-                'label' => $translator->trans('identite.prenom'),
-                'required' => false,
-            ])
-            ->add('email', EmailType::class, [
-                'label' => $translator->trans('identite.email'),
-                'required' => false,
-            ])
+        $formBuilder = $this->createFormBuilder()
             ->add('motDePasse', TextType::class, [
                 'label' => $translator->trans("Mot de passe"),
                 'required' => false,
             ])
-            ->add('submit', SubmitType::class, ['label' => 'Valider']);
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+        ;
         $form = $formBuilder->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            //Vérification du mot de passe
-            if($data['motDePasse'] == 'TableINFO'){
+            //On verifie le mot de passe et on défini en session une durée de validitée
+            if ($data['motDePasse'] == 'TableINFO') {
+                $session->set('motDePasseRechercheAdherent', strtotime('+5 hours'));
+                return $this->redirectToRoute('app_adhesion_etape0_recherche');
+            } else {
+                $this->addFlash('warning', 'Mot de passe incorrect');
+            }
+        }
+
+        return $this->render('adhesion/etape0_mot_de_passe.html.twig', [
+            'surtitre' => $translator->trans('recherche_adherent.mot_de_passe'),
+            'numero_etape' => 0,
+            'nb_etapes' => $this::NB_ETAPES,
+            'titre' => '',
+            'explication' => '',
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Formulaire de recherche multi critères d'un adhérent
+     * renvoi une liste d'adhérents
+     * Accès réservé par mot de passe
+     * @Route("/{_locale}/adhesion-admin/recherche", name="app_adhesion_etape0_recherche")
+     */
+    public function etape0Recherche(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    {
+        $adherents = "vide";
+
+        //Création d'un formulaire de recherche, le mot de passe permet de restreindre l'accès aux données aux seul "administrateurs"
+        $formBuilder = $this->createFormBuilder();
+        $formBuilder
+            ->add('term', TextType::class, [
+                'label' => $translator->trans(' '),
+                'required' => false,
+            ])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans('rechercher')]);
+        $form = $formBuilder->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            //Vérification qu'un mot de passe a été saisi
+            if($session->has('motDePasseRechercheAdherent')){
+
+                //verification de la durée du mot de passe
+                if($session->get('motDePasseRechercheAdherent') < (new \DateTime("now"))->getTimestamp()){
+                    return $this->redirectToRoute('app_adhesion_admin_password');
+                }
                 $adherents = [];
 
                 //Recherche du membre via son nom dans dolibarr
-                if($data['lastname'] != ''){
-                    $responseLastname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name='.$data['lastname'], '');
-                    if ($responseLastname['httpcode'] == 200) {
-                        $adherents = array_merge($adherents, $responseLastname['data']);
-                    }
+                $responseLastname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name='.$data['term'], '');
+                if ($responseLastname['httpcode'] == 200) {
+                    $adherents = array_merge($adherents, $responseLastname['data']);
                 }
 
                 //Recherche du membre via son prenom dans dolibarr
-                if($data['firstname'] != '') {
-                    $responseFirstname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name=' . $data['firstname'], '');
-                    if ($responseFirstname['httpcode'] == 200) {
-                        $adherents = array_merge($adherents, $responseFirstname['data']);
-                    }
+                $responseFirstname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name=' . $data['term'], '');
+                if ($responseFirstname['httpcode'] == 200) {
+                    $adherents = array_merge($adherents, $responseFirstname['data']);
                 }
 
                 //Recherche du membre via son email dans dolibarr
-                if($data['email'] != '') {
-                    $responseEmail = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&email=' . $data['email'], '');
-                    if ($responseEmail['httpcode'] == 200) {
-                        $adherents = array_merge($adherents, [$responseEmail['data']]);
-                    }
+                $responseEmail = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&email=' . $data['term'], '');
+                if ($responseEmail['httpcode'] == 200) {
+                    $adherents = array_merge($adherents, [$responseEmail['data']]);
                 }
 
                 //dédoublonner les résultats
@@ -143,10 +181,10 @@ class AdhesionController extends AbstractController
         }
 
         return $this->render('adhesion/etape0_recherche.html.twig', [
-            'surtitre' => $translator->trans($this::SURTITRE),
+            'surtitre' => $translator->trans('recherche_adherent.titre'),
             'numero_etape' => 0,
             'nb_etapes' => $this::NB_ETAPES,
-            'titre' => $translator->trans('rechercher'),
+            'titre' => $translator->trans(' '),
             'explication' => '',
             'adherents' => $adherents,
             'form' => $form->createView()

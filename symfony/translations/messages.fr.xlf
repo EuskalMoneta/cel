@@ -1605,6 +1605,26 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>attente_reception.explication</source>
         <target>Nous avons détecté un compte existant pour l'adresse email fournie. Un email contenant un lien unique vous a été envoyé !</target>
       </trans-unit>
+      <trans-unit id="zVu77b" resname="recherche_adherent.titre">
+          <source>recherche_adherent.titre</source>
+          <target>Saisissez nom, prénom ou e-mail de la personne</target>
+        </trans-unit>
+      <trans-unit id="zVu77a" resname="recherche_adherent.mot_de_passe">
+        <source>recherche_adherent.mot_de_passe</source>
+        <target>Saisissez le mot de passe administrateur</target>
+      </trans-unit>
+      <trans-unit id="zVaza9a" resname="recherche_adherent.adhesion">
+        <source>recherche_adherent.adhesion</source>
+        <target>Adhésion avec ouverture de compte</target>
+      </trans-unit>
+      <trans-unit id="z7z79a" resname="recherche_adherent.adhesion_sans">
+        <source>recherche_adherent.adhesion_sans</source>
+        <target>Adhésion sans ouverture de compte</target>
+      </trans-unit>
+      <trans-unit id="z7z777" resname="recherche_adherent.prelevement">
+        <source>recherche_adherent.prelevement</source>
+        <target>Passer au prélèvement automatique</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

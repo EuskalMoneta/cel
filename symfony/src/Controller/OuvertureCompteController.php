@@ -210,7 +210,7 @@ class OuvertureCompteController extends AbstractController
                 $response = $APIToolbox->curlWithoutToken(
                     'POST',
                     '/verifier-existence-compte/',
-                    ['email' => $data["email"], "language" => $request->getLocale()]
+                    ['email' => $data["email"], 'type' => 'compte', "language" => $request->getLocale()]
                 );
                 if ($response['httpcode'] == 200) {
                     return $this->render('ouverture_compte/attente_reception_email.html.twig', [

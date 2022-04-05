@@ -262,6 +262,25 @@ class AdhesionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            if (!$member) {
+                //Vérifier l'existance d'un compte adhérent dans dolibarr, si l'utilisateur existe un email est envoyé contenant
+                //le jeton d'authentification
+                $response = $APIToolbox->curlWithoutToken(
+                    'POST',
+                    '/verifier-existence-compte/',
+                    ['email' => $data["email"], 'type' => 'adhesion', "language" => $request->getLocale()]
+                );
+                if ($response['httpcode'] == 200) {
+                    return $this->render('ouverture_compte/attente_reception_email.html.twig', [
+                        'surtitre' => $translator->trans($this::SURTITRE),
+                        'numero_etape' => 1,
+                        'nb_etapes' => $this::NB_ETAPES,
+                        'titre' => $translator->trans('attente_reception.titre'),
+                        'explication' => $translator->trans('attente_reception.explication')
+                    ]);
+                }
+            }
+
             $session->set('utilisateur', $data);
 
             return $this->redirectToRoute('app_adhesion_etape2_coordonnees');

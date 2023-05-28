@@ -1129,6 +1129,10 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>Phone</source>
         <target>Sakelako telefonoa</target>
       </trans-unit>
+      <trans-unit id="Aj2ojRo" resname="Téléphone pro">
+        <source>Téléphone pro</source>
+        <target>Telefonoa</target>
+      </trans-unit>
       <trans-unit id="fEHltnT" resname="Change en ligne via HelloAsso">
         <source>Change en ligne via HelloAsso</source>
         <target>HelloAssoren bidez linean trukea</target>
@@ -1598,6 +1602,14 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
       <trans-unit id="zVuDKsX" resname="Libellé">
         <source>Libellé</source>
         <target>Deskribapena</target>
+      </trans-unit>
+      <trans-unit id="zVu84aa" resname="attente_reception.titre">
+        <source>attente_reception.titre</source>
+        <target>Compte existant</target>
+      </trans-unit>
+      <trans-unit id="zVu84ab" resname="attente_reception.explication">
+        <source>attente_reception.explication</source>
+        <target>Nous avons détecté un compte existant pour l'adresse email fournie. Un email contenant un lien unique vous a été envoyé !</target>
       </trans-unit>
     </body>
   </file>

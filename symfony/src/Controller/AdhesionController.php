@@ -206,7 +206,11 @@ class AdhesionController extends AbstractController
                 $data = array_merge($session->get('utilisateur'), $data);
                 $session->set('utilisateur', $data);
 
-                return $this->redirectToRoute('app_adhesion_signature_sepa');
+                if($_ENV["APP_ENV"] == 'dev'){
+                    return $this->redirectToRoute('app_adhesion_etape5_choix_asso');
+                } else {
+                    return $this->redirectToRoute('app_adhesion_signature_sepa');
+                }
             } else {
                 $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
@@ -302,12 +306,23 @@ class AdhesionController extends AbstractController
     {
         $session->start();
 
-        //récupérer le SEPA signé et le stocker en session
-        $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-        $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
-        $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
-        $session->set('utilisateur', $data);
+        if($_ENV["APP_ENV"] == 'dev'){
+            $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
+
+            $data = array_merge(
+                $session->get('utilisateur'),
+                ['sepa_document' => $docBase64]
+            );
+            $session->set('utilisateur', $data);
+
+        } else {
+            //récupérer le SEPA signé et le stocker en session
+            $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
+            $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
+            $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
+            $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
+            $session->set('utilisateur', $data);
+        }
 
         $tabAssos = [];
         $response = $APIToolbox->curlWithoutToken('GET', '/associations/');

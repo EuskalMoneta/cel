@@ -112,7 +112,8 @@ class ChangeController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $data['mode'] = 'modify';
-                if ($vacancesEuskoController->isValidIBAN($data['options_iban'])) {
+                $iban = str_replace(' ', '', $data['options_iban']);
+                if ($vacancesEuskoController->isValidIBAN($iban)) {
                     $responseChange = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
                     if($responseChange['httpcode'] == 200) {
                         $this->addFlash('success',$translator->trans('Votre demande a bien été prise en compte'));

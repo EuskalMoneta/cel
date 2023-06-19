@@ -212,7 +212,7 @@
         "version": "2.2.2"
     },
     "php": {
-        "version": "7.4"
+        "version": "7.3"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -441,9 +441,6 @@
         "version": "v4.3.3"
     },
     "symfony/http-kernel": {
-        "version": "v4.3.3"
-    },
-    "symfony/inflector": {
         "version": "v4.3.3"
     },
     "symfony/intl": {

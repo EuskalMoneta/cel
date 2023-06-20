@@ -72,20 +72,21 @@ final class BonPlanAdmin extends AbstractAdmin
 
 
 
-    public function prePersist($image)
+    function prePersist(object $object): void
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($object);
     }
 
-    public function preUpdate($image)
+    function preUpdate(object $object): void
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($object);
     }
 
-    private function manageFileUpload($image)
+
+    private function manageFileUpload($object)
     {
-        if ($image->getFile()) {
-            $image->refreshUpdated();
+        if ($object->getFile()) {
+            $object->refreshUpdated();
         }
     }
 }

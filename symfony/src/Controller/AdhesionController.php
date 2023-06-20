@@ -36,7 +36,7 @@ class AdhesionController extends AbstractController
      *
      * @Route("/{_locale}/poursuiteInscription/{type}/{login}", name="app_adhesion_etape0_passerelle")
      */
-    public function poursuiteInscription($type, $login="", TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    public function poursuiteInscription($type, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox, $login="")
     {
         //Récupération du membre
         $response = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&login='.$login, '');

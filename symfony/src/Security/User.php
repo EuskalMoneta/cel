@@ -19,6 +19,11 @@ class User implements UserInterface
 
     private $roles = [];
 
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
     /**
      * @return \DateTime
      */

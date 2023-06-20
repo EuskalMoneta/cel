@@ -21,6 +21,10 @@ class UserProvider implements UserProviderInterface
     }
 
 
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        return new User();
+    }
 
     /**
      * Symfony calls this method if you use features like switch_user

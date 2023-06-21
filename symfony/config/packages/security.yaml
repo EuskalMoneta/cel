@@ -15,6 +15,8 @@ security:
             #anonymous: true
             custom_authenticators:
                 - App\Security\LoginFormAuthenticator
+            form_login:
+                login_path: app_login
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -47,6 +49,6 @@ security:
         - { path: /passe-perdu, roles: PUBLIC_ACCESS }
         - { path: /valide-passe-perdu, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_USER }
-        #- { path: ^/, roles: ROLE_USER }
+        - { path: ^/, roles: ROLE_USER }
 
         # - { path: ^/profile, roles: ROLE_USER }

@@ -18,7 +18,7 @@ class AdminController extends AbstractController
      */
     public function visuStatsAction(EntityManagerInterface $em, Request $request)
     {
-        $statRepository = $em->getRepository('App:Statistique');
+        $statRepository = $em->getRepository(\App\Entity\Statistique::class);
 
         $data = ['debut' => new \DateTime(),'fin' => new \DateTime()];
         $form = $this->createFormBuilder($data)

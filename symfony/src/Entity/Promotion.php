@@ -45,6 +45,11 @@ class Promotion
      */
     private $visible;
 
+    public function __toString(): string
+    {
+        return $this->lien;
+    }
+
     /**
      * @param UploadedFile $file
      */

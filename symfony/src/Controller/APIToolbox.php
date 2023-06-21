@@ -6,6 +6,7 @@ use App\Security\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 
 class APIToolbox extends AbstractController
@@ -74,7 +75,7 @@ class APIToolbox extends AbstractController
         if($http_status == 403){
             $this->logger->emergency('Req a renvoyé'.$http_status);
             //return $this->redirectToRoute('app_logout');
-            throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
+            throw new UserNotFoundException('Votre session a expirée, merci de vous re-connecter');
         }
         return ['data' => json_decode($return), 'httpcode' => $http_status];
     }

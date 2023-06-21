@@ -381,7 +381,7 @@ class VacancesEuskoController extends AbstractController
      */
     public function bonsplans(EntityManagerInterface $em)
     {
-        $bonsplans = $em->getRepository("App:BonPlan")->findBy(['visible' => true], ['dateDebut'=> 'DESC']);
+        $bonsplans = $em->getRepository(\App\Entity\BonPlan::class)->findBy(['visible' => true], ['dateDebut'=> 'DESC']);
         return $this->render('vacancesEusko/bonsPlans.html.twig', ['bonsplans' => $bonsplans]);
     }
 
@@ -418,7 +418,7 @@ class VacancesEuskoController extends AbstractController
      */
     public function fermetureComptePanierVEE(APIToolbox $APIToolbox, EntityManagerInterface $em, Request $request, SessionInterface $session)
     {
-        $articles = $em->getRepository('App:Article')->findBy(['visible' => true], ['prix' => 'ASC']);
+        $articles = $em->getRepository(\App\Entity\Article::class)->findBy(['visible' => true], ['prix' => 'ASC']);
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
             $infosUser = [
@@ -453,7 +453,7 @@ class VacancesEuskoController extends AbstractController
     {
         $session->start();
 
-        $article = $em->getRepository('App:Article')->find($session->get('panierpaysanArticle'));
+        $article = $em->getRepository(\App\Entity\Article::class)->find($session->get('panierpaysanArticle'));
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($article and $responseMember['httpcode'] == 200){
 

@@ -48,7 +48,7 @@ class OuvertureCompteController extends AbstractController
         $identifiantHook = $request->headers->get('x-custom-header');
         $evtName = $request->headers->get('x-yousign-event-name');
 
-        $webHook = $em->getRepository('App:WebHookEvent')->findOneBy(['identifiant'=> $identifiantHook]);
+        $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->findOneBy(['identifiant'=> $identifiantHook]);
 
         //si c'est l'evt de fin on change le statut du webHook interne
         if($evtName == 'member.finished'){
@@ -70,7 +70,7 @@ class OuvertureCompteController extends AbstractController
     public function ajaxResponse(EntityManagerInterface $em, Request $request)
     {
         //Toutes les 5 secondes on vérifie si le webhook a changé de statut, si oui on envoi le signal ok
-        $webHook = $em->getRepository('App:WebHookEvent')->findOneBy(['identifiant'=> $request->get('name')]);
+        $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->findOneBy(['identifiant'=> $request->get('name')]);
 
         if($webHook->getStatut() =='finished'){
             return new JsonResponse('ok');
@@ -419,7 +419,7 @@ class OuvertureCompteController extends AbstractController
             $session->set('utilisateur', $data);
         } else {
             //récupérer le SEPA signé et le stocker en session
-            $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
+            $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->find($session->get('idWebHookEvent'));
 
             $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
             $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\BonPlan;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,18 +20,19 @@ final class BonPlanAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper): void
     {
         // get the current Image instance
+        /** @var BonPlan $image */
         $image = $this->getSubject();
 
         // use $fileFieldOptions so we can add other options to the field
         $fileFieldOptions = ['required' => false];
-        if ($image && ($webPath = $image->getWebPath())) {
+        if ($image && ($webPath = $image->getWebPath()) && $image->getImage()) {
             // get the container so the full path to the image can be set
-            $container = $this->getConfigurationPool()->getContainer();
-            $fullPath = $container->get('request_stack')->getCurrentRequest()->getBasePath().'/'.$webPath;
+            $request = $this->getRequest();
+            $fullPath = $request->getBasePath().'/'.$webPath;
 
             // add a 'help' option containing the preview's img tag
             $fileFieldOptions['help'] = '<img src="'.$fullPath.'" style="max-height: 300px;max-width: 300px;"/>';
-            $fileFieldOptions['label'] = 'Image miniature';
+            $fileFieldOptions['help_html'] = true;
         }
 
         $formMapper

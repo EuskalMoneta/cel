@@ -39,7 +39,7 @@ class SecurityController extends AbstractController
             $this->redirectToRoute('app_homepage');
         }
 
-        $promotions = $em->getRepository('App:Promotion')->findBy(['visible' => true]);
+        $promotions = $em->getRepository(\App\Entity\Promotion::class)->findBy(['visible' => true]);
 
         shuffle ($promotions);
         // get the login error if there is one

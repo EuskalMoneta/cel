@@ -50,7 +50,7 @@ class MainController extends AbstractController
         $bonPlans = [];
 
         if($membre->array_options->options_recevoir_bons_plans != 0){
-            $bonPlans = $em->getRepository('App:BonPlan')->findAccueil();
+            $bonPlans = $em->getRepository(\App\Entity\BonPlan::class)->findAccueil();
             shuffle ($bonPlans);
         }
 

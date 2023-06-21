@@ -236,7 +236,7 @@ class SignatureMandatController extends AbstractController
         $session->start();
 
         //récupérer le SEPA signé
-        $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
+        $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->find($session->get('idWebHookEvent'));
         $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
         $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
 

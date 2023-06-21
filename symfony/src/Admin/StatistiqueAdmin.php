@@ -43,13 +43,7 @@ final class StatistiqueAdmin extends AbstractAdmin
             ->add('date')
             ->add('type')
             ->add('value')
-            ->add('_action', null, [
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ]);
+            ;
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void

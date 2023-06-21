@@ -67,7 +67,7 @@ class VacancesEuskoController extends AbstractController
             return $this->redirectToRoute('app_vee_etape2_coordonnees');
 
         }
-        return $this->render('vacancesEusko/etape_identite.html.twig', ['title' => $translator->trans("Identité"), 'form' => $form->createView()]);
+        return $this->render('vacancesEusko/etape_identite.html.twig', ['title' => $translator->trans("Identité"), 'form' => $form]);
     }
 
     /**
@@ -117,13 +117,13 @@ class VacancesEuskoController extends AbstractController
                 return $this->redirectToRoute('app_vee_etape3_justificatif');
             }
         }
-        return $this->render('vacancesEusko/etape2_coordonnees.html.twig', ['title' => "Coordonnées", 'form' => $form->createView()]);
+        return $this->render('vacancesEusko/etape2_coordonnees.html.twig', ['title' => "Coordonnées", 'form' => $form]);
     }
 
     /**
      * @Route("/{_locale}/vacances-en-eusko/justificatif", name="app_vee_etape3_justificatif")
      */
-    public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session)
+    public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         
@@ -148,7 +148,7 @@ class VacancesEuskoController extends AbstractController
 
 
             }
-            return $this->render('vacancesEusko/etape3_justificatif.html.twig', ['title' => "Pièce d'identité", 'form' => $form->createView()]);
+            return $this->render('vacancesEusko/etape3_justificatif.html.twig', ['title' => "Pièce d'identité", 'form' => $form]);
         }
         return $this->render('vacancesEusko/etape3_erreur.html.twig');
     }
@@ -261,7 +261,7 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/{_locale}/vacances-en-eusko/bienvenue", name="app_vee_etape4_success")
      */
-    public function etape4Success(APIToolbox $APIToolbox, Request $request)
+    public function etape4Success(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('vacancesEusko/etape4_success.html.twig', ['title' => "Bienvenue"]);
     }
@@ -379,7 +379,7 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/bons-plans", name="app_bons_plans")
      */
-    public function bonsplans(EntityManagerInterface $em)
+    public function bonsplans(EntityManagerInterface $em): \Symfony\Component\HttpFoundation\Response
     {
         $bonsplans = $em->getRepository(\App\Entity\BonPlan::class)->findBy(['visible' => true], ['dateDebut'=> 'DESC']);
         return $this->render('vacancesEusko/bonsPlans.html.twig', ['bonsplans' => $bonsplans]);
@@ -389,7 +389,7 @@ class VacancesEuskoController extends AbstractController
      * @Route("/bons-plans/{id}", name="app_bons_plans_show")
      * @ParamConverter(name="bonPlan", class="App\Entity\BonPlan")
      */
-    public function showOneBonPlan(BonPlan $bonPlan, EntityManagerInterface $em)
+    public function showOneBonPlan(BonPlan $bonPlan, EntityManagerInterface $em): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('vacancesEusko/voirUnBonPlan.html.twig', ['bonplan' => $bonPlan]);
     }
@@ -398,7 +398,7 @@ class VacancesEuskoController extends AbstractController
      * @isGranted("ROLE_TOURISTE")
      * @Route("/vacances-en-eusko/fermeture-compte", name="app_vee_fermeture")
      */
-    public function fermetureCompteVEE(APIToolbox $APIToolbox)
+    public function fermetureCompteVEE(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
@@ -525,7 +525,7 @@ class VacancesEuskoController extends AbstractController
                     'article'=> $article,
                     'membre' => $membre,
                     'tabCountries' => $tabCountries,
-                    'form' => $form->createView()
+                    'form' => $form
                 ]);
 
         } else {
@@ -611,7 +611,7 @@ class VacancesEuskoController extends AbstractController
     /**
      * @Route("/vacances-en-eusko/fermeture-compte/fin", name="app_vee_fermeture_fin")
      */
-    public function fermetureCompteFinVEE()
+    public function fermetureCompteFinVEE(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('vacancesEusko/fermetureCompteFinVEE.html.twig');
     }

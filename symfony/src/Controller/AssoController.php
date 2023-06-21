@@ -17,7 +17,7 @@ class AssoController extends AbstractController
     /**
      * @Route("/asso", name="app_asso")
      */
-    public function asso(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
+    public function asso(APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //GET member for default options
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());

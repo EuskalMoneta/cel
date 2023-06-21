@@ -11,7 +11,7 @@
                 {% if operation.relatedAccount.owner.display is defined %}
                     <span class="text-semi-bold"> {{ operation.relatedAccount.owner.display }}</span><br />
                 {% endif %}
-                {{ operation.date|localizeddate('long', 'none', app.request.getLocale()) }}
+                {{ operation.date| format_date(dateFormat='long') }}
             </div>
         </div>
         <div class="col-4">

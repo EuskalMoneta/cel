@@ -31,7 +31,7 @@ class PrelevementController extends AbstractController
      * @Route("/prelevements", name="app_prelevement")
      * @IsGranted("ROLE_PARTENAIRE")
      */
-    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
+    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //init vars
         $comptes = [];
@@ -122,14 +122,14 @@ class PrelevementController extends AbstractController
             }
         }
 
-        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form->createView(), 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
+        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form, 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
 
     }
 
     /**
      * @Route("/prelevements/autorisations", name="app_prelevement_autorisation")
      */
-    public function autorisations(APIToolbox $APIToolbox)
+    public function autorisations(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars
         $mandatsEnATT = [];
@@ -162,7 +162,7 @@ class PrelevementController extends AbstractController
     /**
      * @Route("/prelevements/autorisations/{type}/{id}", name="app_prelevement_autorisation_change_state")
      */
-    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/'.$id.'/'.$type.'/');
         if($responseMandat['httpcode'] == 204 ) {
@@ -181,7 +181,7 @@ class PrelevementController extends AbstractController
     /**
      * @Route("/delete/prelevements/{id}", name="app_prelevement_autorisation_delete")
      */
-    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $responseMandat = $APIToolbox->curlRequest('DELETE', '/mandats/'.$id.'/');
         if($responseMandat['httpcode'] == 204 ) {
@@ -194,7 +194,7 @@ class PrelevementController extends AbstractController
     /**
      * @Route("/prelevements/mandats", name="app_prelevement_mandats")
      */
-    public function mandats(APIToolbox $APIToolbox)
+    public function mandats(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars
         $mandatsEnATT = [];
@@ -326,7 +326,7 @@ class PrelevementController extends AbstractController
             }
         }
 
-        return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form->createView()]);
+        return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form]);
     }
 
     /**

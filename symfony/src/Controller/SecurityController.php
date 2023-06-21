@@ -109,7 +109,7 @@ class SecurityController extends AbstractController
             }
 
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form->createView()]);
+        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form]);
     }
 
     /**
@@ -234,7 +234,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
+        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form]);
     }
 
     /**
@@ -295,7 +295,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render('security/validePassePerdu.html.twig', ['form' => $form->createView(), 'question' => $securityQuestion]);
+        return $this->render('security/validePassePerdu.html.twig', ['form' => $form, 'question' => $securityQuestion]);
     }
 
     /**
@@ -328,7 +328,7 @@ class SecurityController extends AbstractController
                 }
             }
         }
-        return $this->render('security/valideCGU.html.twig', ['form' => $form->createView()]);
+        return $this->render('security/valideCGU.html.twig', ['form' => $form]);
     }
 
 }

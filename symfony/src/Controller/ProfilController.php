@@ -33,10 +33,11 @@ class ProfilController extends AbstractController
     /**
      * @Route("/profil", name="app_profil")
      */
-    public function index(APIToolbox $APIToolbox)
+    public function index(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
+        dump($response);
         if($response['httpcode'] == 200) {
             $infosUser = [
                 'compte' => $response['data']->result[0]->number,
@@ -95,7 +96,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/password.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/password.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -153,7 +154,7 @@ class ProfilController extends AbstractController
             }
         }
 
-        return $this->render('profil/pin.html.twig', ['form' => $form->createView(), 'forcedPin' => $forcedPin]);
+        return $this->render('profil/pin.html.twig', ['form' => $form, 'forcedPin' => $forcedPin]);
     }
 
     /**
@@ -236,7 +237,7 @@ class ProfilController extends AbstractController
                 }
 
             }
-            return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre, 'forcedCotisation' => $forcedCotisation]);
+            return $this->render('profil/cotisation.html.twig', ['form' => $form, 'membre' => $membre, 'forcedCotisation' => $forcedCotisation]);
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
@@ -300,7 +301,7 @@ class ProfilController extends AbstractController
                     }
                 }
 
-                return $this->render('profil/question.html.twig', ['form' => $form->createView()]);
+                return $this->render('profil/question.html.twig', ['form' => $form]);
             }
         }
         throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -384,7 +385,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/coordonnees.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/coordonnees.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -427,7 +428,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/langue.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/langue.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -468,7 +469,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/newsletter.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/newsletter.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -511,7 +512,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/bonsPlans.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/bonsPlans.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -522,7 +523,7 @@ class ProfilController extends AbstractController
      * Methode pour la pop up de la page d'accueil
      * @Route("/ajax/bonPlans/{booleen}", name="app_set_bon_plans")
      */
-    public function setBonPlans($booleen, Request $request, APIToolbox $APIToolbox)
+    public function setBonPlans($booleen, APIToolbox $APIToolbox)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
 
@@ -586,7 +587,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/notifications.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/notifications.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

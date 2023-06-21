@@ -36,7 +36,7 @@ class AdhesionController extends AbstractController
      *
      * @Route("/{_locale}/poursuiteInscription/{type}/{login}", name="app_adhesion_etape0_passerelle")
      */
-    public function poursuiteInscription($type, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox, $login="")
+    public function poursuiteInscription($type, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox, $login=""): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         //Récupération du membre
         $response = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&login='.$login, '');
@@ -119,7 +119,7 @@ class AdhesionController extends AbstractController
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => '',
             'explication' => '',
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -187,7 +187,7 @@ class AdhesionController extends AbstractController
             'titre' => $translator->trans(' '),
             'explication' => '',
             'adherents' => $adherents,
-            'form' => $form->createView()
+            'form' => $form
         ]);
 
     }
@@ -292,7 +292,7 @@ class AdhesionController extends AbstractController
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
             'explication' => $translator->trans('adhesion.identite.explication'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -335,7 +335,7 @@ class AdhesionController extends AbstractController
             'numero_etape' => 2,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('coordonnees.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -409,14 +409,14 @@ class AdhesionController extends AbstractController
             'numero_etape' => 3,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('cotisation.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
     /**
      * @Route("/{_locale}/adhesion/signature-sepa", name="app_adhesion_signature_sepa")
      */
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator)
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         $user = $session->get('utilisateur');
@@ -557,14 +557,14 @@ class AdhesionController extends AbstractController
             'numero_etape' => 5,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('choix_asso.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
     /**
      * @Route("/{_locale}/adhesion/fin", name="app_adhesion_fin")
      */
-    public function fin()
+    public function fin(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('adhesion/fin.html.twig');
     }

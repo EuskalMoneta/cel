@@ -16,7 +16,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/stats", name="admin_stats")
      */
-    public function visuStatsAction(EntityManagerInterface $em, Request $request)
+    public function visuStatsAction(EntityManagerInterface $em, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $statRepository = $em->getRepository(\App\Entity\Statistique::class);
 
@@ -58,7 +58,7 @@ class AdminController extends AbstractController
             $moyenne = $soustotal / $cpt;
 
             return $this->render('admin/visuStats.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form,
                 'data' => $data,
                 'moyenne' => $moyenne,
                 'userUnique' => $cpt,
@@ -69,7 +69,7 @@ class AdminController extends AbstractController
 
         }
         return $this->render('admin/visuStats.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $form,
         ));
 
     }

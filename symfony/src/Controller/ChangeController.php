@@ -20,7 +20,7 @@ class ChangeController extends AbstractController
     /**
      * @Route("/change", name="app_change")
      */
-    public function change(APIToolbox $APIToolbox)
+    public function change(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
         if($responseMember['httpcode'] == 200) {
@@ -75,7 +75,7 @@ class ChangeController extends AbstractController
                 }
 
             }
-            return $this->render('change/changeModifier.html.twig', ['membre' => $membre, 'form' => $form->createView()]);
+            return $this->render('change/changeModifier.html.twig', ['membre' => $membre, 'form' => $form]);
         }
         throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
     }
@@ -126,7 +126,7 @@ class ChangeController extends AbstractController
 
             }
 
-            return $this->render('change/changeModifier.html.twig', ['membre' => $membre, 'form' => $form->createView()]);
+            return $this->render('change/changeModifier.html.twig', ['membre' => $membre, 'form' => $form]);
         }
         throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
     }

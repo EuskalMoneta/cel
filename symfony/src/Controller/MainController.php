@@ -120,7 +120,7 @@ class MainController extends AbstractController
         $response = $APIToolbox->curlGetPDF('GET', '/export-rie-adherent/?account='.$this->getUser()->getCompte());
 
         if($response['httpcode'] == 200) {
-            return new Response($response['data'],200,
+            return new Response($response['data'],\Symfony\Component\HttpFoundation\Response::HTTP_OK,
                 [
                     'Content-Type'        => 'application/pdf',
                     'Content-Disposition' => sprintf('attachment; filename="%s"', 'rie.pdf'),
@@ -139,14 +139,14 @@ class MainController extends AbstractController
         $response = $APIToolbox->curlGetPDF('GET', '/export-history-adherent/?begin='.$dateS.'&end='.$dateE.'&description=', $type);
         if($response['httpcode'] == 200) {
             if($type == 'pdf'){
-                return new Response($response['data'],200,
+                return new Response($response['data'],\Symfony\Component\HttpFoundation\Response::HTTP_OK,
                     [
                         'Content-Type'        => 'application/pdf',
                         'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.pdf'),
                     ]
                 );
             } else {
-                return new Response($response['data'],200,
+                return new Response($response['data'],\Symfony\Component\HttpFoundation\Response::HTTP_OK,
                     [
                         'Content-Type'        => 'text/csv',
                         'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.csv'),
@@ -161,7 +161,7 @@ class MainController extends AbstractController
     /**
      * @Route("/reconvertir/eusko", name="app_reconvertir")
      */
-    public function reconvertir(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function reconvertir(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
@@ -193,7 +193,7 @@ class MainController extends AbstractController
                 }
             }
 
-            return $this->render('main/reconvertir.html.twig', ['form' => $form->createView(), 'infosUser' => $infosUser]);
+            return $this->render('main/reconvertir.html.twig', ['form' => $form, 'infosUser' => $infosUser]);
 
         } else {
             throw new NotFoundHttpException('Informations adhérent non disponible');
@@ -203,7 +203,7 @@ class MainController extends AbstractController
     /**
      * @Route("/aide", name="app_aide")
      */
-    public function aide(Request $request, APIToolbox $APIToolbox)
+    public function aide(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('main/aide.html.twig');
 
@@ -212,7 +212,7 @@ class MainController extends AbstractController
     /**
      * @Route("/recherche", name="app_search")
      */
-    public function search(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    public function search(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars
         $operations = 'empty';
@@ -263,7 +263,7 @@ class MainController extends AbstractController
             }
         }
 
-        return $this->render('main/search.html.twig', ['form' => $form->createView(), 'operations' => $operations, 'dateS' => $dateS, 'dateE' => $dateE]);
+        return $this->render('main/search.html.twig', ['form' => $form, 'operations' => $operations, 'dateS' => $dateS, 'dateE' => $dateE]);
     }
 
 

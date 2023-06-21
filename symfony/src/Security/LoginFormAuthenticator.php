@@ -167,7 +167,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         ];
 
         $request->getSession()->set(
-            Security::LAST_USERNAME,
+            \Symfony\Component\Security\Http\SecurityRequestAttributes::LAST_USERNAME,
             $credentials['username']
         );
 

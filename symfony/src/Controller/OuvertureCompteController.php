@@ -82,7 +82,7 @@ class OuvertureCompteController extends AbstractController
     /**
      * @Route("/{_locale}/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
      */
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator)
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         $user = $session->get('utilisateur');
@@ -236,7 +236,7 @@ class OuvertureCompteController extends AbstractController
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
             'explication' => $translator->trans('identite.explication'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -284,14 +284,14 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 2,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('coordonnees.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
     /**
      * @Route("/{_locale}/ouverture-compte/justificatif", name="app_compte_etape3_justificatif")
      */
-    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator)
+    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
 
@@ -316,7 +316,7 @@ class OuvertureCompteController extends AbstractController
                 'numero_etape' => 3,
                 'nb_etapes' => OuvertureCompteController::NB_ETAPES,
                 'titre' => $translator->trans('piece_d_identite.titre'),
-                'form' => $form->createView()
+                'form' => $form
             ]);
         } else {
             return $this->render('ouverture_compte/etape3_erreur.html.twig', [
@@ -397,7 +397,7 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 4,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('change_automatique.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -474,7 +474,7 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 6,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('cotisation.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -557,7 +557,7 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 7,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('securite.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
@@ -632,14 +632,14 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 8,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('choix_asso.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
     /**
      * @Route("/{_locale}/ouverture-compte/bienvenue", name="app_compte_ecran_de_fin")
      */
-    public function fin()
+    public function fin(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('ouverture_compte/fin.html.twig');
     }

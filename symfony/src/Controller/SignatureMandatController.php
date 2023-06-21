@@ -154,14 +154,14 @@ class SignatureMandatController extends AbstractController
             'numero_etape' => 1,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('mandat_sepa.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
     /**
      * @Route("/{_locale}/signature-mandat-cotisation/signature-sepa", name="app_signature_mandat_cotisation_etape2_signature_sepa")
      */
-    public function etape2SignatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator)
+    public function etape2SignatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         $user = $session->get('utilisateur');
@@ -231,7 +231,7 @@ class SignatureMandatController extends AbstractController
     /**
      * @Route("/{_locale}/signature-mandat-cotisation/fin", name="app_signature_mandat_cotisation_fin")
      */
-    public function fin(SessionInterface $session, EntityManagerInterface $em, APIToolbox $APIToolbox)
+    public function fin(SessionInterface $session, EntityManagerInterface $em, APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
 

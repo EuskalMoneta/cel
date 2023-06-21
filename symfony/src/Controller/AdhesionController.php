@@ -33,9 +33,8 @@ class AdhesionController extends AbstractController
      * Fonction passerelle entre la recherche et les processus d'inscription
      * @param string $type adhesion | compte
      * @param string $login le numéro d'adhérent de type E00001
-     *
-     * @Route("/{_locale}/poursuiteInscription/{type}/{login}", name="app_adhesion_etape0_passerelle")
      */
+    #[Route(path: '/{_locale}/poursuiteInscription/{type}/{login}', name: 'app_adhesion_etape0_passerelle')]
     public function poursuiteInscription($type, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox, $login=""): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         //Récupération du membre
@@ -86,9 +85,8 @@ class AdhesionController extends AbstractController
     /**
      * Demande d'un mot de passe pour accéder à la recherche d'utilisateur
      * Stockage dans un cookie pour une durée déterminée
-     *
-     * @Route("/{_locale}/adhesion-admin", name="app_adhesion_admin_password")
      */
+    #[Route(path: '/{_locale}/adhesion-admin', name: 'app_adhesion_admin_password')]
     public function demandeMotDePasse(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $formBuilder = $this->createFormBuilder()
@@ -127,8 +125,8 @@ class AdhesionController extends AbstractController
      * Formulaire de recherche multi critères d'un adhérent
      * renvoi une liste d'adhérents
      * Accès réservé par mot de passe
-     * @Route("/{_locale}/adhesion-admin/recherche", name="app_adhesion_etape0_recherche")
      */
+    #[Route(path: '/{_locale}/adhesion-admin/recherche', name: 'app_adhesion_etape0_recherche')]
     public function etape0Recherche(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $adherents = "vide";
@@ -194,8 +192,8 @@ class AdhesionController extends AbstractController
 
     /**
      * Première étape du processus d'adhésion, demande nom, prenom
-     * @Route("/{_locale}/adhesion", name="app_adhesion_etape1_identite")
      */
+    #[Route(path: '/{_locale}/adhesion', name: 'app_adhesion_etape1_identite')]
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $session->start();
@@ -296,9 +294,7 @@ class AdhesionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/coordonnees", name="app_adhesion_etape2_coordonnees")
-     */
+    #[Route(path: '/{_locale}/adhesion/coordonnees', name: 'app_adhesion_etape2_coordonnees')]
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
@@ -339,9 +335,7 @@ class AdhesionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/cotisation", name="app_adhesion_etape3_cotisation")
-     */
+    #[Route(path: '/{_locale}/adhesion/cotisation', name: 'app_adhesion_etape3_cotisation')]
     public function etape3Cotisation(Request $request, SessionInterface $session, TranslatorInterface $translator, VacancesEuskoController $vacancesEuskoController)
     {
         $session->start();
@@ -413,9 +407,7 @@ class AdhesionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/signature-sepa", name="app_adhesion_signature_sepa")
-     */
+    #[Route(path: '/{_locale}/adhesion/signature-sepa', name: 'app_adhesion_signature_sepa')]
     public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
@@ -483,9 +475,7 @@ class AdhesionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/choix-asso", name="app_adhesion_etape5_choix_asso")
-     */
+    #[Route(path: '/{_locale}/adhesion/choix-asso', name: 'app_adhesion_etape5_choix_asso')]
     public function etape5ChoixAsso(EntityManagerInterface $em,
                                     APIToolbox $APIToolbox,
                                     Request $request,
@@ -561,9 +551,7 @@ class AdhesionController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/fin", name="app_adhesion_fin")
-     */
+    #[Route(path: '/{_locale}/adhesion/fin', name: 'app_adhesion_fin')]
     public function fin(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('adhesion/fin.html.twig');

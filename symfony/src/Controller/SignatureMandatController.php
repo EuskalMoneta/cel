@@ -25,9 +25,7 @@ class SignatureMandatController extends AbstractController
     const SURTITRE = "Signature d'un mandat de prélèvement SEPA pour la cotisation";
     const NB_ETAPES = 2;
 
-    /**
-     * @Route("/{_locale}/signature-mandat-cotisation", name="app_signature_mandat_cotisation_etape1_coordonnees")
-     */
+    #[Route(path: '/{_locale}/signature-mandat-cotisation', name: 'app_signature_mandat_cotisation_etape1_coordonnees')]
     public function etape1Coordonnees(Request $request, SessionInterface $session, TranslatorInterface $translator, APIToolbox $APIToolbox, VacancesEuskoController $vacancesEuskoController)
     {
         $session->start();
@@ -158,9 +156,7 @@ class SignatureMandatController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/signature-mandat-cotisation/signature-sepa", name="app_signature_mandat_cotisation_etape2_signature_sepa")
-     */
+    #[Route(path: '/{_locale}/signature-mandat-cotisation/signature-sepa', name: 'app_signature_mandat_cotisation_etape2_signature_sepa')]
     public function etape2SignatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
@@ -228,9 +224,7 @@ class SignatureMandatController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/signature-mandat-cotisation/fin", name="app_signature_mandat_cotisation_fin")
-     */
+    #[Route(path: '/{_locale}/signature-mandat-cotisation/fin', name: 'app_signature_mandat_cotisation_fin')]
     public function fin(SessionInterface $session, EntityManagerInterface $em, APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();

@@ -30,9 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilController extends AbstractController
 {
-    /**
-     * @Route("/profil", name="app_profil")
-     */
+    #[Route(path: '/profil', name: 'app_profil')]
     public function index(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
 
@@ -53,9 +51,7 @@ class ProfilController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/profil/password", name="app_profil_password")
-     */
+    #[Route(path: '/profil/password', name: 'app_profil_password')]
     public function password(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -103,17 +99,13 @@ class ProfilController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/profil/init-pin", name="app_profil_init_pin")
-     */
+    #[Route(path: '/profil/init-pin', name: 'app_profil_init_pin')]
     public function init_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         return $this->set_pin($request, $APIToolbox, $translator, true);
     }
 
-    /**
-     * @Route("/profil/pin", name="app_profil_pin")
-     */
+    #[Route(path: '/profil/pin', name: 'app_profil_pin')]
     public function update_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         return $this->set_pin($request, $APIToolbox, $translator, false);
@@ -157,9 +149,7 @@ class ProfilController extends AbstractController
         return $this->render('profil/pin.html.twig', ['form' => $form, 'forcedPin' => $forcedPin]);
     }
 
-    /**
-     * @Route("/profil/cotisation", name="app_profil_cotisation")
-     */
+    #[Route(path: '/profil/cotisation', name: 'app_profil_cotisation')]
     public function cotisation(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, AuthorizationCheckerInterface $authChecker)
     {
         $forcedCotisation = false;
@@ -243,9 +233,7 @@ class ProfilController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/profil/question", name="app_profil_question")
-     */
+    #[Route(path: '/profil/question', name: 'app_profil_question')]
     public function question(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -308,9 +296,7 @@ class ProfilController extends AbstractController
 
     }
 
-    /**
-     * @Route("/ajax/zipcode/search", name="app_ajex_zipcode_search")
-     */
+    #[Route(path: '/ajax/zipcode/search', name: 'app_ajex_zipcode_search')]
     public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
     {
         $response = $APIToolbox->curlWithoutToken('GET', '/towns/?zipcode='.$request->get('q'));
@@ -327,9 +313,7 @@ class ProfilController extends AbstractController
 
     }
 
-    /**
-     * @Route("/profil/coordonnees", name="app_profil_coordonnees")
-     */
+    #[Route(path: '/profil/coordonnees', name: 'app_profil_coordonnees')]
     public function coordonnees(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -393,9 +377,7 @@ class ProfilController extends AbstractController
     }
 
 
-    /**
-     * @Route("/profil/langue", name="app_profil_langue")
-     */
+    #[Route(path: '/profil/langue', name: 'app_profil_langue')]
     public function langue(Request $request, APIToolbox $APIToolbox, SessionInterface $session, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -435,9 +417,7 @@ class ProfilController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/profil/newsletter", name="app_profil_newsletter")
-     */
+    #[Route(path: '/profil/newsletter', name: 'app_profil_newsletter')]
     public function newsletter(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -476,9 +456,7 @@ class ProfilController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/profil/bonsplans", name="app_profil_bons_plans")
-     */
+    #[Route(path: '/profil/bonsplans', name: 'app_profil_bons_plans')]
     public function bonplans(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -521,8 +499,8 @@ class ProfilController extends AbstractController
 
     /**
      * Methode pour la pop up de la page d'accueil
-     * @Route("/ajax/bonPlans/{booleen}", name="app_set_bon_plans")
      */
+    #[Route(path: '/ajax/bonPlans/{booleen}', name: 'app_set_bon_plans')]
     public function setBonPlans($booleen, APIToolbox $APIToolbox)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -543,9 +521,7 @@ class ProfilController extends AbstractController
 
     }
 
-    /**
-     * @Route("/profil/notifications", name="app_profil_notifications")
-     */
+    #[Route(path: '/profil/notifications', name: 'app_profil_notifications')]
     public function notifications(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());

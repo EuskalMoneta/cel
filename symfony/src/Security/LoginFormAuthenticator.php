@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -37,16 +38,19 @@ class LoginFormAuthenticator extends AbstractAuthenticator
     private $apiToolBox;
     private $em;
     private $password;
+    private $request;
 
     public function __construct(UrlGeneratorInterface $urlGenerator,
                                 CsrfTokenManagerInterface $csrfTokenManager,
                                 APIToolbox $APIToolbox,
+                                RequestStack $request,
                                 EntityManagerInterface $em)
     {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->apiToolBox = $APIToolbox;
         $this->em = $em;
+        $this->request = $request;
     }
 
     public function supports(Request $request):?bool
@@ -68,7 +72,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         if (null === $username) {
             // The token header was empty, authentication fails with HTTP Status
             // Code 401 "Unauthorized"
-            throw new CustomUserMessageAuthenticationException('No username provided');
+            throw new AuthenticationException('No username provided');
         }
         $APIToolbox = $this->apiToolBox;
         return new SelfValidatingPassport(
@@ -80,7 +84,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
                 if (!$token) {
                     // fail authentication with a custom error
-                    throw new CustomUserMessageAuthenticationException('Erreur de connexion');
+                    throw new AuthenticationException('Erreur de connexion');
                 }
 
                 // Get member
@@ -252,15 +256,9 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $data = [
-            // you may want to customize or obfuscate the message first
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+        $this->request->getSession()->set('errorLogin', true);
 
-            // or to translate this message
-            // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
-        ];
-
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }
 
 }

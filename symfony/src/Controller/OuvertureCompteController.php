@@ -39,9 +39,7 @@ class OuvertureCompteController extends AbstractController
     const SURTITRE = "Ouverture de votre compte eusko";
     const NB_ETAPES = 8;
 
-    /**
-     * @Route("/webhook", name="ouverture_web_hook")
-     */
+    #[Route(path: '/webhook', name: 'ouverture_web_hook')]
     public function webHook(EntityManagerInterface $em, Request $request)
     {
         //On récupère les headers de yousign pour associer le webhook à la bonne procédure
@@ -64,9 +62,7 @@ class OuvertureCompteController extends AbstractController
         return new Response();
     }
 
-    /**
-     * @Route("/webhook/ajax", name="ajax_yousign_webhook")
-     */
+    #[Route(path: '/webhook/ajax', name: 'ajax_yousign_webhook')]
     public function ajaxResponse(EntityManagerInterface $em, Request $request)
     {
         //Toutes les 5 secondes on vérifie si le webhook a changé de statut, si oui on envoi le signal ok
@@ -79,9 +75,7 @@ class OuvertureCompteController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/signature/sepa', name: 'ouverture_compte_signature_sepa')]
     public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
@@ -150,9 +144,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte", name="app_ouverture_etape1_identite")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte', name: 'app_ouverture_etape1_identite')]
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $session->start();
@@ -240,9 +232,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/coordonnees", name="app_compte_etape2_coordonnees")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/coordonnees', name: 'app_compte_etape2_coordonnees')]
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
@@ -288,9 +278,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/justificatif", name="app_compte_etape3_justificatif")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/justificatif', name: 'app_compte_etape3_justificatif')]
     public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
@@ -328,9 +316,7 @@ class OuvertureCompteController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/sepa", name="app_compte_etape4_sepa")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/sepa', name: 'app_compte_etape4_sepa')]
     public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
 
@@ -401,9 +387,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/cotisation", name="app_compte_etape6_cotisation")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/cotisation', name: 'app_compte_etape6_cotisation')]
     public function etape6Cotisation(EntityManagerInterface $em, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
@@ -478,9 +462,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/securite", name="app_compte_etape7_securite")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/securite', name: 'app_compte_etape7_securite')]
     public function etape7Securite(APIToolbox $APIToolbox,
                                    Request $request,
                                    SessionInterface $session,
@@ -561,9 +543,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/choix-asso", name="app_compte_etape8_choix_asso")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/choix-asso', name: 'app_compte_etape8_choix_asso')]
     public function etape8ChoixAsso(APIToolbox $APIToolbox,
                                     Request $request,
                                     SessionInterface $session,
@@ -636,9 +616,7 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/bienvenue", name="app_compte_ecran_de_fin")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/bienvenue', name: 'app_compte_ecran_de_fin')]
     public function fin(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('ouverture_compte/fin.html.twig');

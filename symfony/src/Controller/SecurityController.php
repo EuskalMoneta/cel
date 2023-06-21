@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,29 +31,27 @@ class SecurityController extends AbstractController
 {
     use TargetPathTrait;
 
-    /**
-     * @Route("/{_locale}/login",  locale="fr", name="app_login")
-     */
-    public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em): Response
+    #[Route(path: '/{_locale}/login', locale: 'fr', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils, RequestStack $request, EntityManagerInterface $em): Response
     {
         if ($this->getUser()) {
             $this->redirectToRoute('app_homepage');
         }
 
+        $error = $request->getSession()->get('errorLogin');
+        $request->getSession()->set('errorLogin', false);
+
         $promotions = $em->getRepository(\App\Entity\Promotion::class)->findBy(['visible' => true]);
 
         shuffle ($promotions);
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'promotions' => $promotions]);
     }
 
-    /**
-     * @Route("/creer-compte", name="app_creer_compte")
-     */
+    #[Route(path: '/creer-compte', name: 'app_creer_compte')]
     public function creerCompte(Request $request): Response
     {
         if($request->isMethod('post')){
@@ -63,9 +62,7 @@ class SecurityController extends AbstractController
         return $this->render('security/creerCompte.html.twig');
     }
 
-    /**
-     * @Route("/{_locale}/activer-compte", name="app_first_login")
-     */
+    #[Route(path: '/{_locale}/activer-compte', name: 'app_first_login')]
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
         $form = $this->createFormBuilder()
@@ -112,9 +109,7 @@ class SecurityController extends AbstractController
         return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form]);
     }
 
-    /**
-     * @Route("/{_locale}/valide-premiere-connexion", name="app_valide_first_login")
-     */
+    #[Route(path: '/{_locale}/valide-premiere-connexion', name: 'app_valide_first_login')]
     public function validateFirstLogin(Request $request,
                                        APIToolbox $APIToolbox,
                                        TranslatorInterface $translator,
@@ -196,9 +191,7 @@ class SecurityController extends AbstractController
         return $this->render('security/validatePremiereConnexion.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/{_locale}/passe-perdu", name="app_lost_password")
-     */
+    #[Route(path: '/{_locale}/passe-perdu', name: 'app_lost_password')]
     public function lostPassword(Request $request, APIToolbox $APIToolbox): Response
     {
         $locale = $request->getLocale();
@@ -237,9 +230,7 @@ class SecurityController extends AbstractController
         return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form]);
     }
 
-    /**
-     * @Route("/{_locale}/valide-passe-perdu", name="app_valide_passe_perdu")
-     */
+    #[Route(path: '/{_locale}/valide-passe-perdu', name: 'app_valide_passe_perdu')]
     public function validatePassePerdu(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): Response
     {
         $token = $request->query->get('token');
@@ -298,17 +289,13 @@ class SecurityController extends AbstractController
         return $this->render('security/validePassePerdu.html.twig', ['form' => $form, 'question' => $securityQuestion]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
+    #[Route(path: '/logout', name: 'app_logout')]
     public function logout()
     {
         throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
     }
 
-    /**
-     * @Route("/valide/cgu", name="app_accept_cgu")
-     */
+    #[Route(path: '/valide/cgu', name: 'app_accept_cgu')]
     public function valideCGU(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
         //form generation

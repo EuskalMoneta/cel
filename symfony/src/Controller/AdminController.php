@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/admin/stats", name="admin_stats")
-     */
+    #[Route(path: '/admin/stats', name: 'admin_stats')]
     public function visuStatsAction(EntityManagerInterface $em, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $statRepository = $em->getRepository(\App\Entity\Statistique::class);

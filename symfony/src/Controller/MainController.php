@@ -19,9 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_homepage")
-     */
+    #[Route(path: '/', name: 'app_homepage')]
     public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker, EntityManagerInterface $em)
     {
 
@@ -112,9 +110,7 @@ class MainController extends AbstractController
 
 
 
-    /**
-     * @Route("/export/rie", name="app_export_rie")
-     */
+    #[Route(path: '/export/rie', name: 'app_export_rie')]
     public function exportRIE(APIToolbox $APIToolbox)
     {
         $response = $APIToolbox->curlGetPDF('GET', '/export-rie-adherent/?account='.$this->getUser()->getCompte());
@@ -131,9 +127,7 @@ class MainController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/export/releve/{type}/{dateS}/{dateE}", name="app_export_releve")
-     */
+    #[Route(path: '/export/releve/{type}/{dateS}/{dateE}', name: 'app_export_releve')]
     public function exportReleve( $dateS, $dateE, APIToolbox $APIToolbox, $type = 'pdf')
     {
         $response = $APIToolbox->curlGetPDF('GET', '/export-history-adherent/?begin='.$dateS.'&end='.$dateE.'&description=', $type);
@@ -158,9 +152,7 @@ class MainController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/reconvertir/eusko", name="app_reconvertir")
-     */
+    #[Route(path: '/reconvertir/eusko', name: 'app_reconvertir')]
     public function reconvertir(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
@@ -200,18 +192,14 @@ class MainController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/aide", name="app_aide")
-     */
+    #[Route(path: '/aide', name: 'app_aide')]
     public function aide(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('main/aide.html.twig');
 
     }
 
-    /**
-     * @Route("/recherche", name="app_search")
-     */
+    #[Route(path: '/recherche', name: 'app_search')]
     public function search(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars

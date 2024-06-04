@@ -35,7 +35,7 @@ class ProfilController extends AbstractController
     {
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
-        dump($response);
+
         if($response['httpcode'] == 200) {
             $infosUser = [
                 'compte' => $response['data']->result[0]->number,

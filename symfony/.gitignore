@@ -29,3 +29,6 @@
 ###< phpunit/phpunit ###
 
 rector.php
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

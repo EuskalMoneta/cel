@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -110,11 +112,11 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/valide-premiere-connexion', name: 'app_valide_first_login')]
-    public function validateFirstLogin(Request $request,
+    public function validateFirstLogin(#[MapQueryParameter] string $token,
+                                       Request $request,
                                        APIToolbox $APIToolbox,
                                        TranslatorInterface $translator,
-                                       GuardAuthenticatorHandler $guardAuthenticatorHandler,
-                                       LoginFormAuthenticator $loginFormAuthenticator)
+                                       Security $security)
     {
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -157,17 +159,19 @@ class SecurityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $parameters = [
-                    'token' => $request->query->get('token'),
+                    'token' => $token,
                     'new_password' => $data['motDePasse'],
                     'confirm_password' => $data['motDePasse'],
                     'answer' => $data['reponse'],
                     ];
+
 
                 if($data['questionSecrete'] == 'autre'){
                     $parameters['question'] = $data['questionPerso'];
                 } else {
                     $parameters['question'] = $data['questionSecrete'];
                 }
+
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 
                 if ($response['httpcode'] == 200) {
@@ -176,13 +180,7 @@ class SecurityController extends AbstractController
 
                     $user = $APIToolbox->autoLogin($credentials);
 
-                    return $guardAuthenticatorHandler
-                        ->authenticateUserAndHandleSuccess(
-                            $user,
-                            $request,
-                            $loginFormAuthenticator,
-                            'main'
-                        );
+                    return $security->login($user, LoginFormAuthenticator::class);
                 } else {
                     $this->addFlash('danger', $translator->trans('Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.'));
                 }

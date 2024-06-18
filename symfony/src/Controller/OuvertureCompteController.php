@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use JsonSchema\Constraints\NumberConstraint;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -548,9 +549,7 @@ class OuvertureCompteController extends AbstractController
                                     Request $request,
                                     SessionInterface $session,
                                     TranslatorInterface $translator,
-                                    LoginFormAuthenticator $loginFormAuthenticator,
-                                    GuardAuthenticatorHandler $guardAuthenticatorHandler,
-                                    AuthenticationManagerInterface $authenticationManager)
+                                    Security $security)
     {
         $session->start();
 
@@ -595,13 +594,7 @@ class OuvertureCompteController extends AbstractController
 
                 $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
 
-                return $guardAuthenticatorHandler
-                    ->authenticateUserAndHandleSuccess(
-                        $user,
-                        $request,
-                        $loginFormAuthenticator,
-                        'main'
-                    );
+                return $security->login($user, LoginFormAuthenticator::class);
             } else {
                 $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
             }

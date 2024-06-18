@@ -139,18 +139,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
             })
         );
 
-        return new Passport(new UserBadge($username), new CustomCredentials(
-        // If this function returns anything else than `true`, the credentials
-        // are marked as invalid.
-        // The $credentials parameter is equal to the next argument of this class
-            function ($credentials, APIToolbox $APIToolbox, UserInterface $user) {
 
-                return $user->getApiToken() === $password;
-            },
-
-            // The custom credentials
-            $password
-        ));
         //return new Passport(new UserBadge($username), new CustomCredentials($request->request->get('password')));
     }
 

@@ -6,8 +6,8 @@ use App\Entity\BonPlan;
 use App\Security\LoginFormAuthenticator;
 use App\Security\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -28,10 +28,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -152,9 +152,7 @@ class VacancesEuskoController extends AbstractController
                                    Request $request,
                                    TranslatorInterface $translator,
                                    SessionInterface $session,
-                                   LoginFormAuthenticator $loginFormAuthenticator,
-                                   GuardAuthenticatorHandler $guardAuthenticatorHandler,
-                                   AuthenticationManagerInterface $authenticationManager)
+                                   Security $security)
     {
 
         $session->start();
@@ -232,14 +230,9 @@ class VacancesEuskoController extends AbstractController
                     //Route pour la redirection après login
                     $session->set('_security.main.target_path', $this->generateUrl('app_vee_etape4_success'));
 
-                    return $guardAuthenticatorHandler
-                        ->authenticateUserAndHandleSuccess(
-                            $user,
-                            $request,
-                            $loginFormAuthenticator,
-                            'main'
-                        );
+                    return $security->login($user);
                 } else {
+                    dump($response);
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }
 
@@ -371,18 +364,13 @@ class VacancesEuskoController extends AbstractController
         return $this->render('vacancesEusko/bonsPlans.html.twig', ['bonsplans' => $bonsplans]);
     }
 
-    /**
-     * @ParamConverter(name="bonPlan", class="App\Entity\BonPlan")
-     */
     #[Route(path: '/bons-plans/{id}', name: 'app_bons_plans_show')]
     public function showOneBonPlan(BonPlan $bonPlan, EntityManagerInterface $em): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('vacancesEusko/voirUnBonPlan.html.twig', ['bonplan' => $bonPlan]);
     }
 
-    /**
-     * @isGranted("ROLE_TOURISTE")
-     */
+    #[IsGranted('ROLE_TOURISTE')]
     #[Route(path: '/vacances-en-eusko/fermeture-compte', name: 'app_vee_fermeture')]
     public function fermetureCompteVEE(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
@@ -398,9 +386,7 @@ class VacancesEuskoController extends AbstractController
         return $this->render('vacancesEusko/fermetureCompteVEE.html.twig',  ['infosUser' => $infosUser]);
     }
 
-    /**
-     * @isGranted("ROLE_TOURISTE")
-     */
+    #[IsGranted('ROLE_TOURISTE')]
     #[Route(path: '/vacances-en-eusko/fermeture-compte/panier', name: 'app_vee_fermeture_panier')]
     public function fermetureComptePanierVEE(APIToolbox $APIToolbox, EntityManagerInterface $em, Request $request, SessionInterface $session)
     {
@@ -425,9 +411,7 @@ class VacancesEuskoController extends AbstractController
         return $this->render('vacancesEusko/fermetureComptePanierVEE.html.twig', ['infosUser' => $infosUser, 'articles'=> $articles]);
     }
 
-    /**
-     * @isGranted("ROLE_TOURISTE")
-     */
+    #[IsGranted('ROLE_TOURISTE')]
     #[Route(path: '/vacances-en-eusko/fermeture-compte/panier/recapitulatif', name: 'app_vee_fermeture_panier_recapitulatif')]
     public function fermetureComptePanierRecapVEE( APIToolbox $APIToolbox,
                                                    EntityManagerInterface $em,
@@ -520,9 +504,7 @@ class VacancesEuskoController extends AbstractController
         }
     }
 
-    /**
-     * @isGranted("ROLE_TOURISTE")
-     */
+    #[IsGranted('ROLE_TOURISTE')]
     #[Route(path: '/vacances-en-eusko/fermeture-compte/don', name: 'app_vee_fermeture_don')]
     public function fermetureCompteDonVEE(APIToolbox $APIToolbox, TranslatorInterface $translator, Request $request)
     {
@@ -557,9 +539,7 @@ class VacancesEuskoController extends AbstractController
         return $this->render('vacancesEusko/fermetureCompteDonVEE.html.twig',  [ 'infosUser' => $infosUser]);
     }
 
-    /**
-     * @isGranted("ROLE_TOURISTE")
-     */
+    #[IsGranted('ROLE_TOURISTE')]
     #[Route(path: '/vacances-en-eusko/fermeture-compte/solde', name: 'app_vee_fermeture_solde')]
     public function fermetureCompteIBANVEE(APIToolbox $APIToolbox, TranslatorInterface $translator, Request $request)
     {

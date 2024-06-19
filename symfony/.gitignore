@@ -23,3 +23,12 @@
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+rector.php
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

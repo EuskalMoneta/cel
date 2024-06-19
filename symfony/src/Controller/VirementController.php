@@ -22,9 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class VirementController extends AbstractController
 {
 
-    /**
-     * @Route("/confirm-virement", name="app_virement_confirm")
-     */
+    #[Route(path: '/confirm-virement', name: 'app_virement_confirm')]
     public function confirmAction(Request $request,
                                   APIToolbox $APIToolbox,
                                   TranslatorInterface $translator,
@@ -66,9 +64,7 @@ class VirementController extends AbstractController
         return $this->render('virement/confirm_action.html.twig', ['data' => $data]);
     }
 
-    /**
-     * @Route("/virement", name="app_virement")
-     */
+    #[Route(path: '/virement', name: 'app_virement')]
     public function virement(Request $request, APIToolbox $APIToolbox, SessionInterface $session)
     {
         //GET beneficiaires
@@ -97,13 +93,11 @@ class VirementController extends AbstractController
 
             return $this->redirectToRoute('app_virement_confirm');
         }
-        return $this->render('virement/virement.html.twig', ['form' => $form->createView(),'beneficiaires' => $beneficiaires]);
+        return $this->render('virement/virement.html.twig', ['form' => $form,'beneficiaires' => $beneficiaires]);
     }
 
-    /**
-     * @Route("/virement-multiple", name="app_virement_multiple")
-     */
-    public function virementMultiple(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController)
+    #[Route(path: '/virement-multiple', name: 'app_virement_multiple')]
+    public function virementMultiple(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController): \Symfony\Component\HttpFoundation\Response
     {
         //Create form with acount number
         $form = $this->createFormBuilder()
@@ -190,14 +184,12 @@ class VirementController extends AbstractController
             }
         }
 
-        return $this->render('virement/virement_ajout.html.twig', ['form' => $form->createView()]);
+        return $this->render('virement/virement_ajout.html.twig', ['form' => $form]);
 
     }
 
-    /**
-     * @Route("/beneficiaire/gestion", name="app_beneficiaire_gestion")
-     */
-    public function gestionBeneficiaires(APIToolbox $APIToolbox)
+    #[Route(path: '/beneficiaire/gestion', name: 'app_beneficiaire_gestion')]
+    public function gestionBeneficiaires(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
 
@@ -214,9 +206,7 @@ class VirementController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/beneficiaire/ajout", name="app_beneficiaire_ajout")
-     */
+    #[Route(path: '/beneficiaire/ajout', name: 'app_beneficiaire_ajout')]
     public function ajoutBeneficiaires(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, PrelevementController $prelevementController)
     {
 
@@ -307,14 +297,12 @@ class VirementController extends AbstractController
             }
         }
 
-        return $this->render('virement/beneficiaire_ajout.html.twig', ['form' => $form->createView()]);
+        return $this->render('virement/beneficiaire_ajout.html.twig', ['form' => $form]);
 
     }
 
-    /**
-     * @Route("/beneficiaire/remove/{id}", name="app_beneficiaire_remove")
-     */
-    public function removeBeneficiaires($id, Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    #[Route(path: '/beneficiaire/remove/{id}', name: 'app_beneficiaire_remove')]
+    public function removeBeneficiaires($id, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $response = $APIToolbox->curlRequest('DELETE', '/beneficiaires/'.$id.'/');
         if($response['httpcode'] == 200 || $response['httpcode'] == 204) {
@@ -326,10 +314,8 @@ class VirementController extends AbstractController
     }
 
 
-    /**
-     * @Route("/ajax/beneficiaire/search", name="app_beneficiaire_search")
-     */
-    public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
+    #[Route(path: '/ajax/beneficiaire/search', name: 'app_beneficiaire_search')]
+    public function jsonBeneficiaire(APIToolbox $APIToolbox)
     {
         $response = $APIToolbox->curlRequest('GET', '/beneficiaires/');
         $tabBenef = [];
@@ -345,9 +331,7 @@ class VirementController extends AbstractController
 
     }
 
-    /**
-     * @Route("/ajax/ajout/beneficiaire/search", name="app_beneficiaire_ajout_search")
-     */
+    #[Route(path: '/ajax/ajout/beneficiaire/search', name: 'app_beneficiaire_ajout_search')]
     public function jsonBeneficiaireAjout(Request $request, APIToolbox $APIToolbox)
     {
         $response = $APIToolbox->curlRequest('GET', '/beneficiaires/search/?number='.str_replace(' ', '', $request->get('q')));

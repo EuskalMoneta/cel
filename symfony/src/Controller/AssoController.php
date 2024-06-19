@@ -14,10 +14,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AssoController extends AbstractController
 {
 
-    /**
-     * @Route("/asso", name="app_asso")
-     */
-    public function asso(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
+    #[Route(path: '/asso', name: 'app_asso')]
+    public function asso(APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //GET member for default options
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -50,9 +48,7 @@ class AssoController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/asso/modifier", name="app_asso_modifier")
-     */
+    #[Route(path: '/asso/modifier', name: 'app_asso_modifier')]
     public function assoModifier(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
         //Init vars
@@ -100,9 +96,7 @@ class AssoController extends AbstractController
 
 
 
-    /**
-     * @Route("/asso/second-choix", name="app_asso_second")
-     */
+    #[Route(path: '/asso/second-choix', name: 'app_asso_second')]
     public function assoSecond(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
         //GET member for default options

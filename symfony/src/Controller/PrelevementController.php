@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Security\User;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -19,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use \Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -28,10 +28,10 @@ class PrelevementController extends AbstractController
 {
     /**
      * Page accueil des prélèvements pour les PROS / prestataires
-     * @Route("/prelevements", name="app_prelevement")
-     * @IsGranted("ROLE_PARTENAIRE")
      */
-    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
+    #[IsGranted('ROLE_PARTENAIRE')]
+    #[Route(path: '/prelevements', name: 'app_prelevement')]
+    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //init vars
         $comptes = [];
@@ -122,14 +122,12 @@ class PrelevementController extends AbstractController
             }
         }
 
-        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form->createView(), 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
+        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form, 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
 
     }
 
-    /**
-     * @Route("/prelevements/autorisations", name="app_prelevement_autorisation")
-     */
-    public function autorisations(APIToolbox $APIToolbox)
+    #[Route(path: '/prelevements/autorisations', name: 'app_prelevement_autorisation')]
+    public function autorisations(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars
         $mandatsEnATT = [];
@@ -159,10 +157,8 @@ class PrelevementController extends AbstractController
         throw new NotFoundHttpException("Impossible de récupérer les informations de mandats");
     }
 
-    /**
-     * @Route("/prelevements/autorisations/{type}/{id}", name="app_prelevement_autorisation_change_state")
-     */
-    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    #[Route(path: '/prelevements/autorisations/{type}/{id}', name: 'app_prelevement_autorisation_change_state')]
+    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/'.$id.'/'.$type.'/');
         if($responseMandat['httpcode'] == 204 ) {
@@ -178,10 +174,8 @@ class PrelevementController extends AbstractController
         throw new NotFoundHttpException("Opération impossible.");
     }
 
-    /**
-     * @Route("/delete/prelevements/{id}", name="app_prelevement_autorisation_delete")
-     */
-    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    #[Route(path: '/delete/prelevements/{id}', name: 'app_prelevement_autorisation_delete')]
+    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $responseMandat = $APIToolbox->curlRequest('DELETE', '/mandats/'.$id.'/');
         if($responseMandat['httpcode'] == 204 ) {
@@ -191,10 +185,8 @@ class PrelevementController extends AbstractController
         throw new NotFoundHttpException("Opération de suppression impossible.");
     }
 
-    /**
-     * @Route("/prelevements/mandats", name="app_prelevement_mandats")
-     */
-    public function mandats(APIToolbox $APIToolbox)
+    #[Route(path: '/prelevements/mandats', name: 'app_prelevement_mandats')]
+    public function mandats(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars
         $mandatsEnATT = [];
@@ -228,9 +220,7 @@ class PrelevementController extends AbstractController
 
     }
 
-    /**
-     * @Route("/prelevements/mandats/ajout", name="app_prelevement_mandats_ajout")
-     */
+    #[Route(path: '/prelevements/mandats/ajout', name: 'app_prelevement_mandats_ajout')]
     public function ajoutMandat(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
         //Create form with acount number
@@ -326,7 +316,7 @@ class PrelevementController extends AbstractController
             }
         }
 
-        return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form->createView()]);
+        return $this->render('prelevement/mandats_ajout.html.twig', ['form' => $form]);
     }
 
     /**

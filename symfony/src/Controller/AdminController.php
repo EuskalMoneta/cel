@@ -13,12 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/admin/stats", name="admin_stats")
-     */
-    public function visuStatsAction(EntityManagerInterface $em, Request $request)
+    #[Route(path: '/admin/stats', name: 'admin_stats')]
+    public function visuStatsAction(EntityManagerInterface $em, Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $statRepository = $em->getRepository('App:Statistique');
+        $statRepository = $em->getRepository(\App\Entity\Statistique::class);
 
         $data = ['debut' => new \DateTime(),'fin' => new \DateTime()];
         $form = $this->createFormBuilder($data)
@@ -58,7 +56,7 @@ class AdminController extends AbstractController
             $moyenne = $soustotal / $cpt;
 
             return $this->render('admin/visuStats.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form,
                 'data' => $data,
                 'moyenne' => $moyenne,
                 'userUnique' => $cpt,
@@ -69,7 +67,7 @@ class AdminController extends AbstractController
 
         }
         return $this->render('admin/visuStats.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $form,
         ));
 
     }

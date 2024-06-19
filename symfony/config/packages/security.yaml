@@ -1,7 +1,6 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -13,10 +12,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+            #anonymous: true
+            custom_authenticators:
+                - App\Security\LoginFormAuthenticator
+            form_login:
+                login_path: app_login
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -32,22 +32,22 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /anon/language/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/webhook, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/creer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /vacances-en-eusko, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /ouverture-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /adhesion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /poursuiteInscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /signature-mandat-cotisation, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /ajax/zipcode, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /vacances-en-eusko/coordonnees, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /premiere/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /activer-compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /valide-premiere-connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /valide-passe-perdu, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: login$, roles: PUBLIC_ACCESS }
+        - { path: /anon/language/*, roles: PUBLIC_ACCESS }
+        - { path: ^/webhook, roles: PUBLIC_ACCESS }
+        - { path: ^/creer-compte, roles: PUBLIC_ACCESS }
+        - { path: /vacances-en-eusko, roles: PUBLIC_ACCESS }
+        - { path: /ouverture-compte, roles: PUBLIC_ACCESS }
+        - { path: /adhesion, roles: PUBLIC_ACCESS }
+        - { path: /poursuiteInscription, roles: PUBLIC_ACCESS }
+        - { path: /signature-mandat-cotisation, roles: PUBLIC_ACCESS }
+        - { path: /ajax/zipcode, roles: PUBLIC_ACCESS }
+        - { path: /vacances-en-eusko/coordonnees, roles: PUBLIC_ACCESS }
+        - { path: /premiere/connexion, roles: PUBLIC_ACCESS }
+        - { path: /activer-compte, roles: PUBLIC_ACCESS }
+        - { path: /valide-premiere-connexion, roles: PUBLIC_ACCESS }
+        - { path: /passe-perdu, roles: PUBLIC_ACCESS }
+        - { path: /valide-passe-perdu, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
 

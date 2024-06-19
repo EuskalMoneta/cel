@@ -1,9 +1,14 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
 legacy_login:
     path: /login
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
         path: '/fr/login'
         permanent: true
+
 legacy_vee:
     path: /vacances-en-eusko
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController

@@ -333,6 +333,10 @@ class VacancesEuskoController extends AbstractController
                 $session->set('utilisateur', $dataU);
 
                 $response = $APIToolbox->go_nogo($checkID["data"]);
+
+                if($response !== true){
+                    $status = false;
+                }
             } else {
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
             }

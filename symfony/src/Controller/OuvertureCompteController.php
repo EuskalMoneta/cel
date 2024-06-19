@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\WebHookEvent;
 use App\Security\LoginFormAuthenticator;
+use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonSchema\Constraints\NumberConstraint;
 use Knp\Snappy\Pdf;
@@ -31,6 +32,7 @@ use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WiziYousignClient\WiziSignClient;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,112 +41,7 @@ class OuvertureCompteController extends AbstractController
 {
     const SURTITRE = "Ouverture de votre compte eusko";
     const NB_ETAPES = 8;
-
-    #[Route(path: '/webhook', name: 'ouverture_web_hook')]
-    public function webHook(EntityManagerInterface $em, Request $request)
-    {
-        //On récupère les headers de yousign pour associer le webhook à la bonne procédure
-        $identifiantHook = $request->headers->get('x-custom-header');
-        $evtName = $request->headers->get('x-yousign-event-name');
-
-        $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->findOneBy(['identifiant'=> $identifiantHook]);
-
-        //si c'est l'evt de fin on change le statut du webHook interne
-        if($evtName == 'member.finished'){
-            $webHook->setStatut('finished');
-        } else {
-            $webHook->setStatut('started');
-        }
-
-        //enregistrement
-        $em->persist($webHook);
-        $em->flush();
-
-        return new Response();
-    }
-
-    #[Route(path: '/webhook/ajax', name: 'ajax_yousign_webhook')]
-    public function ajaxResponse(EntityManagerInterface $em, Request $request)
-    {
-        //Toutes les 5 secondes on vérifie si le webhook a changé de statut, si oui on envoi le signal ok
-        $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->findOneBy(['identifiant'=> $request->get('name')]);
-
-        if($webHook->getStatut() =='finished'){
-            return new JsonResponse('ok');
-        } else {
-            return new JsonResponse('en attente');
-        }
-    }
-
-    #[Route(path: '/{_locale}/ouverture-compte/signature/sepa', name: 'ouverture_compte_signature_sepa')]
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
-    {
-        $session->start();
-        $user = $session->get('utilisateur');
-
-        //on démarre le client YouSign
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-
-        //Création d'un identifiant unique qui permet de récupérer le webHook yousign dans la vue
-        $identifiantWebHook = time();
-
-        //Création du webHook
-        $webHook = new WebHookEvent();
-        $webHook->setIdentifiant($identifiantWebHook);
-
-        //etape 1 init
-        //pour tester, besoin d'un ngrok, remplacer generateURL
-        $responseProcedure = $youSignClient->AdvancedProcedureCreate(
-            [
-                'start'=> false,
-                'name' => 'Signature prélèvement SEPA',
-                'description'=> 'SEPA'
-            ],
-            true,
-            'GET',
-            //'http://af5dff98a2aa.ngrok.io/eusko/cel/symfony/public/index.php/webhook',
-            $this->generateUrl('ouverture_web_hook', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $identifiantWebHook
-        );
-
-        //etape 2 fichier à signer
-        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), '/tmp/sepa-'.$identifiantWebHook.'.pdf' );
-        $responseFile = $youSignClient->AdvancedProcedureAddFile('/tmp/sepa-'.$identifiantWebHook.'.pdf', 'sepa.pdf');
-
-        //etape 3 ajout signataire
-        $response = $youSignClient->AdvancedProcedureAddMember($user['firstname'],$user['lastname'],$user['email'], $user['phone']);
-        $member = json_decode($response);
-
-        //etape 4 position et contenu de la signature
-        $response = $youSignClient->AdvancedProcedureFileObject("150,235,460,335",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
-
-        //etape 5 lancement de la procédure
-        $response = $youSignClient->AdvancedProcedurePut();
-        $status = json_decode($response)->status;
-        if($status == 'active'){
-            //on enregistre l'id du fichier pour le récuperer signé plus tard
-            $webHook->setFile(json_decode($responseFile)->id);
-            $em->persist($webHook);
-            $em->flush();
-
-            //On sauvegarde en session l'ID du webHook
-            $session->set('idWebHookEvent', $webHook->getId());
-        } else {
-            $this->addFlash('warning', 'Erreur lors de la création de la signature électronique');
-            $identifiantWebHook = 0;
-        }
-
-
-        return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
-            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-            'numero_etape' => 5,
-            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
-            'titre' => $translator->trans('signature_sepa_change_automatique.titre'),
-            'memberToken' => $member->id,
-            'webHook' => $identifiantWebHook
-        ]);
-    }
-
+    
     #[Route(path: '/{_locale}/ouverture-compte', name: 'app_ouverture_etape1_identite')]
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
@@ -370,10 +267,10 @@ class OuvertureCompteController extends AbstractController
                 $session->set('utilisateur', $data);
 
                 if($_ENV["APP_ENV"] == 'dev'){
-                    return $this->redirectToRoute('app_compte_etape6_cotisation');
-                } else {
-                    return $this->redirectToRoute('ouverture_compte_signature_sepa');
+                    //return $this->redirectToRoute('app_compte_etape6_cotisation');
                 }
+                return $this->redirectToRoute('ouverture_compte_signature_sepa');
+
             } else {
                 $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
@@ -386,6 +283,57 @@ class OuvertureCompteController extends AbstractController
             'titre' => $translator->trans('change_automatique.titre'),
             'form' => $form
         ]);
+    }
+
+    #[Route(path: '/{_locale}/ouverture-compte/signature/sepa', name: 'ouverture_compte_signature_sepa')]
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator, YouSignAPI $youSignAPI ): \Symfony\Component\HttpFoundation\Response
+    {
+        $session->start();
+        $user = $session->get('utilisateur');
+
+        //etape 1 création de la signature request
+        $responseCreateSignature = $youSignAPI->createSignatureRequest(name: "Signature prélèvement SEPA");
+
+        //etape 2 ajout du fichier à signer
+        $filePath = '/tmp/sepa-'.uniqid('', true).'.pdf';
+        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), $filePath );
+        $responseUploadDocument = $youSignAPI->addDocumentToSignatureRequest(signatureRequestId: $responseCreateSignature->id, filePath: $filePath, fileName: 'sepa.pdf');
+
+        //etape 3 ajout signataire
+        $responseAddSigner = $youSignAPI->addSignerToSignatureRequest(
+            signatureRequestId: $responseCreateSignature->id,
+            documentId: $responseUploadDocument->id,
+            firstName: $user['firstname'],
+            lastName: $user['lastname'],
+            email: $user['email'],
+            phoneNumber: $user['phone']);
+
+        //etape 4 lancement de la procedure
+        $responseActivateSignature = $youSignAPI->activateSignatureRequest(signatureRequestId: $responseCreateSignature->id);
+
+        return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 5,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('signature_sepa_change_automatique.titre'),
+            'signatureLink' => $responseActivateSignature->signers[0]->signature_link,
+            'signatureRequestId' => $responseCreateSignature->id,
+            'documentId' => $responseUploadDocument->id,
+        ]);
+
+    }
+
+    #[Route(path: '/ouverture-compte/signature/sepa/download/{signatureRequestId}/{documentId}', name: 'ajax_yousign_download_doc')]
+    public function yousignDownloadDoc(string $signatureRequestId, string $documentId, YouSignAPI $youSignAPI, SessionInterface $session)
+    {
+        //Récupérer le document signé par l'utilisateur
+        $document = $youSignAPI->downloadDocumentRequest($signatureRequestId, $documentId);
+
+        //Enregistrer le document en session
+        $data = array_merge($session->get('utilisateur'), ['sepa_document' => base64_encode($document)]);
+        $session->set('utilisateur', $data);
+
+        return new JsonResponse('ok');
     }
 
     #[Route(path: '/{_locale}/ouverture-compte/cotisation', name: 'app_compte_etape6_cotisation')]

@@ -1,0 +1,8 @@
+framework:
+  http_client:
+    scoped_clients:
+      yousign.client:
+        base_uri: '%env(YOUSIGN_URL)%'
+        headers:
+          Accept: 'application/json'
+          Authorization: 'Bearer %env(YOUSIGN_API_KEY)%'

@@ -1,48 +1,47 @@
 {% extends 'base_ouverture_compte.html.twig' %}
 
+{% block cssBefore %}
+    <script src="https://cdn.yousign.tech/iframe-sdk-1.5.0.min.js" integrity="sha384-wrNTU81R+b2K+9A1aE1c3blhReNpdRK6Tn1fzXOXhWGZGUk+Btp0dyfnk45pVpOr" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block column_size %}
-    <div class="col-12">
-{% endblock %}
+<div class="col-12">
+    {% endblock %}
 
-{% block content %}
-    {% if webHook != 0 %}
-    <iframe src="{{ yousign_url }}/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>
-    {% else %}
-        <br />
-        <br />
-        <br />
-        <br />
-        <div class="text-center">
-            <a class="btn btn-outline-primary" href="{{ path('ouverture_compte_signature_sepa') }}"> Recharger la page </a>
-        </div>
-    {% endif %}
-{% endblock %}
+    {% block content %}
+
+        <div id="iframe-container" style="width:100%;"></div>
+
+    {% endblock %}
 
 
-{% block js %}
-    <script type="text/javascript">
+    {% block js %}
+        <script type="text/javascript">
 
-        $( document ).ready(function() {
-            var tid = setInterval(ajaxCall, 5000);
-            function ajaxCall() {
-                $.ajax({
-                        method: "POST",
-                        url: "{{ path('ajax_yousign_webhook') }}",
-                        data: { name: {{ webHook }} }
+            $( document ).ready(function() {
+                const yousign = new Yousign({
+                    signatureLink: '{{signatureLink}}',
+                    iframeContainerId: 'iframe-container',
+                    isSandbox: true, //To set if you use the sandbox environment
+                });
+
+                yousign.onSuccess((data) => {
+                    console.log("Signer has successfully signed");
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('ajax_yousign_download_doc', {'signatureRequestId': signatureRequestId, 'documentId': documentId}) }}",
                     })
-                    .done(function( msg ) {
-                        if(msg === 'ok'){
-                            abortTimer();
-                            window.location.href='{{ path('app_compte_etape6_cotisation') }}';
-                        } else {
-                            console.log('pas bon');
-                        }
-                    });
-            }
-            function abortTimer() {
-                clearInterval(tid);
-            }
-        });
+                        .done(function( msg ) {
+                            if(msg === 'ok'){
+                                window.location.href='{{ path('app_compte_etape6_cotisation') }}';
+                            } else {
+                                alert('erreur enregistrement pièce identité');
+                            }
+                        });
 
-    </script>
-{% endblock %}
+
+                });
+            });
+
+        </script>
+    {% endblock %}

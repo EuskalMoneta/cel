@@ -1,7 +1,7 @@
 {% extends 'base_ouverture_compte.html.twig' %}
 
 {% block cssBefore %}
-    <script src="https://cdn.yousign.tech/iframe-sdk-1.5.0.min.js" integrity="sha384-wrNTU81R+b2K+9A1aE1c3blhReNpdRK6Tn1fzXOXhWGZGUk+Btp0dyfnk45pVpOr" crossorigin="anonymous"></script>
+    <script src="https://cdn.yousign.tech/iframe-sdk-1.6.0.min.js" integrity="sha384-/7MD1voOOzWVz7FmgeMwmmd1DO85Mo0PkkxdYd9j2wDGzGDGRG/phgnL0c9Xyy52" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block column_size %}
@@ -19,13 +19,28 @@
         <script type="text/javascript">
 
             $( document ).ready(function() {
+
+                {% if app.environment == 'dev' %}
                 const yousign = new Yousign({
                     signatureLink: '{{signatureLink}}',
                     iframeContainerId: 'iframe-container',
                     isSandbox: true, //To set if you use the sandbox environment
                 });
 
-                yousign.onSuccess((data) => {
+                yousign.onPing((data) => {
+                    console.log("Ping - The signature request is loaded");
+                    console.log(data);
+                });
+
+                {% else %}
+                const yousign = new Yousign({
+                    signatureLink: '{{signatureLink}}',
+                    iframeContainerId: 'iframe-container',
+                    isSandbox: false, //To set if you use the sandbox environment
+                });
+                {% endif %}
+
+                yousign.onSignatureDone((data) => {
                     console.log("Signer has successfully signed");
                     $.ajax({
                         method: "GET",
@@ -41,6 +56,8 @@
 
 
                 });
+
+
             });
 
         </script>

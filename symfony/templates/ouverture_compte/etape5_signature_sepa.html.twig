@@ -12,6 +12,11 @@
 
         <div id="iframe-container" style="width:100%;"></div>
 
+        <div id="patienter" class="d-none">
+            <div class="mt-5">
+                <h1>Merci de patienter quelques instants, nous récupérons votre document signé !</h1>
+            </div>
+        </div>
     {% endblock %}
 
 
@@ -21,11 +26,11 @@
             $( document ).ready(function() {
 
                 {% if app.environment == 'dev' %}
-                    const yousign = new Yousign({
-                        signatureLink: '{{signatureLink | raw }}',
-                        iframeContainerId: 'iframe-container',
-                        isSandbox: true, //To set if you use the sandbox environment
-                    });
+                const yousign = new Yousign({
+                    signatureLink: '{{signatureLink | raw }}',
+                    iframeContainerId: 'iframe-container',
+                    isSandbox: true, //To set if you use the sandbox environment
+                });
 
                 {% else %}
                 const yousign = new Yousign({
@@ -34,6 +39,12 @@
                     isSandbox: false, //To set if you use the sandbox environment
                 });
                 {% endif %}
+
+                yousign.onSuccess((data) => {
+                    $('#iframe-container').addClass('d-none');
+                    $('#patienter').removeClass('d-none');
+                });
+
 
                 yousign.onSignatureDone((data) => {
                     console.log("Signer has successfully signed");

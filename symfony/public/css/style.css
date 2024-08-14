@@ -612,3 +612,7 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
     font-family: 'Montserrat', arial, sans-serif;
     font-size: 15px;
 }
+#yousign-iframe{
+    width: 100%;
+    height: 80vh
+}

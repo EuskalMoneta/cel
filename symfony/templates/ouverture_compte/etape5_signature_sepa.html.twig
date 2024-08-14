@@ -21,20 +21,15 @@
             $( document ).ready(function() {
 
                 {% if app.environment == 'dev' %}
-                const yousign = new Yousign({
-                    signatureLink: '{{signatureLink}}',
-                    iframeContainerId: 'iframe-container',
-                    isSandbox: true, //To set if you use the sandbox environment
-                });
-
-                yousign.onPing((data) => {
-                    console.log("Ping - The signature request is loaded");
-                    console.log(data);
-                });
+                    const yousign = new Yousign({
+                        signatureLink: '{{signatureLink | raw }}',
+                        iframeContainerId: 'iframe-container',
+                        isSandbox: true, //To set if you use the sandbox environment
+                    });
 
                 {% else %}
                 const yousign = new Yousign({
-                    signatureLink: '{{signatureLink}}',
+                    signatureLink: '{{signatureLink | raw }}',
                     iframeContainerId: 'iframe-container',
                     isSandbox: false, //To set if you use the sandbox environment
                 });

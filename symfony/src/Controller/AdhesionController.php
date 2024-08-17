@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\WebHookEvent;
+use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -388,11 +389,8 @@ class AdhesionController extends AbstractController
                 $data = array_merge($session->get('utilisateur'), $data);
                 $session->set('utilisateur', $data);
 
-                if($_ENV["APP_ENV"] == 'dev'){
-                    return $this->redirectToRoute('app_adhesion_etape5_choix_asso');
-                } else {
-                    return $this->redirectToRoute('app_adhesion_signature_sepa');
-                }
+                return $this->redirectToRoute('app_adhesion_signature_sepa');
+
             } else {
                 $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
@@ -408,70 +406,39 @@ class AdhesionController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/adhesion/signature-sepa', name: 'app_adhesion_signature_sepa')]
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, YouSignAPI $youSignAPI, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         $user = $session->get('utilisateur');
 
-        //on démarre le client YouSign
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
+        //etape 1 création de la signature request
+        $responseCreateSignature = $youSignAPI->createSignatureRequest(name: "Signature prélèvement SEPA");
 
-        //Création d'un identifiant unique qui permet de récupérer le webHook yousign dans la vue
-        $identifiantWebHook = time();
-
-        //Création du webHook
-        $webHook = new WebHookEvent();
-        $webHook->setIdentifiant($identifiantWebHook);
-
-        //etape 1 init
-        //pour tester, besoin d'un ngrok, remplacer generateURL
-        $responseProcedure = $youSignClient->AdvancedProcedureCreate(
-            [
-                'start'=> false,
-                'name' => 'Signature prélèvement SEPA',
-                'description'=> 'SEPA'
-            ],
-            true,
-            'GET',
-            //'http://af5dff98a2aa.ngrok.io/eusko/cel/symfony/public/index.php/webhook',
-            $this->generateUrl('ouverture_web_hook', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $identifiantWebHook
-        );
-
-        //etape 2 fichier à signer
-        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), '/tmp/sepa-'.$identifiantWebHook.'.pdf' );
-        $responseFile = $youSignClient->AdvancedProcedureAddFile('/tmp/sepa-'.$identifiantWebHook.'.pdf', 'sepa.pdf');
+        //etape 2 ajout du fichier à signer
+        $filePath = '/tmp/sepa-'.uniqid('', true).'.pdf';
+        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), $filePath );
+        $responseUploadDocument = $youSignAPI->addDocumentToSignatureRequest(signatureRequestId: $responseCreateSignature->id, filePath: $filePath, fileName: 'sepa.pdf');
 
         //etape 3 ajout signataire
-        $response = $youSignClient->AdvancedProcedureAddMember($user['firstname'],$user['lastname'],$user['email'], $user['phone']);
-        $member = json_decode($response);
+        $responseAddSigner = $youSignAPI->addSignerToSignatureRequest(
+            signatureRequestId: $responseCreateSignature->id,
+            documentId: $responseUploadDocument->id,
+            firstName: $user['firstname'],
+            lastName: $user['lastname'],
+            email: $user['email'],
+            phoneNumber: $user['phone']);
 
-        //etape 4 position et contenu de la signature
-        $response = $youSignClient->AdvancedProcedureFileObject("150,235,460,335",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
-
-        //etape 5 lancement de la procédure
-        $response = $youSignClient->AdvancedProcedurePut();
-        $status = json_decode($response)->status;
-        if($status == 'active'){
-            //on enregistre l'id du fichier pour le récuperer signé plus tard
-            $webHook->setFile(json_decode($responseFile)->id);
-            $em->persist($webHook);
-            $em->flush();
-
-            //On sauvegarde en session l'ID du webHook
-            $session->set('idWebHookEvent', $webHook->getId());
-        } else {
-            $this->addFlash('warning', 'Erreur lors de la création de la signature électronique');
-            $identifiantWebHook = 0;
-        }
+        //etape 4 lancement de la procedure
+        $responseActivateSignature = $youSignAPI->activateSignatureRequest(signatureRequestId: $responseCreateSignature->id);
 
         return $this->render('adhesion/etape4_signature_sepa.html.twig', [
             'surtitre' => $translator->trans($this::SURTITRE),
             'numero_etape' => 4,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('signature_sepa.adhesion.titre'),
-            'memberToken' => $member->id,
-            'webHook' => $identifiantWebHook
+            'signatureLink' => $responseActivateSignature->signers[0]->signature_link,
+            'signatureRequestId' => $responseCreateSignature->id,
+            'documentId' => $responseUploadDocument->id,
         ]);
     }
 
@@ -483,24 +450,6 @@ class AdhesionController extends AbstractController
                                     TranslatorInterface $translator)
     {
         $session->start();
-
-        if($_ENV["APP_ENV"] == 'dev'){
-            $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
-
-            $data = array_merge(
-                $session->get('utilisateur'),
-                ['sepa_document' => $docBase64]
-            );
-            $session->set('utilisateur', $data);
-
-        } else {
-            //récupérer le SEPA signé et le stocker en session
-            $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->find($session->get('idWebHookEvent'));
-            $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-            $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
-            $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
-            $session->set('utilisateur', $data);
-        }
 
         $tabAssos = [];
         $response = $APIToolbox->curlWithoutToken('GET', '/associations/');

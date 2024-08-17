@@ -25,7 +25,7 @@
 
             $( document ).ready(function() {
 
-                {% if app.environment == 'dev' %}
+                {% if yousign_mode == 'dev' %}
                 const yousign = new Yousign({
                     signatureLink: '{{signatureLink | raw }}',
                     iframeContainerId: 'iframe-container',

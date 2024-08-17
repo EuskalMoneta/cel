@@ -5,6 +5,7 @@ twig:
         - '@SonataForm/Form/datepicker.html.twig'
     globals:
         yousign_url: '%env(YOUSIGN_URL)%'
+        yousign_mode: '%env(YOUSIGN_MODE)%'
 
 when@test:
     twig:

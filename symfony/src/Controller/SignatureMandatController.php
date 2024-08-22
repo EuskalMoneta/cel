@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\WebHookEvent;
+use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,10 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use WiziYousignClient\WiziSignClient;
 
 class SignatureMandatController extends AbstractController
 {
@@ -157,70 +154,39 @@ class SignatureMandatController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/signature-mandat-cotisation/signature-sepa', name: 'app_signature_mandat_cotisation_etape2_signature_sepa')]
-    public function etape2SignatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
+    public function etape2SignatureSepa(SessionInterface $session, YouSignAPI $youSignAPI, Pdf $pdf, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         $user = $session->get('utilisateur');
 
-        //on démarre le client YouSign
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
+        //etape 1 création de la signature request
+        $responseCreateSignature = $youSignAPI->createSignatureRequest(name: "Signature prélèvement SEPA");
 
-        //Création d'un identifiant unique qui permet de récupérer le webHook yousign dans la vue
-        $identifiantWebHook = time();
-
-        //Création du webHook
-        $webHook = new WebHookEvent();
-        $webHook->setIdentifiant($identifiantWebHook);
-
-        //etape 1 init
-        //pour tester, besoin d'un ngrok, remplacer generateURL
-        $responseProcedure = $youSignClient->AdvancedProcedureCreate(
-            [
-                'start'=> false,
-                'name' => 'Signature prélèvement SEPA',
-                'description'=> 'SEPA'
-            ],
-            true,
-            'GET',
-            //'http://af5dff98a2aa.ngrok.io/eusko/cel/symfony/public/index.php/webhook',
-            $this->generateUrl('ouverture_web_hook', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $identifiantWebHook
-        );
-
-        //etape 2 fichier à signer
-        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), '/tmp/sepa-'.$identifiantWebHook.'.pdf' );
-        $responseFile = $youSignClient->AdvancedProcedureAddFile('/tmp/sepa-'.$identifiantWebHook.'.pdf', 'sepa.pdf');
+        //etape 2 ajout du fichier à signer
+        $filePath = '/tmp/sepa-'.uniqid('', true).'.pdf';
+        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), $filePath );
+        $responseUploadDocument = $youSignAPI->addDocumentToSignatureRequest(signatureRequestId: $responseCreateSignature->id, filePath: $filePath, fileName: 'sepa.pdf');
 
         //etape 3 ajout signataire
-        $response = $youSignClient->AdvancedProcedureAddMember($user['firstname'],$user['lastname'],$user['email'], $user['phone']);
-        $member = json_decode($response);
+        $responseAddSigner = $youSignAPI->addSignerToSignatureRequest(
+            signatureRequestId: $responseCreateSignature->id,
+            documentId: $responseUploadDocument->id,
+            firstName: $user['firstname'],
+            lastName: $user['lastname'],
+            email: $user['email'],
+            phoneNumber: $user['phone']);
 
-        //etape 4 position et contenu de la signature
-        $response = $youSignClient->AdvancedProcedureFileObject("150,235,460,335",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
-
-        //etape 5 lancement de la procédure
-        $response = $youSignClient->AdvancedProcedurePut();
-        $status = json_decode($response)->status;
-        if($status == 'active'){
-            //on enregistre l'id du fichier pour le récuperer signé plus tard
-            $webHook->setFile(json_decode($responseFile)->id);
-            $em->persist($webHook);
-            $em->flush();
-
-            //On sauvegarde en session l'ID du webHook
-            $session->set('idWebHookEvent', $webHook->getId());
-        } else {
-            $this->addFlash('warning', 'Erreur lors de la création de la signature électronique');
-            $identifiantWebHook = 0;
-        }
+        //etape 4 lancement de la procedure
+        $responseActivateSignature = $youSignAPI->activateSignatureRequest(signatureRequestId: $responseCreateSignature->id);
 
         return $this->render('signature_mandat_cotisation/etape2_signature_sepa.html.twig', [
             'surtitre' => $translator->trans($this::SURTITRE),
             'numero_etape' => 2,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('signature_sepa.adhesion.titre'),
-            'memberToken' => $member->id,
-            'webHook' => $identifiantWebHook
+            'signatureLink' => $responseActivateSignature->signers[0]->signature_link,
+            'signatureRequestId' => $responseCreateSignature->id,
+            'documentId' => $responseUploadDocument->id,
         ]);
     }
 
@@ -228,13 +194,7 @@ class SignatureMandatController extends AbstractController
     public function fin(SessionInterface $session, EntityManagerInterface $em, APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
-
-        //récupérer le SEPA signé
-        $webHook = $em->getRepository(\App\Entity\WebHookEvent::class)->find($session->get('idWebHookEvent'));
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-        $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
-
-        $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
+        $data = $session->get('utilisateur');
 
         $response = $APIToolbox->curlWithoutToken('POST', '/enregistrer-mandat-cotisation/', $data);
 
@@ -242,6 +202,7 @@ class SignatureMandatController extends AbstractController
             return $this->render('signature_mandat_cotisation/fin.html.twig');
         } else {
             $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+            return $this->redirectToRoute('app_signature_mandat_cotisation_etape1_coordonnees');
         }
     }
 }

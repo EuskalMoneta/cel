@@ -6,6 +6,7 @@ use App\Security\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 
 class APIToolbox extends AbstractController
@@ -74,7 +75,7 @@ class APIToolbox extends AbstractController
         if($http_status == 403){
             $this->logger->emergency('Req a renvoyé'.$http_status);
             //return $this->redirectToRoute('app_logout');
-            throw new UsernameNotFoundException('Votre session a expirée, merci de vous re-connecter');
+            throw new UserNotFoundException('Votre session a expirée, merci de vous re-connecter');
         }
         return ['data' => json_decode($return), 'httpcode' => $http_status];
     }
@@ -240,8 +241,16 @@ class APIToolbox extends AbstractController
         return true;
     }
 
-    public function autoLogin($credentials)
+    /**
+     * Comme il n'y a pas d'user en BDD, fait un appel vers l'API
+     * et instancie un User en mémoire pour l'auth de symfony
+     *
+     * @param $credentials
+     * @return User
+     */
+    public function autoLogin(array $credentials): User
     {
+        $user = new User();
         $tokenAPI = $this->curlGetToken($credentials['username'], $credentials['password']);
         $member = null;
         if (strpos($credentials['username'], '@') === false) {
@@ -256,28 +265,28 @@ class APIToolbox extends AbstractController
             }
         }
         if ($member != null) {
-            $user = new User();
+
             $user->setUsername($member->login);
             $user->setLastLogin(new \DateTime());
             $user->setToken($tokenAPI);
 
             //User Roles
-            if($user->getUsername()[0] == 'E'){
+            if($user->getUsername()[0] === 'E'){
                 $user->setRoles(['ROLE_CLIENT']);
             }
-            elseif($user->getUsername()[0] == 'Z') {
+            elseif($user->getUsername()[0] === 'Z') {
                 $user->setRoles(['ROLE_PARTENAIRE']);
             }
-            elseif($user->getUsername()[0] == 'T') {
+            elseif($user->getUsername()[0] === 'T') {
                 $user->setRoles(['ROLE_TOURISTE']);
             }
-            if($member->type == 'Régie publique de recettes'){
+            if($member->type === 'Régie publique de recettes'){
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
             }
 
 
             // set locale according to the language chosen by the user
-            if($member->array_options->options_langue == 'eu'){
+            if($member->array_options->options_langue === 'eu'){
                 $user->setLocale($member->array_options->options_langue);
             } else {
                 $user->setLocale('fr');

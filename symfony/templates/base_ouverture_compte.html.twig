@@ -11,7 +11,9 @@
                 <div class="mt-md-4">
                     <h1 class="sur-titre-ouverture">{{ surtitre }}</h1>
                     <div style="width: 80%">
+                        {% if numero_etape > 0 %}
                         <div>{{ "ETAPE" | trans({'%numero_etape%': numero_etape, '%nb_etapes%': nb_etapes}) }}</div>
+                        {% endif %}
                         <h1 class="mb-3">{{ titre }}</h1>
                     </div>
 

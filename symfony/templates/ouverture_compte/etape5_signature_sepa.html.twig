@@ -1,48 +1,70 @@
 {% extends 'base_ouverture_compte.html.twig' %}
 
+{% block cssBefore %}
+    <script src="https://cdn.yousign.tech/iframe-sdk-1.6.0.min.js" integrity="sha384-/7MD1voOOzWVz7FmgeMwmmd1DO85Mo0PkkxdYd9j2wDGzGDGRG/phgnL0c9Xyy52" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block column_size %}
-    <div class="col-12">
-{% endblock %}
+<div class="col-12">
+    {% endblock %}
 
-{% block content %}
-    {% if webHook != 0 %}
-    <iframe src="{{ yousign_url }}/procedure/sign?members={{ memberToken }}" width="100%" height="700px"> </iframe>
-    {% else %}
-        <br />
-        <br />
-        <br />
-        <br />
-        <div class="text-center">
-            <a class="btn btn-outline-primary" href="{{ path('ouverture_compte_signature_sepa') }}"> Recharger la page </a>
+    {% block content %}
+
+        <div id="iframe-container" style="width:100%;"></div>
+
+        <div id="patienter" class="d-none">
+            <div class="mt-5">
+                <h1>Merci de patienter quelques instants, nous récupérons votre document signé !</h1>
+            </div>
         </div>
-    {% endif %}
-{% endblock %}
+    {% endblock %}
 
 
-{% block js %}
-    <script type="text/javascript">
+    {% block js %}
+        <script type="text/javascript">
 
-        $( document ).ready(function() {
-            var tid = setInterval(ajaxCall, 5000);
-            function ajaxCall() {
-                $.ajax({
-                        method: "POST",
-                        url: "{{ path('ajax_yousign_webhook') }}",
-                        data: { name: {{ webHook }} }
+            $( document ).ready(function() {
+
+                {% if yousign_mode == 'dev' %}
+                const yousign = new Yousign({
+                    signatureLink: '{{signatureLink | raw }}',
+                    iframeContainerId: 'iframe-container',
+                    isSandbox: true, //To set if you use the sandbox environment
+                });
+
+                {% else %}
+                const yousign = new Yousign({
+                    signatureLink: '{{signatureLink | raw }}',
+                    iframeContainerId: 'iframe-container',
+                    isSandbox: false, //To set if you use the sandbox environment
+                });
+                {% endif %}
+
+                yousign.onSuccess((data) => {
+                    $('#iframe-container').addClass('d-none');
+                    $('#patienter').removeClass('d-none');
+                });
+
+
+                yousign.onSignatureDone((data) => {
+                    console.log("Signer has successfully signed");
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('ajax_yousign_download_doc', {'signatureRequestId': signatureRequestId, 'documentId': documentId}) }}",
                     })
-                    .done(function( msg ) {
-                        if(msg === 'ok'){
-                            abortTimer();
-                            window.location.href='{{ path('app_compte_etape6_cotisation') }}';
-                        } else {
-                            console.log('pas bon');
-                        }
-                    });
-            }
-            function abortTimer() {
-                clearInterval(tid);
-            }
-        });
+                        .done(function( msg ) {
+                            if(msg === 'ok'){
+                                window.location.href='{{ path('app_compte_etape6_cotisation') }}';
+                            } else {
+                                alert('erreur enregistrement sepa');
+                            }
+                        });
 
-    </script>
-{% endblock %}
+
+                });
+
+
+            });
+
+        </script>
+    {% endblock %}

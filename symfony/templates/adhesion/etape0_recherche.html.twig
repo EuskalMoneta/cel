@@ -1,0 +1,145 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block column_size %}<div class="col-12 col-md-12">{% endblock %}
+
+    {% block content %}
+        <div style="">
+            <p class="text-subtitle">{{ explication | raw }}</p>
+        </div>
+        <form method="post">
+            {{ form_start(form) }}
+
+            <div class="d-flex">
+                <div class="flex-grow-1">
+                    {{ form_row(form.term) }}
+                </div>
+            </div>
+
+            {{ form(form) }}
+        </form>
+
+        <div class="mt-5">
+            {% if adherents == 'vide' %}
+
+            {% elseif adherents | length > 0 %}
+                <table class="table table-striped table-hover">
+                    <thead  class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">{{ "identite.nom" | trans }}</th>
+                        <th scope="col">{{ "identite.prenom" | trans }}</th>
+                        <th scope="col">{{ "identite.date_naissance" | trans }}</th>
+                        <th scope="col">{{ "coordonnees.ville" | trans }}</th>
+                        <th scope="col">{{ "identite.email" | trans }}</th>
+                        <th scope="col">{{ "Cotisation" | trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for membre in adherents %}
+                        <tr>
+                            <td>
+                                <input
+                                        type="checkbox"
+                                        class="checkRecherche"
+                                        value="{{ membre.login }}"
+                                        data-action="{% if not membre.array_options.options_prelevement_auto_cotisation and (date(membre.last_subscription_date_end) > date('now')) %}1{% endif %}"
+                                >
+                            </td>
+                            <td>{{ membre.lastname }}</td>
+                            <td>{{ membre.firstname }}</td>
+                            <td>{{ membre.birth | date('d/m/Y') }}</td>
+                            <td>{{ membre.town }}</td>
+                            <td>{{ membre.email }}</td>
+                            <td>
+                                {% include 'utils/cotisationState.html.twig' with {'membre': membre } %}
+
+                                {% if membre.array_options.options_prelevement_auto_cotisation != 1 %}
+                                    Prélèvement automatique non activé
+                                {% endif %}
+                                {# options_prelevement_auto_cotisation #}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                    <tr>
+                        <td><input type="checkbox" class="checkRecherche" value=""></td>
+                        <td colspan="6">Aucun résultat ne correspond</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <div class="mt-5 text-center">
+                    <div class="mr-md-5 ml-4">
+
+                        <a class="btn btn-outline-primary mr-4" id="btnCompte" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'compte', 'login': ''}) }}" href="#">
+                            {{ "recherche_adherent.adhesion" | trans | upper }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                            </svg>
+                        </a>
+
+                        <a class="btn btn-outline-primary" id="btnAdhesion" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'adhesion', 'login': ''}) }}" href="#">
+                            {{ "recherche_adherent.adhesion_sans" | trans | upper }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                            </svg>
+                        </a>
+
+                        <a class="btn btn-outline-primary" id="btnPrelevement" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'prelevement', 'login': ''}) }}" href="#">
+                            {{ "recherche_adherent.prelevement" | trans | upper }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                            </svg>
+                        </a>
+
+
+                    </div>
+                </div>
+            {% else %}
+
+                <div class="mt-5 text-center">
+                    <h2>Aucun résultat</h2>
+                    <a href="{{ path('app_ouverture_etape1_identite') }}" class="btn btn-outline-primary"> {{ "recherche_adherent.adhesion" | trans | upper }}</a>
+                    <a href="{{ path('app_adhesion_etape1_identite') }}" class="btn btn-outline-primary">{{ "recherche_adherent.adhesion_sans" | trans | upper }}</a>
+                </div>
+            {% endif %}
+        </div>
+
+
+    {% endblock %}
+
+    {% block js %}
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                //on cache le btn pour le prelevement auto
+                $('#btnPrelevement').hide();
+
+                //lors du clic sur une case à cocher
+                $('.checkRecherche').click(function() {
+
+                    //Affichage
+                    $(".checkRecherche").parent().parent().removeClass('table-success');
+                    $(".checkRecherche:checked").prop( "checked", false );
+                    $(this).prop( "checked", true );
+                    $(this).parent().parent().addClass("table-success");
+
+                    //Génération des URL des boutons
+                    $('#btnAdhesion').attr('href', $('#btnAdhesion').attr('data-action') + '/' + $(this).val());
+                    $('#btnCompte').attr('href', $('#btnCompte').attr('data-action') + '/' + $(this).val());
+                    $('#btnPrelevement').attr('href', $('#btnPrelevement').attr('data-action') + '/' + $(this).val());
+
+                    //Afficher ou non le bouton de prélèvement automatique
+                    if($(this).attr('data-action') == 1){
+                        $('#btnAdhesion').hide();
+                        $('#btnPrelevement').show();
+                    } else {
+                        $('#btnAdhesion').show();
+                        $('#btnPrelevement').hide();
+                    }
+                });
+
+            });
+        </script>
+    {% endblock %}

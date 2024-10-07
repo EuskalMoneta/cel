@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -13,18 +14,18 @@ use Symfony\Component\Security\Http\SecurityEvents;
  */
 class UserLocaleSubscriber implements EventSubscriberInterface
 {
-    private $session;
+    private RequestStack $requestStack;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
         if (null !== $user->getLocale()) {
-            $this->session->set('_locale', $user->getLocale());
+            $this->requestStack->getSession()->set('_locale', $user->getLocale());
         }
     }
 

@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\WebHookEvent;
 use App\Security\LoginFormAuthenticator;
+use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
-use JsonSchema\Constraints\NumberConstraint;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,139 +20,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use WiziYousignClient\WiziSignClient;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OuvertureCompteController extends AbstractController
 {
     const SURTITRE = "Ouverture de votre compte eusko";
     const NB_ETAPES = 8;
-
-    /**
-     * @Route("/webhook", name="ouverture_web_hook")
-     */
-    public function webHook(EntityManagerInterface $em, Request $request)
-    {
-        //On récupère les headers de yousign pour associer le webhook à la bonne procédure
-        $identifiantHook = $request->headers->get('x-custom-header');
-        $evtName = $request->headers->get('x-yousign-event-name');
-
-        $webHook = $em->getRepository('App:WebHookEvent')->findOneBy(['identifiant'=> $identifiantHook]);
-
-        //si c'est l'evt de fin on change le statut du webHook interne
-        if($evtName == 'member.finished'){
-            $webHook->setStatut('finished');
-        } else {
-            $webHook->setStatut('started');
-        }
-
-        //enregistrement
-        $em->persist($webHook);
-        $em->flush();
-
-        return new Response();
-    }
-
-    /**
-     * @Route("/webhook/ajax", name="ajax_yousign_webhook")
-     */
-    public function ajaxResponse(EntityManagerInterface $em, Request $request)
-    {
-        //Toutes les 5 secondes on vérifie si le webhook a changé de statut, si oui on envoi le signal ok
-        $webHook = $em->getRepository('App:WebHookEvent')->findOneBy(['identifiant'=> $request->get('name')]);
-
-        if($webHook->getStatut() =='finished'){
-            return new JsonResponse('ok');
-        } else {
-            return new JsonResponse('en attente');
-        }
-    }
-
-    /**
-     * @Route("/{_locale}/ouverture-compte/signature/sepa", name="ouverture_compte_signature_sepa")
-     */
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator)
-    {
-        $session->start();
-        $user = $session->get('utilisateur');
-
-        //on démarre le client YouSign
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-
-        //Création d'un identifiant unique qui permet de récupérer le webHook yousign dans la vue
-        $identifiantWebHook = time();
-
-        //Création du webHook
-        $webHook = new WebHookEvent();
-        $webHook->setIdentifiant($identifiantWebHook);
-
-        //etape 1 init
-        //pour tester, besoin d'un ngrok, remplacer generateURL
-        $responseProcedure = $youSignClient->AdvancedProcedureCreate(
-            [
-                'start'=> false,
-                'name' => 'Signature prélèvement SEPA',
-                'description'=> 'SEPA'
-            ],
-            true,
-            'GET',
-            //'http://af5dff98a2aa.ngrok.io/eusko/cel/symfony/public/index.php/webhook',
-            $this->generateUrl('ouverture_web_hook', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $identifiantWebHook
-        );
-
-        //etape 2 fichier à signer
-        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), '/tmp/sepa-'.$identifiantWebHook.'.pdf' );
-        $responseFile = $youSignClient->AdvancedProcedureAddFile('/tmp/sepa-'.$identifiantWebHook.'.pdf', 'sepa.pdf');
-
-        //etape 3 ajout signataire
-        $response = $youSignClient->AdvancedProcedureAddMember($user['firstname'],$user['lastname'],$user['email'], $user['phone']);
-        $member = json_decode($response);
-
-        //etape 4 position et contenu de la signature
-        $response = $youSignClient->AdvancedProcedureFileObject("150,235,460,335",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
-
-        //etape 5 lancement de la procédure
-        $response = $youSignClient->AdvancedProcedurePut();
-        $status = json_decode($response)->status;
-        if($status == 'active'){
-            //on enregistre l'id du fichier pour le récuperer signé plus tard
-            $webHook->setFile(json_decode($responseFile)->id);
-            $em->persist($webHook);
-            $em->flush();
-
-            //On sauvegarde en session l'ID du webHook
-            $session->set('idWebHookEvent', $webHook->getId());
-        } else {
-            $this->addFlash('warning', 'Erreur lors de la création de la signature électronique');
-            $identifiantWebHook = 0;
-        }
-
-
-        return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
-            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-            'numero_etape' => 5,
-            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
-            'titre' => $translator->trans('signature_sepa_change_automatique.titre'),
-            'memberToken' => $member->id,
-            'webHook' => $identifiantWebHook
-        ]);
-    }
-
-    /**
-     * @Route("/{_locale}/ouverture-compte", name="app_ouverture_etape1_identite")
-     */
+    
+    #[Route(path: '/{_locale}/ouverture-compte', name: 'app_ouverture_etape1_identite')]
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $session->start();
@@ -167,6 +49,8 @@ class OuvertureCompteController extends AbstractController
         }
 
         $formBuilder = $this->createFormBuilder();
+
+        // Si on connait déjà l'utilisateur, on affiche le numéro d'adhérent dans le formulaire en lecture seule
         if ($member) {
             $formBuilder->add('login', TextType::class, [
                 'label' => $translator->trans("N° d'adhérent"),
@@ -203,11 +87,12 @@ class OuvertureCompteController extends AbstractController
             $data = $form->getData();
 
             if (!$member) {
-                //Check si l'utilisateur existe déjà
+                //Vérifier l'existance d'un compte dans dolibarr, si l'utilisateur existe un email est envoyé contenant
+                //le jeton d'authentification
                 $response = $APIToolbox->curlWithoutToken(
                     'POST',
                     '/verifier-existence-compte/',
-                    ['email' => $data["email"], "language" => $request->getLocale()]
+                    ['email' => $data["email"], 'type' => 'compte', "language" => $request->getLocale()]
                 );
                 if ($response['httpcode'] == 200) {
                     return $this->render('ouverture_compte/attente_reception_email.html.twig', [
@@ -233,13 +118,11 @@ class OuvertureCompteController extends AbstractController
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
             'explication' => $translator->trans('identite.explication'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/coordonnees", name="app_compte_etape2_coordonnees")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/coordonnees', name: 'app_compte_etape2_coordonnees')]
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
@@ -281,14 +164,12 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 2,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('coordonnees.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/justificatif", name="app_compte_etape3_justificatif")
-     */
-    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator)
+    #[Route(path: '/{_locale}/ouverture-compte/justificatif', name: 'app_compte_etape3_justificatif')]
+    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
 
@@ -313,7 +194,7 @@ class OuvertureCompteController extends AbstractController
                 'numero_etape' => 3,
                 'nb_etapes' => OuvertureCompteController::NB_ETAPES,
                 'titre' => $translator->trans('piece_d_identite.titre'),
-                'form' => $form->createView()
+                'form' => $form
             ]);
         } else {
             return $this->render('ouverture_compte/etape3_erreur.html.twig', [
@@ -325,9 +206,7 @@ class OuvertureCompteController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/sepa", name="app_compte_etape4_sepa")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/sepa', name: 'app_compte_etape4_sepa')]
     public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
 
@@ -380,10 +259,10 @@ class OuvertureCompteController extends AbstractController
                 $session->set('utilisateur', $data);
 
                 if($_ENV["APP_ENV"] == 'dev'){
-                    return $this->redirectToRoute('app_compte_etape6_cotisation');
-                } else {
-                    return $this->redirectToRoute('ouverture_compte_signature_sepa');
+                    //return $this->redirectToRoute('app_compte_etape6_cotisation');
                 }
+                return $this->redirectToRoute('ouverture_compte_signature_sepa');
+
             } else {
                 $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
@@ -394,13 +273,62 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 4,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('change_automatique.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/cotisation", name="app_compte_etape6_cotisation")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/signature/sepa', name: 'ouverture_compte_signature_sepa')]
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator, YouSignAPI $youSignAPI ): \Symfony\Component\HttpFoundation\Response
+    {
+        $session->start();
+        $user = $session->get('utilisateur');
+
+        //etape 1 création de la signature request
+        $responseCreateSignature = $youSignAPI->createSignatureRequest(name: "Signature prélèvement SEPA");
+
+        //etape 2 ajout du fichier à signer
+        $filePath = '/tmp/sepa-'.uniqid('', true).'.pdf';
+        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), $filePath );
+        $responseUploadDocument = $youSignAPI->addDocumentToSignatureRequest(signatureRequestId: $responseCreateSignature->id, filePath: $filePath, fileName: 'sepa.pdf');
+
+        //etape 3 ajout signataire
+        $responseAddSigner = $youSignAPI->addSignerToSignatureRequest(
+            signatureRequestId: $responseCreateSignature->id,
+            documentId: $responseUploadDocument->id,
+            firstName: $user['firstname'],
+            lastName: $user['lastname'],
+            email: $user['email'],
+            phoneNumber: $user['phone']);
+
+        //etape 4 lancement de la procedure
+        $responseActivateSignature = $youSignAPI->activateSignatureRequest(signatureRequestId: $responseCreateSignature->id);
+
+        return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 5,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('signature_sepa_change_automatique.titre'),
+            'signatureLink' => $responseActivateSignature->signers[0]->signature_link,
+            'signatureRequestId' => $responseCreateSignature->id,
+            'documentId' => $responseUploadDocument->id,
+        ]);
+
+    }
+
+    #[Route(path: '/ouverture-compte/signature/sepa/download/{signatureRequestId}/{documentId}', name: 'ajax_yousign_download_doc')]
+    public function yousignDownloadDoc(string $signatureRequestId, string $documentId, YouSignAPI $youSignAPI, SessionInterface $session)
+    {
+        //Récupérer le document signé par l'utilisateur
+        $document = $youSignAPI->downloadDocumentRequest($signatureRequestId, $documentId);
+
+        //Enregistrer le document en session
+        $data = array_merge($session->get('utilisateur'), ['sepa_document' => base64_encode($document)]);
+        $session->set('utilisateur', $data);
+
+        return new JsonResponse('ok');
+    }
+
+    #[Route(path: '/{_locale}/ouverture-compte/cotisation', name: 'app_compte_etape6_cotisation')]
     public function etape6Cotisation(EntityManagerInterface $em, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
@@ -410,18 +338,8 @@ class OuvertureCompteController extends AbstractController
 
             $data = array_merge(
                 $session->get('utilisateur'),
-                ['sepa_document' => $docBase64],
                 ['id_document' => $docBase64, 'idcheck_report' => $docBase64, 'civility_id'=>'MR', 'birth'=>'2019-10-10']
             );
-            $session->set('utilisateur', $data);
-        } else {
-            //récupérer le SEPA signé et le stocker en session
-            $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
-
-            $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-            $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
-
-            $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
             $session->set('utilisateur', $data);
         }
 
@@ -471,13 +389,11 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 6,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('cotisation.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/securite", name="app_compte_etape7_securite")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/securite', name: 'app_compte_etape7_securite')]
     public function etape7Securite(APIToolbox $APIToolbox,
                                    Request $request,
                                    SessionInterface $session,
@@ -554,20 +470,16 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 7,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('securite.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/choix-asso", name="app_compte_etape8_choix_asso")
-     */
+    #[Route(path: '/{_locale}/ouverture-compte/choix-asso', name: 'app_compte_etape8_choix_asso')]
     public function etape8ChoixAsso(APIToolbox $APIToolbox,
                                     Request $request,
                                     SessionInterface $session,
                                     TranslatorInterface $translator,
-                                    LoginFormAuthenticator $loginFormAuthenticator,
-                                    GuardAuthenticatorHandler $guardAuthenticatorHandler,
-                                    AuthenticationManagerInterface $authenticationManager)
+                                    Security $security)
     {
         $session->start();
 
@@ -612,13 +524,7 @@ class OuvertureCompteController extends AbstractController
 
                 $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
 
-                return $guardAuthenticatorHandler
-                    ->authenticateUserAndHandleSuccess(
-                        $user,
-                        $request,
-                        $loginFormAuthenticator,
-                        'main'
-                    );
+                return $security->login($user, LoginFormAuthenticator::class);
             } else {
                 $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
             }
@@ -629,14 +535,12 @@ class OuvertureCompteController extends AbstractController
             'numero_etape' => 8,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
             'titre' => $translator->trans('choix_asso.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/ouverture-compte/bienvenue", name="app_compte_ecran_de_fin")
-     */
-    public function fin()
+    #[Route(path: '/{_locale}/ouverture-compte/bienvenue', name: 'app_compte_ecran_de_fin')]
+    public function fin(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('ouverture_compte/fin.html.twig');
     }

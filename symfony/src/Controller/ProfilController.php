@@ -30,13 +30,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilController extends AbstractController
 {
-    /**
-     * @Route("/profil", name="app_profil")
-     */
-    public function index(APIToolbox $APIToolbox)
+    #[Route(path: '/profil', name: 'app_profil')]
+    public function index(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
 
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
+
         if($response['httpcode'] == 200) {
             $infosUser = [
                 'compte' => $response['data']->result[0]->number,
@@ -52,9 +51,7 @@ class ProfilController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/profil/password", name="app_profil_password")
-     */
+    #[Route(path: '/profil/password', name: 'app_profil_password')]
     public function password(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -95,24 +92,20 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/password.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/password.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
-    /**
-     * @Route("/profil/init-pin", name="app_profil_init_pin")
-     */
+    #[Route(path: '/profil/init-pin', name: 'app_profil_init_pin')]
     public function init_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         return $this->set_pin($request, $APIToolbox, $translator, true);
     }
 
-    /**
-     * @Route("/profil/pin", name="app_profil_pin")
-     */
+    #[Route(path: '/profil/pin', name: 'app_profil_pin')]
     public function update_pin(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         return $this->set_pin($request, $APIToolbox, $translator, false);
@@ -153,12 +146,10 @@ class ProfilController extends AbstractController
             }
         }
 
-        return $this->render('profil/pin.html.twig', ['form' => $form->createView(), 'forcedPin' => $forcedPin]);
+        return $this->render('profil/pin.html.twig', ['form' => $form, 'forcedPin' => $forcedPin]);
     }
 
-    /**
-     * @Route("/profil/cotisation", name="app_profil_cotisation")
-     */
+    #[Route(path: '/profil/cotisation', name: 'app_profil_cotisation')]
     public function cotisation(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator, AuthorizationCheckerInterface $authChecker)
     {
         $forcedCotisation = false;
@@ -236,15 +227,13 @@ class ProfilController extends AbstractController
                 }
 
             }
-            return $this->render('profil/cotisation.html.twig', ['form' => $form->createView(), 'membre' => $membre, 'forcedCotisation' => $forcedCotisation]);
+            return $this->render('profil/cotisation.html.twig', ['form' => $form, 'membre' => $membre, 'forcedCotisation' => $forcedCotisation]);
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
-    /**
-     * @Route("/profil/question", name="app_profil_question")
-     */
+    #[Route(path: '/profil/question', name: 'app_profil_question')]
     public function question(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -300,16 +289,14 @@ class ProfilController extends AbstractController
                     }
                 }
 
-                return $this->render('profil/question.html.twig', ['form' => $form->createView()]);
+                return $this->render('profil/question.html.twig', ['form' => $form]);
             }
         }
         throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
 
     }
 
-    /**
-     * @Route("/ajax/zipcode/search", name="app_ajex_zipcode_search")
-     */
+    #[Route(path: '/ajax/zipcode/search', name: 'app_ajex_zipcode_search')]
     public function jsonBeneficiaire(Request $request, APIToolbox $APIToolbox)
     {
         $response = $APIToolbox->curlWithoutToken('GET', '/towns/?zipcode='.$request->get('q'));
@@ -326,9 +313,7 @@ class ProfilController extends AbstractController
 
     }
 
-    /**
-     * @Route("/profil/coordonnees", name="app_profil_coordonnees")
-     */
+    #[Route(path: '/profil/coordonnees', name: 'app_profil_coordonnees')]
     public function coordonnees(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -384,7 +369,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/coordonnees.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/coordonnees.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -392,9 +377,7 @@ class ProfilController extends AbstractController
     }
 
 
-    /**
-     * @Route("/profil/langue", name="app_profil_langue")
-     */
+    #[Route(path: '/profil/langue', name: 'app_profil_langue')]
     public function langue(Request $request, APIToolbox $APIToolbox, SessionInterface $session, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -427,16 +410,14 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/langue.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/langue.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
-    /**
-     * @Route("/profil/newsletter", name="app_profil_newsletter")
-     */
+    #[Route(path: '/profil/newsletter', name: 'app_profil_newsletter')]
     public function newsletter(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -468,16 +449,14 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/newsletter.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/newsletter.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
     }
 
-    /**
-     * @Route("/profil/bonsplans", name="app_profil_bons_plans")
-     */
+    #[Route(path: '/profil/bonsplans', name: 'app_profil_bons_plans')]
     public function bonplans(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -511,7 +490,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/bonsPlans.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/bonsPlans.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
@@ -520,9 +499,9 @@ class ProfilController extends AbstractController
 
     /**
      * Methode pour la pop up de la page d'accueil
-     * @Route("/ajax/bonPlans/{booleen}", name="app_set_bon_plans")
      */
-    public function setBonPlans($booleen, Request $request, APIToolbox $APIToolbox)
+    #[Route(path: '/ajax/bonPlans/{booleen}', name: 'app_set_bon_plans')]
+    public function setBonPlans($booleen, APIToolbox $APIToolbox)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
 
@@ -542,9 +521,7 @@ class ProfilController extends AbstractController
 
     }
 
-    /**
-     * @Route("/profil/notifications", name="app_profil_notifications")
-     */
+    #[Route(path: '/profil/notifications', name: 'app_profil_notifications')]
     public function notifications(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
     {
         $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
@@ -586,7 +563,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            return $this->render('profil/notifications.html.twig', ['form' => $form->createView()]);
+            return $this->render('profil/notifications.html.twig', ['form' => $form]);
 
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");

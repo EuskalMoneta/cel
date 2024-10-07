@@ -19,9 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_homepage")
-     */
+    #[Route(path: '/', name: 'app_homepage')]
     public function index(APIToolbox $APIToolbox, AuthorizationCheckerInterface $authChecker, EntityManagerInterface $em)
     {
 
@@ -50,7 +48,7 @@ class MainController extends AbstractController
         $bonPlans = [];
 
         if($membre->array_options->options_recevoir_bons_plans != 0){
-            $bonPlans = $em->getRepository('App:BonPlan')->findAccueil();
+            $bonPlans = $em->getRepository(\App\Entity\BonPlan::class)->findAccueil();
             shuffle ($bonPlans);
         }
 
@@ -112,15 +110,13 @@ class MainController extends AbstractController
 
 
 
-    /**
-     * @Route("/export/rie", name="app_export_rie")
-     */
+    #[Route(path: '/export/rie', name: 'app_export_rie')]
     public function exportRIE(APIToolbox $APIToolbox)
     {
         $response = $APIToolbox->curlGetPDF('GET', '/export-rie-adherent/?account='.$this->getUser()->getCompte());
 
         if($response['httpcode'] == 200) {
-            return new Response($response['data'],200,
+            return new Response($response['data'],\Symfony\Component\HttpFoundation\Response::HTTP_OK,
                 [
                     'Content-Type'        => 'application/pdf',
                     'Content-Disposition' => sprintf('attachment; filename="%s"', 'rie.pdf'),
@@ -131,22 +127,20 @@ class MainController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/export/releve/{type}/{dateS}/{dateE}", name="app_export_releve")
-     */
+    #[Route(path: '/export/releve/{type}/{dateS}/{dateE}', name: 'app_export_releve')]
     public function exportReleve( $dateS, $dateE, APIToolbox $APIToolbox, $type = 'pdf')
     {
         $response = $APIToolbox->curlGetPDF('GET', '/export-history-adherent/?begin='.$dateS.'&end='.$dateE.'&description=', $type);
         if($response['httpcode'] == 200) {
             if($type == 'pdf'){
-                return new Response($response['data'],200,
+                return new Response($response['data'],\Symfony\Component\HttpFoundation\Response::HTTP_OK,
                     [
                         'Content-Type'        => 'application/pdf',
                         'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.pdf'),
                     ]
                 );
             } else {
-                return new Response($response['data'],200,
+                return new Response($response['data'],\Symfony\Component\HttpFoundation\Response::HTTP_OK,
                     [
                         'Content-Type'        => 'text/csv',
                         'Content-Disposition' => sprintf('attachment; filename="%s"', 'releve-eusko.csv'),
@@ -158,10 +152,8 @@ class MainController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/reconvertir/eusko", name="app_reconvertir")
-     */
-    public function reconvertir(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    #[Route(path: '/reconvertir/eusko', name: 'app_reconvertir')]
+    public function reconvertir(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
@@ -193,26 +185,22 @@ class MainController extends AbstractController
                 }
             }
 
-            return $this->render('main/reconvertir.html.twig', ['form' => $form->createView(), 'infosUser' => $infosUser]);
+            return $this->render('main/reconvertir.html.twig', ['form' => $form, 'infosUser' => $infosUser]);
 
         } else {
             throw new NotFoundHttpException('Informations adhérent non disponible');
         }
     }
 
-    /**
-     * @Route("/aide", name="app_aide")
-     */
-    public function aide(Request $request, APIToolbox $APIToolbox)
+    #[Route(path: '/aide', name: 'app_aide')]
+    public function aide(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('main/aide.html.twig');
 
     }
 
-    /**
-     * @Route("/recherche", name="app_search")
-     */
-    public function search(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator)
+    #[Route(path: '/recherche', name: 'app_search')]
+    public function search(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         //Init vars
         $operations = 'empty';
@@ -263,7 +251,7 @@ class MainController extends AbstractController
             }
         }
 
-        return $this->render('main/search.html.twig', ['form' => $form->createView(), 'operations' => $operations, 'dateS' => $dateS, 'dateE' => $dateE]);
+        return $this->render('main/search.html.twig', ['form' => $form, 'operations' => $operations, 'dateS' => $dateS, 'dateE' => $dateE]);
     }
 
 

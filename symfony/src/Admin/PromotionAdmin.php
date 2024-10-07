@@ -21,13 +21,14 @@ final class PromotionAdmin extends AbstractAdmin
 
         // use $fileFieldOptions so we can add other options to the field
         $fileFieldOptions = ['required' => false];
-        if ($image && ($webPath = $image->getWebPath())) {
+        if ($image && ($webPath = $image->getWebPath()) && $image->getImage()) {
             // get the container so the full path to the image can be set
-            $container = $this->getConfigurationPool()->getContainer();
-            $fullPath = $container->get('request_stack')->getCurrentRequest()->getBasePath().'/'.$webPath;
+            $request = $this->getRequest();
+            $fullPath = $request->getBasePath().'/'.$webPath;
 
             // add a 'help' option containing the preview's img tag
             $fileFieldOptions['help'] = '<img src="'.$fullPath.'" style="max-height: 300px;max-width: 300px;"/>';
+            $fileFieldOptions['help_html'] = true;
         }
 
         $formMapper
@@ -57,20 +58,21 @@ final class PromotionAdmin extends AbstractAdmin
 
 
 
-    public function prePersist($image)
+    function prePersist(object $object): void
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($object);
     }
 
-    public function preUpdate($image)
+    function preUpdate(object $object): void
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($object);
     }
 
-    private function manageFileUpload($image)
+
+    private function manageFileUpload($object)
     {
-        if ($image->getFile()) {
-            $image->refreshUpdated();
+        if ($object->getFile()) {
+            $object->refreshUpdated();
         }
     }
 }

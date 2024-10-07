@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -15,8 +16,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -30,29 +33,27 @@ class SecurityController extends AbstractController
 {
     use TargetPathTrait;
 
-    /**
-     * @Route("/{_locale}/login",  locale="fr", name="app_login")
-     */
-    public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $em): Response
+    #[Route(path: '/{_locale}/login', locale: 'fr', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils, RequestStack $request, EntityManagerInterface $em): Response
     {
         if ($this->getUser()) {
             $this->redirectToRoute('app_homepage');
         }
 
-        $promotions = $em->getRepository('App:Promotion')->findBy(['visible' => true]);
+        $error = $request->getSession()->get('errorLogin');
+        $request->getSession()->set('errorLogin', false);
+
+        $promotions = $em->getRepository(\App\Entity\Promotion::class)->findBy(['visible' => true]);
 
         shuffle ($promotions);
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'promotions' => $promotions]);
     }
 
-    /**
-     * @Route("/creer-compte", name="app_creer_compte")
-     */
+    #[Route(path: '/creer-compte', name: 'app_creer_compte')]
     public function creerCompte(Request $request): Response
     {
         if($request->isMethod('post')){
@@ -63,9 +64,7 @@ class SecurityController extends AbstractController
         return $this->render('security/creerCompte.html.twig');
     }
 
-    /**
-     * @Route("/{_locale}/activer-compte", name="app_first_login")
-     */
+    #[Route(path: '/{_locale}/activer-compte', name: 'app_first_login')]
     public function firstLogin(Request $request, APIToolbox $APIToolbox): Response
     {
         $form = $this->createFormBuilder()
@@ -109,17 +108,15 @@ class SecurityController extends AbstractController
             }
 
         }
-        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form->createView()]);
+        return $this->render('security/firstLogin.html.twig', ['title' => "Activer votre compte", 'form' => $form]);
     }
 
-    /**
-     * @Route("/{_locale}/valide-premiere-connexion", name="app_valide_first_login")
-     */
-    public function validateFirstLogin(Request $request,
+    #[Route(path: '/{_locale}/valide-premiere-connexion', name: 'app_valide_first_login')]
+    public function validateFirstLogin(#[MapQueryParameter] string $token,
+                                       Request $request,
                                        APIToolbox $APIToolbox,
                                        TranslatorInterface $translator,
-                                       GuardAuthenticatorHandler $guardAuthenticatorHandler,
-                                       LoginFormAuthenticator $loginFormAuthenticator)
+                                       Security $security)
     {
         $questions = ['' => '','autre' => 'autre'];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -162,17 +159,19 @@ class SecurityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $parameters = [
-                    'token' => $request->query->get('token'),
+                    'token' => $token,
                     'new_password' => $data['motDePasse'],
                     'confirm_password' => $data['motDePasse'],
                     'answer' => $data['reponse'],
                     ];
+
 
                 if($data['questionSecrete'] == 'autre'){
                     $parameters['question'] = $data['questionPerso'];
                 } else {
                     $parameters['question'] = $data['questionSecrete'];
                 }
+
                 $response = $APIToolbox->curlWithoutToken('POST', '/validate-first-connection/', $parameters);
 
                 if ($response['httpcode'] == 200) {
@@ -181,13 +180,7 @@ class SecurityController extends AbstractController
 
                     $user = $APIToolbox->autoLogin($credentials);
 
-                    return $guardAuthenticatorHandler
-                        ->authenticateUserAndHandleSuccess(
-                            $user,
-                            $request,
-                            $loginFormAuthenticator,
-                            'main'
-                        );
+                    return $security->login($user, LoginFormAuthenticator::class);
                 } else {
                     $this->addFlash('danger', $translator->trans('Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.'));
                 }
@@ -196,9 +189,7 @@ class SecurityController extends AbstractController
         return $this->render('security/validatePremiereConnexion.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/{_locale}/passe-perdu", name="app_lost_password")
-     */
+    #[Route(path: '/{_locale}/passe-perdu', name: 'app_lost_password')]
     public function lostPassword(Request $request, APIToolbox $APIToolbox): Response
     {
         $locale = $request->getLocale();
@@ -234,12 +225,10 @@ class SecurityController extends AbstractController
                 $this->addFlash('danger', 'Erreur de communication avec le serveur api');
             }
         }
-        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form->createView()]);
+        return $this->render('security/passePerdu.html.twig', ['title' => 'Mot de passe oublié', 'form' => $form]);
     }
 
-    /**
-     * @Route("/{_locale}/valide-passe-perdu", name="app_valide_passe_perdu")
-     */
+    #[Route(path: '/{_locale}/valide-passe-perdu', name: 'app_valide_passe_perdu')]
     public function validatePassePerdu(Request $request, APIToolbox $APIToolbox, TranslatorInterface $translator): Response
     {
         $token = $request->query->get('token');
@@ -295,20 +284,16 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render('security/validePassePerdu.html.twig', ['form' => $form->createView(), 'question' => $securityQuestion]);
+        return $this->render('security/validePassePerdu.html.twig', ['form' => $form, 'question' => $securityQuestion]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
+    #[Route(path: '/logout', name: 'app_logout')]
     public function logout()
     {
         throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
     }
 
-    /**
-     * @Route("/valide/cgu", name="app_accept_cgu")
-     */
+    #[Route(path: '/valide/cgu', name: 'app_accept_cgu')]
     public function valideCGU(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator)
     {
         //form generation
@@ -328,7 +313,7 @@ class SecurityController extends AbstractController
                 }
             }
         }
-        return $this->render('security/valideCGU.html.twig', ['form' => $form->createView()]);
+        return $this->render('security/valideCGU.html.twig', ['form' => $form]);
     }
 
 }

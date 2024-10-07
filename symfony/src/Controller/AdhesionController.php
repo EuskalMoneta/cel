@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\WebHookEvent;
+use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,10 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use WiziYousignClient\WiziSignClient;
+
 
 class AdhesionController extends AbstractController
 {
@@ -26,8 +25,172 @@ class AdhesionController extends AbstractController
     const NB_ETAPES = 5;
 
     /**
-     * @Route("/{_locale}/adhesion", name="app_adhesion_etape1_identite")
+     * A partir d'un numéro d'adhérent, permet de passer à l'étape 2
+     * d'une nouvelle adhésion ou ouverture de compte
+     * Fonction passerelle entre la recherche et les processus d'inscription
+     * @param string $type adhesion | compte
+     * @param string $login le numéro d'adhérent de type E00001
      */
+    #[Route(path: '/{_locale}/poursuiteInscription/{type}/{login}', name: 'app_adhesion_etape0_passerelle')]
+    public function poursuiteInscription($type, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox, $login=""): \Symfony\Component\HttpFoundation\RedirectResponse
+    {
+        //Récupération du membre
+        $response = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&login='.$login, '');
+        if ($response['httpcode'] == 200) {
+            $member = $response['data'][0];
+            if($member){
+                if($type == 'adhesion'){
+                    $data['login'] = $login;
+                    $data['civility_id'] = $member->civility_id;
+                    $data['lastname'] = $member->lastname;
+                    $data['firstname'] =  $member->firstname;
+                    $data['email'] =  $member->email;
+                    $data['birth'] =  $member->birth;
+                    $session->set('utilisateur', $data);
+
+                    return $this->redirectToRoute('app_adhesion_etape2_coordonnees');
+
+                } elseif ($type == 'compte'){
+                    $data['login'] = $login;
+                    $data['lastname'] = $member->lastname;
+                    $data['firstname'] =  $member->firstname;
+                    $data['email'] =  $member->email;
+                    $data['valide'] =  true;
+                    $session->set('utilisateur', $data);
+                    $session->set('compteur', 1);
+
+                    return $this->redirectToRoute('app_compte_etape2_coordonnees');
+                } elseif ($type == 'prelevement'){
+
+                    return $this->redirectToRoute('app_signature_mandat_cotisation_etape1_coordonnees', ['token' => $member->array_options->options_token]);
+                }
+            }
+        } elseif($login == '') {
+            if ($type == 'adhesion') {
+                return $this->redirectToRoute('app_adhesion_etape1_identite');
+            } elseif ($type == 'compte'){
+                return $this->redirectToRoute('app_ouverture_etape1_identite');
+            }
+        } else {
+            $this->addFlash('warning', $translator->trans('numéro de compte en erreur'));
+        }
+
+        //si il n'y a pas eu de redirection, on redirige vers la page de recherche
+        return $this->redirectToRoute('app_adhesion_etape0_recherche');
+    }
+
+    /**
+     * Demande d'un mot de passe pour accéder à la recherche d'utilisateur
+     * Stockage dans un cookie pour une durée déterminée
+     */
+    #[Route(path: '/{_locale}/adhesion-admin', name: 'app_adhesion_admin_password')]
+    public function demandeMotDePasse(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    {
+        $formBuilder = $this->createFormBuilder()
+            ->add('motDePasse', TextType::class, [
+                'label' => $translator->trans("Mot de passe"),
+                'required' => false,
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+        ;
+        $form = $formBuilder->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            //On verifie le mot de passe et on défini en session une durée de validitée
+            if ($data['motDePasse'] == 'TableINFO') {
+                $session->set('motDePasseRechercheAdherent', strtotime('+5 hours'));
+                return $this->redirectToRoute('app_adhesion_etape0_recherche');
+            } else {
+                $this->addFlash('warning', 'Mot de passe incorrect');
+            }
+        }
+
+        return $this->render('adhesion/etape0_mot_de_passe.html.twig', [
+            'surtitre' => $translator->trans('recherche_adherent.mot_de_passe'),
+            'numero_etape' => 0,
+            'nb_etapes' => $this::NB_ETAPES,
+            'titre' => '',
+            'explication' => '',
+            'form' => $form
+        ]);
+    }
+
+    /**
+     * Formulaire de recherche multi critères d'un adhérent
+     * renvoi une liste d'adhérents
+     * Accès réservé par mot de passe
+     */
+    #[Route(path: '/{_locale}/adhesion-admin/recherche', name: 'app_adhesion_etape0_recherche')]
+    public function etape0Recherche(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    {
+        $adherents = "vide";
+
+        //Création d'un formulaire de recherche, le mot de passe permet de restreindre l'accès aux données aux seul "administrateurs"
+        $formBuilder = $this->createFormBuilder();
+        $formBuilder
+            ->add('term', TextType::class, [
+                'label' => $translator->trans(' '),
+                'required' => false,
+            ])
+            ->add('submit', SubmitType::class, ['label' => $translator->trans('rechercher')]);
+        $form = $formBuilder->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            //Vérification qu'un mot de passe a été saisi
+            if($session->has('motDePasseRechercheAdherent')){
+
+                //verification de la durée du mot de passe
+                if($session->get('motDePasseRechercheAdherent') < (new \DateTime("now"))->getTimestamp()){
+                    return $this->redirectToRoute('app_adhesion_admin_password');
+                }
+                $adherents = [];
+
+                //Recherche du membre via son nom dans dolibarr
+                $responseLastname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name='.$data['term'], '');
+                if ($responseLastname['httpcode'] == 200) {
+                    $adherents = array_merge($adherents, $responseLastname['data']);
+                }
+
+                //Recherche du membre via son prenom dans dolibarr
+                $responseFirstname = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&name=' . $data['term'], '');
+                if ($responseFirstname['httpcode'] == 200) {
+                    $adherents = array_merge($adherents, $responseFirstname['data']);
+                }
+
+                //Recherche du membre via son email dans dolibarr
+                $responseEmail = $APIToolbox->curlWithoutToken('GET', '/members/?token=toto&email=' . $data['term'], '');
+                if ($responseEmail['httpcode'] == 200) {
+                    $adherents = array_merge($adherents, [$responseEmail['data']]);
+                }
+
+                //dédoublonner les résultats
+                $adherents = array_unique($adherents, SORT_REGULAR);
+            }
+        }
+
+        return $this->render('adhesion/etape0_recherche.html.twig', [
+            'surtitre' => $translator->trans('recherche_adherent.titre'),
+            'numero_etape' => 0,
+            'nb_etapes' => $this::NB_ETAPES,
+            'titre' => $translator->trans(' '),
+            'explication' => '',
+            'adherents' => $adherents,
+            'form' => $form
+        ]);
+
+    }
+
+    /**
+     * Première étape du processus d'adhésion, demande nom, prenom
+     */
+    #[Route(path: '/{_locale}/adhesion', name: 'app_adhesion_etape1_identite')]
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $session->start();
@@ -50,6 +213,7 @@ class AdhesionController extends AbstractController
                 'data' => $member->login,
             ]);
         }
+
         $formBuilder
             ->add('civility_id', ChoiceType::class, [
                 'choices' => [
@@ -93,6 +257,25 @@ class AdhesionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            if (!$member) {
+                //Vérifier l'existance d'un compte adhérent dans dolibarr, si l'utilisateur existe un email est envoyé contenant
+                //le jeton d'authentification
+                $response = $APIToolbox->curlWithoutToken(
+                    'POST',
+                    '/verifier-existence-compte/',
+                    ['email' => $data["email"], 'type' => 'adhesion', "language" => $request->getLocale()]
+                );
+                if ($response['httpcode'] == 200) {
+                    return $this->render('ouverture_compte/attente_reception_email.html.twig', [
+                        'surtitre' => $translator->trans($this::SURTITRE),
+                        'numero_etape' => 1,
+                        'nb_etapes' => $this::NB_ETAPES,
+                        'titre' => $translator->trans('attente_reception.titre'),
+                        'explication' => $translator->trans('attente_reception.explication')
+                    ]);
+                }
+            }
+
             $session->set('utilisateur', $data);
 
             return $this->redirectToRoute('app_adhesion_etape2_coordonnees');
@@ -104,13 +287,11 @@ class AdhesionController extends AbstractController
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('identite.titre'),
             'explication' => $translator->trans('adhesion.identite.explication'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/coordonnees", name="app_adhesion_etape2_coordonnees")
-     */
+    #[Route(path: '/{_locale}/adhesion/coordonnees', name: 'app_adhesion_etape2_coordonnees')]
     public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
@@ -147,13 +328,11 @@ class AdhesionController extends AbstractController
             'numero_etape' => 2,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('coordonnees.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/cotisation", name="app_adhesion_etape3_cotisation")
-     */
+    #[Route(path: '/{_locale}/adhesion/cotisation', name: 'app_adhesion_etape3_cotisation')]
     public function etape3Cotisation(Request $request, SessionInterface $session, TranslatorInterface $translator, VacancesEuskoController $vacancesEuskoController)
     {
         $session->start();
@@ -206,11 +385,8 @@ class AdhesionController extends AbstractController
                 $data = array_merge($session->get('utilisateur'), $data);
                 $session->set('utilisateur', $data);
 
-                if($_ENV["APP_ENV"] == 'dev'){
-                    return $this->redirectToRoute('app_adhesion_etape5_choix_asso');
-                } else {
-                    return $this->redirectToRoute('app_adhesion_signature_sepa');
-                }
+                return $this->redirectToRoute('app_adhesion_signature_sepa');
+
             } else {
                 $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
@@ -221,83 +397,48 @@ class AdhesionController extends AbstractController
             'numero_etape' => 3,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('cotisation.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/signature-sepa", name="app_adhesion_signature_sepa")
-     */
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator)
+    #[Route(path: '/{_locale}/adhesion/signature-sepa', name: 'app_adhesion_signature_sepa')]
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, YouSignAPI $youSignAPI, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
         $user = $session->get('utilisateur');
 
-        //on démarre le client YouSign
-        $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
+        //etape 1 création de la signature request
+        $responseCreateSignature = $youSignAPI->createSignatureRequest(name: "Signature prélèvement SEPA");
 
-        //Création d'un identifiant unique qui permet de récupérer le webHook yousign dans la vue
-        $identifiantWebHook = time();
-
-        //Création du webHook
-        $webHook = new WebHookEvent();
-        $webHook->setIdentifiant($identifiantWebHook);
-
-        //etape 1 init
-        //pour tester, besoin d'un ngrok, remplacer generateURL
-        $responseProcedure = $youSignClient->AdvancedProcedureCreate(
-            [
-                'start'=> false,
-                'name' => 'Signature prélèvement SEPA',
-                'description'=> 'SEPA'
-            ],
-            true,
-            'GET',
-            //'http://af5dff98a2aa.ngrok.io/eusko/cel/symfony/public/index.php/webhook',
-            $this->generateUrl('ouverture_web_hook', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $identifiantWebHook
-        );
-
-        //etape 2 fichier à signer
-        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), '/tmp/sepa-'.$identifiantWebHook.'.pdf' );
-        $responseFile = $youSignClient->AdvancedProcedureAddFile('/tmp/sepa-'.$identifiantWebHook.'.pdf', 'sepa.pdf');
+        //etape 2 ajout du fichier à signer
+        $filePath = '/tmp/sepa-'.uniqid('', true).'.pdf';
+        $pdf->generateFromHtml($this->renderView('ouverture_compte/modeleSepa.html.twig', ['user' => $user]), $filePath );
+        $responseUploadDocument = $youSignAPI->addDocumentToSignatureRequest(signatureRequestId: $responseCreateSignature->id, filePath: $filePath, fileName: 'sepa.pdf');
 
         //etape 3 ajout signataire
-        $response = $youSignClient->AdvancedProcedureAddMember($user['firstname'],$user['lastname'],$user['email'], $user['phone']);
-        $member = json_decode($response);
+        $responseAddSigner = $youSignAPI->addSignerToSignatureRequest(
+            signatureRequestId: $responseCreateSignature->id,
+            documentId: $responseUploadDocument->id,
+            firstName: $user['firstname'],
+            lastName: $user['lastname'],
+            email: $user['email'],
+            phoneNumber: $user['phone']);
 
-        //etape 4 position et contenu de la signature
-        $response = $youSignClient->AdvancedProcedureFileObject("150,235,460,335",1,"Lu et approuvé", "Signé par ".$user['firstname']." ".$user['lastname'], "Signé par ".$user['firstname']." ".$user['lastname']);
-
-        //etape 5 lancement de la procédure
-        $response = $youSignClient->AdvancedProcedurePut();
-        $status = json_decode($response)->status;
-        if($status == 'active'){
-            //on enregistre l'id du fichier pour le récuperer signé plus tard
-            $webHook->setFile(json_decode($responseFile)->id);
-            $em->persist($webHook);
-            $em->flush();
-
-            //On sauvegarde en session l'ID du webHook
-            $session->set('idWebHookEvent', $webHook->getId());
-        } else {
-            $this->addFlash('warning', 'Erreur lors de la création de la signature électronique');
-            $identifiantWebHook = 0;
-        }
+        //etape 4 lancement de la procedure
+        $responseActivateSignature = $youSignAPI->activateSignatureRequest(signatureRequestId: $responseCreateSignature->id);
 
         return $this->render('adhesion/etape4_signature_sepa.html.twig', [
             'surtitre' => $translator->trans($this::SURTITRE),
             'numero_etape' => 4,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('signature_sepa.adhesion.titre'),
-            'memberToken' => $member->id,
-            'webHook' => $identifiantWebHook
+            'signatureLink' => $responseActivateSignature->signers[0]->signature_link,
+            'signatureRequestId' => $responseCreateSignature->id,
+            'documentId' => $responseUploadDocument->id,
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/choix-asso", name="app_adhesion_etape5_choix_asso")
-     */
+    #[Route(path: '/{_locale}/adhesion/choix-asso', name: 'app_adhesion_etape5_choix_asso')]
     public function etape5ChoixAsso(EntityManagerInterface $em,
                                     APIToolbox $APIToolbox,
                                     Request $request,
@@ -305,24 +446,6 @@ class AdhesionController extends AbstractController
                                     TranslatorInterface $translator)
     {
         $session->start();
-
-        if($_ENV["APP_ENV"] == 'dev'){
-            $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
-
-            $data = array_merge(
-                $session->get('utilisateur'),
-                ['sepa_document' => $docBase64]
-            );
-            $session->set('utilisateur', $data);
-
-        } else {
-            //récupérer le SEPA signé et le stocker en session
-            $webHook = $em->getRepository("App:WebHookEvent")->find($session->get('idWebHookEvent'));
-            $youSignClient = new WiziSignClient($_ENV['YOUSIGN_API_KEY'], $_ENV['YOUSIGN_MODE']);
-            $file = $youSignClient->downloadSignedFile($webHook->getFile(), 'base64');
-            $data = array_merge($session->get('utilisateur'), ['sepa_document' => $file]);
-            $session->set('utilisateur', $data);
-        }
 
         $tabAssos = [];
         $response = $APIToolbox->curlWithoutToken('GET', '/associations/');
@@ -369,14 +492,12 @@ class AdhesionController extends AbstractController
             'numero_etape' => 5,
             'nb_etapes' => $this::NB_ETAPES,
             'titre' => $translator->trans('choix_asso.titre'),
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 
-    /**
-     * @Route("/{_locale}/adhesion/fin", name="app_adhesion_fin")
-     */
-    public function fin()
+    #[Route(path: '/{_locale}/adhesion/fin', name: 'app_adhesion_fin')]
+    public function fin(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('adhesion/fin.html.twig');
     }

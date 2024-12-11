@@ -229,12 +229,12 @@ class APIToolbox extends AbstractController
     {
         $analysisResult = json_decode($analysisResult);
 
-        if($analysisResult->documentClassification->idType != 'ID'){
-            return ['status' => false, 'message' => 'Mauvais document'];
+        if($analysisResult->documentClassification->idType !== 'ID' && $analysisResult->documentClassification->idType !== 'P'){
+            return ['status' => false, 'message' => "Mauvais type de document, carte d'identité ou passeport seulement"];
         }
 
         foreach ($analysisResult->checkReportSummary->check as $check){
-            if($check->result != 'OK')
+            if($check->result !== 'OK')
                 return ['status' => false, 'message' => $check->resultMsg];
         }
 

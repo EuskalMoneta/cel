@@ -3,18 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\BonPlan;
-use App\Security\LoginFormAuthenticator;
-use App\Security\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,12 +19,10 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
@@ -101,7 +94,7 @@ class VacancesEuskoController extends AbstractController
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 
-            if($_ENV["APP_ENV"] == 'dev'){
+            if($_ENV["APP_ENV"] === 'dev'){
                 $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
                 $data = array_merge(
                     $session->get('utilisateur'),
@@ -253,7 +246,7 @@ class VacancesEuskoController extends AbstractController
     public function verificationJustificatif(APIToolbox $APIToolbox,
                                              Request $request,
                                              TranslatorInterface $translator,
-                                             SessionInterface $session)
+                                             SessionInterface $session):JsonResponse
     {
         //INIT
         $session->start();
@@ -285,11 +278,14 @@ class VacancesEuskoController extends AbstractController
             //Appel ID Check
             $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
 
+
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
             } elseif ($checkID['httpcode'] == 200){
+
                 $status = true;
                 $dataCard = json_decode($checkID["data"]);
+
                 $idCheckUID = $dataCard->uid;
 
                 $naissance = $dataCard->holderDetail->birthDate;
@@ -305,6 +301,7 @@ class VacancesEuskoController extends AbstractController
 
                 $pdf = 'null';
                 $idcheckPDF = $APIToolbox->curlRequestIdCheck('GET', '/rest/v0/pdfreport/'.$idCheckUID);
+
                 if ($idcheckPDF['httpcode'] == 200){
                     $dataPdf = json_decode($idcheckPDF["data"]);
                     $pdf = 'data:application/pdf;base64,'.$dataPdf->report;
@@ -317,6 +314,7 @@ class VacancesEuskoController extends AbstractController
 
                 if($response !== true){
                     $status = false;
+                    $this->addFlash('danger', $response['message']);
                 }
             } else {
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));

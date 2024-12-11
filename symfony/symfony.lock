@@ -84,9 +84,6 @@
     "egulias/email-validator": {
         "version": "2.1.10"
     },
-    "ezyang/htmlpurifier": {
-        "version": "v4.13.0"
-    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -198,9 +195,6 @@
     },
     "monolog/monolog": {
         "version": "1.24.0"
-    },
-    "myclabs/php-enum": {
-        "version": "1.8.0"
     },
     "nikic/php-parser": {
         "version": "v4.2.2"

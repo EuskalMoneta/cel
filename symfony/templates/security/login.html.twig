@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block cssBefore %}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
@@ -51,8 +55,14 @@
                         </div>
                         <div class="form-group">
                             <label for="inputPassword" class="">{% trans %}Mot de passe{% endtrans %}</label>
-                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{% trans %}Mot de passe{% endtrans %}" required>
-                            <div class="text-right">
+                        </div>
+                        <div class="form-group ml-2 pr-3" style="position: relative;">
+
+                            <input type="password" name="password" id="inputPassword" class="form-control toggle-password" placeholder="{% trans %}Mot de passe{% endtrans %}" required>
+                            <span class="toggle-password"><i class="fas fa-eye-slash" id="togglePassword"></i></span>
+                        </div>
+                        <div>
+                            <div class="text-right mt-5 ">
                                 <a href="{{ path('app_lost_password') }}" class="text-bold">{{ "J’ai oublié mon mot de passe" | trans }}</a>
                             </div>
                         </div>
@@ -60,14 +70,14 @@
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
 
                         {#
-                            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                            See https://symfony.com/doc/current/security/remember_me.html
+                        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                        See https://symfony.com/doc/current/security/remember_me.html
 
-                            <div class="checkbox mb-3">
-                                <label>
-                                    <input type="checkbox" name="_remember_me"> Remember me
-                                </label>
-                            </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me"> Remember me
+                            </label>
+                        </div>
                         #}
 
                         <button class="btn  btn-success" type="submit">
@@ -95,4 +105,27 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            // Password visibility toggle
+            $('#togglePassword').on('click', function() {
+                // Get the password input
+                const passwordInput = $('#inputPassword');
+
+                // Toggle input type
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+            });
+        });
+    </script>
+
 {% endblock %}

@@ -1625,6 +1625,10 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>recherche_adherent.prelevement</source>
         <target>Passer au prélèvement automatique</target>
       </trans-unit>
+      <trans-unit id="z7zKJU7" resname="ouverture_compte.problemes_techniques">
+        <source>ouverture_compte.problemes_techniques</source>
+        <target><![CDATA[Nous rencontrons des problèmes techniques lors de l’importation de certains pièces d’identité trop volumineuses. <br/>Merci de réessayer avec un autre fichier, ou contactez-nous : info@euskalmoneta.org ou 05 33 47 54 11. ]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

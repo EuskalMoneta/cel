@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\BonPlan;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -245,6 +246,7 @@ class VacancesEuskoController extends AbstractController
     #[Route(path: '/vacances-en-eusko/call/justificatif', name: 'app_vee_api_idcheck')]
     public function verificationJustificatif(APIToolbox $APIToolbox,
                                              Request $request,
+                                             LoggerInterface $logger,
                                              TranslatorInterface $translator,
                                              SessionInterface $session):JsonResponse
     {
@@ -314,14 +316,17 @@ class VacancesEuskoController extends AbstractController
 
                 if($response !== true){
                     $status = false;
-                    $this->addFlash('danger', $response['message']);
+                    //à logger
+                    $logger->error('[IDNOW] verification pièce : ' . $response['message']);
+
+                    $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
                 }
             } else {
-                $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
+                $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
             }
 
         } else {
-            $this->addFlash('danger', 'Erreur fichier non reconnu');
+            $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
         }
 
         return new JsonResponse(['bool' => $status, 'resultat' => $response]);
@@ -348,7 +353,7 @@ class VacancesEuskoController extends AbstractController
                 $newwidth = $w;
             }
         }
-        if($mime == 'image/png'){
+        if($mime === 'image/png'){
             $src = imagecreatefrompng($file);
         } else {
             $src = imagecreatefromjpeg($file);

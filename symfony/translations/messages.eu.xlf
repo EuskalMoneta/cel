@@ -1631,6 +1631,10 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>recherche_adherent.prelevement</source>
         <target>Passer au prélèvement automatique</target>
       </trans-unit>
+      <trans-unit id="z7zKJU7" resname="ouverture_compte.problemes_techniques">
+        <source>ouverture_compte.problemes_techniques</source>
+        <target><![CDATA[ Arazo teknikoak ditugu nortasun agirien fitxategiak pizuegiak inportatzen direlarik. Mila esker beste fitxategi batekin entseatzeagatik, bestenaz gurekin harremanetan jarri : info@euskalmoneta.org edo 05 33 47 54 11.]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

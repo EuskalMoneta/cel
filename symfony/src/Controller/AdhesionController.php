@@ -100,7 +100,7 @@ class AdhesionController extends AbstractController
             $data = $form->getData();
 
             //On verifie le mot de passe et on défini en session une durée de validitée
-            if ($data['motDePasse'] == 'TableINFO') {
+            if ($data['motDePasse'] === 'TableINFO') {
                 $session->set('motDePasseRechercheAdherent', strtotime('+5 hours'));
                 return $this->redirectToRoute('app_adhesion_etape0_recherche');
             } else {

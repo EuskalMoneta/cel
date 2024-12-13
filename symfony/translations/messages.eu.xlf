@@ -833,9 +833,13 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>Importer ou prendre en photo votre pièce d'identité</source>
         <target>Zure nortasun agiria inportatu edo argazkitan hartu</target>
       </trans-unit>
-      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
-        <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
-        <target>Ondoko formatu batean: .jpg .png edo .pdf, gehienik 4 Mo</target>
+      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf">
+        <source>Au format .jpg .png ou .pdf</source>
+        <target>Ondoko formatu batean: .jpg .png edo .pdf</target>
+      </trans-unit>
+      <trans-unit id="O8401Abx" resname="maximum 4 Mo">
+        <source>maximum 4 Mo</source>
+        <target>gehienik 4 Mo</target>
       </trans-unit>
       <trans-unit id="yPLoWHM" resname="Echec vérification">
         <source>Echec vérification</source>

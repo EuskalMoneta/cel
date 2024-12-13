@@ -261,7 +261,7 @@ class VacancesEuskoController extends AbstractController
         if($file){
 
             //si l'image fait plus de 4 Mo
-            if($file->getSize() > 4000000){
+            if($file->getSize() > 4000000 && $file->getMimeType() !== 'application/pdf'){
                 //resize avec GD
                 $image = $this->resize_image($file->getPathname(), 2000, 2000, $file->getMimeType());
 
@@ -279,7 +279,6 @@ class VacancesEuskoController extends AbstractController
 
             //Appel ID Check
             $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
-
 
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));

@@ -803,9 +803,13 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Importer ou prendre en photo votre pièce d'identité</source>
         <target>Importer ou prendre en photo votre pièce d'identité</target>
       </trans-unit>
-      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
-        <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
-        <target>Au format .jpg .png ou .pdf, maximum 4 Mo</target>
+      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf">
+        <source>Au format .jpg .png ou .pdf</source>
+        <target>Au format .jpg .png ou .pdf</target>
+      </trans-unit>
+      <trans-unit id="O8401Abx" resname="maximum 4 Mo">
+        <source>maximum 4 Mo</source>
+        <target>maximum 4 Mo</target>
       </trans-unit>
       <trans-unit id="gRJLECI" resname="Panier paysan">
         <source>Panier paysan</source>

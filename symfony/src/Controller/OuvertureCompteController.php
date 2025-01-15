@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\LoginFormAuthenticator;
+use App\Service\IDCheckAPI;
 use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
@@ -153,7 +154,7 @@ class OuvertureCompteController extends AbstractController
             $session->set('utilisateur', $data);
 
             if($_ENV["APP_ENV"] === 'dev'){
-                return $this->redirectToRoute('app_compte_etape4_sepa');
+                //return $this->redirectToRoute('app_compte_etape4_sepa');
             }
             return $this->redirectToRoute('app_compte_etape3_justificatif');
         }
@@ -168,7 +169,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/ouverture-compte/justificatif', name: 'app_compte_etape3_justificatif')]
-    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator): Response
+    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator, IDCheckAPI $IDCheckAPI): Response
     {
         $session->start();
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BonPlan;
+use App\Service\IDCheckAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -244,10 +245,10 @@ class VacancesEuskoController extends AbstractController
     }
 
     #[Route(path: '/vacances-en-eusko/call/justificatif', name: 'app_vee_api_idcheck')]
-    public function verificationJustificatif(APIToolbox $APIToolbox,
-                                             Request $request,
+    public function verificationJustificatif(Request $request,
                                              LoggerInterface $logger,
                                              TranslatorInterface $translator,
+                                             IDCheckAPI $IDCheckAPI,
                                              SessionInterface $session):JsonResponse
     {
         //INIT
@@ -278,46 +279,45 @@ class VacancesEuskoController extends AbstractController
             $session->set('compteur', $session->get('compteur') + 1);
 
             //Appel ID Check
-            $checkID = $APIToolbox->curlRequestIdCheck('POST', '/rest/v0/task/image?', ['frontImage' => $docBase64]);
+            $IDCheckAPI->login();
+            $checkID = $IDCheckAPI->createDocument($docBase64);
 
             if($checkID['httpcode'] == 400){
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
-            } elseif ($checkID['httpcode'] == 200){
+            } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
 
                 $status = true;
-                $dataCard = json_decode($checkID["data"]);
+                $dataCard = $checkID["data"];
 
-                $idCheckUID = $dataCard->uid;
+                $idcheckReport = $dataCard['lastReport'];
 
-                $naissance = $dataCard->holderDetail->birthDate;
-                $gender = $dataCard->holderDetail->gender;
-                if($gender == 'M'){
+                $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+                if($gender === 'M'){
                     $data['civility_id'] = 'MR';
                 } else {
                     $data['civility_id'] = 'MME';
                 }
-                $data['birth'] = $naissance->year.'-'.$naissance->month.'-'.$naissance->day;
+
+                $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
 
                 $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
 
                 $pdf = 'null';
-                $idcheckPDF = $APIToolbox->curlRequestIdCheck('GET', '/rest/v0/pdfreport/'.$idCheckUID);
+                $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
 
                 if ($idcheckPDF['httpcode'] == 200){
-                    $dataPdf = json_decode($idcheckPDF["data"]);
-                    $pdf = 'data:application/pdf;base64,'.$dataPdf->report;
+                    $dataPdf = base64_encode($idcheckPDF["data"]);
+                    $pdf = 'data:application/pdf;base64,'.$dataPdf;
                 }
 
                 $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
                 $session->set('utilisateur', $dataU);
 
-                $response = $APIToolbox->go_nogo($checkID["data"]);
+                $response = $IDCheckAPI->go_nogo($dataCard);
 
                 if($response !== true){
                     $status = false;
-                    //à logger
                     $logger->error('[IDNOW] verification pièce : ' . $response['message']);
-
                     $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
                 }
             } else {

@@ -1639,6 +1639,46 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>ouverture_compte.problemes_techniques</source>
         <target><![CDATA[ Arazo teknikoak ditugu nortasun agirien fitxategiak pizuegiak inportatzen direlarik. Mila esker beste fitxategi batekin entseatzeagatik, bestenaz gurekin harremanetan jarri : info@euskalmoneta.org edo 05 33 47 54 11.]]></target>
       </trans-unit>
+      <trans-unit id="z7KJHJU7" resname="profil.fermeture.label">
+        <source>profil.fermeture.label</source>
+        <target>Nire eusko kontua hetsi</target>
+      </trans-unit>
+      <trans-unit id="KJHJz7U7" resname="fermeture.compte.titre">
+        <source>fermeture.compte.titre</source>
+        <target>Eusko kontuko hestea</target>
+      </trans-unit>
+      <trans-unit id="KJHJcc7" resname="fermeture.compte.soustitre">
+        <source>fermeture.compte.soustitre</source>
+        <target>Zure eusko kontua hetsi nahi baduzu, milesker horren arrazoia adierazteagatik. Ahal bezain laster zuekin harremanetan jarriko gara zure haustea gauzatzeko.</target>
+      </trans-unit>
+      <trans-unit id="KJHJ23U7" resname="fermeture.compte.raison.utiliser">
+        <source>fermeture.compte.raison.utiliser</source>
+        <target>Ez dut lortzen tokiko moneta erabiltzea nere etxearen inguruan</target>
+      </trans-unit>
+      <trans-unit id="KJdz3U7" resname="fermeture.compte.raison.demenage">
+        <source>fermeture.compte.raison.demenage</source>
+        <target>Etxez aldatzen naiz</target>
+      </trans-unit>
+      <trans-unit id="KJHJgr3U7" resname="fermeture.compte.raison.cher">
+        <source>fermeture.compte.raison.cher</source>
+        <target>Kotizazioa sobera karioa da</target>
+      </trans-unit>
+      <trans-unit id="KJHqzdJ23U7" resname="fermeture.compte.raison.autre">
+        <source>fermeture.compte.raison.autre</source>
+        <target>Beste</target>
+      </trans-unit>
+      <trans-unit id="KJHaJ23U7" resname="fermeture.compte.raison.autre.long">
+        <source>fermeture.compte.raison.autre.long</source>
+        <target>Beste arrazoi bat :</target>
+      </trans-unit>
+      <trans-unit id="KJ34U7" resname="fermeture.compte.don">
+        <source>fermeture.compte.don</source>
+        <target>Nire kontuan gelditzen den saldoa Euskoari eman nahi diot.</target>
+      </trans-unit>
+      <trans-unit id="KJfensuiocc7" resname="fermeture.compte.message.confirmation">
+        <source>fermeture.compte.message.confirmation</source>
+        <target>Ahal bezain laster zuekin harremanetan jarriko gara zure haustea gauzatzeko.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

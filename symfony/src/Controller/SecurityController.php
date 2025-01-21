@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -314,6 +316,67 @@ class SecurityController extends AbstractController
             }
         }
         return $this->render('security/valideCGU.html.twig', ['form' => $form]);
+    }
+
+    #[Route(path: '/{_locale}/fermeture/compte', name: 'app_fermeture_compte')]
+    public function fermetureCompte(MailerInterface $mailer, Request $request, TranslatorInterface $translator)
+    {
+        $numeroMembre = '';
+
+        if($this->getUser()){
+            $numeroMembre = (string) $this->getUser();
+        }
+        //form generation
+        $form = $this->createFormBuilder()
+            ->add('raison', ChoiceType::class, [
+                'label' => 'fermeture.compte.soustitre',
+                'choices' => [
+                    'fermeture.compte.raison.utiliser' => 'Je n’arrive pas à utiliser la monnaie locale autour de chez moi',
+                    'fermeture.compte.raison.demenage' => 'je déménage',
+                    'fermeture.compte.raison.cher' => 'trop cher',
+                    'fermeture.compte.raison.autre' => 'autre',
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'translation_domain' => 'messages',
+            ])
+            ->add('autreRaison', TextType::class, [
+                'label' => 'fermeture.compte.raison.autre.long',
+                'required' => false,
+                'translation_domain' => 'messages',
+            ])
+            ->add('don', CheckboxType::class, [
+                'label' => 'fermeture.compte.don',
+                'required' => false,
+                'translation_domain' => 'messages',
+            ])
+            ->add('numeroMembre', TextType::class, [
+                'label' => 'N° Adhérent-e ou e-mail',
+                'required' => true,
+                'data' => $numeroMembre,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $this->addFlash('success',$translator->trans("fermeture.compte.message.confirmation"));
+
+            //Email au support
+            $email = (new Email())
+                ->from('info@euskalmoneta.org')
+                ->to('gestion@euskalmoneta.org')
+                ->subject('Demande de fermeture du compte «'.$data['numeroMembre'].'» ')
+                ->html(
+                    'Raison : '.$data['raison'].' <br> '.
+                   'Autre raison : '.$data['autreRaison'].' <br> '.
+                   'Don : '.(($data['don']===true)?'oui':'non').'<br>'
+                )
+            ;
+
+            $mailer->send($email);
+        }
+        return $this->render('security/fermetureCompte.html.twig', ['form' => $form]);
     }
 
 }

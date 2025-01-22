@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\User;
+use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryBuilder;
 use Symfony\Component\Form\FormFactoryBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use \Symfony\Component\HttpFoundation\File\File;
@@ -186,38 +188,117 @@ class PrelevementController extends AbstractController
     }
 
     #[Route(path: '/prelevements/mandats', name: 'app_prelevement_mandats')]
-    public function mandats(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
+    public function mandats(APIToolbox $APIToolbox, PaginatorInterface $paginator, Request $request): Response
     {
         //Init vars
-        $mandatsEnATT = [];
-        $mandatsValide = [];
-        $mandatsRev = [];
-        $mandatsRef = [];
+        $filters = [
+            'nom' => $request->query->get('nom'),
+            'statut' => $request->query->all('statut'),
+            'dateFrom' => $request->query->get('dateFrom'),
+            'dateTo' => $request->query->get('dateTo'),
+        ];
+
+        $sortField = $request->query->get('sort', 'date');
+        $sortDirection = $request->query->get('direction', 'desc');
 
         //Get Mandats from API
-        $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur');
-        if($responseMandats['httpcode'] == 200) {
+        $mandats = $this->fetchAllMandats($APIToolbox);
 
-            $mandats = $responseMandats['data']->results;
+        // Apply filters
+        $filteredMandats = array_filter($mandats, function($mandat) use ($filters) {
+            $matches = true;
 
-            //Sort results in two arrays
-            foreach($mandats as $mandat){
-                if($mandat->statut == 'ATT'){
-                    $mandatsEnATT[] = $mandat;
-                } elseif($mandat->statut == 'REV'){
-                    $mandatsRev[] = $mandat;
-                } elseif($mandat->statut == 'REF'){
-                    $mandatsRef[] = $mandat;
-                } elseif($mandat->statut == 'VAL'){
-                    $mandatsValide[] = $mandat;
-                }
+            // Filtre Nom
+            if (!empty($filters['nom'])) {
+                $matches = $matches && stripos($mandat->nom_debiteur, $filters['nom']) !== false;
             }
 
-            return $this->render('prelevement/mandats.html.twig', ['mandatsEnATT' => $mandatsEnATT, 'mandatsValide' => $mandatsValide, 'mandatsRev' => $mandatsRev, 'mandatsRef' => $mandatsRef]);
+            // Filtre statut
+            if (!empty($filters['statut'])) {
+                $matches = $matches && in_array($mandat->statut, $filters['statut']);
+            }
+
+            // Filtre dates
+            if (!empty($filters['dateFrom'])) {
+                $mandatDate = new \DateTime($mandat->date_derniere_modif);
+                $fromDate = new \DateTime($filters['dateFrom']);
+                $matches = $matches && $mandatDate >= $fromDate;
+            }
+
+            if (!empty($filters['dateTo'])) {
+                $mandatDate = new \DateTime($mandat->date_derniere_modif);
+                $toDate = new \DateTime($filters['dateTo']);
+                $matches = $matches && $mandatDate <= $toDate;
+            }
+
+            return $matches;
+        });
+
+        // Récupérer les différents statut
+        $statutOptions = array_unique(array_map(function($mandat) {
+            return $mandat->statut;
+        }, $mandats));
+
+
+        // Convertir en array pour le usort
+        $mandatsArray = array_values($filteredMandats);
+
+        usort($mandatsArray, function($a, $b) use ($sortField, $sortDirection) {
+            $aValue = $sortField === 'date' ? strtotime($a->date_derniere_modif) : strtolower($a->$sortField);
+            $bValue = $sortField === 'date' ? strtotime($b->date_derniere_modif) : strtolower($b->$sortField);
+
+            if ($aValue == $bValue) {
+                return 0;
+            }
+
+            if ($sortDirection === 'asc') {
+                return ($aValue > $bValue) ? 1 : -1;
+            } else {
+                return ($aValue < $bValue) ? 1 : -1;
+            }
+        });
+
+        //Nombre de résultats
+        $countMandats = count($mandatsArray);
+
+        // Pagination
+        $pagination = $paginator->paginate(
+            $mandatsArray,
+            $request->query->getInt('page', 1),
+            30, //changer ici le nombre de résultats par page
+            [
+                'defaultSortFieldName' => 'date',
+                'defaultSortDirection' => 'asc',
+                'sortFieldAllowList' => ['nom_debiteur', 'date']
+            ]
+        );
+
+        return $this->render('prelevement/mandats.html.twig', ['pagination' => $pagination, 'filters' => $filters, 'statutOptions' => $statutOptions, 'countMandats' => $countMandats]);
+
+    }
+
+    private function fetchAllMandats($APIToolbox): array
+    {
+        $allMandats = [];
+        $currentPage = 1;
+        $hasMorePages = true;
+
+        while ($hasMorePages) {
+            try {
+                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur&page='.$currentPage);
+
+                if ($responseMandats['httpcode'] == 200 && !empty($responseMandats['data']->results)) {
+                    $allMandats = array_merge($allMandats, $responseMandats['data']->results);
+                    $currentPage++;
+                } else {
+                    $hasMorePages = false;
+                }
+
+            } catch (\Exception $e) {
+                $hasMorePages = false;
+            }
         }
-
-        throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
-
+        return $allMandats;
     }
 
     #[Route(path: '/prelevements/mandats/ajout', name: 'app_prelevement_mandats_ajout')]

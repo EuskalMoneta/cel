@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-2">
+            <div class="col-sm-12 col-md-12 mt-2">
                 <div class="row">
                     <div class="col-8">
                         <h2 class="secondary-color mb-4"> {{ "Mandats" | trans }} </h2>
@@ -16,14 +16,137 @@
                 </div>
 
 
-                {% if mandatsEnATT is empty and mandatsValide is empty and mandatsRev is empty and mandatsRef is empty %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-3">
+                                <label for="nom" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nom" name="nom"
+                                       value="{{ filters.nom }}">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Statut</label>
+
+                                <div class="d-flex flex-wrap">
+                                    {% for statut in statutOptions %}
+                                        <div class="mr-2">
+                                            <div class="mr-4">
+                                                <input type="checkbox" class="form-check-input" id="statut_{{ statut }}" name="statut[]" value="{{ statut }}" {% if statut in filters.statut %}checked{% endif %}>
+                                                <label class="form-check-label" for="statut_{{ statut }}">
+                                                    {% if statut == 'REF' %}
+                                                        <div class="">
+                                                            {{ "Refusés" | trans }}
+                                                        </div>
+                                                    {% elseif statut == 'REV' %}
+                                                        <div class="">
+                                                            {{ "Révoqués" | trans }}
+                                                        </div>
+                                                    {% elseif statut == 'ATT' %}
+                                                        <div class="">
+                                                            {{ "En attente" | trans }}
+                                                        </div>
+                                                    {% elseif statut == 'VAL' %}
+                                                        <div class="">
+                                                            {{ "Validés" | trans }}
+                                                        </div>
+                                                    {% endif  %}
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="dateFrom" class="form-label">Date début</label>
+                                <input type="date" class="form-control" id="dateFrom" name="dateFrom"
+                                       value="{{ filters.dateFrom }}">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="dateTo" class="form-label">Date fin</label>
+                                <input type="date" class="form-control" id="dateTo" name="dateTo"
+                                       value="{{ filters.dateTo }}">
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                                        <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-secondary">Effacer</a>
+                                    </div>
+                                    <div>
+                                        {{ countMandats }} {{ 'Résultat(s)' | trans }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% if pagination.items is empty %}
                     <div class="text-center mt-4">
                         <h3 class="mt-4">{{"Aucun mandat" | trans }}</h3>
                         <img src="{{ asset('images/no-data.png') }}" width="30%"/>
                     </div>
                 {% endif %}
 
-                {% if mandatsEnATT is not empty %}
+                <table class="table table-bordered">
+                    <thead>
+                    <th>{{ knp_pagination_sortable(pagination, 'Nom', 'nom_debiteur') }}</th>
+                    <th>Statut</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Date', 'date') }}</th>
+                    <th>action</th>
+                    </thead>
+                    <tbody>
+                    {% for mandat in pagination %}
+                        <tr>
+                            <td>
+                                <div class="main-color text-semi-bold">{{ mandat.nom_debiteur }}</div>
+                            </td>
+
+                            <td>
+                                <div class="secondary-color">
+                                    {% if mandat.statut == 'REF' %}
+                                        <div class="text-danger">
+                                            {{ "Refusé le " | trans }}
+                                        </div>
+                                    {% elseif mandat.statut == 'REV' %}
+                                        <div class="">
+                                            {{ "Révoqué le " | trans }}
+                                        </div>
+                                    {% elseif mandat.statut == 'ATT' %}
+                                        <div class="">
+                                            {{ "Créé le " | trans }}
+                                        </div>
+                                    {% elseif mandat.statut == 'VAL' %}
+                                        <div class="">
+                                            {{ "Validé le " | trans }}
+                                        </div>
+                                    {% endif  %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="secondary-color">
+                                    {{ mandat.date_derniere_modif | format_date(dateFormat='short') }}
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <a class="btn btn-danger btn-slim btn-guard" aria-label="{{ mandat.nom_debiteur }}" href="{{ path('app_prelevement_autorisation_delete', {'id': mandat.id}) }}">
+                                    <i class="fa fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+                {#  if mandatsEnATT is not empty %}
                     <h3 class="main-color">{{ "En attente de validation" | trans }} </h3>
 
                     <div class="colored-tab">
@@ -56,7 +179,7 @@
                     <h3 class="main-color mt-4">  {{ "Validés" | trans }} </h3>
                     <div class="colored-tab">
                         {% for mandat in mandatsValide %}
-                            <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
+                            <div class="row pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
                                 <div class="col-2 text-right">
                                 <span class="fa-stack" style="vertical-align: top;">
                                     <i class="fas fa-circle fa-stack-2x"></i>
@@ -64,7 +187,7 @@
                                 </span>
                                 </div>
                                 <div class="col-6">
-                                    <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
+                                    <div class="main-color text-semi-bold mb-0"> {{ mandat.nom_debiteur }}</div>
                                     <div class="secondary-color"> {{ "Validé le " | trans }}{{  mandat.date_derniere_modif | format_date(dateFormat='long') }} </div>
                                 </div>
                                 <div class="col-4">
@@ -81,7 +204,7 @@
                     <h3 class="main-color mt-4">  {{ "Révoqués" | trans }} </h3>
                     <div class="colored-tab">
                         {% for mandat in mandatsRev %}
-                            <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
+                            <div class="row pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
                                 <div class="col-2 text-right">
                                 <span class="fa-stack" style="vertical-align: top;">
                                     <i class="fas fa-circle fa-stack-2x"></i>
@@ -89,7 +212,7 @@
                                 </span>
                                 </div>
                                 <div class="col-6">
-                                    <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
+                                    <div class="main-color text-semi-bold mb-0"> {{ mandat.nom_debiteur }}</div>
                                     <div class="secondary-color"> {{ "Révoqué le " | trans }}{{  mandat.date_derniere_modif | format_date(dateFormat='long') }} </div>
                                 </div>
                                 <div class="col-4">
@@ -126,6 +249,12 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+
+                #}
+
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
 
 
                 <div class="before-footer">

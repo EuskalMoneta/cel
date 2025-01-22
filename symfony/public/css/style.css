@@ -601,7 +601,7 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
     font-family: 'Inconsolata', monospace, consolas;
     font-size: 18px;
 }
-.colored-tab div{
+.colored-tab > div{
     padding-top: 4px;
     padding-bottom: 4px;
 }

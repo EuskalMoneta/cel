@@ -1673,6 +1673,10 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>fermeture.compte.don</source>
         <target>Je souhaite faire don à l’Eusko du solde restant sur mon compte. </target>
       </trans-unit>
+      <trans-unit id="KJ0O7" resname="mandat.resultats">
+        <source>mandat.resultats</source>
+        <target>Résultat(s) </target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

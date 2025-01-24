@@ -1679,6 +1679,10 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>fermeture.compte.message.confirmation</source>
         <target>Ahal bezain laster zuekin harremanetan jarriko gara zure haustea gauzatzeko.</target>
       </trans-unit>
+      <trans-unit id="KJ0O7" resname="mandat.resultats">
+        <source>mandat.resultats</source>
+        <target>emaitza(k)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -291,14 +291,20 @@ class VacancesEuskoController extends AbstractController
 
                 $idcheckReport = $dataCard['lastReport'];
 
-                $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+                $gender = null;
+                if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
+                    $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+                }
                 if($gender === 'M'){
                     $data['civility_id'] = 'MR';
                 } else {
                     $data['civility_id'] = 'MME';
                 }
 
-                $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
+                $data['birth'] = null;
+                if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
+                    $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
+                }
 
                 $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
 

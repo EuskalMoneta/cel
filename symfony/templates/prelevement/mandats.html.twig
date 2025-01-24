@@ -79,7 +79,7 @@
                                         <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-secondary">Effacer</a>
                                     </div>
                                     <div>
-                                        {{ countMandats }} {{ 'Résultat(s)' | trans }}
+                                        {{ countMandats }} {{ 'mandat.resultats' | trans }}
                                     </div>
                                 </div>
 
@@ -144,113 +144,6 @@
                     {% endfor %}
                     </tbody>
                 </table>
-
-
-                {#  if mandatsEnATT is not empty %}
-                    <h3 class="main-color">{{ "En attente de validation" | trans }} </h3>
-
-                    <div class="colored-tab">
-                        {% for mandat in mandatsEnATT %}
-                            <div class="row p-2" >
-                                <div class="col-2 text-right">
-                                <span class="fa-stack" style="vertical-align: top;">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fal fa-clock fa-stack-1x fa-inverse"></i>
-                                </span>
-                                </div>
-                                <div class="col-6">
-                                    <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
-                                    <div class="secondary-color"> {{ "Créé le " | trans }}{{  mandat.date_derniere_modif | format_date(dateFormat='long') }} </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="float-right ">
-                                        <a class="btn btn-danger btn-guard" aria-label="{{ mandat.nom_debiteur }}" href="{{ path('app_prelevement_autorisation_delete', {'id': mandat.id}) }}"> <i class="fa fa-trash-alt"></i> </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                    </div>
-                {% endif %}
-
-
-
-                {% if mandatsValide is not empty %}
-                    <h3 class="main-color mt-4">  {{ "Validés" | trans }} </h3>
-                    <div class="colored-tab">
-                        {% for mandat in mandatsValide %}
-                            <div class="row pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
-                                <div class="col-2 text-right">
-                                <span class="fa-stack" style="vertical-align: top;">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="far fa-user fa-stack-1x fa-inverse"></i>
-                                </span>
-                                </div>
-                                <div class="col-6">
-                                    <div class="main-color text-semi-bold mb-0"> {{ mandat.nom_debiteur }}</div>
-                                    <div class="secondary-color"> {{ "Validé le " | trans }}{{  mandat.date_derniere_modif | format_date(dateFormat='long') }} </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="float-right ">
-                                        <a class="btn btn-danger btn-guard" aria-label="{{ mandat.nom_debiteur }}" href="{{ path('app_prelevement_autorisation_delete', {'id': mandat.id}) }}"> <i class="far fa-trash-alt"></i> </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-                {% if mandatsRev is not empty %}
-                    <h3 class="main-color mt-4">  {{ "Révoqués" | trans }} </h3>
-                    <div class="colored-tab">
-                        {% for mandat in mandatsRev %}
-                            <div class="row pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
-                                <div class="col-2 text-right">
-                                <span class="fa-stack" style="vertical-align: top;">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="far fa-times fa-stack-1x fa-inverse"></i>
-                                </span>
-                                </div>
-                                <div class="col-6">
-                                    <div class="main-color text-semi-bold mb-0"> {{ mandat.nom_debiteur }}</div>
-                                    <div class="secondary-color"> {{ "Révoqué le " | trans }}{{  mandat.date_derniere_modif | format_date(dateFormat='long') }} </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="float-right ">
-                                        <a class="btn btn-danger btn-guard" aria-label="{{ mandat.nom_debiteur }}" href="{{ path('app_prelevement_autorisation_delete', {'id': mandat.id}) }}"> <i class="far fa-trash-alt"></i> </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-                {% if mandatsRef is not empty %}
-                    <h3 class="main-color mt-4">  {{ "Réfusés" | trans }} </h3>
-                    <div class="colored-tab">
-                        {% for mandat in mandatsRef %}
-                            <div class="row pt-4 pb-4 pl-2 pr-2 " {% if loop.index is divisible by(2) %} style="background-color: #f9f9f9;" {% endif %}>
-                                <div class="col-2 text-right">
-                                <span class="fa-stack" style="vertical-align: top;">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="far fa-times fa-stack-1x fa-inverse"></i>
-                                </span>
-                                </div>
-                                <div class="col-6">
-                                    <div class="main-color text-semi-bold"> {{ mandat.nom_debiteur }}</div>
-                                    <div class="secondary-color"> {{ "Refusé le " | trans }}{{  mandat.date_derniere_modif | format_date(dateFormat='long') }} </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="float-right ">
-                                        <a class="btn btn-danger btn-guard" aria-label="{{ mandat.nom_debiteur }}" href="{{ path('app_prelevement_autorisation_delete', {'id': mandat.id}) }}"> <i class="far fa-trash-alt"></i> </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-                #}
 
                 <div class="navigation">
                     {{ knp_pagination_render(pagination) }}

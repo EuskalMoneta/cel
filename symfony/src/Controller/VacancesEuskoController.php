@@ -115,7 +115,7 @@ class VacancesEuskoController extends AbstractController
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
-        
+
         if($session->get('compteur') < 20){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [
@@ -286,45 +286,51 @@ class VacancesEuskoController extends AbstractController
                 $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
             } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
 
-                $status = true;
-                $dataCard = $checkID["data"];
+                try {
 
-                $idcheckReport = $dataCard['lastReport'];
 
-                $gender = null;
-                if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
-                    $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
-                }
-                if($gender === 'M'){
-                    $data['civility_id'] = 'MR';
-                } else {
-                    $data['civility_id'] = 'MME';
-                }
+                    $status = true;
+                    $dataCard = $checkID["data"];
 
-                $data['birth'] = null;
-                if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
-                    $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
-                }
+                    $idcheckReport = $dataCard['lastReport'];
 
-                $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
+                    $gender = null;
+                    if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
+                        $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+                    }
+                    if($gender === 'M'){
+                        $data['civility_id'] = 'MR';
+                    } else {
+                        $data['civility_id'] = 'MME';
+                    }
 
-                $pdf = 'null';
-                $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
+                    $data['birth'] = null;
+                    if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
+                        $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
+                    }
 
-                if ($idcheckPDF['httpcode'] == 200){
-                    $dataPdf = base64_encode($idcheckPDF["data"]);
-                    $pdf = 'data:application/pdf;base64,'.$dataPdf;
-                }
+                    $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
 
-                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
-                $session->set('utilisateur', $dataU);
+                    $pdf = 'null';
+                    $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
 
-                $response = $IDCheckAPI->go_nogo($dataCard);
+                    if ($idcheckPDF['httpcode'] == 200){
+                        $dataPdf = base64_encode($idcheckPDF["data"]);
+                        $pdf = 'data:application/pdf;base64,'.$dataPdf;
+                    }
 
-                if($response !== true){
-                    $status = false;
-                    $logger->error('[IDNOW] verification pièce : ' . $response['message']);
-                    $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
+                    $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
+                    $session->set('utilisateur', $dataU);
+
+                    $response = $IDCheckAPI->go_nogo($dataCard);
+
+                    if($response !== true){
+                        $status = false;
+                        $logger->error('[IDNOW] verification pièce : ' . $response['message']);
+                        $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
+                    }
+                } catch (\Exception $e){
+                    $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
                 }
             } else {
                 $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
@@ -431,7 +437,7 @@ class VacancesEuskoController extends AbstractController
                                                    SessionInterface $session,
                                                    TranslatorInterface $translator,
                                                    MailerInterface $mailer
-                                                    )
+    )
     {
         $session->start();
 

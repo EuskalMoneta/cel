@@ -2,29 +2,23 @@
 
 namespace App\Controller;
 
-use App\Security\User;
 use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryBuilder;
-use Symfony\Component\Form\FormFactoryBuilderInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
-use \Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class PrelevementController extends AbstractController
 {
@@ -33,7 +27,7 @@ class PrelevementController extends AbstractController
      */
     #[IsGranted('ROLE_PARTENAIRE')]
     #[Route(path: '/prelevements', name: 'app_prelevement')]
-    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
+    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator): Response
     {
         //init vars
         $comptes = [];
@@ -62,7 +56,7 @@ class PrelevementController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
-                /** @var \Symfony\Component\HttpFoundation\File\File $file */
+                /** @var File $file */
                 $file = $form['tableur']->getData();
 
                 if(!empty($file)) {
@@ -129,7 +123,7 @@ class PrelevementController extends AbstractController
     }
 
     #[Route(path: '/prelevements/autorisations', name: 'app_prelevement_autorisation')]
-    public function autorisations(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
+    public function autorisations(APIToolbox $APIToolbox): Response
     {
         //Init vars
         $mandatsEnATT = [];
@@ -144,11 +138,11 @@ class PrelevementController extends AbstractController
 
             //Sort results in two arrays
             foreach($mandats as $mandat){
-                if($mandat->statut == 'ATT'){
+                if($mandat->statut === 'ATT'){
                     $mandatsEnATT[] = $mandat;
-                } elseif($mandat->statut == 'REV'){
+                } elseif($mandat->statut === 'REV'){
                     $mandatsRev[] = $mandat;
-                } elseif($mandat->statut == 'VAL'){
+                } elseif($mandat->statut === 'VAL'){
                     $mandatsValide[] = $mandat;
                 }
             }
@@ -160,15 +154,15 @@ class PrelevementController extends AbstractController
     }
 
     #[Route(path: '/prelevements/autorisations/{type}/{id}', name: 'app_prelevement_autorisation_change_state')]
-    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function autorisationsChangeState($id, $type, APIToolbox $APIToolbox, TranslatorInterface $translator): RedirectResponse
     {
         $responseMandat = $APIToolbox->curlRequest('POST', '/mandats/'.$id.'/'.$type.'/');
         if($responseMandat['httpcode'] == 204 ) {
-            if($type == 'valider'){
+            if($type === 'valider'){
                 $this->addFlash('success', $translator->trans("Le mandat a été validé"));
-            } elseif($type == 'refuser'){
+            } elseif($type === 'refuser'){
                 $this->addFlash('success', $translator->trans("Le mandat a été refusé"));
-            } elseif($type == 'revoquer'){
+            } elseif($type === 'revoquer'){
                 $this->addFlash('success', $translator->trans("Le mandat a été révoqué"));
             }
             return $this->redirectToRoute('app_prelevement_autorisation');
@@ -177,10 +171,10 @@ class PrelevementController extends AbstractController
     }
 
     #[Route(path: '/delete/prelevements/{id}', name: 'app_prelevement_autorisation_delete')]
-    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function autorisationsDelete($id, APIToolbox $APIToolbox, TranslatorInterface $translator): RedirectResponse
     {
         $responseMandat = $APIToolbox->curlRequest('DELETE', '/mandats/'.$id.'/');
-        if($responseMandat['httpcode'] == 204 ) {
+        if($responseMandat['httpcode'] === 204 ) {
             $this->addFlash('success', $translator->trans("Le mandat a été supprimé"));
             return $this->redirectToRoute('app_prelevement_mandats');
         }
@@ -253,9 +247,10 @@ class PrelevementController extends AbstractController
 
             if ($sortDirection === 'asc') {
                 return ($aValue > $bValue) ? 1 : -1;
-            } else {
-                return ($aValue < $bValue) ? 1 : -1;
             }
+
+            return ($aValue < $bValue) ? 1 : -1;
+
         });
 
         //Nombre de résultats
@@ -410,10 +405,10 @@ class PrelevementController extends AbstractController
     public function spreadsheetToArray(File $file){
 
         $rows = [];
-        if($file->getMimeType() == 'text/csv' || $file->getMimeType() == 'text/plain'){
+        if($file->getMimeType() === 'text/csv' || $file->getMimeType() === 'text/plain'){
 
             //READ A CSV File
-            if (($handle = fopen($file, "r")) !== FALSE) {
+            if (($handle = fopen($file, "rb")) !== FALSE) {
                 while(($row = fgetcsv($handle)) !== FALSE) {
                     $rows[] = $row;
                 }
@@ -453,10 +448,10 @@ class PrelevementController extends AbstractController
     {
         $msg ='';
 
-        if($type == 'moneyType'){
+        if($type === 'moneyType'){
             $colEu = ['Izena', 'Kontu zenbakia', 'Zenbatekoa', 'Eragiketaren deskribapena'];
             $colFr = ['Nom', 'N° de compte', 'Montant', "Libellé de l'opération"];
-        } elseif ($type == 'personType'){
+        } elseif ($type === 'personType'){
             $colEu = ['Izena', 'Kontu zenbakia'];
             $colFr = ['Nom', 'N° de compte'];
         }
@@ -465,10 +460,11 @@ class PrelevementController extends AbstractController
             return "Le fichier envoyé ne contient pas le bon nombre de colonnes, veuillez utiliser le modèle de fichier pour Excel ou pour OpenOffice / LibreOffice.";
         }
 
-        for($i =0; $i < count($colFr); $i++){
+        $countColFr = count($colFr);
+        for($i =0; $i < $countColFr; $i++){
             // gestion des différents types d'apostrophe
             $row[$i] = str_replace("’", "'", $row[$i]);
-            if(!($row[$i] == $colEu[$i] || $row[$i] == $colFr[$i])){
+            if(!($row[$i] === $colEu[$i] || $row[$i] === $colFr[$i])){
                 $msg = "Le fichier envoyé ne contient pas les bonnes colonnes (les titres de la première ligne ne correspondent pas), veuillez utiliser le modèle de fichier pour Excel ou pour OpenOffice / LibreOffice.";
             }
         }

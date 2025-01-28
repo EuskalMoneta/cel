@@ -278,16 +278,14 @@ class VacancesEuskoController extends AbstractController
 
             $session->set('compteur', $session->get('compteur') + 1);
 
-            //Appel ID Check
-            $IDCheckAPI->login();
-            $checkID = $IDCheckAPI->createDocument($docBase64);
+            try {
+                //Appel ID Check
+                $IDCheckAPI->login();
+                $checkID = $IDCheckAPI->createDocument($docBase64);
 
-            if($checkID['httpcode'] == 400){
-                $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
-            } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
-
-                try {
-
+                if($checkID['httpcode'] == 400){
+                    $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
+                } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
 
                     $status = true;
                     $dataCard = $checkID["data"];
@@ -329,11 +327,12 @@ class VacancesEuskoController extends AbstractController
                         $logger->error('[IDNOW] verification pièce : ' . $response['message']);
                         $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
                     }
-                } catch (\Exception $e){
-                    $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
+
+                } else {
+                    $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
                 }
-            } else {
-                $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
+            } catch (\Exception $e){
+                $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
             }
 
         } else {

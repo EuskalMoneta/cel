@@ -30,28 +30,24 @@ services:
 
     admin.promotion:
         class: App\Admin\PromotionAdmin
-        arguments: [~, App\Entity\Promotion, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Promotion }
+            - { name: sonata.admin, model_class: App\Entity\Promotion,  manager_type: orm, group: admin, label: Promotion }
         public: true
 
     admin.bonplan:
         class: App\Admin\BonPlanAdmin
-        arguments: [~, App\Entity\BonPlan, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: BonPlans }
+            - { name: sonata.admin, model_class: App\Entity\BonPlan, manager_type: orm, group: admin, label: BonPlans }
         public: true
 
     admin.article:
         class: App\Admin\ArticleAdmin
-        arguments: [~, App\Entity\Article, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Article }
+            - { name: sonata.admin, model_class: App\Entity\Article, manager_type: orm, group: admin, label: Article }
         public: true
 
     admin.statistique:
         class: App\Admin\StatistiqueAdmin
-        arguments: [~, App\Entity\Statistique, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Statistique }
+            - { name: sonata.admin, model_class: App\Entity\Statistique, manager_type: orm, group: admin, label: Statistique }
         public: true

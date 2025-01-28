@@ -17,8 +17,7 @@ monolog:
             type:           fingers_crossed
             action_level:   error
             handler:        streamed_error
-            excluded_404s:
-                - ^/
+
         streamed_error:
             type:           rotating_file
             max_files:      15

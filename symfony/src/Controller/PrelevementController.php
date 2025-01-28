@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\VirementPrelevement;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -22,12 +24,16 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class PrelevementController extends AbstractController
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     /**
      * Page accueil des prélèvements pour les PROS / prestataires
      */
     #[IsGranted('ROLE_PARTENAIRE')]
     #[Route(path: '/prelevements', name: 'app_prelevement')]
-    public function prelevement(APIToolbox $APIToolbox, Request $request, TranslatorInterface $translator): Response
+    public function prelevement(APIToolbox $APIToolbox, Request $request, EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         //init vars
         $comptes = [];
@@ -55,6 +61,8 @@ class PrelevementController extends AbstractController
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $created = new \DateTimeImmutable("now");
 
                 /** @var File $file */
                 $file = $form['tableur']->getData();
@@ -89,36 +97,147 @@ class PrelevementController extends AbstractController
                     $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                 }
 
-                $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
+                //test
+                $arrayResponsePrelevements = [
+                    'httpcode' => 201,
+                    'data' => [
+                        (object)[
+                            'status' => 1,
+                            'name' => 'Account A',
+                            'amount' => 12,40,
+                            'account' => 'ACC001',
+                            'message' => 'ok',
+                        ],
+                        (object)[
+                            'status' => 0,
+                            'name' => 'Account B',
+                            'account' => 'ACC002',
+                            'amount' => 12,40,
+
+                            'message' => 'Insufficient funds'
+                        ],
+                        (object)[
+                            'status' => 0,
+                            'name' => '',
+                            'account' => 'ACC003',
+                            'amount' => 15,40,
+                            'message' => 'Invalid account'
+                        ],
+                        (object)[
+                            'status' => 1,
+                            'name' => 'Account C',
+                            'amount' => 67,
+                            'message' => 'ok',
+                            'account' => 'ACC004'
+                        ]
+                    ]
+                ];
+                $responsePrelevements = $arrayResponsePrelevements;
+
+
+                //$responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
                 if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
                     $resultats = $responsePrelevements['data'];
 
                     foreach($resultats as $resultat){
-                        if($resultat->status == 1){
-                            $listSuccess .= '<li>'.$resultat->name.'</li>';
-                        } else {
-                            if($resultat->name != ''){
-                                $listFail .= '<li>'.$resultat->name.' : '.$resultat->message.'</li>';
-                            } else {
-                                $listFail .= '<li>'.$resultat->account.' : '.$resultat->message.'</li>';
-                            }
 
+                        $virement = new VirementPrelevement();
+                        $virement->setCreated($created);
+                        $virement->setStatut($resultat->status);
+                        $virement->setCrediteur((string) $this->getUser());
+                        $virement->setSomme($resultat->amount*100);
+                        $virement->setMessage($resultat->message);
+                        $virement->setDebiteur($resultat->name);
+
+                        if($resultat->status !== 1 && $resultat->name !== ''){
+                            $virement->setDebiteur($resultat->account);
                         }
+                        $em->persist($virement);
+                        $em->flush();
+                        dump($virement);
+
                     }
                 } else {
                     $this->addFlash('danger', $translator->trans("Erreur dans votre fichier, vérifiez que toutes les cellules sont remplies"));
                 }
 
-                if($listSuccess != ''){
-                    $this->addFlash('success',$translator->trans("Prélèvement effectué").'<ul>'.$listSuccess.'</ul> ');
-                }
-                if($listFail != '') {
-                    $this->addFlash('danger', $translator->trans("Erreur de prélèvement : ") .'<ul>'. $listFail . '</ul> ');
-                }
+                $createdMoins = $created->modify('-1 minute');
+                $createdPlus = $created->modify('+1 minute');
+
+                return $this->redirectToRoute('app_prelevement_resultats', [
+                    'dateFrom' => $createdMoins->format('Y-m-d H:i:s'),
+                    'dateTo' => $createdPlus->format('Y-m-d H:i:s')
+                ]);
             }
         }
 
-        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form, 'listSuccess' => $listSuccess, 'listFail' => $listFail]);
+        return $this->render('prelevement/executionPrelevement.html.twig', ['form' => $form]);
+
+    }
+
+    #[Route(path: '/prelevements/resultats', name: 'app_prelevement_resultats')]
+    public function prelevementResultats(APIToolbox $APIToolbox, PaginatorInterface $paginator, Request $request, EntityManagerInterface $em): Response
+    {
+        $crediteur = (string) $this->getUser();
+
+        $dateFrom = $request->query->get('dateFrom')
+            ? new \DateTimeImmutable($request->query->get('dateFrom'))
+            : null;
+        $dateTo = $request->query->get('dateTo')
+            ? new \DateTimeImmutable($request->query->get('dateTo'))
+            : null;
+
+        //Init vars
+        $filters = [
+            'debiteur' => $request->query->get('debiteur'),
+            'statut' => $request->query->get('statut')??'null',
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+        ];
+
+        $query = $em->getRepository(VirementPrelevement::class)->findByFilters($crediteur, $dateFrom, $dateTo, $filters['debiteur'], $filters['statut']);
+
+        //export CSV
+        if ($request->query->get('export') === 'csv') {
+
+            $handle = fopen('php://output', 'wb+');
+
+            // Write headers
+            fputcsv($handle, ['Date', 'Débiteur','Montant', 'Statut', 'Message']);
+
+            /** @var VirementPrelevement $virementPrelevement */
+            foreach ($query->getResult() as $virementPrelevement) {
+                fputcsv($handle, [
+                    $virementPrelevement->getCreated()->format('Y-m-d H:i:s'),
+                    $virementPrelevement->getDebiteur(),
+                    number_format($virementPrelevement->getSomme() / 100, 2, ',', ' ') . '€',
+                    $virementPrelevement->getStatut()===1?$this->translator->trans('prelevement.reussi'):$this->translator->trans('prelevement.echoue'),
+                    $virementPrelevement->getMessage(),
+                ]);
+            }
+
+            fclose($handle);
+
+            $response = new Response();
+            $response->headers->set('Content-Type', 'text/csv');
+            $response->headers->set('Content-Disposition', 'attachment; filename="prelevements.csv"');
+
+            return $response;
+        }
+
+        // Pagination
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            30, //changer ici le nombre de résultats par page
+            [
+                'defaultSortFieldName' => 'v.created',
+                'defaultSortDirection' => 'asc',
+                'sortFieldAllowList' => ['v.debiteur', 'v.created']
+            ]
+        );
+
+        return $this->render('prelevement/prelevementResultats.html.twig', ['pagination' => $pagination, 'filters' => $filters,  'countMandats' => count($query->getResult())]);
 
     }
 
@@ -256,6 +375,31 @@ class PrelevementController extends AbstractController
         //Nombre de résultats
         $countMandats = count($mandatsArray);
 
+        //export CSV
+        if ($request->query->get('export') === 'csv') {
+
+            $handle = fopen('php://output', 'wb+');
+
+            // headers
+            fputcsv($handle, ['Nom', 'Statut', 'Date']);
+
+            foreach ($mandatsArray as $mandat) {
+                fputcsv($handle, [
+                    $mandat->nom_debiteur,
+                    (string)$mandat->statut,
+                    (string)$mandat->date_derniere_modif,
+                ]);
+            }
+
+            fclose($handle);
+
+            $response = new Response();
+            $response->headers->set('Content-Type', 'text/csv');
+            $response->headers->set('Content-Disposition', 'attachment; filename="mandats.csv"');
+
+            return $response;
+        }
+
         // Pagination
         $pagination = $paginator->paginate(
             $mandatsArray,
@@ -280,7 +424,7 @@ class PrelevementController extends AbstractController
 
         while ($hasMorePages) {
             try {
-                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur&page='.$currentPage);
+                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteura&page='.$currentPage);
 
                 if ($responseMandats['httpcode'] == 200 && !empty($responseMandats['data']->results)) {
                     $allMandats = array_merge($allMandats, $responseMandats['data']->results);

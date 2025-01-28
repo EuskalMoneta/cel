@@ -1677,6 +1677,18 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>mandat.resultats</source>
         <target>Résultat(s) </target>
       </trans-unit>
+      <trans-unit id="KJidjozlq7" resname="prelevement.historique">
+        <source>prelevement.historique</source>
+        <target>Historique des prélèvements</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufieoO7" resname="prelevement.reussi">
+        <source>prelevement.reussi</source>
+        <target>Réussi</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufidzqdzqeoO7" resname="prelevement.echoue">
+        <source>prelevement.echoue</source>
+        <target>Échoué</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

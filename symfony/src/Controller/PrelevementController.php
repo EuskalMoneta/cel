@@ -97,45 +97,7 @@ class PrelevementController extends AbstractController
                     $this->addFlash('danger', $translator->trans("Format de fichier non reconnu ou tableur vide"));
                 }
 
-                //test
-                $arrayResponsePrelevements = [
-                    'httpcode' => 201,
-                    'data' => [
-                        (object)[
-                            'status' => 1,
-                            'name' => 'Account A',
-                            'amount' => 12,40,
-                            'account' => 'ACC001',
-                            'message' => 'ok',
-                        ],
-                        (object)[
-                            'status' => 0,
-                            'name' => 'Account B',
-                            'account' => 'ACC002',
-                            'amount' => 12,40,
-
-                            'message' => 'Insufficient funds'
-                        ],
-                        (object)[
-                            'status' => 0,
-                            'name' => '',
-                            'account' => 'ACC003',
-                            'amount' => 15,40,
-                            'message' => 'Invalid account'
-                        ],
-                        (object)[
-                            'status' => 1,
-                            'name' => 'Account C',
-                            'amount' => 67,
-                            'message' => 'ok',
-                            'account' => 'ACC004'
-                        ]
-                    ]
-                ];
-                $responsePrelevements = $arrayResponsePrelevements;
-
-
-                //$responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
+                $responsePrelevements = $APIToolbox->curlRequest('POST', '/execute-prelevements/', $comptes);
                 if($responsePrelevements['httpcode'] == 201 || $responsePrelevements['httpcode'] == 200) {
                     $resultats = $responsePrelevements['data'];
 
@@ -154,7 +116,6 @@ class PrelevementController extends AbstractController
                         }
                         $em->persist($virement);
                         $em->flush();
-                        dump($virement);
 
                     }
                 } else {

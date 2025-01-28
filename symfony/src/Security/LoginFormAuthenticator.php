@@ -123,6 +123,11 @@ class LoginFormAuthenticator extends AbstractAuthenticator
                         $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
                     }
 
+                    $admins = json_decode($_ENV['USERS_ADMIN']);
+                    if (in_array($user->getUsername(), $admins)){
+                        $user->setRoles(['ROLE_ADMIN']);
+                    }
+
                     // set locale according to the language chosen by the user
                     if($member->array_options->options_langue === 'eu'){
                         $user->setLocale($member->array_options->options_langue);
@@ -215,6 +220,12 @@ class LoginFormAuthenticator extends AbstractAuthenticator
             }
             if($member->type == 'Régie publique de recettes'){
                 $user->setRoles(['ROLE_PARTENAIRE', 'ROLE_REGIE']);
+            }
+
+            $admins = json_decode($_ENV['USERS_ADMIN']);
+            dump($admins);
+            if (in_array($user->getUsername(), $admins)){
+                $user->setRoles(['ROLE_ADMIN']);
             }
 
             // set locale according to the language chosen by the user

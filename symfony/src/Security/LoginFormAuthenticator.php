@@ -125,7 +125,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
                     $admins = json_decode($_ENV['USERS_ADMIN']);
                     if (in_array($user->getUsername(), $admins)){
-                        $user->setRoles(['ROLE_ADMIN']);
+                        $user->addRole('ROLE_ADMIN');
                     }
 
                     // set locale according to the language chosen by the user

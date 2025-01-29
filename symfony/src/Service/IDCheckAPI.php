@@ -23,7 +23,7 @@ class IDCheckAPI
                 ],
                 'body' => http_build_query([
                     'grant_type' => 'password',
-                    'client_id' => 'cis-api-client',
+                    'client_id' => $_ENV['IDCHECK_CLIENT_ID'],
                     'username' => $_ENV['IDCHECK_AUTH'],
                     'password' => $_ENV['IDCHECK_PASS'],
                     'broker' => $_ENV['IDCHECK_REALM'],

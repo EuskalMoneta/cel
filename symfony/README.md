@@ -47,6 +47,8 @@ Vérifier les permissions des dossiers var/cache var/log et public/uploads \
 Faire une mise à jour des assets \
 `php bin/console assets:install --symlink`
 
+Vider le cache \
+`php bin/console cache:clear --env=prod`
 
 ## Traductions
 

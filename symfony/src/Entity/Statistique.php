@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\StatistiqueRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StatistiqueRepository::class)]
@@ -21,6 +22,11 @@ class Statistique
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $value;
+
+    public function __toString(): string
+    {
+        return $this->type;
+    }
 
     public function getId(): ?int
     {

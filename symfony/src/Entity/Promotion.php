@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -152,5 +153,10 @@ class Promotion
         $this->visible = $visible;
 
         return $this;
+    }
+
+    public function isVisible(): ?bool
+    {
+        return $this->visible;
     }
 }

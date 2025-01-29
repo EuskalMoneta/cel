@@ -385,7 +385,7 @@ class PrelevementController extends AbstractController
 
         while ($hasMorePages) {
             try {
-                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteura&page='.$currentPage);
+                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur&page='.$currentPage);
 
                 if ($responseMandats['httpcode'] == 200 && !empty($responseMandats['data']->results)) {
                     $allMandats = array_merge($allMandats, $responseMandats['data']->results);

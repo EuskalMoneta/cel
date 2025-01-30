@@ -22,8 +22,9 @@ class IDCheckAPI
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
                 'body' => http_build_query([
-                    'grant_type' => 'password',
+                    'grant_type' => $_ENV['IDCHECK_GRANT_TYPE'],
                     'client_id' => $_ENV['IDCHECK_CLIENT_ID'],
+                    'client_secret' => $_ENV['IDCHECK_CLIENT_SECRET'],
                     'username' => $_ENV['IDCHECK_AUTH'],
                     'password' => $_ENV['IDCHECK_PASS'],
                     'broker' => $_ENV['IDCHECK_REALM'],
@@ -177,5 +178,4 @@ class IDCheckAPI
         $this->accessToken = null;
         $this->tokenData = null;
     }
-
 }

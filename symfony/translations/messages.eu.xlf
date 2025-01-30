@@ -149,6 +149,10 @@
         <source>Aucun résultat pour les dates sélectionnées.</source>
         <target>Emaitzarik ez aukeratu dituzun egunentzat.</target>
       </trans-unit>
+      <trans-unit id="iFgBhya4" resname="Aucun résultat">
+        <source>Aucun résultat</source>
+        <target>Ez dago emaitzarik</target>
+      </trans-unit>
       <trans-unit id="UNs9HuJ" resname="À jour">
         <source>À jour</source>
         <target>Eguneratua</target>

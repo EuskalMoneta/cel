@@ -109,11 +109,8 @@ class PrelevementController extends AbstractController
                         $virement->setCrediteur((string) $this->getUser());
                         $virement->setSomme($resultat->amount*100);
                         $virement->setMessage($resultat->message);
-                        $virement->setDebiteur($resultat->name);
+                        $virement->setDebiteur($resultat->name.' '.$resultat->account);
 
-                        if($resultat->status !== 1 && $resultat->name !== ''){
-                            $virement->setDebiteur($resultat->account);
-                        }
                         $em->persist($virement);
                         $em->flush();
 

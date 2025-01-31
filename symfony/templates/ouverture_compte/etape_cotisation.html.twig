@@ -3,7 +3,14 @@
 {% block content %}
     <p class="text-subtitle">{{ "cotisation.explication" | trans | raw }}</p>
     <div class="cotisation_form">
-        {{ form(form) }}
+        {{ form_start(form) }}
+        {{ form_row(form.subscription_amount) }}
+
+        <div class="mb-5"></div>
+        <div class="d-none">
+            {{ form_row(form.subscription_periodicity) }}
+        </div>
+        {{ form_rest(form) }}
     </div>
 {% endblock %}
 
@@ -13,11 +20,12 @@
         $(document).ready(function(){
 
             function disableMonthly() {
-                $("#form_subscription_periodicity_1").attr("disabled", true);
-                $("#form_subscription_periodicity_1").prop("checked", false);
-                $("#form_subscription_periodicity_0").prop("checked", true);
+                $("#form_subscription_periodicity_0").attr("disabled", true);
+                $("#form_subscription_periodicity_0").prop("checked", false);
+                $("#form_subscription_periodicity_1").prop("checked", true);
 
             }
+
             if($("#form_subscription_amount_3").prop("checked") == true){
                 disableMonthly();
             }
@@ -26,7 +34,8 @@
                 if($(this).val() == '5'){
                     disableMonthly();
                 } else {
-                    $("#form_subscription_periodicity_1").attr("disabled", false);
+                    $("#form_subscription_periodicity_0").attr("disabled", false);
+                    $("#form_subscription_periodicity_0").prop("checked", true);
                 }
             });
 

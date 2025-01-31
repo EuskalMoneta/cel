@@ -51,3 +51,8 @@ services:
         tags:
             - { name: sonata.admin, model_class: App\Entity\Statistique, manager_type: orm, group: admin, label: Statistique }
         public: true
+
+    admin.motivation:
+        class: App\Admin\MotivationAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Motivation, controller: ~, manager_type: orm, group: admin, label: Motivation }

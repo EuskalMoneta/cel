@@ -333,6 +333,7 @@ class VacancesEuskoController extends AbstractController
                 }
             } catch (\Exception $e){
                 $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
+                $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
             }
 
         } else {

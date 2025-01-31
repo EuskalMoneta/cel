@@ -69,7 +69,7 @@ class AdhesionController extends AbstractController
             if ($type == 'adhesion') {
                 return $this->redirectToRoute('app_adhesion_etape1_identite');
             } elseif ($type == 'compte'){
-                return $this->redirectToRoute('app_ouverture_etape1_identite');
+                return $this->redirectToRoute('app_ouverture_etape_identite');
             }
         } else {
             $this->addFlash('warning', $translator->trans('numéro de compte en erreur'));

@@ -1041,6 +1041,10 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>Virements</source>
         <target>Biramenduak</target>
       </trans-unit>
+      <trans-unit id="fsTn4lIZA" resname="Virement">
+        <source>Virement</source>
+        <target>Biramenduak</target>
+      </trans-unit>
       <trans-unit id="ne_50HZ" resname="Vous n'avez jamais accédé à votre compte eusko ?">
         <source>Vous n'avez jamais accédé à votre compte eusko ?</source>
         <target>Ez zara sekula zure eusko kontuan sartu?</target>
@@ -1400,6 +1404,10 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
       <trans-unit id="NMHVa7k" resname="releves.date_fin">
         <source>releves.date_fin</source>
         <target>Bukaera</target>
+      </trans-unit>
+      <trans-unit id="NMHVa754k" resname="releves.type_mouvement">
+        <source>releves.type_mouvement</source>
+        <target>Type de mouvement</target>
       </trans-unit>
       <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
         <source>profil.mot_de_passe.ancien_mot_de_passe</source>

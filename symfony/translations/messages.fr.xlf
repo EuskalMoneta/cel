@@ -995,6 +995,10 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Virements</source>
         <target>Virements</target>
       </trans-unit>
+      <trans-unit id="fsTn4lIZA" resname="Virement">
+        <source>Virement</source>
+        <target>Virement</target>
+      </trans-unit>
       <trans-unit id="QyNZIY0" resname="ETAPE 3/5">
         <source>ETAPE 3/5</source>
         <target>ETAPE 3/5</target>
@@ -1394,6 +1398,10 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
       <trans-unit id="NMHVa7k" resname="releves.date_fin">
         <source>releves.date_fin</source>
         <target>Fin</target>
+      </trans-unit>
+      <trans-unit id="NMHVa754k" resname="releves.type_mouvement">
+        <source>releves.type_mouvement</source>
+        <target>Type de mouvement</target>
       </trans-unit>
       <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
         <source>profil.mot_de_passe.ancien_mot_de_passe</source>

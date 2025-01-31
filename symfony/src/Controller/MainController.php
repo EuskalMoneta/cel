@@ -232,6 +232,16 @@ class MainController extends AbstractController
             )
             ->add('dateDebut', DateType::class, ['widget' => 'single_text', 'required' => true, 'label' => $translator->trans('releves.date_debut'),])
             ->add('dateFin', DateType::class, ['widget' => 'single_text', 'required' => true, 'label' => $translator->trans('releves.date_fin'),])
+            ->add('typeMouvement', ChoiceType::class, [
+                'required' => false,
+                'label' => $translator->trans('releves.type_mouvement'),
+                'choices' => [
+                    $translator->trans('Virement') => 'Virement',
+                    $translator->trans('euskopay') => 'euskopay',
+                ]
+            ])
+            ->add('destinataire', TextType::class, [ 'required' => false, 'label' => $translator->trans('Destinataire'),])
+            ->add('description', TextType::class, ['required' => false, 'label' => $translator->trans('Description'),])
             ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
             ->getForm();
 
@@ -244,15 +254,63 @@ class MainController extends AbstractController
             $dateS = $data['dateDebut']->format('Y-m-d');
             $dateE = $data['dateFin']->format('Y-m-d');
 
+            //description account
             $response = $APIToolbox->curlRequest('GET', '/payments-available-history-adherent/?begin='.$dateS.'T00:00&end='.$dateE.'T23:59');
 
             if($response['httpcode'] == 200) {
                 $operations = $response['data'][0]->result->pageItems;
+
+                $operations = $this->filterOperations($operations, ['typeMouvement' => $data['typeMouvement'], 'description' => $data['description'], 'destinataire' => $data['destinataire']]);
             }
         }
 
         return $this->render('main/search.html.twig', ['form' => $form, 'operations' => $operations, 'dateS' => $dateS, 'dateE' => $dateE]);
     }
+
+    private function filterOperations($operations, $filters = []):array
+    {
+        return array_filter($operations, static function($operation) use ($filters) {
+            // If no filters are set, return all operations
+            if (empty($filters)) {
+                return true;
+            }
+
+            $matches = true;
+
+            // Filter by description
+            if (isset($filters['description'])) {
+                $description = strtolower($filters['description']);
+                $operationDescription = strtolower($operation->description);
+
+                if (!str_contains($operationDescription, $description)) {
+                    $matches = false;
+                }
+            }
+
+            // Filter by destinataire
+            if (isset($filters['destinataire'])) {
+                $destinataire = strtolower($filters['destinataire']);
+                $operationDestinataire = strtolower($operation->relatedAccount->owner->display);
+
+                if (!str_contains($operationDestinataire, $destinataire)) {
+                    $matches = false;
+                }
+            }
+
+            // Filter by type type mouvement
+            if (isset($filters['typeMouvement'])) {
+                $typeName = strtolower($filters['typeMouvement']);
+                $operationTypeName = strtolower($operation->type->name);
+
+                if (!str_contains($operationTypeName, $typeName)) {
+                    $matches = false;
+                }
+            }
+
+            return $matches;
+        });
+    }
+
 
 
 }

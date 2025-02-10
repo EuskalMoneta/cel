@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\LoginFormAuthenticator;
+use App\Service\IDCheckAPI;
 use App\Service\YouSignAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
@@ -20,8 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
@@ -33,7 +35,7 @@ class OuvertureCompteController extends AbstractController
 {
     const SURTITRE = "Ouverture de votre compte eusko";
     const NB_ETAPES = 8;
-    
+
     #[Route(path: '/{_locale}/ouverture-compte', name: 'app_ouverture_etape1_identite')]
     public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
@@ -151,12 +153,10 @@ class OuvertureCompteController extends AbstractController
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 
-            if($_ENV["APP_ENV"] == 'dev'){
-                return $this->redirectToRoute('app_compte_etape4_sepa');
-            } else {
-                return $this->redirectToRoute('app_compte_etape3_justificatif');
+            if($_ENV["APP_ENV"] === 'dev'){
+                //return $this->redirectToRoute('app_compte_etape4_sepa');
             }
-
+            return $this->redirectToRoute('app_compte_etape3_justificatif');
         }
 
         return $this->render('ouverture_compte/etape2_coordonnees.html.twig', [
@@ -169,7 +169,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/ouverture-compte/justificatif', name: 'app_compte_etape3_justificatif')]
-    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator): \Symfony\Component\HttpFoundation\Response
+    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator, IDCheckAPI $IDCheckAPI): Response
     {
         $session->start();
 
@@ -278,7 +278,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/ouverture-compte/signature/sepa', name: 'ouverture_compte_signature_sepa')]
-    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator, YouSignAPI $youSignAPI ): \Symfony\Component\HttpFoundation\Response
+    public function signatureSepa(SessionInterface $session, EntityManagerInterface $em, Pdf $pdf, TranslatorInterface $translator, YouSignAPI $youSignAPI ): Response
     {
         $session->start();
         $user = $session->get('utilisateur');
@@ -540,7 +540,7 @@ class OuvertureCompteController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/ouverture-compte/bienvenue', name: 'app_compte_ecran_de_fin')]
-    public function fin(): \Symfony\Component\HttpFoundation\Response
+    public function fin(): Response
     {
         return $this->render('ouverture_compte/fin.html.twig');
     }

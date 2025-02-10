@@ -102,7 +102,7 @@ class UserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
-        if (!$user instanceof User) {
+        if (get_class($user) !== User::class) {
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
@@ -114,9 +114,6 @@ class UserProvider implements UserProviderInterface
                 throw new UserNotFoundException('Votre session a expirée, merci de vous re-connecter');
             }
         }
-
-        // fail authentication with a custom error
-        //throw new UserNotFoundException('Votre session a expirée, merci de vous re-connecter');
 
         return $user;
     }

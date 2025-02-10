@@ -149,6 +149,10 @@
         <source>Aucun résultat pour les dates sélectionnées.</source>
         <target>Emaitzarik ez aukeratu dituzun egunentzat.</target>
       </trans-unit>
+      <trans-unit id="iFgBhya4" resname="Aucun résultat">
+        <source>Aucun résultat</source>
+        <target>Ez dago emaitzarik</target>
+      </trans-unit>
       <trans-unit id="UNs9HuJ" resname="À jour">
         <source>À jour</source>
         <target>Eguneratua</target>
@@ -333,8 +337,8 @@
         <source>Révoqué le</source>
         <target>Ezeztatze eguna</target>
       </trans-unit>
-      <trans-unit id="0IBddQa" resname="Réfusés">
-        <source>Réfusés</source>
+      <trans-unit id="0IBddQa" resname="Refusés">
+        <source>Refusés</source>
         <target>Ukatuak</target>
       </trans-unit>
       <trans-unit id="rkg6t8g" resname="Refusé le">
@@ -833,9 +837,13 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>Importer ou prendre en photo votre pièce d'identité</source>
         <target>Zure nortasun agiria inportatu edo argazkitan hartu</target>
       </trans-unit>
-      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
-        <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
-        <target>Ondoko formatu batean: .jpg .png edo .pdf, gehienik 4 Mo</target>
+      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf">
+        <source>Au format .jpg .png ou .pdf</source>
+        <target>Ondoko formatu batean: .jpg .png edo .pdf</target>
+      </trans-unit>
+      <trans-unit id="O8401Abx" resname="maximum 4 Mo">
+        <source>maximum 4 Mo</source>
+        <target>gehienik 4 Mo</target>
       </trans-unit>
       <trans-unit id="yPLoWHM" resname="Echec vérification">
         <source>Echec vérification</source>
@@ -1630,6 +1638,66 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
       <trans-unit id="z7z777" resname="recherche_adherent.prelevement">
         <source>recherche_adherent.prelevement</source>
         <target>Passer au prélèvement automatique</target>
+      </trans-unit>
+      <trans-unit id="z7zKJU7" resname="ouverture_compte.problemes_techniques">
+        <source>ouverture_compte.problemes_techniques</source>
+        <target><![CDATA[ Arazo teknikoak ditugu nortasun agirien fitxategiak pizuegiak inportatzen direlarik. Mila esker beste fitxategi batekin entseatzeagatik, bestenaz gurekin harremanetan jarri : info@euskalmoneta.org edo 05 33 47 54 11.]]></target>
+      </trans-unit>
+      <trans-unit id="z7KJHJU7" resname="profil.fermeture.label">
+        <source>profil.fermeture.label</source>
+        <target>Nire eusko kontua hetsi</target>
+      </trans-unit>
+      <trans-unit id="KJHJz7U7" resname="fermeture.compte.titre">
+        <source>fermeture.compte.titre</source>
+        <target>Eusko kontuko hestea</target>
+      </trans-unit>
+      <trans-unit id="KJHJcc7" resname="fermeture.compte.soustitre">
+        <source>fermeture.compte.soustitre</source>
+        <target>Zure eusko kontua hetsi nahi baduzu, milesker horren arrazoia adierazteagatik. Ahal bezain laster zuekin harremanetan jarriko gara zure haustea gauzatzeko.</target>
+      </trans-unit>
+      <trans-unit id="KJHJ23U7" resname="fermeture.compte.raison.utiliser">
+        <source>fermeture.compte.raison.utiliser</source>
+        <target>Ez dut lortzen tokiko moneta erabiltzea nere etxearen inguruan</target>
+      </trans-unit>
+      <trans-unit id="KJdz3U7" resname="fermeture.compte.raison.demenage">
+        <source>fermeture.compte.raison.demenage</source>
+        <target>Etxez aldatzen naiz</target>
+      </trans-unit>
+      <trans-unit id="KJHJgr3U7" resname="fermeture.compte.raison.cher">
+        <source>fermeture.compte.raison.cher</source>
+        <target>Kotizazioa sobera karioa da</target>
+      </trans-unit>
+      <trans-unit id="KJHqzdJ23U7" resname="fermeture.compte.raison.autre">
+        <source>fermeture.compte.raison.autre</source>
+        <target>Beste</target>
+      </trans-unit>
+      <trans-unit id="KJHaJ23U7" resname="fermeture.compte.raison.autre.long">
+        <source>fermeture.compte.raison.autre.long</source>
+        <target>Beste arrazoi bat :</target>
+      </trans-unit>
+      <trans-unit id="KJ34U7" resname="fermeture.compte.don">
+        <source>fermeture.compte.don</source>
+        <target>Nire kontuan gelditzen den saldoa Euskoari eman nahi diot.</target>
+      </trans-unit>
+      <trans-unit id="KJfensuiocc7" resname="fermeture.compte.message.confirmation">
+        <source>fermeture.compte.message.confirmation</source>
+        <target>Ahal bezain laster zuekin harremanetan jarriko gara zure haustea gauzatzeko.</target>
+      </trans-unit>
+      <trans-unit id="KJ0O7" resname="mandat.resultats">
+        <source>mandat.resultats</source>
+        <target>emaitza(k)</target>
+      </trans-unit>
+      <trans-unit id="KJidjozlq7" resname="prelevement.historique">
+        <source>prelevement.historique</source>
+        <target>Historique des prélèvements</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufieoO7" resname="prelevement.reussi">
+        <source>prelevement.reussi</source>
+        <target>Réussi</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufidzqdzqeoO7" resname="prelevement.echoue">
+        <source>prelevement.echoue</source>
+        <target>Échoué</target>
       </trans-unit>
     </body>
   </file>

@@ -127,6 +127,11 @@
                             <td class="text-right"><a href="{{ path('app_profil_bons_plans') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
                         </tr>
                     {% endif %}
+
+                    <tr>
+                        <td><span class="main-color text-semi-bold">{{ "profil.fermeture.label" | trans }} </span></td>
+                        <td class="text-right"><a href="{{ path('app_fermeture_compte') }}" class="btn btn-outline-danger btn-md"> {{ "Fermeture compte" | trans }}</a> </td>
+                    </tr>
                 </table>
 
             </div>

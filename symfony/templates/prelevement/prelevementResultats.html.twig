@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 mt-2">
+
+                <div class="pt-4 pb-3" >
+                    <h2 class="main-color">{{ "prelevement.historique" | trans }}</h2>
+
+                    <div class="card card-body">
+                        <form method="get" class=" g-3">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div class="">
+                                    <label for="dateFrom" class="form-label">Date début</label>
+                                    <input type="datetime-local" class="form-control" id="dateFrom" name="dateFrom"
+                                           value="{{ filters.dateFrom ? filters.dateFrom|date('Y-m-d\\TH:i') : '' }}">
+                                </div>
+
+                                <div class="">
+                                    <label for="dateTo" class="form-label">Date fin</label>
+                                    <input type="datetime-local" class="form-control" id="dateTo" name="dateTo"
+                                           value="{{ filters.dateTo ? filters.dateTo|date('Y-m-d\\TH:i') : '' }}">
+                                </div>
+
+                                <div class="">
+                                    <label for="debiteur" class="form-label">Débiteur</label>
+                                    <input type="text" class="form-control" id="debiteur" name="debiteur"
+                                           value="{{ filters.debiteur }}">
+                                </div>
+
+                                <div class="">
+                                    <label for="statut" class="form-label">Statut</label>
+                                    <br/>
+                                    <select class="form-select" id="statut" name="statut">
+                                        <option value="null">Tous</option>
+                                        <option value="0" {{ filters.statut == 0 ? 'selected' : '' }}>{{ 'Échoué' | trans }}</option>
+                                        <option value="1" {{ filters.statut == 1 ? 'selected' : '' }}>{{ 'Réussi' | trans }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                                        <a href="{{ path('app_prelevement_resultats') }}" class="btn btn-secondary">Effacer</a>
+                                    </div>
+                                    <div>
+                                        {{ countMandats }} {{ 'mandat.resultats' | trans }}
+                                        <a  class="btn-slim btn-info ml-2" href="{{ path('app_prelevement_resultats', app.request.query.all|merge({'export': 'csv'})) }}">Export CSV</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% if pagination.items is empty %}
+                    <div class="text-center mt-4">
+                        <h3 class="mt-4">{{"Aucun résultat" | trans }}</h3>
+                        <img src="{{ asset('images/no-data.png') }}" width="30%"/>
+                    </div>
+                {% endif %}
+
+                {% if pagination.items is not empty %}
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>{{ knp_pagination_sortable(pagination, 'Date', 'v.created') }}</th>
+                            <th>{{ knp_pagination_sortable(pagination, 'Débiteur', 'v.debiteur') }}</th>
+                            <th>Somme</th>
+                            <th>Statut</th>
+                            <th>Message</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for virement in pagination %}
+                            <tr>
+                                <td>{{ virement.created|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ virement.debiteur }}</td>
+                                <td>{{ (virement.somme / 100)|number_format(2, ',', ' ') }}€</td>
+                                <td>
+                                    {% if virement.statut == 1 %}
+                                        <span class="badge bg-success text-white">{{ "prelevement.reussi" | trans }}</span>
+                                    {% else %}
+                                        <span class="badge bg-danger text-white">{{ "prelevement.echoue" | trans }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ virement.message ?? '-' }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                {% endif %}
+
+                <div class="mb-4 mt-2">
+                    <div class="navigation">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+
+
+
+
+                <div class="before-footer text-center">
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <div class="ml-4 mr-2 mb-4">
+                                <div class="mt-4">
+                                    <a href="{{ path('app_prelevement_autorisation') }}" class="btn btn-outline-primary">{{ "Gérer les autorisations de prélèvement sur mon compte" | trans }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="ml-4 mr-2 mb-4">
+                                <div class="mt-4">
+                                    <a href="{{ path('app_prelevement_mandats') }}" class="btn btn-outline-primary">{{ "Gérer les mandats" | trans }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

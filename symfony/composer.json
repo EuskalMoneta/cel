@@ -15,7 +15,7 @@
         "knplabs/knp-paginator-bundle": "^6.0",
         "knplabs/knp-snappy-bundle": "dev-master",
         "liip/imagine-bundle": "^2.8",
-        "phpoffice/phpspreadsheet": "1.16.0",
+        "phpoffice/phpspreadsheet": "^3.6",
         "sonata-project/admin-bundle": "^4.14",
         "sonata-project/doctrine-orm-admin-bundle": "^4.3",
         "symfony/asset": "6.4.*",

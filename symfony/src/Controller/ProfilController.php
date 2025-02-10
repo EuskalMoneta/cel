@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -31,24 +31,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ProfilController extends AbstractController
 {
     #[Route(path: '/profil', name: 'app_profil')]
-    public function index(APIToolbox $APIToolbox): \Symfony\Component\HttpFoundation\Response
+    public function index(APIToolbox $APIToolbox): Response
     {
-
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
 
-        if($response['httpcode'] == 200) {
-            $infosUser = [
-                'compte' => $response['data']->result[0]->number,
-                'nom' => $response['data']->result[0]->owner->display,
-                'solde' => $response['data']->result[0]->status->balance
-            ];
-
-            $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
-
-            return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMember['data'][0]]);
-        } else {
+        if($response['httpcode'] != 200) {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
+
+        $infosUser = [
+            'compte' => $response['data']->result[0]->number,
+            'nom' => $response['data']->result[0]->owner->display,
+            'solde' => $response['data']->result[0]->status->balance
+        ];
+
+        $responseMember = $APIToolbox->curlRequest('GET', '/members/?login='.$this->getUser()->getUsername());
+
+        return $this->render('profil/profil.html.twig', ['infosUser' => $infosUser, 'membre' => $responseMember['data'][0]]);
     }
 
     #[Route(path: '/profil/password', name: 'app_profil_password')]
@@ -135,6 +134,7 @@ class ProfilController extends AbstractController
 
             $responseProfile = $APIToolbox->curlRequest('POST', '/euskokart-upd-pin/', $data);
 
+            dump($responseProfile);
             if($responseProfile['httpcode'] == 200) {
                 $this->addFlash('success',$translator->trans('Les modifications ont bien été prises en compte'));
                 if ($forcedPin) {

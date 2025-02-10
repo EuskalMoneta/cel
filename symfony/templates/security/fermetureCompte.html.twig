@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 mt-4">
+
+                <div class="mt-4">
+                    <form method="post">
+
+                        <h1 class="h3 mb-3 font-weight-normal">{{ "fermeture.compte.titre" | trans }}</h1>
+
+
+
+                        {{ form_start(form) }}
+
+                        <div class="mt-2">
+                            {{ form_row(form.raison) }}
+                        </div>
+
+                        <div id="autre-raison-container" class="mt-2" style="display: none;">
+                            {{ form_row(form.autreRaison) }}
+                        </div>
+
+                        <div class="mt-4">
+                            {{ form_row(form.numeroMembre) }}
+                        </div>
+
+                        <div class="mt-2">
+                            {{ form_row(form.don) }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-4">{{ 'Valider' | trans }}</button>
+
+                        {{ form_end(form) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block menu_footer %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const raisonRadios = document.querySelectorAll('input[name="form[raison]"]');
+            const autreRaisonContainer = document.getElementById('autre-raison-container');
+            const autreValue = 'autre';
+
+            raisonRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (this.value === autreValue) {
+                        autreRaisonContainer.style.display = 'block';
+                    } else {
+                        autreRaisonContainer.style.display = 'none';
+                    }
+                });
+
+                if (radio.checked && radio.value === autreValue) {
+                    autreRaisonContainer.style.display = 'block';
+                }
+            });
+        });
+    </script>
+{% endblock %}

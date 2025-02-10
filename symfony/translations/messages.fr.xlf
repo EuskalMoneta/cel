@@ -149,6 +149,10 @@
         <source>Aucun résultat pour les dates sélectionnées.</source>
         <target>Aucun résultat pour les dates sélectionnées.</target>
       </trans-unit>
+      <trans-unit id="iFgBhya4" resname="Aucun résultat">
+        <source>Aucun résultat</source>
+        <target>Aucun résultat</target>
+      </trans-unit>
       <trans-unit id="UNs9HuJ" resname="À jour">
         <source>À jour</source>
         <target>À jour</target>
@@ -333,9 +337,9 @@
         <source>Révoqué le</source>
         <target>Révoqué le</target>
       </trans-unit>
-      <trans-unit id="0IBddQa" resname="Réfusés">
-        <source>Réfusés</source>
-        <target>Réfusés</target>
+      <trans-unit id="0IBddQa" resname="Refusés">
+        <source>Refusés</source>
+        <target>Refusés</target>
       </trans-unit>
       <trans-unit id="rkg6t8g" resname="Refusé le">
         <source>Refusé le</source>
@@ -803,9 +807,13 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
         <source>Importer ou prendre en photo votre pièce d'identité</source>
         <target>Importer ou prendre en photo votre pièce d'identité</target>
       </trans-unit>
-      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf, maximum 4 Mo">
-        <source>Au format .jpg .png ou .pdf, maximum 4 Mo</source>
-        <target>Au format .jpg .png ou .pdf, maximum 4 Mo</target>
+      <trans-unit id="OTT1Abx" resname="Au format .jpg .png ou .pdf">
+        <source>Au format .jpg .png ou .pdf</source>
+        <target>Au format .jpg .png ou .pdf</target>
+      </trans-unit>
+      <trans-unit id="O8401Abx" resname="maximum 4 Mo">
+        <source>maximum 4 Mo</source>
+        <target>maximum 4 Mo</target>
       </trans-unit>
       <trans-unit id="gRJLECI" resname="Panier paysan">
         <source>Panier paysan</source>
@@ -1624,6 +1632,66 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
       <trans-unit id="z7z777" resname="recherche_adherent.prelevement">
         <source>recherche_adherent.prelevement</source>
         <target>Passer au prélèvement automatique</target>
+      </trans-unit>
+      <trans-unit id="z7zKJU7" resname="ouverture_compte.problemes_techniques">
+        <source>ouverture_compte.problemes_techniques</source>
+        <target><![CDATA[Nous rencontrons des problèmes techniques lors de l’importation de certains pièces d’identité trop volumineuses. <br/>Merci de réessayer avec un autre fichier, ou contactez-nous : info@euskalmoneta.org ou 05 33 47 54 11. ]]></target>
+      </trans-unit>
+      <trans-unit id="z7KJHJU7" resname="profil.fermeture.label">
+        <source>profil.fermeture.label</source>
+        <target>Fermer mon compte eusko</target>
+      </trans-unit>
+      <trans-unit id="KJHJz7U7" resname="fermeture.compte.titre">
+        <source>fermeture.compte.titre</source>
+        <target>Fermeture de compte eusko</target>
+      </trans-unit>
+      <trans-unit id="KJHJcc7" resname="fermeture.compte.soustitre">
+        <source>fermeture.compte.soustitre</source>
+        <target>Si vous souhaitez fermer votre compte eusko, merci d’en indiquer la raison. Nous vous recontacterons dans les plus brefs délais pour procéder à votre résiliation. </target>
+      </trans-unit>
+      <trans-unit id="KJfensuiocc7" resname="fermeture.compte.message.confirmation">
+        <source>fermeture.compte.message.confirmation</source>
+        <target>Nous vous recontacterons dans les plus brefs délais pour procéder à votre résiliation. </target>
+      </trans-unit>
+      <trans-unit id="KJHJ23U7" resname="fermeture.compte.raison.utiliser">
+        <source>fermeture.compte.raison.utiliser</source>
+        <target>Je n’arrive pas à utiliser la monnaie locale autour de chez moi</target>
+      </trans-unit>
+      <trans-unit id="KJdz3U7" resname="fermeture.compte.raison.demenage">
+        <source>fermeture.compte.raison.demenage</source>
+        <target>Je déménage</target>
+      </trans-unit>
+      <trans-unit id="KJHJgr3U7" resname="fermeture.compte.raison.cher">
+        <source>fermeture.compte.raison.cher</source>
+        <target>La cotisation est trop chère</target>
+      </trans-unit>
+      <trans-unit id="KJHqzdJ23U7" resname="fermeture.compte.raison.autre">
+        <source>fermeture.compte.raison.autre</source>
+        <target>Autre</target>
+      </trans-unit>
+      <trans-unit id="KJHaJ23U7" resname="fermeture.compte.raison.autre.long">
+        <source>fermeture.compte.raison.autre.long</source>
+        <target>Si autre, veuillez préciser :</target>
+      </trans-unit>
+      <trans-unit id="KJ34U7" resname="fermeture.compte.don">
+        <source>fermeture.compte.don</source>
+        <target>Je souhaite faire don à l’Eusko du solde restant sur mon compte. </target>
+      </trans-unit>
+      <trans-unit id="KJ0O7" resname="mandat.resultats">
+        <source>mandat.resultats</source>
+        <target>Résultat(s) </target>
+      </trans-unit>
+      <trans-unit id="KJidjozlq7" resname="prelevement.historique">
+        <source>prelevement.historique</source>
+        <target>Historique des prélèvements</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufieoO7" resname="prelevement.reussi">
+        <source>prelevement.reussi</source>
+        <target>Réussi</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufidzqdzqeoO7" resname="prelevement.echoue">
+        <source>prelevement.echoue</source>
+        <target>Échoué</target>
       </trans-unit>
     </body>
   </file>

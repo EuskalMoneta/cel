@@ -545,9 +545,9 @@
         <source>Commentaire</source>
         <target>Commentaire</target>
       </trans-unit>
-      <trans-unit id="j9cXi6O" resname="Association parainée">
-        <source>Association parainée</source>
-        <target>Association parainée</target>
+      <trans-unit id="j9cXi6O" resname="Association parrainée">
+        <source>Association parrainée</source>
+        <target>Association parrainée</target>
       </trans-unit>
       <trans-unit id="IF8y1w_" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
         <source>Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.</source>
@@ -797,7 +797,7 @@
         <source>piece_d_identite.explication</source>
         <target><![CDATA[Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.<br>
 <br>
-Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identité</strong> ou de votre <strong>passeport</strong>&nbsp;:
+		Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identité recto/verso</strong> ou de votre <strong>passeport</strong>&nbsp;:
 <ul>
 <li>Le document ne doit pas être flou</li>
 <li>Votre photo doit apparaître sur le document</li>

@@ -545,8 +545,8 @@
         <source>Commentaire</source>
         <target>Komentarioa</target>
       </trans-unit>
-      <trans-unit id="j9cXi6O" resname="Association parainée">
-        <source>Association parainée</source>
+      <trans-unit id="j9cXi6O" resname="Association parrainée">
+        <source>Association parrainée</source>
         <target>Sustengatzen duzun elkartea</target>
       </trans-unit>
       <trans-unit id="IF8y1w_" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
@@ -823,7 +823,7 @@
         <source>piece_d_identite.explication</source>
         <target><![CDATA[Zure kontua bali egiteko, banku erregulazioak nortasun agiri baten egiaztatzera behartzen gaitu.<br>
 <br>
-Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan hartu edo eskaneatu eta inporta dezakezu:
+		Zure <strong>nortasun agiria (aintzin/gibel)</strong> edo <strong>pasaportea</strong> argazkitan hartu edo eskaneatu eta inporta dezakezu:
 <ul>
 <li>Dokumentua ez da lausoa izan behar</li>
 <li>Zure argazkia ageri izan behar da dokumentuan</li>

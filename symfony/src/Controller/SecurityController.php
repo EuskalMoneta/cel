@@ -350,11 +350,6 @@ class SecurityController extends AbstractController
                 'required' => false,
                 'translation_domain' => 'messages',
             ])
-            ->add('numeroMembre', TextType::class, [
-                'label' => 'N° Adhérent-e ou e-mail',
-                'required' => true,
-                'data' => $numeroMembre,
-            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -362,18 +357,21 @@ class SecurityController extends AbstractController
             $data = $form->getData();
             $this->addFlash('success',$translator->trans("fermeture.compte.message.confirmation"));
 
+	    if($_ENV["PLATEFORME"] === "dev")
+	    	$mode = " PRE-PROD";
+	    else
+		$mode ="";
             //Email au support
             $email = (new Email())
-                ->from('info@euskalmoneta.org')
-                ->to('gestion@euskalmoneta.org')
-                ->subject('Demande de fermeture du compte «'.$data['numeroMembre'].'» ')
+                ->from('noreply@euskalmoneta.org')
+                ->to($_ENV["MAIL_DEST"])
+                ->subject('Demande de fermeture du compte «'.$numeroMembre.'» '.$mode)
                 ->html(
                     'Raison : '.$data['raison'].' <br> '.
                    'Autre raison : '.$data['autreRaison'].' <br> '.
                    'Don : '.(($data['don']===true)?'oui':'non').'<br>'
                 )
             ;
-
             $mailer->send($email);
         }
         return $this->render('security/fermetureCompte.html.twig', ['form' => $form]);

@@ -249,7 +249,8 @@ class VacancesEuskoController extends AbstractController
                                              LoggerInterface $logger,
                                              TranslatorInterface $translator,
                                              IDCheckAPI $IDCheckAPI,
-                                             SessionInterface $session):JsonResponse
+					     SessionInterface $session,
+					     MailerInterface $mailer):JsonResponse
     {
         //INIT
         $session->start();
@@ -292,6 +293,62 @@ class VacancesEuskoController extends AbstractController
 
                     $idcheckReport = $dataCard['lastReport'];
 
+		if ($dataCard ['reports'][0]['globalStatus'] !== 'OK') {
+			//Envoi email au support
+			$utilisateur = $session->get('utilisateur');
+			$message = $utilisateur['lastname'].'<br>'.$utilisateur['firstname'].'<br>'.$utilisateur['email'].'<br>'.$utilisateur['address'].'<br>'.$utilisateur['zip'].' '.$utilisateur['town'].'<br>'.$utilisateur['phone'].'<hr>';
+			foreach ($dataCard['lastReport']['checks'] as $indice1 => $checks) {
+				if (($checks['status'] == 'ERROR') || ($checks['status'] == 'WARN')) {
+					$message .= $checks['status'].':'.$checks['type'].'=>'.$checks['message'].'<br>';
+				}
+				if (is_array($checks))
+			        foreach ($checks as $clef => $check) {
+                                        if ($clef == 'subChecks') {
+			                    foreach ($check as $indice2 => $subchecks) {
+						if (($subchecks['status'] == 'ERROR') || ($subchecks['status'] == 'WARN')) {
+							$message .= '=>'.$subchecks['status'].':'.$subchecks['type'].'=>'.$subchecks['message'].'<br>';
+						}
+						if (is_array($subchecks))
+						foreach ($subchecks as $clef2 => $subcheck) {
+							if ($clef2 == 'subChecks') {
+							    foreach ($subcheck as $indice3 => $subchecks2) {
+								if (($subchecks2['status'] == 'ERROR') || ($subchecks2['status'] == 'WARN')) {
+									$message .= '==>'.$subchecks2['status'].':'.$subchecks2['type'].'=>'.$subchecks2['message'].'<br>';
+								}
+							    }
+							}
+						}
+					    }
+					}
+				}
+			}
+			if ($dataCard ['reports'][0]['globalStatus'] == 'ERROR') {
+				$subject = 'ERREUR sur creation de compte';
+				$message .= '<hr>*** COMPTE NON CREE<br>';
+			}
+			elseif ($dataCard ['reports'][0]['globalStatus'] == 'WARN') {
+				$subject = 'ALERTE sur creation de compte';
+				$message .= '<hr>*** COMPTE EN COURS DE CREATION MAIS PIECES D\'IDENTITE A CONTROLER<br>';
+			}
+			else {
+				$subject = 'STATUT non supporté';
+				$message .= '<hr>** Le statut '.$dataCard['reports'][0]['globalStatus'].' n\'est pas supporté par le programme<br>';
+			}
+
+			$logger->error('Probleme de creation compte '.$utilisateur['lastname'].' '.$utilisateur['firstname'].' '.$utilisateur['email']);
+
+                        if($_ENV["PLATEFORME"] === "dev")
+                            $mode = " PRE-PROD";
+                        else
+                            $mode ="";
+ 
+			$email = (new Email())
+				->from('noreply@euskalmoneta.org')
+                                ->to($_ENV["MAIL_DEST"])
+				->subject($subject.$mode)
+				->html($message);
+				$mailer->send($email);
+        }
                     $gender = null;
                     if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
                         $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];

@@ -8,9 +8,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-1">
-                <div class="text-center mb-5">
+                <div class="text-center mb-5 mt-4">
 
-                    <i class="fal fa-user-circle" style="font-size: 72px;"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                    </svg>
                     <h1 class="main-color mt-2" style="font-size: 1.5rem;"> {{ infosUser.nom }}</h1>
                     <h3 class="secondary-color" >{{ "N° d'adhérent" | trans }} <span class="consolas">{{ app.user }}</span></h3>
                     <h3 class="secondary-color" >{{ "Compte n°" | trans }} {% include 'utils/displayAccountNumber.html.twig' with {'compte': infosUser.compte} %} </h3>
@@ -27,11 +30,11 @@
                 <table class="table">
                     <tr>
                         <td><p class="main-color text-semi-bold">{{ "Mot de passe" | trans }}</p></td>
-                        <td class="text-right"><a href="{{ path('app_profil_password') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_password') }}" class="button-nav"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
                         <td><span class="main-color text-semi-bold">{{ "Question secrète" | trans }}</span></td>
-                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_question') }}" class="button-nav btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
@@ -40,7 +43,7 @@
                 <table class="table">
                     <tr>
                         <td><span class="main-color text-semi-bold">{{ "Mon code PIN" | trans }}</span></td>
-                        <td class="text-right"><a href="{{ path('app_profil_pin') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_pin') }}" class="button-nav btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
@@ -60,7 +63,7 @@
                                 {{ membre.email }}
                             </p>
                         </td>
-                        <td class="text-right"><a href="{{ path('app_profil_coordonnees') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_coordonnees') }}" class="button-nav btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                 </table>
 
@@ -85,7 +88,7 @@
                                     {% endif %}
                                 </p>
                             </td>
-                            <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
+                            <td class="text-right"><a href="{{ path('app_profil_cotisation') }}" class="button-nav"> {{ "Modifier" | trans }}</a> </td>
                         </tr>
                     </table>
                 {% endif %}
@@ -102,7 +105,7 @@
                             </p>
 
                         </td>
-                        <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="btn btn-primary"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_langue') }}" class="button-nav"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
                         <td>
@@ -110,7 +113,7 @@
                                 {{ "profil.newsletter.abonne" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_recevoir_actus) | trans }}
                             </span>
                         </td>
-                        <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_newsletter') }}" class="button-nav btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     <tr>
                         <td><span class="main-color text-semi-bold">
@@ -119,12 +122,12 @@
                                 {{ "Prélèvement effectué sur votre compte" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_notifications_prelevements) | trans }}<br />
                             </span>
                         </td>
-                        <td class="text-right"><a href="{{ path('app_profil_notifications') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                        <td class="text-right"><a href="{{ path('app_profil_notifications') }}" class="button-nav btn-md"> {{ "Modifier" | trans }}</a> </td>
                     </tr>
                     {% if is_granted('ROLE_TOURISTE') or is_granted('ROLE_CLIENT') %}
                         <tr>
                             <td><span class="main-color text-semi-bold">{{ "profil.newsletter.bonplans" | trans }} : {{ ('profil.booleen.'~membre.array_options.options_recevoir_bons_plans) | trans }}</span></td>
-                            <td class="text-right"><a href="{{ path('app_profil_bons_plans') }}" class="btn btn-primary btn-md"> {{ "Modifier" | trans }}</a> </td>
+                            <td class="text-right"><a href="{{ path('app_profil_bons_plans') }}" class="button-nav btn-md"> {{ "Modifier" | trans }}</a> </td>
                         </tr>
                     {% endif %}
 

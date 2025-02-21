@@ -50,9 +50,9 @@
                                 <div class="d-inline-flex text-center">
 
                                     <div>
-                                        <div><a class="btn btn-outline-primary eusko-btn" href="{{ path('app_export_rie') }}"> <i class="far fa-download mr-1"></i>RIB eusko</a></div>
+                                        <div><a class="button-nav eusko-btn" href="{{ path('app_export_rie') }}"> <i class="far fa-download mr-1"></i>RIB eusko</a></div>
                                         {% if is_granted('ROLE_PARTENAIRE') and not is_granted('ROLE_REGIE') %}
-                                            <div><a class="btn btn-outline-primary eusko-btn mt-2" href="{{ path('app_reconvertir') }}"> {{ "Reconvertir des eusko en €" | trans }} </a></div>
+                                            <div><a class="button-nav eusko-btn mt-2" href="{{ path('app_reconvertir') }}"> {{ "Reconvertir des eusko en €" | trans }} </a></div>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                         <div class="threepermain text-semi-bold mb-2"> <img src="{{ asset('images/icon-annuaire.png') }}" width="40px"> Annuaire</div>
                                         <div class="text-center mb-2"> La liste des prestataires acceptant l'eusko</div>
                                         <div class="text-center">
-                                        <a href="https://annuaire.euskalmoneta.org/" target="_blank" class="btn btn-outline-primary" style="margin-top: 7px;"> Annuaire en ligne</a>
+                                        <a href="https://annuaire.euskalmoneta.org/" target="_blank" class="button-nav" style="margin-top: 7px;"> Annuaire en ligne</a>
                                         </div>
                                     </div>
                                 </div>
@@ -139,8 +139,8 @@
                             <div class="text-center">
                                 <div class="text-semi-bold"> Afficher les bons plans sur cette page ?</div>
                                 <div class="mt-4">
-                                    <a href="{{ path('app_set_bon_plans', {'booleen': '0'}) }}" class="btn btn-outline-primary recevoir-bons-plans" style="color: #fff; border: 0; background-color: #284f1e;">non</a>
-                                    <a href="{{ path('app_set_bon_plans', {'booleen': '1'}) }}" class="btn btn-outline-primary recevoir-bons-plans">oui</a>
+                                    <a href="{{ path('app_set_bon_plans', {'booleen': '0'}) }}" class="button-nav recevoir-bons-plans" style="color: #fff; border: 0; background-color: #284f1e;">non</a>
+                                    <a href="{{ path('app_set_bon_plans', {'booleen': '1'}) }}" class="button-nav recevoir-bons-plans">oui</a>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                     </div>
                     <div class="col-8">
                         <div class="float-right">
-                            <a class="btn btn-outline-primary eusko-btn" href="{{ path('app_search') }}"> {{ "Relevés de compte" | trans }} </a>
+                            <a class="button-nav eusko-btn" href="{{ path('app_search') }}"> {{ "Relevés de compte" | trans }} </a>
                         </div>
                     </div>
                 </div>

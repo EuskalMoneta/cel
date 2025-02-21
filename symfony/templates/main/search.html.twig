@@ -17,17 +17,27 @@
                     {% endif %}
 
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-4 col">
                             {{ form_row(form.periode) }}
+                        </div>
+                        <div class="col-md-4 col-6">
+                            {{ form_row(form.dateDebut) }}
+                        </div>
+                        <div class="col-md-4 col-6">
+                            {{ form_row(form.dateFin) }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6">
-                            {{ form_row(form.dateDebut) }}
+                        <div class="col-md-6 col">
+                            {{ form_row(form.typeMouvement) }}
                         </div>
-                        <div class="col-6">
-                            {{ form_row(form.dateFin) }}
+                        <div class="col-md-6 col">
+                            {{ form_row(form.destinataire) }}
                         </div>
+                        <div class="col">
+                            {{ form_row(form.description) }}
+                        </div>
+
                     </div>
                     {{ form_end(form) }}
                 </div>
@@ -42,10 +52,10 @@
                         </div>
                     </div>
 
-                    <div class="row mt-4">
-                        <div class="col">
-                            {% include 'utils/miniOperation.html.twig' with {'operations':operations} %}
-                        </div>
+                    <div class="mt-4">
+
+                        {% include 'utils/miniOperation.html.twig' with {'operations':operations} %}
+
                     </div>
                 {% elseif operations is empty  %}
 
@@ -71,7 +81,7 @@
 
 {% block js %}
     <script type="text/javascript">
-        $('select').on('change', function() {
+        $('#form_periode').on('change', function() {
             var dates = this.value.split('#');
             $('#form_dateDebut').val(dates[1]);
             $('#form_dateFin').val(dates[0]);

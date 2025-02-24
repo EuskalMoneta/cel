@@ -32,6 +32,9 @@ class VirementPrelevement
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $message = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $debiteurCompte = null;
+
     public function __toString(): string
     {
         return  'prelèvement de '.$this->debiteur;
@@ -110,6 +113,18 @@ class VirementPrelevement
     public function setMessage(?string $message): static
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getDebiteurCompte(): ?string
+    {
+        return $this->debiteurCompte;
+    }
+
+    public function setDebiteurCompte(?string $debiteurCompte): static
+    {
+        $this->debiteurCompte = $debiteurCompte;
 
         return $this;
     }

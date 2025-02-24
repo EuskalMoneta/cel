@@ -110,7 +110,8 @@ class PrelevementController extends AbstractController
                         $virement->setCrediteur((string) $this->getUser());
                         $virement->setSomme($resultat->amount*100);
                         $virement->setMessage($resultat->message);
-                        $virement->setDebiteur($resultat->name.' '.$resultat->account);
+                        $virement->setDebiteur($resultat->name);
+                        $virement->setDebiteurCompte($resultat->account);
 
                         $em->persist($virement);
                         $em->flush();
@@ -155,6 +156,7 @@ class PrelevementController extends AbstractController
         ];
 
         $query = $em->getRepository(VirementPrelevement::class)->findByFilters($crediteur, $dateFrom, $dateTo, $filters['debiteur'], $filters['statut']);
+        $countVirement = count($em->getRepository(VirementPrelevement::class)->findByFilters($crediteur, $dateFrom, $dateTo, $filters['debiteur'], $filters['statut'])->getResult());
 
         //export CSV
         if ($request->query->get('export') === 'csv') {
@@ -196,7 +198,7 @@ class PrelevementController extends AbstractController
             ]
         );
 
-        return $this->render('prelevement/prelevementResultats.html.twig', ['pagination' => $pagination, 'filters' => $filters,  'countMandats' => count($query->getResult())]);
+        return $this->render('prelevement/prelevementResultats.html.twig', ['pagination' => $pagination, 'filters' => $filters,  'countVirement' => $countVirement]);
 
     }
 
@@ -385,7 +387,7 @@ class PrelevementController extends AbstractController
 
         while ($hasMorePages) {
             try {
-                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteura&page='.$currentPage);
+                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur&page='.$currentPage);
 
                 if ($responseMandats['httpcode'] == 200 && !empty($responseMandats['data']->results)) {
                     $allMandats = array_merge($allMandats, $responseMandats['data']->results);

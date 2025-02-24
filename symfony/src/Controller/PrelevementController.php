@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\VirementPrelevement;
+use App\Enum\StatutMandat;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -265,8 +266,8 @@ class PrelevementController extends AbstractController
         $filters = [
             'nom' => $request->query->get('nom'),
             'statut' => $request->query->all('statut'),
-            'dateFrom' => $request->query->get('dateFrom'),
-            'dateTo' => $request->query->get('dateTo'),
+            /*'dateFrom' => $request->query->get('dateFrom'),
+            'dateTo' => $request->query->get('dateTo'),*/
         ];
 
         $sortField = $request->query->get('sort', 'date');
@@ -281,7 +282,10 @@ class PrelevementController extends AbstractController
 
             // Filtre Nom
             if (!empty($filters['nom'])) {
-                $matches = $matches && stripos($mandat->nom_debiteur, $filters['nom']) !== false;
+                $matches = $matches && (
+                    stripos($mandat->nom_debiteur, $filters['nom']) !== false ||
+                    stripos($mandat->numero_compte_debiteur, $filters['nom']) !== false
+                    );
             }
 
             // Filtre statut
@@ -290,7 +294,7 @@ class PrelevementController extends AbstractController
             }
 
             // Filtre dates
-            if (!empty($filters['dateFrom'])) {
+            /*if (!empty($filters['dateFrom'])) {
                 $mandatDate = new \DateTime($mandat->date_derniere_modif);
                 $fromDate = new \DateTime($filters['dateFrom']);
                 $matches = $matches && $mandatDate >= $fromDate;
@@ -300,15 +304,13 @@ class PrelevementController extends AbstractController
                 $mandatDate = new \DateTime($mandat->date_derniere_modif);
                 $toDate = new \DateTime($filters['dateTo']);
                 $matches = $matches && $mandatDate <= $toDate;
-            }
+            }*/
 
             return $matches;
         });
 
         // Récupérer les différents statut
-        $statutOptions = array_unique(array_map(function($mandat) {
-            return $mandat->statut;
-        }, $mandats));
+        $statutOptions = StatutMandat::cases();
 
 
         // Convertir en array pour le usort
@@ -339,11 +341,12 @@ class PrelevementController extends AbstractController
             $handle = fopen('php://output', 'wb+');
 
             // headers
-            fputcsv($handle, ['Nom', 'Statut', 'Date']);
+            fputcsv($handle, ['Nom', 'Numero compte', 'Statut', 'Date']);
 
             foreach ($mandatsArray as $mandat) {
                 fputcsv($handle, [
                     $mandat->nom_debiteur,
+                    $mandat->numero_compte_debiteur,
                     (string)$mandat->statut,
                     (string)$mandat->date_derniere_modif,
                 ]);
@@ -382,7 +385,7 @@ class PrelevementController extends AbstractController
 
         while ($hasMorePages) {
             try {
-                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteur&page='.$currentPage);
+                $responseMandats = $APIToolbox->curlRequest('GET', '/mandats/?type=crediteura&page='.$currentPage);
 
                 if ($responseMandats['httpcode'] == 200 && !empty($responseMandats['data']->results)) {
                     $allMandats = array_merge($allMandats, $responseMandats['data']->results);

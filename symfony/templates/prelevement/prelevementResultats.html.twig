@@ -16,14 +16,14 @@
 
                                 <div class="">
                                     <label for="dateFrom" class="form-label">Date début</label>
-                                    <input type="datetime-local" class="form-control" id="dateFrom" name="dateFrom"
-                                           value="{{ filters.dateFrom ? filters.dateFrom|date('Y-m-d\\TH:i') : '' }}">
+                                    <input type="date" class="form-control" id="dateFrom" name="dateFrom" 
+                                           value="{{ filters.dateFrom ? filters.dateFrom|date('Y-m-d') : '' }}">
                                 </div>
 
                                 <div class="">
                                     <label for="dateTo" class="form-label">Date fin</label>
-                                    <input type="datetime-local" class="form-control" id="dateTo" name="dateTo"
-                                           value="{{ filters.dateTo ? filters.dateTo|date('Y-m-d\\TH:i') : '' }}">
+                                    <input type="date" class="form-control" id="dateTo" name="dateTo"
+                                           value="{{ filters.dateTo ? filters.dateTo|date('Y-m-d') : '' }}">
                                 </div>
 
                                 <div class="">

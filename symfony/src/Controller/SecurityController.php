@@ -165,7 +165,7 @@ class SecurityController extends AbstractController
                     'new_password' => $data['motDePasse'],
                     'confirm_password' => $data['motDePasse'],
                     'answer' => $data['reponse'],
-                    ];
+                ];
 
 
                 if($data['questionSecrete'] == 'autre'){
@@ -326,8 +326,9 @@ class SecurityController extends AbstractController
         if($this->getUser()){
             $numeroMembre = (string) $this->getUser();
         }
-        //form generation
-        $form = $this->createFormBuilder()
+        $fb = $this->createFormBuilder();
+
+        $fb
             ->add('raison', ChoiceType::class, [
                 'label' => 'fermeture.compte.soustitre',
                 'choices' => [
@@ -339,7 +340,26 @@ class SecurityController extends AbstractController
                 'expanded' => true,
                 'multiple' => false,
                 'translation_domain' => 'messages',
-            ])
+            ]);
+
+        if($this->isGranted('ROLE_PARTENAIRE')){
+            $fb
+                    ->add('raison', ChoiceType::class, [
+                        'label' => 'fermeture.compte.soustitre',
+                        'choices' => [
+                            'fermeture.compte.raison.cessation' => "Cessation d'activité",
+                            'fermeture.compte.raison.assezeusko' => "Je ne reçois pas assez d'eusko",
+                            'fermeture.compte.raison.reutiliser' => "Je n'arrive pas réutiliser les eusko encaissés",
+                            'fermeture.compte.raison.autre' => 'autre',
+                        ],
+                        'expanded' => true,
+                        'multiple' => false,
+                        'translation_domain' => 'messages',
+                    ]);
+
+        }
+
+        $fb
             ->add('autreRaison', TextType::class, [
                 'label' => 'fermeture.compte.raison.autre.long',
                 'required' => false,
@@ -350,17 +370,18 @@ class SecurityController extends AbstractController
                 'required' => false,
                 'translation_domain' => 'messages',
             ])
-            ->getForm();
+            ;
 
+        $form = $fb->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $this->addFlash('success',$translator->trans("fermeture.compte.message.confirmation"));
+            $mode ="";
 
-	    if($_ENV["PLATEFORME"] === "dev")
-	    	$mode = " PRE-PROD";
-	    else
-		$mode ="";
+            if($_ENV["PLATEFORME"] === "dev") {
+                $mode = " PRE-PROD";
+            }
             //Email au support
             $email = (new Email())
                 ->from('noreply@euskalmoneta.org')
@@ -368,11 +389,12 @@ class SecurityController extends AbstractController
                 ->subject('Demande de fermeture du compte «'.$numeroMembre.'» '.$mode)
                 ->html(
                     'Raison : '.$data['raison'].' <br> '.
-                   'Autre raison : '.$data['autreRaison'].' <br> '.
-                   'Don : '.(($data['don']===true)?'oui':'non').'<br>'
+                    'Autre raison : '.$data['autreRaison'].' <br> '.
+                    'Don : '.(($data['don']===true)?'oui':'non').'<br>'
                 )
             ;
             $mailer->send($email);
+
         }
         return $this->render('security/fermetureCompte.html.twig', ['form' => $form]);
     }

@@ -1701,6 +1701,20 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>prelevement.echoue</source>
         <target>Échoué</target>
       </trans-unit>
+
+       <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
+          <source>fermeture.compte.raison.cessation</source>
+          <target>Cessation d'activité</target>
+        </trans-unit>
+        <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
+          <source>fermeture.compte.raison.assezeusko</source>
+          <target>Je ne reçois pas assez d'eusko</target>
+        </trans-unit>
+        <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
+          <source>fermeture.compte.raison.reutiliser</source>
+          <target>Je n'arrive pas réutiliser les eusko encaissés</target>
+        </trans-unit>
+
     </body>
   </file>
 </xliff>

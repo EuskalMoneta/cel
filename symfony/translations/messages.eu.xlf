@@ -1707,6 +1707,20 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>prelevement.echoue</source>
         <target>Échoué</target>
       </trans-unit>
+
+
+       <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
+          <source>fermeture.compte.raison.cessation</source>
+          <target>Lanaren gelditzea</target>
+        </trans-unit>
+        <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
+          <source>fermeture.compte.raison.assezeusko</source>
+          <target>Ez dut aski euskorik biltzen</target>
+        </trans-unit>
+        <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
+          <source>fermeture.compte.raison.reutiliser</source>
+          <target>Ez dut aterabiderik aurkitzen nire euskorentzat</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

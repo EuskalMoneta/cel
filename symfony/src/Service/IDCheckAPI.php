@@ -43,7 +43,7 @@ class IDCheckAPI
         return $this->tokenData;
     }
 
-    public function createDocument($data): array
+    public function createDocument($recto, $verso): array
     {
         if (!$this->isAuthenticated()) {
             throw new BadRequestException('User not authenticated');
@@ -53,12 +53,21 @@ class IDCheckAPI
             'type' => 'ID',
             'images' => [
                 [
-                    'data' => $data,
+                    'data' => $recto,
                     "documentPart" => "RECTO",
                     "type" => "DL"
-                ]
+                ],
+
             ]
         ];
+
+        if ($verso !== null) {
+            $documentRequest['images'][] = [
+                'data' => $verso,
+                "documentPart" => "VERSO",
+                "type" => "DL"
+            ];
+        }
 
         $response = $this->httpClient->request(
             'POST',

@@ -244,6 +244,7 @@ class VacancesEuskoController extends AbstractController
         return $this->render('vacancesEusko/etape4_success.html.twig', ['title' => "Bienvenue"]);
     }
 
+
     #[Route(path: '/vacances-en-eusko/call/justificatif', name: 'app_vee_api_idcheck')]
     public function verificationJustificatif(Request $request,
                                              LoggerInterface $logger,
@@ -260,145 +261,156 @@ class VacancesEuskoController extends AbstractController
         /** @var File $file */
         $file = $request->files->get('form')['idcard'];
 
-        if($file){
+        $recto = $this->convertFileToBase64($file);
 
-            //si l'image fait plus de 4 Mo
-            if($file->getSize() > 4000000 && $file->getMimeType() !== 'application/pdf'){
-                //resize avec GD
-                $image = $this->resize_image($file->getPathname(), 2000, 2000, $file->getMimeType());
+        if(!$recto) {
+            $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
+            return new JsonResponse(['bool' => $status, 'resultat' => $response]);
+        }
 
-                //transformer la ressource GD en image
-                ob_start();
-                imagejpeg($image);
-                $contents = ob_get_contents();
-                ob_end_clean();
-            } else {
-                $contents = file_get_contents($file->getPathname());
-            }
-            $docBase64 = base64_encode($contents);
+        $session->set('compteur', $session->get('compteur') + 1);
 
-            $session->set('compteur', $session->get('compteur') + 1);
+        try {
+            //Appel ID Check
+            //$IDCheckAPI->login();
+            $verso = $this->convertFileToBase64($request->files->get('form')['idcard_verso']);
 
-            try {
-                //Appel ID Check
-                $IDCheckAPI->login();
-                $checkID = $IDCheckAPI->createDocument($docBase64);
+            $checkID = $IDCheckAPI->createDocument($recto, $verso);
 
-                if($checkID['httpcode'] == 400){
-                    $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
-                } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
+            if($checkID['httpcode'] == 400){
+                $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
+            } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
 
-                    $status = true;
-                    $dataCard = $checkID["data"];
+                $status = true;
+                $dataCard = $checkID["data"];
 
-                    $idcheckReport = $dataCard['lastReport'];
+                $idcheckReport = $dataCard['lastReport'];
 
-                    if ($dataCard ['reports'][0]['globalStatus'] !== 'OK') {
-                        //Envoi email au support
-                        $utilisateur = $session->get('utilisateur');
-                        $message = $utilisateur['lastname'].'<br>'.$utilisateur['firstname'].'<br>'.$utilisateur['email'].'<br>'.$utilisateur['address'].'<br>'.$utilisateur['zip'].' '.$utilisateur['town'].'<br>'.$utilisateur['phone'].'<hr>';
-                        foreach ($dataCard['lastReport']['checks'] as $indice1 => $checks) {
-                            if (($checks['status'] == 'ERROR') || ($checks['status'] == 'WARN')) {
-                                $message .= $checks['status'].':'.$checks['type'].'=>'.$checks['message'].'<br>';
-                            }
-                            if (is_array($checks))
-                                foreach ($checks as $clef => $check) {
-                                    if ($clef == 'subChecks') {
-                                        foreach ($check as $indice2 => $subchecks) {
-                                            if (($subchecks['status'] == 'ERROR') || ($subchecks['status'] == 'WARN')) {
-                                                $message .= '=>'.$subchecks['status'].':'.$subchecks['type'].'=>'.$subchecks['message'].'<br>';
-                                            }
-                                            if (is_array($subchecks))
-                                                foreach ($subchecks as $clef2 => $subcheck) {
-                                                    if ($clef2 == 'subChecks') {
-                                                        foreach ($subcheck as $indice3 => $subchecks2) {
-                                                            if (($subchecks2['status'] == 'ERROR') || ($subchecks2['status'] == 'WARN')) {
-                                                                $message .= '==>'.$subchecks2['status'].':'.$subchecks2['type'].'=>'.$subchecks2['message'].'<br>';
-                                                            }
+                if ($dataCard ['reports'][0]['globalStatus'] !== 'OK') {
+                    //Envoi email au support
+                    $utilisateur = $session->get('utilisateur');
+                    $message = $utilisateur['lastname'].'<br>'.$utilisateur['firstname'].'<br>'.$utilisateur['email'].'<br>'.$utilisateur['address'].'<br>'.$utilisateur['zip'].' '.$utilisateur['town'].'<br>'.$utilisateur['phone'].'<hr>';
+                    foreach ($dataCard['lastReport']['checks'] as $indice1 => $checks) {
+                        if (($checks['status'] == 'ERROR') || ($checks['status'] == 'WARN')) {
+                            $message .= $checks['status'].':'.$checks['type'].'=>'.$checks['message'].'<br>';
+                        }
+                        if (is_array($checks))
+                            foreach ($checks as $clef => $check) {
+                                if ($clef == 'subChecks') {
+                                    foreach ($check as $indice2 => $subchecks) {
+                                        if (($subchecks['status'] == 'ERROR') || ($subchecks['status'] == 'WARN')) {
+                                            $message .= '=>'.$subchecks['status'].':'.$subchecks['type'].'=>'.$subchecks['message'].'<br>';
+                                        }
+                                        if (is_array($subchecks))
+                                            foreach ($subchecks as $clef2 => $subcheck) {
+                                                if ($clef2 == 'subChecks') {
+                                                    foreach ($subcheck as $indice3 => $subchecks2) {
+                                                        if (($subchecks2['status'] == 'ERROR') || ($subchecks2['status'] == 'WARN')) {
+                                                            $message .= '==>'.$subchecks2['status'].':'.$subchecks2['type'].'=>'.$subchecks2['message'].'<br>';
                                                         }
                                                     }
                                                 }
-                                        }
+                                            }
                                     }
                                 }
-                        }
-                        if ($dataCard ['reports'][0]['globalStatus'] == 'ERROR') {
-                            $subject = 'ERREUR sur creation de compte';
-                            $message .= '<hr>*** COMPTE NON CREE<br>';
-                        }
-                        elseif ($dataCard ['reports'][0]['globalStatus'] == 'WARN') {
-                            $subject = 'ALERTE sur creation de compte';
-                            $message .= '<hr>*** COMPTE EN COURS DE CREATION MAIS PIECES D\'IDENTITE A CONTROLER<br>';
-                        }
-                        else {
-                            $subject = 'STATUT non supporté';
-                            $message .= '<hr>** Le statut '.$dataCard['reports'][0]['globalStatus'].' n\'est pas supporté par le programme<br>';
-                        }
-
-                        $logger->error('Probleme de creation compte '.$utilisateur['lastname'].' '.$utilisateur['firstname'].' '.$utilisateur['email']);
-
-                        if($_ENV["PLATEFORME"] === "dev")
-                            $mode = " PRE-PROD";
-                        else
-                            $mode ="";
-
-                        $email = (new Email())
-                            ->from('noreply@euskalmoneta.org')
-                            ->to($_ENV["MAIL_DEST"])
-                            ->subject($subject.$mode)
-                            ->html($message);
-                        $mailer->send($email);
+                            }
                     }
-                    
-                    $gender = null;
-                    if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
-                        $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+                    if ($dataCard ['reports'][0]['globalStatus'] == 'ERROR') {
+                        $subject = 'ERREUR sur creation de compte';
+                        $message .= '<hr>*** COMPTE NON CREE<br>';
                     }
-                    if($gender === 'M'){
-                        $data['civility_id'] = 'MR';
-                    } else {
-                        $data['civility_id'] = 'MME';
+                    elseif ($dataCard ['reports'][0]['globalStatus'] == 'WARN') {
+                        $subject = 'ALERTE sur creation de compte';
+                        $message .= '<hr>*** COMPTE EN COURS DE CREATION MAIS PIECES D\'IDENTITE A CONTROLER<br>';
+                    }
+                    else {
+                        $subject = 'STATUT non supporté';
+                        $message .= '<hr>** Le statut '.$dataCard['reports'][0]['globalStatus'].' n\'est pas supporté par le programme<br>';
                     }
 
-                    $data['birth'] = null;
-                    if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
-                        $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
-                    }
+                    $logger->error('Probleme de creation compte '.$utilisateur['lastname'].' '.$utilisateur['firstname'].' '.$utilisateur['email']);
 
-                    $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
+                    if($_ENV["PLATEFORME"] === "dev")
+                        $mode = " PRE-PROD";
+                    else
+                        $mode ="";
 
-                    $pdf = 'null';
-                    $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
+                    $email = (new Email())
+                        ->from('noreply@euskalmoneta.org')
+                        ->to($_ENV["MAIL_DEST"])
+                        ->subject($subject.$mode)
+                        ->html($message);
+                    $mailer->send($email);
+                }
 
-                    if ($idcheckPDF['httpcode'] == 200){
-                        $dataPdf = base64_encode($idcheckPDF["data"]);
-                        $pdf = 'data:application/pdf;base64,'.$dataPdf;
-                    }
-
-                    $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
-                    $session->set('utilisateur', $dataU);
-
-                    $response = $IDCheckAPI->go_nogo($dataCard);
-
-                    if($response !== true){
-                        $status = false;
-                        $logger->error('[IDNOW] verification pièce : ' . $response['message']);
-                        $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
-                    }
-
+                $gender = null;
+                if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
+                    $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+                }
+                if($gender === 'M'){
+                    $data['civility_id'] = 'MR';
                 } else {
+                    $data['civility_id'] = 'MME';
+                }
+
+                $data['birth'] = null;
+                if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
+                    $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
+                }
+
+                $docBase64 = 'data:'.$file->getMimeType().';base64,'.$recto;
+
+                $pdf = 'null';
+                $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
+
+                if ($idcheckPDF['httpcode'] == 200){
+                    $dataPdf = base64_encode($idcheckPDF["data"]);
+                    $pdf = 'data:application/pdf;base64,'.$dataPdf;
+                }
+
+                $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
+                $session->set('utilisateur', $dataU);
+
+                $response = $IDCheckAPI->go_nogo($dataCard);
+
+                if($response !== true){
+                    $status = false;
+                    $logger->error('[IDNOW] verification pièce : ' . $response['message']);
                     $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
                 }
-            } catch (\Exception $e){
-                $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
-            }
 
-        } else {
-            $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
+            } else {
+                $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
+            }
+        } catch (\Exception $e){
+            $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
         }
+
+
 
         return new JsonResponse(['bool' => $status, 'resultat' => $response]);
 
+    }
+
+    private function convertFileToBase64(?File $file): string|null
+    {
+        if(!$file) {
+            return null;
+        }
+        if($file->getSize() > 4000000 && $file->getMimeType() !== 'application/pdf'){
+            //resize avec GD
+            $image = $this->resize_image($file->getPathname(), 2000, 2000, $file->getMimeType());
+
+            //transformer la ressource GD en image
+            ob_start();
+            imagejpeg($image);
+            $contents = ob_get_contents();
+            ob_end_clean();
+        } else {
+            $contents = file_get_contents($file->getPathname());
+        }
+        $docBase64 = base64_encode($contents);
+        return $docBase64;
     }
 
     function resize_image($file, $w, $h, $mime, $crop=FALSE) {

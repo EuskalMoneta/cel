@@ -1714,6 +1714,26 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
           <source>fermeture.compte.raison.reutiliser</source>
           <target>Je n'arrive pas réutiliser les eusko encaissés</target>
         </trans-unit>
+       <trans-unit id="KJHJ297rE" resname="ouverture_compte.carteidentite">
+         <source>ouverture_compte.carteidentite</source>
+         <target>Carte d'identité</target>
+       </trans-unit>
+       <trans-unit id="KJHJg297rE" resname="ouverture_compte.passeport">
+         <source>ouverture_compte.passeport</source>
+         <target>Passeport</target>
+       </trans-unit>
+       <trans-unit id="KJHJgBV97rE" resname="ouverture_compte.carte.input.1">
+         <source>ouverture_compte.carte.input.1</source>
+         <target>Carte d'identité recto ou recto/verso</target>
+       </trans-unit>
+       <trans-unit id="KJ099rE" resname="ouverture_compte.carte.input.2">
+         <source>ouverture_compte.carte.input.2</source>
+         <target>Carte d'identité verso</target>
+       </trans-unit>
+       <trans-unit id="KJKXCD9rE" resname="ouverture_compte.deux.faces">
+         <source>ouverture_compte.deux.faces</source>
+         <target>Nous avons besoin des deux faces de votre carte d'identité. Vous pouvez télécharger un document contenant les deux faces ou télécharger deux documents distincts.</target>
+       </trans-unit>
 
     </body>
   </file>

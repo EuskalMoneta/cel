@@ -272,7 +272,7 @@ class VacancesEuskoController extends AbstractController
 
         try {
             //Appel ID Check
-            //$IDCheckAPI->login();
+            $IDCheckAPI->login();
             $verso = $this->convertFileToBase64($request->files->get('form')['idcard_verso']);
 
             $checkID = $IDCheckAPI->createDocument($recto, $verso);

@@ -146,10 +146,10 @@ class IDCheckAPI
             return ['status' => false, 'message' => "Mauvais type de document, carte d'identité ou passeport seulement"];
         }
 
-        foreach ($analysisResult['lastReport']['checks'] as $check){
-            if($check['status'] !== 'OK')
-                return ['status' => false, 'message' => $check['message']];
+        if($analysisResult['reports'][0]['globalStatus'] === 'ERR'){
+            return ['status' => false, 'message' => "Document invalide"];
         }
+
 
         return true;
     }

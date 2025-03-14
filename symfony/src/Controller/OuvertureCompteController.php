@@ -172,7 +172,7 @@ class OuvertureCompteController extends AbstractController
     public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator, IDCheckAPI $IDCheckAPI): Response
     {
         $session->start();
-
+        
         if($session->get('compteur') < 4){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [

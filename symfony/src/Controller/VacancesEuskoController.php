@@ -302,6 +302,7 @@ class VacancesEuskoController extends AbstractController
             if ($goNogo['status'] !== true) {
                 if($_ENV["PLATEFORME"] === 'dev'){
                     $logger->error('DEBUG dataCard ' .var_dump($dataCard));
+		}
                 //chaque essai si erreur ou warning
                 if($_ENV["APP_ENV"] === "dev")
                     $goNogo['subject'] .= " PRE-PROD";

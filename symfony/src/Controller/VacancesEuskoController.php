@@ -272,7 +272,11 @@ class VacancesEuskoController extends AbstractController
         try {
             //Appel ID Check
             $IDCheckAPI->login();
-            $verso = $this->convertFileToBase64($request->files->get('form')['idcard_verso']);
+            $fileVerso = $request->files->get('form')['idcard_verso'];
+            if ($fileVerso !== NULL)
+                $verso = $this->convertFileToBase64($fileVerso);
+            else
+                $verso = NULL;
 
             $checkID = $IDCheckAPI->createDocument($recto, $verso);
 
@@ -287,7 +291,7 @@ class VacancesEuskoController extends AbstractController
             $dataCard = $checkID["data"];
             $idcheckReport = $dataCard['lastReport'];
 
-            $goNogo = $IDCheckAPI->go_nogo($dataCard);
+            $goNogo = $IDCheckAPI->go_nogo($dataCard,$logger);
 
             //Au troisième essai si warning on continue le process. Si erreur on bloque
             if($session->get('compteur') === 4 && $dataCard['reports'][0]['globalStatus'] === 'WARN'){
@@ -296,7 +300,8 @@ class VacancesEuskoController extends AbstractController
 
             //envoi d'un email au support et gestion des erreurs
             if ($goNogo['status'] !== true) {
-
+                if($_ENV["PLATEFORME"] === 'dev'){
+                    $logger->error('DEBUG dataCard ' .var_dump($dataCard));
                 //chaque essai si erreur ou warning
                 if($_ENV["APP_ENV"] === "dev")
                     $goNogo['subject'] .= " PRE-PROD";
@@ -335,6 +340,9 @@ class VacancesEuskoController extends AbstractController
             }
 
             $docBase64 = 'data:'.$file->getMimeType().';base64,'.$recto;
+	    if ($fileVerso !== NULL) {
+                $docBase64Verso = 'data:'.$fileVerso->getMimeType().';base64,'.$verso;
+	    }
 
             $pdf = 'null';
             $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
@@ -344,7 +352,10 @@ class VacancesEuskoController extends AbstractController
                 $pdf = 'data:application/pdf;base64,'.$dataPdf;
             }
 
-            $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
+	    if ($fileVerso !== NULL)
+            	$dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'id_document_verso' => $docBase64Verso,'idcheck_report' => $pdf], $data);
+	    else
+		$dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
             $session->set('utilisateur', $dataU);
 
         } catch (\Exception $e){

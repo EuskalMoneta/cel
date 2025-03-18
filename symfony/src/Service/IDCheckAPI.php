@@ -6,12 +6,17 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Psr\Log\LoggerInterface;
+
+
 class IDCheckAPI
 {
     private ?string $accessToken = null;
     private ?array $tokenData = null;
 
-    public function __construct(private readonly HttpClientInterface $httpClient, private readonly TranslatorInterface $translator) {}
+    public function __construct(private readonly HttpClientInterface $httpClient, private readonly TranslatorInterface $translator
+                                             ,LoggerInterface $logger
+) {}
 
     public function login(): array
     {
@@ -141,7 +146,7 @@ class IDCheckAPI
         return $response->toArray();
     }
 
-    public function go_nogo($analysisResult): array
+    public function go_nogo($analysisResult,$logger): array
     {
         $message = '';
 
@@ -152,82 +157,103 @@ class IDCheckAPI
         if($analysisResult['reports'][0]['globalStatus'] === 'OK'){
             return ['status' => true];
         }
-
+        if($_ENV["PLATEFORME"] === 'dev'){
+            foreach ($analysisResult['lastReport']['checks'] as $indice1 => $checks) {
+                $logger->error('DEBUG checks indice='.$indice1);
+                $logger->error('DEBUG [checks]['.$indice1.'][type]='.$checks['type']);
+                $logger->error('DEBUG [checks]['.$indice1.'][message]='.$checks['message']);
+                $logger->error('DEBUG [checks]['.$indice1.'][status]='.$checks['status']);
+                if (($checks['status'] == 'ERROR') || ($checks['status'] == 'WARN')) {
+                    $logger->error('DEBUG ch '.$checks['type'].'=>'.$checks['message']);
+                }
+                if (is_array($checks))
+                foreach ($checks as $clef => $check) {
+                    if ($clef == 'subChecks') {
+                        //foreach ($checks[$clef] as $indice2 => $subchecks) {
+                        foreach ($check as $indice2 => $subchecks) {
+                        $logger->error('DEBUG subChecks indice='.$indice2);
+                        $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][type]='.$subchecks['type']);
+                        $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][message]='.$subchecks['message']);
+                        $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][status]='.$subchecks['status']);
+                        if (($subchecks['status'] == 'ERROR') || ($subchecks['status'] == 'WARN')) {
+                            $logger->error('DEBUG ch/sub '.$subchecks['type'].'=>'.$subchecks['message']);
+                        }
+                        if (is_array($subchecks))
+                        foreach ($subchecks as $clef2 => $subcheck) {
+                            if ($clef2 == 'subChecks') {
+                                foreach ($subcheck as $indice3 => $subchecks2) {
+                                $logger->error('DEBUG subChecks/subchecks indice='.$indice3);
+                                $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][subchecks]['.$indice3.'][type]='.$subchecks2['type']);
+                                $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][subchecks]['.$indice3.'][message]='.$subchecks2['message']);
+                                $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][subchecks]['.$indice3.'][status]='.$subchecks2['status']);
+                                if (($subchecks2['status'] == 'ERROR') || ($subchecks2['status'] == 'WARN')) {
+                                    $logger->error('DEBUG ch/sub/sub '.$subchecks2['type'].'=>'.$subchecks2['message']);
+                                }
+                                }
+                            }
+                        }
+                        }
+                    }
+                }
+            }
+        }
+        $messageErreur = $this->translator->trans("ouverture_compte.problemes_techniques");
         foreach ($analysisResult['lastReport']['checks'] as $indice1 => $checks) {
             if (($checks['status'] == 'ERROR') || ($checks['status'] == 'WARN')) {
                 $message .= $checks['status'].':'.$checks['type'].'=>'.$checks['message'].'<br>';
             }
-            if (is_array($checks))
+            if (is_array($checks)) {
                 foreach ($checks as $clef => $check) {
                     if ($clef == 'subChecks') {
                         foreach ($check as $indice2 => $subchecks) {
                             if (($subchecks['status'] == 'ERROR') || ($subchecks['status'] == 'WARN')) {
                                 $message .= '=>'.$subchecks['status'].':'.$subchecks['type'].'=>'.$subchecks['message'].'<br>';
                             }
-                            if (is_array($subchecks))
+                            if (is_array($subchecks)) {
                                 foreach ($subchecks as $clef2 => $subcheck) {
                                     if ($clef2 == 'subChecks') {
                                         foreach ($subcheck as $indice3 => $subchecks2) {
                                             if (($subchecks2['status'] == 'ERROR') || ($subchecks2['status'] == 'WARN')) {
                                                 $message .= '==>'.$subchecks2['status'].':'.$subchecks2['type'].'=>'.$subchecks2['message'].'<br>';
+                                            if (($subchecks2['type'] === 'DOCUMENT_VALIDITY') && ($subchecks2['message'] === 'One side of the document is missing'))
+                                                    $messageErreur = $this->translator->trans('Recto ou Verso manquant');
+                                            elseif (($subchecks2['identifier'] === 'MRZ_FIELDS_SYNTAX') 
+                                                || ($subchecks2['identifier'] === 'MRZ_CHECKSUMS')
+                                                || ($subchecks2['identifier'] === 'MRZ_EXPECTED_FOUND')
+                                                || ($subchecks2['identifier'] === 'MRZ_ALIGNEMENT')
+                                                || ($subchecks2['identifier'] === 'MRZ_CLASSIFIER'))
+                                                    $messageErreur = $this->translator->trans("Les lignes d'information contenant des symboles <<<<<< ne sont pas lisibles");
+                                            elseif ($subchecks2['identifier'] === 'DOC_EXPIRATION_DATE') 
+                                                $messageErreur = $this->translator->trans("Pièce d'identité périmée");
                                             }
                                         }
                                     }
                                 }
+                            }
                         }
                     }
                 }
+            }
         }
-        $messageErreur = $this->translator->trans("ouverture_compte.problemes_techniques");
 
         if(isset($analysisResult['lastReport']['info']['sidesIssue'])
             && $analysisResult['lastReport']['info']['sidesIssue']['value'] === 'MISSING_VERSO'){
             $messageErreur = $this->translator->trans('Recto ou Verso manquant');
         }
 
-        if(isset($analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][5])
-            && $analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][5]['identifier'] === 'MRZ_FIELDS_SYNTAX'){
-            $messageErreur = $this->translator->trans("Les lignes d'information contenant des symboles <<<<<< ne sont pas lisibles");
-        }
-
-        if(isset($analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][6])
-            && $analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][6]['identifier'] === 'MRZ_CHECKSUMS'){
-            $messageErreur = $this->translator->trans("Les lignes d'information contenant des symboles <<<<<< ne sont pas lisibles");
-        }
-
-        if(isset($analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][7])
-            && $analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][7]['identifier'] === 'MRZ_EXPECTED_FOUND'){
-            $messageErreur = $this->translator->trans("Les lignes d'information contenant des symboles <<<<<< ne sont pas lisibles");
-        }
-
-        if(isset($analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][15])
-            && $analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][15]['identifier'] === 'MRZ_ALIGNEMENT'){
-            $messageErreur = $this->translator->trans("Les lignes d'information contenant des symboles <<<<<< ne sont pas lisibles");
-        }
-
-        if(isset($analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][16])
-            && $analysisResult['lastReport']['checks'][1]['subChecks'][3]['subChecks'][16]['identifier'] === 'MRZ_CLASSIFIER'){
-            $messageErreur = $this->translator->trans("Les lignes d'information contenant des symboles <<<<<< ne sont pas lisibles");
-        }
-
-        if(isset($analysisResult['lastReport']['checks'][1]['subChecks'][2])
-            && $analysisResult['lastReport']['checks'][1]['subChecks'][2]['identifier'] === 'DOC_EXPIRATION_DATE'){
-            $messageErreur = $this->translator->trans("Pièce d'identité périmée");
-        }
-
-
-        $subject = 'STATUT non supporté';
-        $message .= '<hr>** Le statut n\'est pas supporté par le programme<br>';
-
-        if($analysisResult['reports'][0]['globalStatus'] === 'ERR'){
+        if($analysisResult['reports'][0]['globalStatus'] === 'ERROR'){
             $subject = 'ERREUR sur creation de compte';
             $message .= '<hr>*** COMPTE NON CREE<br>';
         }
 
-        if($analysisResult['reports'][0]['globalStatus'] === 'WARN'){
+    elseif($analysisResult['reports'][0]['globalStatus'] === 'WARN'){
             $subject = 'ALERTE sur creation de compte';
             $message .= '<hr>*** COMPTE EN COURS DE CREATION MAIS PIECES D\'IDENTITE A CONTROLER<br>';
         }
+    else {
+        $subject = 'STATUT non supporté';
+        $message .= '<hr>** Le statut '.$analysisResult['reports'][0]['globalStatus'].'n\'est pas supporté par le programme<br>';
+    }
 
 
         return ['status' => false, 'message_erreur' => $messageErreur, 'subject' => $subject, 'message' => $message];

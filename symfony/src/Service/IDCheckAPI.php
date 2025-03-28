@@ -150,9 +150,6 @@ class IDCheckAPI
     {
         $message = '';
 
-        if(($analysisResult['type'] !== 'ID') || (($analysisResult['subType'] !== 'ID') && ($analysisResult['subType'] !== 'PASSPORT'))){
-		return ['status' => false, 'message_erreur' => $this->translator->trans("Mauvais type de document, carte d'identité ou passeport seulement"), 'subject' => "WARNING", 'message' => "Mauvais type de document, carte d'identité ou passeport seulement ".$analysisResult['subType']];
-        }
 
         if($_ENV["PLATEFORME"] === 'dev'){
 	    $logger->error('DEBUG type='. $analysisResult['type']);
@@ -194,6 +191,9 @@ class IDCheckAPI
                     }
                 }
             }
+        }
+        if(($analysisResult['type'] !== 'ID') || (($analysisResult['subType'] !== 'ID') && ($analysisResult['subType'] !== 'PASSPORT'))){
+		return ['status' => false, 'message_erreur' => $this->translator->trans("Mauvais type de document, carte d'identité ou passeport seulement"), 'subject' => "WARNING", 'message' => "Mauvais type de document, carte d'identité ou passeport seulement ".$analysisResult['subType']];
         }
         if($analysisResult['reports'][0]['globalStatus'] === 'OK'){
             return ['status' => true];

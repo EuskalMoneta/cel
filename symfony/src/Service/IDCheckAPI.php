@@ -150,14 +150,13 @@ class IDCheckAPI
     {
         $message = '';
 
-        if($analysisResult['type'] !== 'ID' && $analysisResult['type'] !== 'P'){
-            return ['status' => false, 'message_erreur' => $this->translator->trans("Mauvais type de document, carte d'identité ou passeport seulement"), 'subject' => "WARNING", 'message' => "Mauvais type de document, carte d'identité ou passeport seulement"];
+        if(($analysisResult['type'] !== 'ID') || (($analysisResult['subType'] !== 'ID') && ($analysisResult['subType'] !== 'PASSPORT'))){
+		return ['status' => false, 'message_erreur' => $this->translator->trans("Mauvais type de document, carte d'identité ou passeport seulement"), 'subject' => "WARNING", 'message' => "Mauvais type de document, carte d'identité ou passeport seulement ".$analysisResult['subType']];
         }
 
-        if($analysisResult['reports'][0]['globalStatus'] === 'OK'){
-            return ['status' => true];
-        }
         if($_ENV["PLATEFORME"] === 'dev'){
+	    $logger->error('DEBUG type='. $analysisResult['type']);
+	    $logger->error('DEBUG subType='. $analysisResult['subType']);
             foreach ($analysisResult['lastReport']['checks'] as $indice1 => $checks) {
                 $logger->error('DEBUG checks indice='.$indice1);
                 $logger->error('DEBUG [checks]['.$indice1.'][type]='.$checks['type']);
@@ -169,7 +168,6 @@ class IDCheckAPI
                 if (is_array($checks))
                 foreach ($checks as $clef => $check) {
                     if ($clef == 'subChecks') {
-                        //foreach ($checks[$clef] as $indice2 => $subchecks) {
                         foreach ($check as $indice2 => $subchecks) {
                         $logger->error('DEBUG subChecks indice='.$indice2);
                         $logger->error('DEBUG [checks]['.$indice1.'][subchecks]['.$indice2.'][type]='.$subchecks['type']);
@@ -196,6 +194,9 @@ class IDCheckAPI
                     }
                 }
             }
+        }
+        if($analysisResult['reports'][0]['globalStatus'] === 'OK'){
+            return ['status' => true];
         }
         $messageErreur = $this->translator->trans("ouverture_compte.problemes_techniques");
         foreach ($analysisResult['lastReport']['checks'] as $indice1 => $checks) {

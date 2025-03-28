@@ -1576,7 +1576,7 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       </trans-unit>
       <trans-unit id="piH7Hfz" resname="ouverture_compte.change.autre_montant">
         <source>ouverture_compte.change.autre_montant</source>
-        <target>Autre montant</target>
+        <target>Beste zenbateko bat</target>
       </trans-unit>
       <trans-unit id="m2FUILW" resname="identite.madame">
         <source>identite.madame</source>

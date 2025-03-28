@@ -545,9 +545,9 @@
         <source>Commentaire</source>
         <target>Commentaire</target>
       </trans-unit>
-      <trans-unit id="j9cXi6O" resname="Association parainée">
-        <source>Association parainée</source>
-        <target>Association parainée</target>
+      <trans-unit id="j9cXi6O" resname="Association parrainée">
+        <source>Association parrainée</source>
+        <target>Association parrainée</target>
       </trans-unit>
       <trans-unit id="IF8y1w_" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
         <source>Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.</source>
@@ -797,7 +797,7 @@
         <source>piece_d_identite.explication</source>
         <target><![CDATA[Afin de valider votre compte, la régulation bancaire nous impose de vérifier une pièce d'identité.<br>
 <br>
-Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identité</strong> ou de votre <strong>passeport</strong>&nbsp;:
+		Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identité recto/verso</strong> ou de votre <strong>passeport</strong>&nbsp;:
 <ul>
 <li>Le document ne doit pas être flou</li>
 <li>Votre photo doit apparaître sur le document</li>
@@ -998,6 +998,10 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
       <trans-unit id="fsTn4lI" resname="Virements">
         <source>Virements</source>
         <target>Virements</target>
+      </trans-unit>
+      <trans-unit id="fsTn4lIZA" resname="Virement">
+        <source>Virement</source>
+        <target>Virement</target>
       </trans-unit>
       <trans-unit id="QyNZIY0" resname="ETAPE 3/5">
         <source>ETAPE 3/5</source>
@@ -1399,6 +1403,10 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
         <source>releves.date_fin</source>
         <target>Fin</target>
       </trans-unit>
+      <trans-unit id="NMHVa754k" resname="releves.type_mouvement">
+        <source>releves.type_mouvement</source>
+        <target>Type de mouvement</target>
+      </trans-unit>
       <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
         <source>profil.mot_de_passe.ancien_mot_de_passe</source>
         <target>Ancien mot de passe</target>
@@ -1693,6 +1701,40 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>prelevement.echoue</source>
         <target>Échoué</target>
       </trans-unit>
+
+       <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
+          <source>fermeture.compte.raison.cessation</source>
+          <target>Cessation d'activité</target>
+        </trans-unit>
+        <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
+          <source>fermeture.compte.raison.assezeusko</source>
+          <target>Je ne reçois pas assez d'eusko</target>
+        </trans-unit>
+        <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
+          <source>fermeture.compte.raison.reutiliser</source>
+          <target>Je n'arrive pas réutiliser les eusko encaissés</target>
+        </trans-unit>
+       <trans-unit id="KJHJ297rE" resname="ouverture_compte.carteidentite">
+         <source>ouverture_compte.carteidentite</source>
+         <target>Carte d'identité</target>
+       </trans-unit>
+       <trans-unit id="KJHJg297rE" resname="ouverture_compte.passeport">
+         <source>ouverture_compte.passeport</source>
+         <target>Passeport</target>
+       </trans-unit>
+       <trans-unit id="KJHJgBV97rE" resname="ouverture_compte.carte.input.1">
+         <source>ouverture_compte.carte.input.1</source>
+         <target>Carte d'identité recto ou recto/verso</target>
+       </trans-unit>
+       <trans-unit id="KJ099rE" resname="ouverture_compte.carte.input.2">
+         <source>ouverture_compte.carte.input.2</source>
+         <target>Carte d'identité verso</target>
+       </trans-unit>
+       <trans-unit id="KJKXCD9rE" resname="ouverture_compte.deux.faces">
+         <source>ouverture_compte.deux.faces</source>
+         <target>Nous avons besoin des deux faces de votre carte d'identité. Vous pouvez télécharger un document contenant les deux faces ou télécharger deux documents distincts.</target>
+       </trans-unit>
+
     </body>
   </file>
 </xliff>

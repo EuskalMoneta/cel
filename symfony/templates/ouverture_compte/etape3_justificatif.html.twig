@@ -4,6 +4,22 @@
     <div style="">
         <p class="text-subtitle">{{ "piece_d_identite.explication" | trans | raw }}</p>
 
+        <div class="container">
+            <div class="d-flex justify-content-around align-items-center mt-5">
+                <div>
+                    <button class="btn btn-outline-primary" id="carte"> {{ "ouverture_compte.carteidentite" | trans }}</button>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary" id="passeport"> {{ "ouverture_compte.passeport" | trans }}</button>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
         <div id="spinner" class="text-center mt-4 d-none">
             <div class="loadingio-spinner-spinner-3n6a06i025x"><div class="ldio-x8uv5a6ulc">
                     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
@@ -12,29 +28,8 @@
             <p>{{ "La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes." | trans }}</p>
         </div>
 
-        <div id="formulaire">
-            <div style="margin-top: 50px" class="text-center">
-                <img src="{{ asset('images/idcard.png') }}" width="100px" />
-            </div>
+        <div id="formulaire" class="mt-5">
 
-            <div class="mt-2">
-                <form id="myform" action="{{ path('app_vee_api_idcheck') }}" method="post">
-                    <div class="form-group">
-                        <label for="form_idcard"> {{ "Importer ou prendre en photo votre pièce d'identité" | trans }}</label>
-                        <div class="custom-file">
-                            <input type="file" id="form_idcard" name="form[idcard]" aria-describedby="form_idcard_help" class="custom-file-input" lang="{{ app.request.locale }}">
-                            <label for="form_idcard" class="custom-file-label"> </label>
-                        </div>
-                        <div>
-                            <small id="form_idcard_help" class="form-text text-muted">{{ "Au format .jpg .png ou .pdf" | trans }}, {{ "maximum 4 Mo" | trans }}</small>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-success" value="{{ "Valider" | trans }}">
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 {% endblock %}
@@ -43,15 +38,74 @@
 {% block js %}
     <script type="text/javascript">
 
-        document.querySelector('.custom-file-input').addEventListener('change',function(e){
-            var fileName = document.getElementById("form_idcard").files[0].name;
-            var nextSibling = e.target.nextElementSibling
-            nextSibling.innerText = fileName
-        })
+
 
         $(document).ready(function() {
 
-            $('#myform').submit(function (e){
+            $(document).on("change", ".custom-file-input", function(e) {
+                let fileName = e.target.files[0] ? e.target.files[0].name : "";
+                $(this).next(".custom-file-label").text(fileName);
+            });
+
+            function showForm(isCarte) {
+
+                $("#formulaire").html( `
+
+
+                ${isCarte ? `<div class="alert alert-info mt-4">
+                    {{ "ouverture_compte.deux.faces" | trans }}
+                </div>` : ""}
+
+                    <div class="text-center">
+                        <img src="{{ asset('images/idcard.png') }}" width="100px" />
+                    </div>
+
+                    <div class="mt-2">
+                        <form id="myform" action="{{ path('app_vee_api_idcheck') }}" method="post">
+                            <div class="form-group">
+                                <label for="form_idcard"> ${isCarte ? `{{ "ouverture_compte.carte.input.1" | trans }}` : `{{ "Importer ou prendre en photo votre pièce d'identité" | trans }}` }</label>
+                                <div class="custom-file">
+                                    <input type="file" id="form_idcard" name="form[idcard]" class="custom-file-input" lang="{{ app.request.locale }}">
+                                    <label for="form_idcard" class="custom-file-label"></label>
+                                </div>
+                                <small class="form-text text-muted">{{ "Au format .jpg .png ou .pdf" | trans }}, {{ "maximum 4 Mo" | trans }}</small>
+                            </div>
+
+                            ${isCarte ? `
+                            <div class="form-group">
+                                <label for="form_idcard_verso"> {{ "ouverture_compte.carte.input.2" | trans }}</label>
+                                <div class="custom-file">
+                                    <input type="file" id="form_idcard_verso" name="form[idcard_verso]" class="custom-file-input" lang="{{ app.request.locale }}">
+                                    <label for="form_idcard_verso" class="custom-file-label"></label>
+                                </div>
+                                <small class="form-text text-muted">{{ "Au format .jpg .png ou .pdf" | trans }}, {{ "maximum 4 Mo" | trans }}</small>
+                            </div>
+                            ` : ""}
+
+                            <div class="form-group text-center mt-5">
+                                <input type="submit" class="btn btn-success" value="{{ "Valider" | trans }}">
+                            </div>
+                        </form>
+                    </div>
+                `);
+            }
+
+            $("#carte").on("click", function() {
+                showForm(true);
+            });
+
+            $("#passeport").on("click", function() {
+                showForm(false);
+            });
+
+            //permuter couleurs bouton
+            $("#carte, #passeport").on("click", function() {
+                $("#carte, #passeport").removeClass("btn-info").addClass("btn-outline-primary");
+                $(this).removeClass("btn-outline-primary").addClass("btn-info");
+            });
+
+
+            $(document).on("submit", "#myform", function(e) {
 
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -83,6 +137,23 @@
                     isValid = false;
                 }
 
+                const fileInput2 = $('#form_idcard_verso')[0];
+                if (fileInput2 && fileInput2.files.length > 0) {
+                    const file = fileInput2.files[0];
+                    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+                    const maxFileSize = 4 * 1024 * 1024;
+
+                    if (!allowedTypes.includes(file.type)) {
+                        $(fileInput2).after('<div class="mb-4 alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button>{{ "Au format .jpg .png ou .pdf" | trans }}</div>');
+                        isValid = false;
+                    }
+
+                    if (file.size > maxFileSize) {
+                        $(fileInput2).after('<div class="mb-4 alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button>{{ "maximum 4 Mo" | trans }}</div>');
+                        isValid = false;
+                    }
+                }
+
                 if(isValid){
                     $('#formulaire').hide();
                     $('#spinner').removeClass('d-none');
@@ -98,11 +169,11 @@
                         success     : function(data, textStatus, jqXHR){
                             if(data.bool){
                                 window.location.href = '{{ path('app_compte_etape4_sepa') }}';
-                        } else {
-                            document.location.reload(true);
+                            } else {
+                                document.location.reload(true);
+                            }
                         }
-                    }
-                });
+                    });
 
                 }
                 return false;

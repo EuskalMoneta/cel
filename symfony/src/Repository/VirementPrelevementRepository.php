@@ -37,7 +37,7 @@ class VirementPrelevementRepository extends ServiceEntityRepository
         }
 
         if ($debiteur) {
-            $qb->andWhere('v.debiteur LIKE :debiteur')
+            $qb->andWhere('(v.debiteur LIKE :debiteur OR v.debiteurCompte LIKE :debiteur)')
                 ->setParameter('debiteur', "%{$debiteur}%");
         }
 

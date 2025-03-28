@@ -16,14 +16,14 @@
 
                                 <div class="">
                                     <label for="dateFrom" class="form-label">Date début</label>
-                                    <input type="datetime-local" class="form-control" id="dateFrom" name="dateFrom"
-                                           value="{{ filters.dateFrom ? filters.dateFrom|date('Y-m-d\\TH:i') : '' }}">
+                                    <input type="date" class="form-control" id="dateFrom" name="dateFrom" 
+                                           value="{{ filters.dateFrom ? filters.dateFrom|date('Y-m-d') : '' }}">
                                 </div>
 
                                 <div class="">
                                     <label for="dateTo" class="form-label">Date fin</label>
-                                    <input type="datetime-local" class="form-control" id="dateTo" name="dateTo"
-                                           value="{{ filters.dateTo ? filters.dateTo|date('Y-m-d\\TH:i') : '' }}">
+                                    <input type="date" class="form-control" id="dateTo" name="dateTo"
+                                           value="{{ filters.dateTo ? filters.dateTo|date('Y-m-d') : '' }}">
                                 </div>
 
                                 <div class="">
@@ -50,7 +50,7 @@
                                         <a href="{{ path('app_prelevement_resultats') }}" class="btn btn-secondary">Effacer</a>
                                     </div>
                                     <div>
-                                        {{ countMandats }} {{ 'mandat.resultats' | trans }}
+                                        {{ countVirement }} {{ 'mandat.resultats' | trans }}
                                         <a  class="btn-slim btn-info ml-2" href="{{ path('app_prelevement_resultats', app.request.query.all|merge({'export': 'csv'})) }}">Export CSV</a>
                                     </div>
                                 </div>
@@ -73,7 +73,8 @@
                         <thead>
                         <tr>
                             <th>{{ knp_pagination_sortable(pagination, 'Date', 'v.created') }}</th>
-                            <th>{{ knp_pagination_sortable(pagination, 'Débiteur', 'v.debiteur') }}</th>
+                            <th>{{ knp_pagination_sortable(pagination, 'Nom débiteur', 'v.debiteur') }}</th>
+                            <th>N° Compte</th>
                             <th>Somme</th>
                             <th>Statut</th>
                             <th>Message</th>
@@ -84,6 +85,7 @@
                             <tr>
                                 <td>{{ virement.created|date('Y-m-d H:i:s') }}</td>
                                 <td>{{ virement.debiteur }}</td>
+                                <td>{{ virement.debiteurCompte }}</td>
                                 <td>{{ (virement.somme / 100)|number_format(2, ',', ' ') }}€</td>
                                 <td>
                                     {% if virement.statut == 1 %}

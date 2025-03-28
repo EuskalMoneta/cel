@@ -227,7 +227,6 @@ class VacancesEuskoController extends AbstractController
 
                     return $security->login($user);
                 } else {
-                    dump($response);
                     $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
                 }
 
@@ -244,12 +243,14 @@ class VacancesEuskoController extends AbstractController
         return $this->render('vacancesEusko/etape4_success.html.twig', ['title' => "Bienvenue"]);
     }
 
+
     #[Route(path: '/vacances-en-eusko/call/justificatif', name: 'app_vee_api_idcheck')]
     public function verificationJustificatif(Request $request,
                                              LoggerInterface $logger,
                                              TranslatorInterface $translator,
                                              IDCheckAPI $IDCheckAPI,
-                                             SessionInterface $session):JsonResponse
+                                             SessionInterface $session,
+                                             MailerInterface $mailer):JsonResponse
     {
         //INIT
         $session->start();
@@ -259,88 +260,132 @@ class VacancesEuskoController extends AbstractController
         /** @var File $file */
         $file = $request->files->get('form')['idcard'];
 
-        if($file){
+        $recto = $this->convertFileToBase64($file);
 
-            //si l'image fait plus de 4 Mo
-            if($file->getSize() > 4000000 && $file->getMimeType() !== 'application/pdf'){
-                //resize avec GD
-                $image = $this->resize_image($file->getPathname(), 2000, 2000, $file->getMimeType());
-
-                //transformer la ressource GD en image
-                ob_start();
-                imagejpeg($image);
-                $contents = ob_get_contents();
-                ob_end_clean();
-            } else {
-                $contents = file_get_contents($file->getPathname());
-            }
-            $docBase64 = base64_encode($contents);
-
-            $session->set('compteur', $session->get('compteur') + 1);
-
-            try {
-                //Appel ID Check
-                $IDCheckAPI->login();
-                $checkID = $IDCheckAPI->createDocument($docBase64);
-
-                if($checkID['httpcode'] == 400){
-                    $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
-                } elseif ($checkID['httpcode'] >= 200 && $checkID['httpcode'] < 300){
-
-                    $status = true;
-                    $dataCard = $checkID["data"];
-
-                    $idcheckReport = $dataCard['lastReport'];
-
-                    $gender = null;
-                    if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
-                        $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
-                    }
-                    if($gender === 'M'){
-                        $data['civility_id'] = 'MR';
-                    } else {
-                        $data['civility_id'] = 'MME';
-                    }
-
-                    $data['birth'] = null;
-                    if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
-                        $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
-                    }
-
-                    $docBase64 = 'data:'.$file->getMimeType().';base64,'.$docBase64;
-
-                    $pdf = 'null';
-                    $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
-
-                    if ($idcheckPDF['httpcode'] == 200){
-                        $dataPdf = base64_encode($idcheckPDF["data"]);
-                        $pdf = 'data:application/pdf;base64,'.$dataPdf;
-                    }
-
-                    $dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
-                    $session->set('utilisateur', $dataU);
-
-                    $response = $IDCheckAPI->go_nogo($dataCard);
-
-                    if($response !== true){
-                        $status = false;
-                        $logger->error('[IDNOW] verification pièce : ' . $response['message']);
-                        $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
-                    }
-
-                } else {
-                    $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
-                }
-            } catch (\Exception $e){
-                $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage());
-            }
-
-        } else {
+        if(!$recto) {
             $this->addFlash('danger', $translator->trans("Le document n'est pas valide."));
+            return new JsonResponse(['bool' => $status, 'resultat' => $response]);
         }
 
-        return new JsonResponse(['bool' => $status, 'resultat' => $response]);
+        $session->set('compteur', $session->get('compteur') + 1);
 
+        try {
+            //Appel ID Check
+            $IDCheckAPI->login();
+            $fileVerso = $request->files->get('form')['idcard_verso'];
+            if ($fileVerso !== NULL)
+                $verso = $this->convertFileToBase64($fileVerso);
+            else
+                $verso = NULL;
+
+            $checkID = $IDCheckAPI->createDocument($recto, $verso);
+
+            if($checkID['httpcode'] == 400){
+                $this->addFlash('danger', $translator->trans("Le document n'est pas valide ou le fichier est trop lourd (maximum 4Mo)"));
+            }
+
+            if ($checkID['httpcode'] < 200 || $checkID['httpcode'] >= 300) {
+                $this->addFlash('danger', $translator->trans("ouverture_compte.problemes_techniques"));
+            }
+
+            $dataCard = $checkID["data"];
+            $idcheckReport = $dataCard['lastReport'];
+
+            $goNogo = $IDCheckAPI->go_nogo($dataCard,$logger);
+
+            //Au troisième essai si warning on continue le process. Si erreur on bloque
+            if($session->get('compteur') === 4 && $dataCard['reports'][0]['globalStatus'] === 'WARN'){
+                $goNogo['status'] = true;
+            }
+
+            //envoi d'un email au support et gestion des erreurs
+            if ($goNogo['status'] !== true) {
+                if($_ENV["PLATEFORME"] === 'dev'){
+                    $logger->error('DEBUG dataCard ' .var_dump($dataCard));
+		}
+                //chaque essai si erreur ou warning
+                if($_ENV["APP_ENV"] === "dev")
+                    $goNogo['subject'] .= " PRE-PROD";
+
+                $utilisateur = $session->get('utilisateur');
+                //Envoi email au support
+                $message = $utilisateur['lastname'].'<br>'.$utilisateur['firstname'].'<br>'.$utilisateur['email'].'<br>'.$utilisateur['address'].'<br>'.$utilisateur['zip'].' '.$utilisateur['town'].'<br>'.$utilisateur['phone'].'<hr>';
+                $email = (new Email())
+                    ->from('noreply@euskalmoneta.org')
+                    ->to($_ENV["MAIL_DEST"])
+                    ->subject($goNogo['subject'])
+                    ->html($message.$goNogo['message']);
+                $mailer->send($email);
+
+                $logger->error('[IDNOW] verification pièce : ' . $goNogo['message']);
+                $logger->error('Problème de creation compte '.$utilisateur['lastname'].' '.$utilisateur['firstname'].' '.$utilisateur['email']);
+
+                $this->addFlash('danger', $goNogo['message_erreur']);
+
+                return new JsonResponse(['bool' => false]);
+            }
+
+            $gender = null;
+            if (isset($idcheckReport['persons'][0]['identityData']['gender'])) {
+                $gender = $idcheckReport['persons'][0]['identityData']['gender']['value'];
+            }
+            if($gender === 'M'){
+                $data['civility_id'] = 'MR';
+            } else {
+                $data['civility_id'] = 'MME';
+            }
+
+            $data['birth'] = null;
+            if (isset($idcheckReport['persons'][0]['identityData']['birthDate'])) {
+                $data['birth'] = $idcheckReport['persons'][0]['identityData']['birthDate']['year'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['month'].'-'.$idcheckReport['persons'][0]['identityData']['birthDate']['day'];
+            }
+
+            $docBase64 = 'data:'.$file->getMimeType().';base64,'.$recto;
+	    if ($fileVerso !== NULL) {
+                $docBase64Verso = 'data:'.$fileVerso->getMimeType().';base64,'.$verso;
+	    }
+
+            $pdf = 'null';
+            $idcheckPDF = $IDCheckAPI->getReport(uidDocument: $dataCard['uid'], uidCheck: $dataCard['lastReport']['uid']);
+
+            if ($idcheckPDF['httpcode'] == 200){
+                $dataPdf = base64_encode($idcheckPDF["data"]);
+                $pdf = 'data:application/pdf;base64,'.$dataPdf;
+            }
+
+	    if ($fileVerso !== NULL)
+            	$dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'id_document_verso' => $docBase64Verso,'idcheck_report' => $pdf], $data);
+	    else
+		$dataU = array_merge($session->get('utilisateur'), ['id_document' => $docBase64, 'idcheck_report' => $pdf], $data);
+            $session->set('utilisateur', $dataU);
+
+        } catch (\Exception $e){
+            $logger->error('[IDNOW] Erreur exception : ' . $e->getMessage(). $e->getTraceAsString());
+            return new JsonResponse(['bool' => false]);
+        }
+
+        return new JsonResponse(['bool' => true]);
+    }
+
+    private function convertFileToBase64(?File $file): string|null
+    {
+        if(!$file) {
+            return null;
+        }
+        if($file->getSize() > 4000000 && $file->getMimeType() !== 'application/pdf'){
+            //resize avec GD
+            $image = $this->resize_image($file->getPathname(), 2000, 2000, $file->getMimeType());
+
+            //transformer la ressource GD en image
+            ob_start();
+            imagejpeg($image);
+            $contents = ob_get_contents();
+            ob_end_clean();
+        } else {
+            $contents = file_get_contents($file->getPathname());
+        }
+        $docBase64 = base64_encode($contents);
+        return $docBase64;
     }
 
     function resize_image($file, $w, $h, $mime, $crop=FALSE) {

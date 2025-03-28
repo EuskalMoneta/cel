@@ -35,7 +35,7 @@ body{
     font-weight: normal;
 }
 .cel-menu-icon{
-    font-size: 24px;
+    font-size: 19px;
     color: white;
 }
 .navbar-right a {
@@ -79,14 +79,15 @@ legend {
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
 .text-semi-bold { font-family: 'Montserrat-semi-bold', Arial, sans-serif;}
 .text-light { font-family: 'Montserrat-light', Arial, sans-serif;}
+.text-16 { font-family: 'Montserrat-light', Arial, sans-serif;}
 .title-light { color: #92949D; font-family: 'Montserrat-light', Arial, sans-serif; text-transform: uppercase;}
 .big-solde{
     font-size:34px;
     font-family: 'Montserrat-bold', Arial, sans-serif;
     margin-top: -5px;
 }
-.secondary-color { color: #6A7179; }
-.main-color { color: #47525E; }
+.secondary-color { color: #4E5359;; }
+.main-color { color: #343c45; }
 .green { color: #41A528; }
 .threeper {
     background-color: #41A528;
@@ -180,7 +181,7 @@ button.btn-primary:hover{
     border-width: 1px;
 }
 .eusko-btn {
-    padding: 0.3rem 0.3rem;
+    padding: 0.3rem 0.5rem;
 }
 small{
     font-size: 90%;
@@ -190,8 +191,8 @@ small{
 }
 
 .prix{
-    font-size: 13px;
-    font-family: 'Montserrat-bold', Arial, sans-serif;
+    font-size: 15px;
+    font-family: 'Montserrat-semi-bold', Arial, sans-serif;
 }
 
 .icon-round{

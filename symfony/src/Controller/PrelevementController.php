@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\VirementPrelevement;
+use App\Enum\StatutMandat;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -109,7 +110,8 @@ class PrelevementController extends AbstractController
                         $virement->setCrediteur((string) $this->getUser());
                         $virement->setSomme($resultat->amount*100);
                         $virement->setMessage($resultat->message);
-                        $virement->setDebiteur($resultat->name.' '.$resultat->account);
+                        $virement->setDebiteur($resultat->name);
+                        $virement->setDebiteurCompte($resultat->account);
 
                         $em->persist($virement);
                         $em->flush();
@@ -120,11 +122,11 @@ class PrelevementController extends AbstractController
                 }
 
                 $createdMoins = $created->modify('-1 minute');
-                $createdPlus = $created->modify('+1 minute');
+                $createdPlus = $created->modify('+1 day');
 
                 return $this->redirectToRoute('app_prelevement_resultats', [
                     'dateFrom' => $createdMoins->format('Y-m-d H:i:s'),
-                    'dateTo' => $createdPlus->format('Y-m-d H:i:s')
+                    'dateTo' => $createdPlus->format('Y-m-d')
                 ]);
             }
         }
@@ -154,6 +156,7 @@ class PrelevementController extends AbstractController
         ];
 
         $query = $em->getRepository(VirementPrelevement::class)->findByFilters($crediteur, $dateFrom, $dateTo, $filters['debiteur'], $filters['statut']);
+        $countVirement = count($em->getRepository(VirementPrelevement::class)->findByFilters($crediteur, $dateFrom, $dateTo, $filters['debiteur'], $filters['statut'])->getResult());
 
         //export CSV
         if ($request->query->get('export') === 'csv') {
@@ -195,7 +198,7 @@ class PrelevementController extends AbstractController
             ]
         );
 
-        return $this->render('prelevement/prelevementResultats.html.twig', ['pagination' => $pagination, 'filters' => $filters,  'countMandats' => count($query->getResult())]);
+        return $this->render('prelevement/prelevementResultats.html.twig', ['pagination' => $pagination, 'filters' => $filters,  'countVirement' => $countVirement]);
 
     }
 
@@ -265,8 +268,8 @@ class PrelevementController extends AbstractController
         $filters = [
             'nom' => $request->query->get('nom'),
             'statut' => $request->query->all('statut'),
-            'dateFrom' => $request->query->get('dateFrom'),
-            'dateTo' => $request->query->get('dateTo'),
+            /*'dateFrom' => $request->query->get('dateFrom'),
+            'dateTo' => $request->query->get('dateTo'),*/
         ];
 
         $sortField = $request->query->get('sort', 'date');
@@ -281,7 +284,10 @@ class PrelevementController extends AbstractController
 
             // Filtre Nom
             if (!empty($filters['nom'])) {
-                $matches = $matches && stripos($mandat->nom_debiteur, $filters['nom']) !== false;
+                $matches = $matches && (
+                    stripos($mandat->nom_debiteur, $filters['nom']) !== false ||
+                    stripos($mandat->numero_compte_debiteur, $filters['nom']) !== false
+                    );
             }
 
             // Filtre statut
@@ -290,7 +296,7 @@ class PrelevementController extends AbstractController
             }
 
             // Filtre dates
-            if (!empty($filters['dateFrom'])) {
+            /*if (!empty($filters['dateFrom'])) {
                 $mandatDate = new \DateTime($mandat->date_derniere_modif);
                 $fromDate = new \DateTime($filters['dateFrom']);
                 $matches = $matches && $mandatDate >= $fromDate;
@@ -300,15 +306,13 @@ class PrelevementController extends AbstractController
                 $mandatDate = new \DateTime($mandat->date_derniere_modif);
                 $toDate = new \DateTime($filters['dateTo']);
                 $matches = $matches && $mandatDate <= $toDate;
-            }
+            }*/
 
             return $matches;
         });
 
         // Récupérer les différents statut
-        $statutOptions = array_unique(array_map(function($mandat) {
-            return $mandat->statut;
-        }, $mandats));
+        $statutOptions = StatutMandat::cases();
 
 
         // Convertir en array pour le usort
@@ -339,11 +343,12 @@ class PrelevementController extends AbstractController
             $handle = fopen('php://output', 'wb+');
 
             // headers
-            fputcsv($handle, ['Nom', 'Statut', 'Date']);
+            fputcsv($handle, ['Nom', 'Numero compte', 'Statut', 'Date']);
 
             foreach ($mandatsArray as $mandat) {
                 fputcsv($handle, [
                     $mandat->nom_debiteur,
+                    $mandat->numero_compte_debiteur,
                     (string)$mandat->statut,
                     (string)$mandat->date_derniere_modif,
                 ]);

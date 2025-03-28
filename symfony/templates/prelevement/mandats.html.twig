@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <form method="get" class="row g-3">
                             <div class="col-md-3">
-                                <label for="nom" class="form-label">Nom</label>
+                                <label for="nom" class="form-label">Nom/Numéro de compte</label>
                                 <input type="text" class="form-control" id="nom" name="nom"
                                        value="{{ filters.nom }}">
                             </div>
@@ -32,25 +32,10 @@
                                     {% for statut in statutOptions %}
                                         <div class="mr-2">
                                             <div class="mr-4">
-                                                <input type="checkbox" class="form-check-input" id="statut_{{ statut }}" name="statut[]" value="{{ statut }}" {% if statut in filters.statut %}checked{% endif %}>
-                                                <label class="form-check-label" for="statut_{{ statut }}">
-                                                    {% if statut == 'REF' %}
-                                                        <div class="">
-                                                            {{ "Refusés" | trans }}
-                                                        </div>
-                                                    {% elseif statut == 'REV' %}
-                                                        <div class="">
-                                                            {{ "Révoqués" | trans }}
-                                                        </div>
-                                                    {% elseif statut == 'ATT' %}
-                                                        <div class="">
-                                                            {{ "En attente" | trans }}
-                                                        </div>
-                                                    {% elseif statut == 'VAL' %}
-                                                        <div class="">
-                                                            {{ "Validés" | trans }}
-                                                        </div>
-                                                    {% endif  %}
+                                                <input type="checkbox" class="form-check-input" id="statut_{{ statut.value }}" name="statut[]" value="{{ statut.value }}" {% if statut.value in filters.statut %}checked{% endif %}>
+                                                <label class="form-check-label" for="statut_{{ statut.value }}">
+
+                                                       {{ statut.getLabel() | trans }}
 
                                                 </label>
                                             </div>
@@ -60,7 +45,7 @@
 
                             </div>
 
-                            <div class="col-md-3">
+                            {# <div class="col-md-3">
                                 <label for="dateFrom" class="form-label">Date début</label>
                                 <input type="date" class="form-control" id="dateFrom" name="dateFrom"
                                        value="{{ filters.dateFrom }}">
@@ -70,7 +55,7 @@
                                 <label for="dateTo" class="form-label">Date fin</label>
                                 <input type="date" class="form-control" id="dateTo" name="dateTo"
                                        value="{{ filters.dateTo }}">
-                            </div>
+                            </div> #}
 
                             <div class="col-12 mt-4">
                                 <div class="d-flex justify-content-between align-items-baseline">
@@ -101,8 +86,9 @@
                     <table class="table table-bordered">
                         <thead>
                         <th>{{ knp_pagination_sortable(pagination, 'Nom', 'nom_debiteur') }}</th>
+                        <th>Numéro compte</th>
                         <th>Statut</th>
-                        <th>{{ knp_pagination_sortable(pagination, 'Date', 'date') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Dernier événement', 'date') }}</th>
                         <th>action</th>
                         </thead>
                         <tbody>
@@ -113,24 +99,18 @@
                                 </td>
 
                                 <td>
+                                    <div class="main-color">{{ mandat.numero_compte_debiteur }}</div>
+                                </td>
+
+                                <td>
                                     <div class="secondary-color">
-                                        {% if mandat.statut == 'REF' %}
-                                            <div class="text-danger">
-                                                {{ "Refusé le " | trans }}
+
+                                        <div>
+                                            {% set statutMandat = enum('App\\Enum\\StatutMandat').from(mandat.statut) %}
+                                            <div class="{{ statutMandat.getCssClass() }}">
+                                                {{ statutMandat.getLabel() | trans }}
                                             </div>
-                                        {% elseif mandat.statut == 'REV' %}
-                                            <div class="">
-                                                {{ "Révoqué le " | trans }}
-                                            </div>
-                                        {% elseif mandat.statut == 'ATT' %}
-                                            <div class="">
-                                                {{ "Créé le " | trans }}
-                                            </div>
-                                        {% elseif mandat.statut == 'VAL' %}
-                                            <div class="">
-                                                {{ "Validé le " | trans }}
-                                            </div>
-                                        {% endif  %}
+                                        </div>
                                     </div>
                                 </td>
                                 <td>

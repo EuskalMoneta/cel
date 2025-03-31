@@ -1699,6 +1699,38 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>prelevement.echoue</source>
         <target>Échoué</target>
       </trans-unit>
+      <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
+        <source>fermeture.compte.raison.cessation</source>
+        <target>Lanaren gelditzea</target>
+      </trans-unit>
+      <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
+        <source>fermeture.compte.raison.assezeusko</source>
+        <target>Ez dut aski euskorik biltzen</target>
+      </trans-unit>
+      <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
+        <source>fermeture.compte.raison.reutiliser</source>
+        <target>Ez dut aterabiderik aurkitzen nire euskorentzat</target>
+      </trans-unit>
+    <trans-unit id="KJHJ297rE" resname="ouverture_compte.carteidentite">
+      <source>ouverture_compte.carteidentite</source>
+      <target>Nortasun agiria</target>
+    </trans-unit>
+     <trans-unit id="KJHJg297rE" resname="ouverture_compte.passeport">
+       <source>ouverture_compte.passeport</source>
+       <target>Pasaportea</target>
+     </trans-unit>
+     <trans-unit id="KJHJgBV97rE" resname="ouverture_compte.carte.input.1">
+       <source>ouverture_compte.carte.input.1</source>
+       <target>Nortasun-agiria aintzina</target>
+     </trans-unit>
+     <trans-unit id="KJ099rE" resname="ouverture_compte.carte.input.2">
+       <source>ouverture_compte.carte.input.2</source>
+       <target>Nortasun-agiria gibela</target>
+     </trans-unit>
+     <trans-unit id="KJKXCD9rE" resname="ouverture_compte.deux.faces">
+       <source>ouverture_compte.deux.faces</source>
+       <target>Zure nortasun agiriaren bi aldeak behar ditugu. Bi aldeak dituen dokumentu bat deskarga dezakezu, edo bi dokumentu bereizi.</target>
+     </trans-unit>
     </body>
   </file>
 </xliff>

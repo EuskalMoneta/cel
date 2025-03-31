@@ -545,8 +545,8 @@
         <source>Commentaire</source>
         <target>Komentarioa</target>
       </trans-unit>
-      <trans-unit id="j9cXi6O" resname="Association parrainée">
-        <source>Association parrainée</source>
+      <trans-unit id="j9cXi6O" resname="Association parainée">
+        <source>Association parainée</source>
         <target>Sustengatzen duzun elkartea</target>
       </trans-unit>
       <trans-unit id="IF8y1w_" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
@@ -823,7 +823,7 @@
         <source>piece_d_identite.explication</source>
         <target><![CDATA[Zure kontua bali egiteko, banku erregulazioak nortasun agiri baten egiaztatzera behartzen gaitu.<br>
 <br>
-		Zure <strong>nortasun agiria (aintzinalde/gibelalde)</strong> edo <strong>pasaportea</strong> argazkitan hartu edo eskaneatu eta inporta dezakezu:
+Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan hartu edo eskaneatu eta inporta dezakezu:
 <ul>
 <li>Dokumentua ez da lausoa izan behar</li>
 <li>Zure argazkia ageri izan behar da dokumentuan</li>
@@ -1043,10 +1043,6 @@
       </trans-unit>
       <trans-unit id="fsTn4lI" resname="Virements">
         <source>Virements</source>
-        <target>Biramenduak</target>
-      </trans-unit>
-      <trans-unit id="fsTn4lIZA" resname="Virement">
-        <source>Virement</source>
         <target>Biramenduak</target>
       </trans-unit>
       <trans-unit id="ne_50HZ" resname="Vous n'avez jamais accédé à votre compte eusko ?">
@@ -1409,10 +1405,6 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
         <source>releves.date_fin</source>
         <target>Bukaera</target>
       </trans-unit>
-      <trans-unit id="NMHVa754k" resname="releves.type_mouvement">
-        <source>releves.type_mouvement</source>
-        <target>Type de mouvement</target>
-      </trans-unit>
       <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
         <source>profil.mot_de_passe.ancien_mot_de_passe</source>
         <target>Pasahitza zaharra</target>
@@ -1564,7 +1556,7 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       </trans-unit>
       <trans-unit id="xQ0w0uM" resname="profil.newsletter.bonplans">
         <source>profil.newsletter.bonplans</source>
-        <target>Erakutsi eskaintzak</target>
+        <target>Afficher les bons plans</target>
       </trans-unit>
       <trans-unit id="IXmrmzm" resname="profil.booleen.1">
         <source>profil.booleen.1</source>
@@ -1576,7 +1568,7 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       </trans-unit>
       <trans-unit id="piH7Hfz" resname="ouverture_compte.change.autre_montant">
         <source>ouverture_compte.change.autre_montant</source>
-        <target>Beste zenbateko bat</target>
+        <target>Autre montant</target>
       </trans-unit>
       <trans-unit id="m2FUILW" resname="identite.madame">
         <source>identite.madame</source>
@@ -1701,44 +1693,12 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
       </trans-unit>
       <trans-unit id="KJ0hufieoO7" resname="prelevement.reussi">
         <source>prelevement.reussi</source>
-        <target>Arrakastaz burututa</target>
+        <target>Réussi</target>
       </trans-unit>
       <trans-unit id="KJ0hufidzqdzqeoO7" resname="prelevement.echoue">
         <source>prelevement.echoue</source>
-        <target>Arrakastaz burututa</target>
+        <target>Échoué</target>
       </trans-unit>
-      <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
-          <source>fermeture.compte.raison.cessation</source>
-          <target>Lanaren gelditzea</target>
-        </trans-unit>
-        <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
-          <source>fermeture.compte.raison.assezeusko</source>
-          <target>Ez dut aski euskorik biltzen</target>
-        </trans-unit>
-        <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
-          <source>fermeture.compte.raison.reutiliser</source>
-          <target>Ez dut aterabiderik aurkitzen nire euskorentzat</target>
-        </trans-unit>
-      <trans-unit id="KJHJ297rE" resname="ouverture_compte.carteidentite">
-        <source>ouverture_compte.carteidentite</source>
-        <target>Nortasun agiria</target>
-      </trans-unit>
-       <trans-unit id="KJHJg297rE" resname="ouverture_compte.passeport">
-         <source>ouverture_compte.passeport</source>
-         <target>Pasaportea</target>
-       </trans-unit>
-       <trans-unit id="KJHJgBV97rE" resname="ouverture_compte.carte.input.1">
-         <source>ouverture_compte.carte.input.1</source>
-         <target>Nortasun-agiria aintzina</target>
-       </trans-unit>
-       <trans-unit id="KJ099rE" resname="ouverture_compte.carte.input.2">
-         <source>ouverture_compte.carte.input.2</source>
-         <target>Nortasun-agiria gibela</target>
-       </trans-unit>
-       <trans-unit id="KJKXCD9rE" resname="ouverture_compte.deux.faces">
-         <source>ouverture_compte.deux.faces</source>
-         <target>Zure nortasun agiriaren bi aldeak behar ditugu. Bi aldeak dituen dokumentu bat deskarga dezakezu, edo bi dokumentu bereizi.</target>
-       </trans-unit>
     </body>
   </file>
 </xliff>

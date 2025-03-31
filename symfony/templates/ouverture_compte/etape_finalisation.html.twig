@@ -1,0 +1,46 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    <p class="text-subtitle mb-1">
+
+        {{ 'finalisation.explication' | trans }}
+    </p>
+
+    {{ form_start(form) }}
+    <div class="d-none"> {{ form_label(form.finalisation) }}</div>
+    {{ form_widget(form.finalisation) }}
+
+    <div id="autreraison">
+        {{ form_row(form.autre) }}
+    </div>
+
+    <div class="mt-4"></div>
+    {{ form_row(form.motivation) }}
+    <div class="mt-5"></div>
+    {{ form(form) }}
+
+
+
+    <div id="spinner" class="text-center mt-4 d-none">
+        <div class="loadingio-spinner-spinner-3n6a06i025x"><div class="ldio-x8uv5a6ulc">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div></div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#autreraison').hide();
+
+            $("input[name='form[finalisation]']").change(function() {
+                if($(this).val() === 'Autre'){
+                    $('#autreraison').show();
+                } else {
+                    $('#autreraison').hide();
+                }
+            });
+        });
+    </script>
+{% endblock %}

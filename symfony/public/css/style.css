@@ -15,23 +15,12 @@
     src: url("../webfonts/Montserrat-SemiBold.ttf") format("truetype");
 }
 body{
-    font-family: "Noto Sans", serif;
-    font-optical-sizing: auto;
+    font-family: 'Montserrat', Arial, sans-serif;
     color: #47525E;
-    font-weight: 400;
+    font-weight: normal;
     letter-spacing: normal;
-    font-variation-settings:
-            "wdth" 100;
+    font-size: 14px;
 }
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    margin-bottom: 0.5rem;
-    font-weight: 400;
-    line-height: 1.2;
-    color: #1a1a1a;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
 .bg-eusko {
     background-color: #41A528 !important;
 }
@@ -46,7 +35,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-weight: normal;
 }
 .cel-menu-icon{
-    font-size: 19px;
+    font-size: 24px;
     color: white;
 }
 .navbar-right a {
@@ -54,12 +43,19 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     display: inline-block;
     text-align: center;
     margin-left: 20px;
-    font-size: 13px;
-    font-weight: 400;
+    font-size: 12px;
 }
 .navbar-right a i{
-    padding-bottom: 4px;
-    padding-top: 7px;
+    padding-bottom: 5px;
+}
+h1, h2, h3, h4, h5, h6 {
+    text-transform: none;
+    letter-spacing: 0;
+    color: #1B1B1B;
+}
+h2 {
+    font-size: 26px;
+    /*text-transform: uppercase;*/
 }
 h3 {
     font-family: Montserrat-semi-bold, sans-serif;
@@ -81,17 +77,16 @@ legend {
 
 }
 .text-bold { font-family: 'Montserrat-bold', Arial, sans-serif;}
-.text-semi-bold { font-family: 'Roboto', Arial, sans-serif; font-weight: 500;}
+.text-semi-bold { font-family: 'Montserrat-semi-bold', Arial, sans-serif;}
 .text-light { font-family: 'Montserrat-light', Arial, sans-serif;}
-.text-16 { font-family: 'Montserrat-light', Arial, sans-serif;}
 .title-light { color: #92949D; font-family: 'Montserrat-light', Arial, sans-serif; text-transform: uppercase;}
 .big-solde{
     font-size:34px;
     font-family: 'Montserrat-bold', Arial, sans-serif;
     margin-top: -5px;
 }
-.secondary-color { color: #282D32; }
-.main-color { color: #343c45; }
+.secondary-color { color: #6A7179; }
+.main-color { color: #47525E; }
 .green { color: #41A528; }
 .threeper {
     background-color: #41A528;
@@ -132,6 +127,16 @@ legend {
     padding: 0.5rem 1.5rem;
     line-height: 0.5rem;
 }
+.btn-primary {
+    color: #fff;
+    background-color: #47525E;
+    border-color: #47525E;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #2e3742;
+    border-color: #2e3742;
+}
 .btn-outline-white {
     color: #fff;
     background-color: transparent;
@@ -147,10 +152,10 @@ legend {
     background-color: #fff;
     border-color: #47525E;
 }.btn-outline-primary:hover {
-     color: #fff;
-     background-color: #47525E;
-     border-color: #47525E;
- }
+    color: #fff;
+    background-color: #47525E;
+    border-color: #47525E;
+}
 .btn-berdea {
     padding: 0.5rem 3rem;
     color: #fff;
@@ -164,49 +169,18 @@ legend {
     border-color: rgb(26, 131, 15);
 }
 button.btn-primary{
-    appearance: none;
-    background-color: #2ea44f;
-    border: 1px solid rgba(27, 31, 35, .15);
-    border-radius: 6px;
-    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-    box-sizing: border-box;
     color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 20px;
-    padding: 6px 16px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: middle;
-    white-space: nowrap;
+    background-color: #41A528;
 }
 button.btn-primary:hover{
-    background-color: #2c974b;
+    color: #fff;
+    background-color: #29871b;
 }
-
-
-button.btn-primary:focus:not(:focus-visible):not(.focus-visible) {
-    box-shadow: none;
-    outline: none;
-}
-
-button.btn-primary:focus {
-    box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
-    outline: none;
-}
-
 [class*="btn-outline-"] {
     border-width: 1px;
 }
 .eusko-btn {
-    padding: 0.3rem 0.5rem;
+    padding: 0.3rem 0.3rem;
 }
 small{
     font-size: 90%;
@@ -216,8 +190,8 @@ small{
 }
 
 .prix{
-    font-size: 15px;
-    font-family: 'Montserrat-semi-bold', Arial, sans-serif;
+    font-size: 13px;
+    font-family: 'Montserrat-bold', Arial, sans-serif;
 }
 
 .icon-round{
@@ -235,7 +209,7 @@ i { vertical-align: middle; }
 .footer {
     border-top: 3px solid #F0F0F0;
     background-color: white;
-    color: #1b1b1b;
+   color: #1b1b1b;
     text-align: center;
     height: 60px;
     padding-top: 6px;
@@ -262,7 +236,6 @@ main{
 .form-group label:not(.form-check-label) {
     color: #47525E;
     font-family: 'Montserrat-bold', arial, sans-serif;
-    font-size: 0.87rem;
 }
 label.required:before, legend.required::before{
     content: "*";
@@ -386,6 +359,7 @@ div.vertical-line{
         opacity: 1;
     }
 }
+a{font-weight: 700;}
 .text-subtitle{
     font-size: 15px;
 }
@@ -649,61 +623,4 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
     transform: translateY(-50%);
     cursor: pointer;
     color: #6c757d;
-}
-
-.button-nav {
-    appearance: none;
-    background-color: #FAFBFC;
-    border: 1px solid rgba(27, 31, 35, 0.15);
-    border-radius: 6px;
-    box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
-    box-sizing: border-box;
-    color: #24292E;
-    cursor: pointer;
-    display: inline-block;
-    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    list-style: none;
-    padding: 6px 16px;
-    position: relative;
-    transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: middle;
-    white-space: nowrap;
-    word-wrap: break-word;
-}
-
-.button-nav:hover {
-    background-color: #F3F4F6;
-    text-decoration: none;
-    transition-duration: 0.1s;
-}
-
-.button-nav:disabled {
-    background-color: #FAFBFC;
-    border-color: rgba(27, 31, 35, 0.15);
-    color: #959DA5;
-    cursor: default;
-}
-
-.button-nav:active {
-    background-color: #EDEFF2;
-    box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
-    transition: none 0s;
-}
-
-.button-nav:focus {
-    outline: 1px transparent;
-}
-
-.button-nav:before {
-    display: none;
-}
-
-.button-nav::-webkit-details-marker {
-    display: none;
 }

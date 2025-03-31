@@ -435,19 +435,19 @@
       </trans-unit>
       <trans-unit id="ccg9Wqj" resname="3% de votre change reversé">
         <source>3% de votre change reversé</source>
-        <target>3% de votre change reversé</target>
+        <target>Utiliser la monnaie locale finance votre association avec le Don 3% Eusko !</target>
       </trans-unit>
       <trans-unit id="hTnKXJQ" resname="Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.">
         <source>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</source>
-        <target>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par Euskal Moneta à l'association de votre choix.</target>
+        <target>Chaque fois que vous changez des euros en eusko, un montant équivalent à 3% de votre change est versé par Euskal Moneta à l'association de votre choix, à condition qu’elle ait au moins 30 parrains·marraines. Ce don n’est pas déduit de votre change, il est donné en supplément !</target>
       </trans-unit>
       <trans-unit id="GJdfIa2" resname="Versements annuels">
         <source>Versements annuels</source>
-        <target>Versements annuels</target>
+        <target>Une solidarité très concrète</target>
       </trans-unit>
       <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
         <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
-        <target>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de 100 000 eusko reversés, et financés par la commission de 5% que les professionnels règlent si ils reconvertissent des eusko en euros.</target>
+        <target>Le Don 3% Eusko est versé chaque année aux associations bénéficiaires. Entre 2013 et 2024, près de 400 000 eusko ont ainsi été donnés à 70 associations, actives dans de nombreux domaines : environnement, éducation, solidarité, langue basque, sport, culture…</target>
       </trans-unit>
       <trans-unit id="rBh_I.y" resname="Changement d'association">
         <source>Changement d'association</source>
@@ -455,7 +455,7 @@
       </trans-unit>
       <trans-unit id="9DwMTcu" resname="Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)">
         <source>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</source>
-        <target>Si vous décidez de changer d'association en cours d'année, c'est la nouvelle association choisie qui sera bénéficiaire du total de vos dons pour la période en cours (du 1er juillet au 30 juin).</target>
+        <target>Vous pouvez changer d’association à tout moment sur votre compte eusko. Le don étant calculé deux fois par an, c’est la nouvelle association choisie qui sera bénéficiaire pour la période en cours.</target>
       </trans-unit>
       <trans-unit id="a4yUVm1" resname="Reconvertir des eusko en €">
         <source>Reconvertir des eusko en €</source>
@@ -1017,11 +1017,11 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
       </trans-unit>
       <trans-unit id="FAmrvrS" resname="change_automatique.explication">
         <source>change_automatique.explication</source>
-        <target><![CDATA[Plus les monnaies locales sont utilisées, plus elles sont bénéfiques pour le territoire. C'est pour cela que nous avons mis en place <strong>un change automatique mensuel, avec un montant minimum de 20 euros</strong>. Cela vous évite de recharger manuellement votre compte, en vous permettant d'avoir chaque mois des eusko disponibles sur votre compte.<br>
-<br>
-<strong>Avec plus de 1100 professionnels dans le réseau sur tout le Pays Basque, ces eusko seront vite dépensés&nbsp;!</strong> Restaurant, courses, cantine, cotisation associative, vêtements, cours de surf, services informatiques, etc.&nbsp;: vous avez l'embarras du choix !<br>
-<br>
-<strong>Notre conseil : commencez avec 60 eusko par mois</strong>, sachant que vous pourrez ensuite facilement modifier le montant de ce change automatique sur votre compte en ligne.]]></target>
+        <target><![CDATA[Plus les monnaies locales sont utilisées, plus elles sont bénéfiques pour le territoire ! Afin d’avoir chaque mois des eusko sur votre compte, nous avons mis en place <strong>un change automatique mensuel, avec un montant minimum de 20 euros</strong>. Cela vous évite également de devoir recharger manuellement votre compte.<br/><br/>
+
+                         Avec plus de 1400 professionnels dans le réseau sur tout le Pays Basque, ces eusko seront vite dépensés ! Achats du quotidien, sorties, livres, entretien auto, cotisation associative, pharmacie, etc. : vous avez l’embarras du choix !<br/><br/>
+
+                         Notre conseil : commencez avec 60 eusko par mois, sachant que vous pourrez ensuite facilement modifier le montant de ce change automatique sur votre compte eusko.<br/>]]></target>
       </trans-unit>
       <trans-unit id="UFmrtUi" resname="change_automatique.explication2">
         <source>change_automatique.explication2</source>
@@ -1049,7 +1049,7 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
       </trans-unit>
       <trans-unit id="re3aApZ" resname="ouverture_compte.securite.label_code_pin">
         <source>ouverture_compte.securite.label_code_pin</source>
-        <target><![CDATA[Choisissez le code PIN à 4 chiffres (comme pour votre carte bancaire) pour sécuriser vos paiements par <strong data-toggle="tooltip" data-placement="top" title="l'application de paiement eusko par téléphone">euskopay</strong> ou <strong data-toggle="tooltip" data-placement="top" title="la carte de paiement eusko">euskokart</strong>.]]></target>
+        <target><![CDATA[Choisissez le code PIN à 4 chiffres pour vous connecter à l’application <strong data-toggle="tooltip" data-placement="top" title="l'application de paiement eusko par téléphone">euskopay</strong>, ou réaliser des paiements avec votre <strong data-toggle="tooltip" data-placement="top" title="la carte de paiement eusko">euskokart</strong>.]]></target>
       </trans-unit>
       <trans-unit id="WZlidAl" resname="ETAPE 1/5">
         <source>ETAPE 1/5</source>
@@ -1141,7 +1141,7 @@ Vous pouvez importer un scan, ou faire une photo de votre <strong>carte d'identi
       </trans-unit>
       <trans-unit id="NQrmk5." resname="Choisissez le mot de passe pour sécuriser l'accès à votre compte.">
         <source>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</source>
-        <target>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</target>
+        <target>Choisissez le mot de passe qui vous permettra de vous connecter à votre compte eusko.</target>
       </trans-unit>
       <trans-unit id="nUsUX1i" resname="Code PIN">
         <source>Code PIN</source>
@@ -1234,16 +1234,21 @@ Dans quelques minutes, vous pourrez utiliser la monnaie locale du Pays Basque !]
       <trans-unit id="k9x.Swz" resname="ouverture_compte.fin.felicitations">
         <source>ouverture_compte.fin.felicitations</source>
         <target><![CDATA[Félicitations&nbsp;!<br>
-Vous êtes à deux clics d’utiliser la monnaie locale du Pays Basque&nbsp;!]]></target>
+Et merci pour votre engagement avec la monnaie locale du Pays Basque.&nbsp;]]></target>
       </trans-unit>
       <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
         <source>ouverture_compte.fin.explication</source>
-        <target><![CDATA[Il ne vous reste plus qu'à accéder à votre compte eusko pour le charger (instantanément et sans frais via HelloAsso) puis choisir votre moyen de paiement favori&nbsp;:
-<ul>
-<li>l'application de paiement par téléphone euskopay, à télécharger gratuitement</li>
-<li>les billets eusko, à retirer en bureau de change</li>
-<li>l'euskokart, qui vous sera envoyée sous 10 jours</li>
-</ul>]]></target>
+        <target><![CDATA[Votre compte eusko sera chargé automatiquement le 10 du mois. En attendant, vous pouvez approvisionner votre compte eusko par carte bancaire instantanément et sans frais. Pour cela, rendez-vous sur votre compte eusko : <a href="moncompte.euskalmoneta.org">moncompte.euskalmoneta.org</a><br/><br/>
+
+                         Puis choisissez votre moyen de paiement favori :<br/>
+
+<ul class="mb-4 mt-3 ulfin">
+<li> L’application de paiement euskopay</li>
+<li> Les billets d’eusko, à récupérer dans l’un de nos <u>30 bureaux de change</u></li>
+<li> L’euskokart, envoyée par courrier sur simple demande</li>
+</ul>
+Et voila ! Vous pouvez maintenant utiliser l’Eusko, pour un Pays Basque plus écologique, euskaldun et solidaire !
+]]></target>
       </trans-unit>
       <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">
         <source>ouverture_compte.fin.bouton</source>
@@ -1279,9 +1284,7 @@ Vous êtes à deux clics d’utiliser la monnaie locale du Pays Basque&nbsp;!]]>
       </trans-unit>
       <trans-unit id="Z4vDfyL" resname="cotisation.explication">
         <source>cotisation.explication</source>
-        <target><![CDATA[En ouvrant un compte eusko, vous devenez adhérent-e de l'association Euskal Moneta. <strong>Les cotisations de ses adhérent-e-s sont la principale source d'autofinancement de l'association. Par votre cotisation, vous soutenez le développement de l'Eusko !</strong><br>
-<br>
-Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera prélevée sur votre compte eusko en début d'année ou entre le 10 et le 15 de chaque mois.]]></target>
+        <target><![CDATA[En ouvrant un compte eusko, vous devenez adhérent·e de l’association Euskal Moneta. <strong>Les cotisations des adhérent·e·s sont la principale source de financement de l’association. Par votre cotisation, vous soutenez le développement de la monnaie locale !</strong>]]></target>
       </trans-unit>
       <trans-unit id="sDOwrXS" resname="ETAPE 8/8">
         <source>ETAPE 8/8</source>
@@ -1339,13 +1342,25 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
         <source>cotisation.montant_par_mois_par_an</source>
         <target>par_mois monnaie par mois / par_an monnaie par an</target>
       </trans-unit>
+      <trans-unit id="rylRtpa5" resname="cotisation.montant_5">
+        <source>cotisation.montant_5</source>
+        <target>Cotisation de soutien : 5 eusko par mois</target>
+      </trans-unit>
+      <trans-unit id="rylRtpa3" resname="cotisation.montant_3">
+        <source>cotisation.montant_3</source>
+        <target>Cotisation solidaire : 3 eusko par mois</target>
+      </trans-unit>
+      <trans-unit id="rylRtpa2" resname="cotisation.montant_2">
+        <source>cotisation.montant_2</source>
+        <target>Cotisation minimale : 2 eusko par mois</target>
+      </trans-unit>
+      <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
+          <source>cotisation.cas_de_figure_cotisation_sociale</source>
+          <target> Cotisation sociale (demandeurs·euses d’emploi, allocataires de minima sociaux, étudiant·e·s) : 5 eusko par an</target>
+        </trans-unit>
       <trans-unit id="Ub_b7Mq" resname="cotisation.montant_par_an">
         <source>cotisation.montant_par_an</source>
         <target>par_an monnaie par an</target>
-      </trans-unit>
-      <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
-        <source>cotisation.cas_de_figure_cotisation_sociale</source>
-        <target> (chômeurs, allocataires de minima sociaux, étudiants)</target>
       </trans-unit>
       <trans-unit id="N.O5yK0" resname="cotisation.periodicite">
         <source>cotisation.periodicite</source>
@@ -1365,7 +1380,7 @@ Veuillez choisir ci-dessous le montant de votre cotisation. Celle-ci sera préle
       </trans-unit>
       <trans-unit id="oLyAMVr" resname="choix_asso.choisissez_une_asso">
         <source>choix_asso.choisissez_une_asso</source>
-        <target>Choisissez une association parmi les associations déjà adhérentes à Euskal Moneta :</target>
+        <target>Choisissez une association parmi les associations adhérentes à l’Eusko :</target>
       </trans-unit>
       <trans-unit id="FN78rlh" resname="choix_asso.saisie_libre">
         <source>choix_asso.saisie_libre</source>
@@ -1438,7 +1453,7 @@ Merci de nous communiquer dans votre demande votre numéro d'adhérent&nbsp:]]><
       </trans-unit>
       <trans-unit id="ZHI54Xa" resname="identite.titre">
         <source>identite.titre</source>
-        <target>Identité</target>
+        <target>Identité et coordonnées</target>
       </trans-unit>
       <trans-unit id="EInEaGB" resname="coordonnees.titre">
         <source>coordonnees.titre</source>
@@ -1458,7 +1473,7 @@ Merci de nous communiquer dans votre demande votre numéro d'adhérent&nbsp:]]><
       </trans-unit>
       <trans-unit id="cpw6y8K" resname="cotisation.titre">
         <source>cotisation.titre</source>
-        <target>Cotisation</target>
+        <target>Choix de votre cotisation</target>
       </trans-unit>
       <trans-unit id="PkpJGRH" resname="securite.titre">
         <source>securite.titre</source>
@@ -1693,8 +1708,61 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
         <source>prelevement.echoue</source>
         <target>Échoué</target>
       </trans-unit>
+      <trans-unit id="KJJNHfMP7" resname="finalisation.titre">
+        <source>finalisation.titre</source>
+        <target>Finalisation</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufMP7" resname="finalisation.explication">
+        <source>finalisation.explication</source>
+        <target>Vous y êtes presque ! Pour finaliser votre ouverture de compte, pouvez-vous nous dire l’élément déclencheur qui a motivé votre adhésion ? </target>
+      </trans-unit>
+      <trans-unit id="KJ0hufiYUBI7" resname="finalisation.benevole">
+        <source>finalisation.benevole</source>
+        <target>Une rencontre avec des bénévoles de l’Eusko</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufiFZUBI7" resname="finalisation.particulier">
+        <source>finalisation.particulier</source>
+        <target>Des recommandations d’utilisateurs particuliers</target>
+      </trans-unit>
+      <trans-unit id="KJTRZiYUBI7" resname="finalisation.pro">
+        <source>finalisation.pro</source>
+        <target>Des recommandations d’utilisateurs pros ou d’associations</target>
+      </trans-unit>
+      <trans-unit id="KGGiYUBI7" resname="finalisation.presse">
+        <source>finalisation.presse</source>
+        <target>Un article de presse</target>
+      </trans-unit>
+      <trans-unit id="KJ0hHGHBI7" resname="finalisation.reseaux">
+        <source>finalisation.reseaux</source>
+        <target>Des publications sur les réseaux sociaux</target>
+      </trans-unit>
 
-       <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
+      <trans-unit id="3KJ0hHGHBI7" resname="motivation.titre">
+        <source>motivation.titre</source>
+        <target>Quelle sont vos motivations pour utiliser la monnaie locale au quotidien ? (plusieurs choix possibles)</target>
+      </trans-unit>
+      <trans-unit id="z3KJa0hHGHBI7" resname="motivation.don3">
+        <source>motivation.don3</source>
+        <target>Le Don 3% Eusko pour mon association parrainée</target>
+      </trans-unit>
+      <trans-unit id="r3KJ0hHGHBI7" resname="motivation.ecolocale">
+        <source>motivation.ecolocale</source>
+        <target>Le soutien à l’économie locale et au commerce de proximité</target>
+      </trans-unit>
+      <trans-unit id="t3KJ0hHGHBI7" resname="motivation.dev">
+        <source>motivation.dev</source>
+        <target>La pratique et le développement de l’euskara</target>
+      </trans-unit>
+      <trans-unit id="zeJ0hHGHBI7" resname="motivation.finance">
+        <source>motivation.finance</source>
+        <target>La circulation de l’argent hors des banques et de la spéculation financière</target>
+      </trans-unit>
+      <trans-unit id="3rt0hHGHBI7" resname="motivation.transition">
+        <source>motivation.transition</source>
+        <target>La transition écologique, la consommation responsable et l’agriculture durable</target>
+      </trans-unit>
+
+<trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
           <source>fermeture.compte.raison.cessation</source>
           <target>Cessation d'activité</target>
         </trans-unit>
@@ -1726,7 +1794,6 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
          <source>ouverture_compte.deux.faces</source>
          <target>Nous avons besoin des deux faces de votre carte d'identité. Vous pouvez télécharger un document contenant les deux faces ou télécharger deux documents distincts.</target>
        </trans-unit>
-
     </body>
   </file>
 </xliff>

@@ -435,19 +435,19 @@
       </trans-unit>
       <trans-unit id="ccg9Wqj" resname="3% de votre change reversé">
         <source>3% de votre change reversé</source>
-        <target>Zure trukearen %3a emana</target>
+        <target>Tokiko moneta erabiliz gero, “Euskoren % 3ko emaitza”-ri esker, zure elkartea finantzatzen duzu!</target>
       </trans-unit>
       <trans-unit id="hTnKXJQ" resname="Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.">
         <source>Chaque fois que vous changez des euros en eusko, 3% du montant de votre change est versé par euskal moneta à l'association de votre choix.</source>
-        <target>Euroak euskotan aldatzen dituzun aldi oro, zure trukearen %3a emaiten dio Euskal Monetak zuk aukeratu elkarteari.</target>
+        <target>Euroak euskotan trukatzen dituzun aldi oro, Euskal Monetak zure trukearen % 3aren baliokidea den zenbatekoa pagatuko dio zuk hautatutako elkarteari, elkarte horrek gutienez 30 babesle baditu. Emaitza hori ez da zure truketik kentzen, gehigarri gisa ematen da!</target>
       </trans-unit>
       <trans-unit id="GJdfIa2" resname="Versements annuels">
         <source>Versements annuels</source>
-        <target>Urteko ordainketak</target>
+        <target>Une solidarité très concrète</target>
       </trans-unit>
       <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
         <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
-        <target>Urtero, bildua den dirua partaide diren elkarteei emana zaie. Hasieratik 100 000 eusko baino gehiago emanak izan dira. Emaitza horiek profesionalek euskoak euroetarat trukatzen dituztelarik pagatzen duten %5eko komisioak diruztatzen ditu.</target>
+        <target>“Euskoren % 3ko emaitza” urtero ordaintzen zaie elkarte onuradunei. Horrela, 2013tik 2024ra, kasik 400.000 eusko eman zaizkie arlo anitzetan –ingurumena, hezkuntza, elkartasuna, euskara, kirola, kultura– diharduten 70 elkarteri.</target>
       </trans-unit>
       <trans-unit id="rBh_I.y" resname="Changement d'association">
         <source>Changement d'association</source>
@@ -455,7 +455,7 @@
       </trans-unit>
       <trans-unit id="9DwMTcu" resname="Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)">
         <source>Si vous décidez de changer d'association  en cours d'année, c'est la nouvelle association choisie qui sera bénérficiaire du total de vos dons pour la période en cours. (Du 1er juillet au 30 juin)</source>
-        <target>Urtean zehar elkartez aldatzen baduzu, aukeratzen duzun elkarte berriak du zure emaitza jasoko garai honetarako (uztailaren 1etik ekainaren 30a arte).</target>
+        <target>Edozein momentutan alda dezakezu babestutako elkartea zure eusko kontuan. Emaitza urtean bi aldiz kalkulatzen denez, hautatutako elkarte berria izanen da aldi berrirako onuraduna.</target>
       </trans-unit>
       <trans-unit id="a4yUVm1" resname="Reconvertir des eusko en €">
         <source>Reconvertir des eusko en €</source>
@@ -879,11 +879,11 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="NQrmk5." resname="Choisissez le mot de passe pour sécuriser l'accès à votre compte.">
         <source>Choisissez le mot de passe pour sécuriser l'accès à votre compte.</source>
-        <target>Pasahitza hauta ezazu, zure kontuan sartzeko manera babestua izan dadin.</target>
+        <target>Hauta ezazu zure eusko kontura konektatzeko bidea emanen dizun pasahitza.</target>
       </trans-unit>
       <trans-unit id="PVYuYXt" resname="Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez">
         <source>Choisissez la question secrète qui vous permettra de modifier votre mot de passe si vous l’oubliez</source>
-        <target>Zure pasahitza ahanzten baduzu, haren aldatzeko ahala emanen dizun galdera sekretua hauta ezazu</target>
+        <target>Hauta ezazu pasahitza aldatzeko ahala emanen dizun galdera sekretua.</target>
       </trans-unit>
       <trans-unit id="nUsUX1i" resname="Code PIN">
         <source>Code PIN</source>
@@ -891,7 +891,7 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="re3aApZ" resname="ouverture_compte.securite.label_code_pin">
         <source>ouverture_compte.securite.label_code_pin</source>
-        <target><![CDATA[4 zifrako PIN kodea (zure banku txartelean bezala) hauta ezazu, <strong data-toggle="tooltip" data-placement="top" title="telefonarekin euskoz ordaintzeko aplikazioa">euskopay</strong> edo <strong data-toggle="tooltip" data-placement="top" title="eusko ordainketa txartela">euskokart</strong> tresnen bidez eginen dituzun ordainketak babesteko.]]></target>
+        <target><![CDATA[Hauta ezazu 4 digituko PINa, <strong data-toggle="tooltip" data-placement="top" title="telefonarekin euskoz ordaintzeko aplikazioa">euskopay</strong> aplikaziora konektatzeko edo zure <strong data-toggle="tooltip" data-placement="top" title="eusko ordainketa txartela">euskokartarekin</strong> ordaintzeko.]]></target>
       </trans-unit>
       <trans-unit id="WZlidAl" resname="ETAPE 1/5">
         <source>ETAPE 1/5</source>
@@ -1159,7 +1159,7 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="o45LraB" resname="Confirmer le code">
         <source>Confirmer le code</source>
-        <target>Kodea berretsi</target>
+        <target>Berretsi kodea</target>
       </trans-unit>
       <trans-unit id="VCUd6sO" resname="Commande validée !">
         <source>Commande validée !</source>
@@ -1207,11 +1207,11 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="FAmrvrS" resname="change_automatique.explication">
         <source>change_automatique.explication</source>
-        <target><![CDATA[Tokiko monetak gero eta gehiago erabili, orduan eta onuragarriagoak dira lurraldea eta ingurumenarentzat. Horregatik, <strong>hilabeteroko trukatze automatiko baten egitea galdegiten dizugu, gutienez 20 eurokoa</strong>. Horri esker, hilabetero, zure kontuan euskoak izanen dituzu.<br>
-<br>
-<strong>Ipar Euskal Herri osoan 1100 profesional baino gehiago kondatzen dituen sarean, eusko hauek fite erabiliko dituzu!</strong> Jatetxea, erosketak, kantina, elkarteen kotizazioak, liburuak, jantziak, zerbitzu informatikoak, surf ikastaroak, laborari saskiak, etab.: hautu handia duzu!<br>
-<br>
-<strong>Gure aholkua: hasi hilabetean 60 eusko ezarriz</strong>, gero truke automatikoaren zenbatekoa errazki aldatzen ahalku duzu zure kontuan sartuz.]]></target>
+        <target><![CDATA[Tokiko monetak zenbat eta gehiago erabili, hainbat eta onuragarriagoak dira lurraldearentzat! Zure kontuan hilabete guziez euskoak izateko, <strong>hilabeteroko truke automatikoa jarri dugu martxan, 20 euroko gutieneko zenbatekoarekin</strong>. Hala, saihesten da kontua eskuz kargatu behar izatea.<br/><br/>
+
+                         Ipar Euskal Herri osoko 1.400 profesional baino gehiago sarean izanik, eusko horiek laster xahutuko dituzu! Eguneroko erosketak, ateraldiak, liburuak, auto-konponketak, elkarteetako kide sariak, farmazia, moda, etab.: bada zer hauta!<br/><br/>
+
+                         Gure aholkua: has zaitez hilabetean 60 euskorekin, jakinik ondotik truke automatiko horren zenbatekoa aise kanbiatzen ahalko duzula zure eusko kontuan.<br/>]]></target>
       </trans-unit>
       <trans-unit id="UFmrtUi" resname="change_automatique.explication2">
         <source>change_automatique.explication2</source>
@@ -1227,17 +1227,22 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="k9x.Swz" resname="ouverture_compte.fin.felicitations">
         <source>ouverture_compte.fin.felicitations</source>
-        <target><![CDATA[Zorionak!<br>
-Euskal Herriko tokiko moneta erabiltzeko bi klik baizik ez dituzu eskas!]]></target>
+        <target><![CDATA[Goresmenak!<br>
+Eta milesker Euskal Herriko tokiko monetaren aldeko zure engaiamenduarengatik.]]></target>
       </trans-unit>
       <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
-        <source>ouverture_compte.fin.explication</source>
-        <target><![CDATA[Azken urratsa, zure eusko kontuan sartu kargatzeko (berehala eta dohain, HelloAssoren bidez) eta ondotik, ordaintzeko metodo gogokoena hautatu:
-<ul>
-<li>euskopay telefono bidezko ordaintzeko aplikazioa, dohain telekargatzeko</li>
-<li>eusko billeteak, hauen ukaiteko aldaguneetara joan</li>
-<li>euskokarta, 10 egun barne bidaliko dizugu</li>
-</ul>]]></target>
+              <source>ouverture_compte.fin.explication</source>
+              <target><![CDATA[Zure eusko kontua automatikoki diruz hornituko da hilabeteko 10. egunean. Anartean, zure eusko kontuan banku-txartel bidez dirua sartzen ahal duzu, berehala eta batere kosturik gabe. Horretarako, joan zaitez zure eusko kontura: <a href="moncompte.euskalmoneta.org/eu">moncompte.euskalmoneta.org/eu</a><br/><br/>
+
+                               Ondotik, hauta ezazu zure pagamolde gustukoena:<br/>
+
+      <ul class="mb-4 mt-3 ulfin">
+      <li> Euskopay ordainketa-aplikazioa</li>
+      <li> Eusko billeteak, <u>gure 30 truke-bulegoetako</u> edozeinetan eskuragarriak</li>
+      <li> Euskokarta, galdetuz gero postaz bidaltzen dena</li>
+      </ul>
+      Horra! Orain, euskoa erabil dezakezu, Euskal Herri ekologikoago, euskaldunago eta solidarioago baten aldeko tokiko moneta!
+      ]]></target>
       </trans-unit>
       <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">
         <source>ouverture_compte.fin.bouton</source>
@@ -1289,9 +1294,7 @@ Minutu guti barru Euskal Herriko moneta erabiltzen ahalko duzu!]]></target>
       </trans-unit>
       <trans-unit id="Z4vDfyL" resname="cotisation.explication">
         <source>cotisation.explication</source>
-        <target><![CDATA[Eusko kontu bat idekitzean, Euskal Moneta elkarteko kide bilakatzen zara. <strong>Elkartearen autofinantzamendu iturri nagusia bere kideen urtesariek osatzen dute. Zure urtesariarekin, Euskoaren garapena sustengatzen duzu!</strong><br>
-<br>
-Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da urte hastapenean edo hilabetero 10a eta 15a artean.]]></target>
+        <target><![CDATA[Eusko kontu bat irekitzean, Euskal Moneta elkarteko kide egiten zara. <strong>Kide sariak dira gure elkartearen diru iturri nagusia. Zure kide sariaren bidez, tokiko monetaren garapena bultzatzen duzu!</strong>]]></target>
       </trans-unit>
       <trans-unit id="nak2sQi" resname="identite.nom">
         <source>identite.nom</source>
@@ -1345,13 +1348,25 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
         <source>cotisation.montant_par_mois_par_an</source>
         <target>par_mois monnaie hilabetean / par_an monnaie urtean</target>
       </trans-unit>
+      <trans-unit id="rylRtpa5" resname="cotisation.montant_5">
+        <source>cotisation.montant_5</source>
+        <target>Sostengukoa: hilabetean 5 eusko</target>
+      </trans-unit>
+      <trans-unit id="rylRtpa3" resname="cotisation.montant_3">
+        <source>cotisation.montant_3</source>
+        <target>Solidarioa: hilabetean 3 eusko</target>
+      </trans-unit>
+      <trans-unit id="rylRtpa2" resname="cotisation.montant_2">
+        <source>cotisation.montant_2</source>
+        <target>Gutienekoa: hilabetean 2 eusko</target>
+      </trans-unit>
       <trans-unit id="Ub_b7Mq" resname="cotisation.montant_par_an">
         <source>cotisation.montant_par_an</source>
         <target>par_an monnaie urtean</target>
       </trans-unit>
       <trans-unit id="bVTul4B" resname="cotisation.cas_de_figure_cotisation_sociale">
         <source>cotisation.cas_de_figure_cotisation_sociale</source>
-        <target> (langabeak, gutiengo sozialak dituzten pertsonak, ikasleak)</target>
+        <target> Gizarte-kotizazioa (enplegu galdegileak, gizarte-laguntzen hartzaileak, ikasleak): urtean 5 eusko</target>
       </trans-unit>
       <trans-unit id="N.O5yK0" resname="cotisation.periodicite">
         <source>cotisation.periodicite</source>
@@ -1371,7 +1386,7 @@ Zure urtesariaren zenbatekoa hauta ezazu. Zure eusko kontutik kendua izanen da u
       </trans-unit>
       <trans-unit id="oLyAMVr" resname="choix_asso.choisissez_une_asso">
         <source>choix_asso.choisissez_une_asso</source>
-        <target>Aukeratu elkarte bat jadanik Euskal Monetako kide direnen artean:</target>
+        <target>Hauta ezazu elkarte bat Euskal Monetaren kide direnen artean:</target>
       </trans-unit>
       <trans-unit id="FN78rlh" resname="choix_asso.saisie_libre">
         <source>choix_asso.saisie_libre</source>
@@ -1444,7 +1459,7 @@ Zure eskaeran, zure kide zenbakia jakinarazi iezaguzu otoi:]]></target>
       </trans-unit>
       <trans-unit id="ZHI54Xa" resname="identite.titre">
         <source>identite.titre</source>
-        <target>Nortasuna</target>
+        <target>Identitatea eta harremanetarako datuak</target>
       </trans-unit>
       <trans-unit id="EInEaGB" resname="coordonnees.titre">
         <source>coordonnees.titre</source>
@@ -1464,7 +1479,7 @@ Zure eskaeran, zure kide zenbakia jakinarazi iezaguzu otoi:]]></target>
       </trans-unit>
       <trans-unit id="cpw6y8K" resname="cotisation.titre">
         <source>cotisation.titre</source>
-        <target>Urtesaria</target>
+        <target>Zure kide sariaren zenbatekoa hautatzea</target>
       </trans-unit>
       <trans-unit id="PkpJGRH" resname="securite.titre">
         <source>securite.titre</source>
@@ -1699,38 +1714,66 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>prelevement.echoue</source>
         <target>Échoué</target>
       </trans-unit>
+      <trans-unit id="KJJNHfMP7" resname="finalisation.titre">
+        <source>finalisation.titre</source>
+        <target>Bururatzea</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufMP7" resname="finalisation.explication">
+        <source>finalisation.explication</source>
+        <target>Kasik egina! Zure kontu-irekitzea bururatzeko, otoi erran iezaguzu zergatik egin zaren Euskal Monetako kide.</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufiYUBI7" resname="finalisation.benevole">
+        <source>finalisation.benevole</source>
+        <target>Euskoren laguntzaileekin topo egin dudalako</target>
+      </trans-unit>
+      <trans-unit id="KJ0hufiFZUBI7" resname="finalisation.particulier">
+        <source>finalisation.particulier</source>
+        <target>Erabiltzaile partikularrek gomendatu didatelako</target>
+      </trans-unit>
+      <trans-unit id="KJTRZiYUBI7" resname="finalisation.pro">
+        <source>finalisation.pro</source>
+        <target>Erabiltzaile profesionalek edo elkarteetako erabiltzaileek gomendatu didatelako</target>
+      </trans-unit>
+      <trans-unit id="KGGiYUBI7" resname="finalisation.presse">
+        <source>finalisation.presse</source>
+        <target>Prentsa-artikulu bat irakurri dudalako</target>
+      </trans-unit>
+      <trans-unit id="KJ0hHGHBI7" resname="finalisation.reseaux">
+        <source>finalisation.reseaux</source>
+        <target>Gizarte-sareetako argitalpenak irakurri ditudalako</target>
+      </trans-unit>
       <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
-        <source>fermeture.compte.raison.cessation</source>
-        <target>Lanaren gelditzea</target>
-      </trans-unit>
-      <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
-        <source>fermeture.compte.raison.assezeusko</source>
-        <target>Ez dut aski euskorik biltzen</target>
-      </trans-unit>
-      <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
-        <source>fermeture.compte.raison.reutiliser</source>
-        <target>Ez dut aterabiderik aurkitzen nire euskorentzat</target>
-      </trans-unit>
-    <trans-unit id="KJHJ297rE" resname="ouverture_compte.carteidentite">
-      <source>ouverture_compte.carteidentite</source>
-      <target>Nortasun agiria</target>
-    </trans-unit>
-     <trans-unit id="KJHJg297rE" resname="ouverture_compte.passeport">
-       <source>ouverture_compte.passeport</source>
-       <target>Pasaportea</target>
-     </trans-unit>
-     <trans-unit id="KJHJgBV97rE" resname="ouverture_compte.carte.input.1">
-       <source>ouverture_compte.carte.input.1</source>
-       <target>Nortasun-agiria aintzina</target>
-     </trans-unit>
-     <trans-unit id="KJ099rE" resname="ouverture_compte.carte.input.2">
-       <source>ouverture_compte.carte.input.2</source>
-       <target>Nortasun-agiria gibela</target>
-     </trans-unit>
-     <trans-unit id="KJKXCD9rE" resname="ouverture_compte.deux.faces">
-       <source>ouverture_compte.deux.faces</source>
-       <target>Zure nortasun agiriaren bi aldeak behar ditugu. Bi aldeak dituen dokumentu bat deskarga dezakezu, edo bi dokumentu bereizi.</target>
-     </trans-unit>
+              <source>fermeture.compte.raison.cessation</source>
+              <target>Lanaren gelditzea</target>
+            </trans-unit>
+            <trans-unit id="KJdz3U7rE" resname="fermeture.compte.raison.assezeusko">
+              <source>fermeture.compte.raison.assezeusko</source>
+              <target>Ez dut aski euskorik biltzen</target>
+            </trans-unit>
+            <trans-unit id="KJHJgr3U7rE" resname="fermeture.compte.raison.reutiliser">
+              <source>fermeture.compte.raison.reutiliser</source>
+              <target>Ez dut aterabiderik aurkitzen nire euskorentzat</target>
+            </trans-unit>
+          <trans-unit id="KJHJ297rE" resname="ouverture_compte.carteidentite">
+            <source>ouverture_compte.carteidentite</source>
+            <target>Nortasun agiria</target>
+          </trans-unit>
+           <trans-unit id="KJHJg297rE" resname="ouverture_compte.passeport">
+             <source>ouverture_compte.passeport</source>
+             <target>Pasaportea</target>
+           </trans-unit>
+           <trans-unit id="KJHJgBV97rE" resname="ouverture_compte.carte.input.1">
+             <source>ouverture_compte.carte.input.1</source>
+             <target>Nortasun-agiria aintzina</target>
+           </trans-unit>
+           <trans-unit id="KJ099rE" resname="ouverture_compte.carte.input.2">
+             <source>ouverture_compte.carte.input.2</source>
+             <target>Nortasun-agiria gibela</target>
+           </trans-unit>
+           <trans-unit id="KJKXCD9rE" resname="ouverture_compte.deux.faces">
+             <source>ouverture_compte.deux.faces</source>
+             <target>Zure nortasun agiriaren bi aldeak behar ditugu. Bi aldeak dituen dokumentu bat deskarga dezakezu, edo bi dokumentu bereizi.</target>
+           </trans-unit>
     </body>
   </file>
 </xliff>

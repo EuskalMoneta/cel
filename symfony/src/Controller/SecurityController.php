@@ -301,7 +301,7 @@ class SecurityController extends AbstractController
         //form generation
         $form = $this->createFormBuilder()
             ->add('valide', CheckboxType::class, ['label' => "J'ai lu et je valide les CGU", 'required' => true])
-            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
+            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-primary btn']])
             ->getForm();
 
         $form->handleRequest($request);

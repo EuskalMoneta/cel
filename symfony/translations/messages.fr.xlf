@@ -1739,7 +1739,7 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
 
       <trans-unit id="3KJ0hHGHBI7" resname="motivation.titre">
         <source>motivation.titre</source>
-        <target>Quelle sont vos motivations pour utiliser la monnaie locale au quotidien ? (plusieurs choix possibles)</target>
+        <target>Quelles sont vos motivations pour utiliser la monnaie locale au quotidien ? (plusieurs choix possibles)</target>
       </trans-unit>
       <trans-unit id="z3KJa0hHGHBI7" resname="motivation.don3">
         <source>motivation.don3</source>

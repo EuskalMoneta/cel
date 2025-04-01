@@ -168,7 +168,7 @@
                         type        : 'POST',
                         success     : function(data, textStatus, jqXHR){
                             if(data.bool){
-                                window.location.href = '{{ path('app_compte_etape_sepa') }}';
+                                window.location.href = '{{ path('app_compte_etape_choix_asso') }}';
                             } else {
                                 document.location.reload(true);
                             }

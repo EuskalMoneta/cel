@@ -160,7 +160,7 @@ class OuvertureCompteController extends AbstractController
 
             return $this->render('ouverture_compte/etape_justificatif.html.twig', [
                 'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-                'numero_etape' => 3,
+                'numero_etape' => 2,
                 'nb_etapes' => OuvertureCompteController::NB_ETAPES,
                 'titre' => $translator->trans('piece_d_identite.titre'),
                 'form' => $form
@@ -168,7 +168,7 @@ class OuvertureCompteController extends AbstractController
         } else {
             return $this->render('ouverture_compte/etape_justificatif_erreur.html.twig', [
                 'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-                'numero_etape' => 3,
+                'numero_etape' => 2,
                 'nb_etapes' => OuvertureCompteController::NB_ETAPES,
                 'titre' => $translator->trans('piece_d_identite_echec.titre')
             ]);

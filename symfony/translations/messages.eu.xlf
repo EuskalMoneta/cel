@@ -443,7 +443,7 @@
       </trans-unit>
       <trans-unit id="GJdfIa2" resname="Versements annuels">
         <source>Versements annuels</source>
-        <target>Une solidarité très concrète</target>
+        <target>Urteko ordainketak</target>
       </trans-unit>
       <trans-unit id="TBAL6XI" resname="Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.">
         <source>Chaque année l'argent collecté est reversé aux associations partenaires. Depuis le début c'est plus de xxx EUS reversés.</source>
@@ -545,8 +545,8 @@
         <source>Commentaire</source>
         <target>Komentarioa</target>
       </trans-unit>
-      <trans-unit id="j9cXi6O" resname="Association parainée">
-        <source>Association parainée</source>
+      <trans-unit id="j9cXi6O" resname="Association parrainée">
+        <source>Association parrainée</source>
         <target>Sustengatzen duzun elkartea</target>
       </trans-unit>
       <trans-unit id="IF8y1w_" resname="Je recevrai 2 ou 3 mails par mois pour rester au courant des actualités de l'Eusko.">
@@ -821,12 +821,12 @@
       </trans-unit>
       <trans-unit id="RHLUtGL" resname="piece_d_identite.explication">
         <source>piece_d_identite.explication</source>
-        <target><![CDATA[Zure kontua bali egiteko, banku erregulazioak nortasun agiri baten egiaztatzera behartzen gaitu.<br>
+                <target><![CDATA[Zure kontua baliozkotu ahal izateko, banku-kontrolak behartzen gaitu nortasun-agiri bat egiaztatzera.<br>
 <br>
-Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan hartu edo eskaneatu eta inporta dezakezu:
+Igo ezazu argazki eskaneatu bat edo zure <strong>NAN</strong>aren edo <strong>pasaportea</strong>aren argazki bat.
 <ul>
-<li>Dokumentua ez da lausoa izan behar</li>
-<li>Zure argazkia ageri izan behar da dokumentuan</li>
+<li>Dokumentuak ez du lausoa izan behar</li>
+<li>Zure argazkiak dokumentuan agertu behar du</li>
 </ul>]]></target>
       </trans-unit>
       <trans-unit id="IlPIIeV" resname="La vérification de votre pièce d'identité peut prendre jusqu'à dix secondes.">
@@ -1045,6 +1045,10 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
         <source>Virements</source>
         <target>Biramenduak</target>
       </trans-unit>
+      <trans-unit id="fsTn4lIZA" resname="Virement">
+        <source>Virement</source>
+        <target>Biramenduak</target>
+      </trans-unit>
       <trans-unit id="ne_50HZ" resname="Vous n'avez jamais accédé à votre compte eusko ?">
         <source>Vous n'avez jamais accédé à votre compte eusko ?</source>
         <target>Ez zara sekula zure eusko kontuan sartu?</target>
@@ -1215,7 +1219,7 @@ Zure <strong>nortasun agiria</strong> edo <strong>pasaportea</strong> argazkitan
       </trans-unit>
       <trans-unit id="UFmrtUi" resname="change_automatique.explication2">
         <source>change_automatique.explication2</source>
-        <target>Zure banku kontuan hilabeteko 10ean hartuko zaizu, eta zenbateko berdina gehituko zaizu zure eusko kontuan 24 oren barne (asteburuetatik kanpo).</target>
+        <target>Hilabeteko 10. egunean eginen da kentze automatikoa zure banku-kontuan, eta diru hori zure eusko kontuan sartuko da gehienez ere 24 orduren buruan (asteburuan izan ezik).</target>
       </trans-unit>
       <trans-unit id="Fuxkj4u" resname="redirection_yousign_pour_signature">
         <source>redirection_yousign_pour_signature</source>
@@ -1258,7 +1262,7 @@ Eta milesker Euskal Herriko tokiko monetaren aldeko zure engaiamenduarengatik.]]
       </trans-unit>
       <trans-unit id="khjuLb7" resname="Signature du mandat SEPA pour votre change automatique mensuel">
         <source>Signature du mandat SEPA pour votre change automatique mensuel</source>
-        <target>SEPA aginduaren izenpedura, hilabeteko truke automatikoarentzat</target>
+        <target>SEPA agindua sinatzea, hilabeteroko truke automatikorako</target>
       </trans-unit>
       <trans-unit id="Dtrvtq8" resname="ETAPE 2/8">
         <source>ETAPE 2/8</source>
@@ -1270,11 +1274,12 @@ Eta milesker Euskal Herriko tokiko monetaren aldeko zure engaiamenduarengatik.]]
       </trans-unit>
       <trans-unit id="KTVlGmD" resname="identite.explication">
         <source>identite.explication</source>
-        <target><![CDATA[Euskal Herri ekologikoago, euskaldunago eta solidarioago baten eraikitzean parte hartu nahi duzu? Leku egokian zira!<br>
+        <target><![CDATA[Euskal Herri ekologikoago, euskaldunago eta solidarioago baten eraikitzean parte hartu nahi duzu? Leku onean zaude
+!<br>
 <br>
-Zure banku datuak hartu (IZAERA/RIB), nortasun agiria eta utzi gidatzen.<br>
+Eskura itzazu zure banku-datuak (bankuko nortasun agiria) eta nortasun-agiria, eta, urratsez urrats, izena eman ezazu.<br>
 <br>
-Minutu guti barru Euskal Herriko moneta erabiltzen ahalko duzu!]]></target>
+Zenbait minuturen buruan, Ipar Euskal Herriko tokiko moneta erabiltzen ahalko duzu!]]></target>
       </trans-unit>
       <trans-unit id="ciioopi" resname="Importer votre pièce d'identité">
         <source>Importer votre pièce d'identité</source>
@@ -1322,11 +1327,11 @@ Minutu guti barru Euskal Herriko moneta erabiltzen ahalko duzu!]]></target>
       </trans-unit>
       <trans-unit id="C_UdWxq" resname="coordonnees.pays">
         <source>coordonnees.pays</source>
-        <target>Herrialdea</target>
+        <target>Estatua</target>
       </trans-unit>
       <trans-unit id="l4W2jC1" resname="coordonnees.telephone_portable">
         <source>coordonnees.telephone_portable</source>
-        <target>Sakelako telefonoa</target>
+        <target>Telefono mugikorra</target>
       </trans-unit>
       <trans-unit id="AUFmoiQ" resname="sepa.montant">
         <source>sepa.montant</source>
@@ -1342,7 +1347,7 @@ Minutu guti barru Euskal Herriko moneta erabiltzen ahalko duzu!]]></target>
       </trans-unit>
       <trans-unit id="c7KEw7z" resname="cotisation.montant">
         <source>cotisation.montant</source>
-        <target>Urtesariaren zenbatekoa</target>
+        <target>Kide sariaren zenbatekoa</target>
       </trans-unit>
       <trans-unit id="rylRtpa" resname="cotisation.montant_par_mois_par_an">
         <source>cotisation.montant_par_mois_par_an</source>
@@ -1419,6 +1424,10 @@ Minutu guti barru Euskal Herriko moneta erabiltzen ahalko duzu!]]></target>
       <trans-unit id="NMHVa7k" resname="releves.date_fin">
         <source>releves.date_fin</source>
         <target>Bukaera</target>
+      </trans-unit>
+      <trans-unit id="NMHVa754k" resname="releves.type_mouvement">
+        <source>releves.type_mouvement</source>
+        <target>Mugimendu mota</target>
       </trans-unit>
       <trans-unit id="gj.806R" resname="profil.mot_de_passe.ancien_mot_de_passe">
         <source>profil.mot_de_passe.ancien_mot_de_passe</source>
@@ -1571,7 +1580,7 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       </trans-unit>
       <trans-unit id="xQ0w0uM" resname="profil.newsletter.bonplans">
         <source>profil.newsletter.bonplans</source>
-        <target>Afficher les bons plans</target>
+        <target>Erakutsi eskaintzak</target>
       </trans-unit>
       <trans-unit id="IXmrmzm" resname="profil.booleen.1">
         <source>profil.booleen.1</source>
@@ -1583,7 +1592,7 @@ Ahal baduzu, urteko diru kentzea hauta ezazu otoi, elkartearentzat sortzen ditue
       </trans-unit>
       <trans-unit id="piH7Hfz" resname="ouverture_compte.change.autre_montant">
         <source>ouverture_compte.change.autre_montant</source>
-        <target>Autre montant</target>
+        <target>Beste zenbateko bat</target>
       </trans-unit>
       <trans-unit id="m2FUILW" resname="identite.madame">
         <source>identite.madame</source>
@@ -1708,11 +1717,11 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
       </trans-unit>
       <trans-unit id="KJ0hufieoO7" resname="prelevement.reussi">
         <source>prelevement.reussi</source>
-        <target>Réussi</target>
+        <target>Arrakastaz burututa</target>
       </trans-unit>
       <trans-unit id="KJ0hufidzqdzqeoO7" resname="prelevement.echoue">
         <source>prelevement.echoue</source>
-        <target>Échoué</target>
+        <target>Arrakastaz burututa</target>
       </trans-unit>
       <trans-unit id="KJJNHfMP7" resname="finalisation.titre">
         <source>finalisation.titre</source>
@@ -1742,6 +1751,33 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
         <source>finalisation.reseaux</source>
         <target>Gizarte-sareetako argitalpenak irakurri ditudalako</target>
       </trans-unit>
+
+
+      <trans-unit id="3KJ0hHGHBI7" resname="motivation.titre">
+        <source>motivation.titre</source>
+        <target>Zergatik erabili nahi duzu egunerokoan tokiko moneta? (aukera bat baino gehiago marka dezakezu)</target>
+      </trans-unit>
+      <trans-unit id="z3KJa0hHGHBI7" resname="motivation.don3">
+        <source>motivation.don3</source>
+        <target>Nik babestutako elkartea “Euskoren % 3ko emaitza”-z baliatzeko</target>
+      </trans-unit>
+      <trans-unit id="r3KJ0hHGHBI7" resname="motivation.ecolocale">
+        <source>motivation.ecolocale</source>
+        <target>Tokiko ekonomiari eta hurbileko merkataritzari laguntzeko</target>
+      </trans-unit>
+      <trans-unit id="t3KJ0hHGHBI7" resname="motivation.dev">
+        <source>motivation.dev</source>
+        <target>Euskara mintzatu eta garatzeko</target>
+      </trans-unit>
+      <trans-unit id="zeJ0hHGHBI7" resname="motivation.finance">
+        <source>motivation.finance</source>
+        <target>Dirua bankuetatik eta finantza-espekulaziotik kanpo ibiltzeko</target>
+      </trans-unit>
+      <trans-unit id="3rt0hHGHBI7" resname="motivation.transition">
+        <source>motivation.transition</source>
+        <target>Trantsizio ekologikoa, kontsumo arduratsua eta laborantza iraunkorra sustatzeko</target>
+      </trans-unit>
+
       <trans-unit id="KJHJ23U7rE" resname="fermeture.compte.raison.cessation">
               <source>fermeture.compte.raison.cessation</source>
               <target>Lanaren gelditzea</target>

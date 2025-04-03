@@ -121,6 +121,7 @@ class OuvertureCompteController extends AbstractController
                 }
             }
 
+            unset($data["valide"]);
             $session->set('utilisateur', $data);
             $session->set('compteur', 1);
 
@@ -270,8 +271,8 @@ class OuvertureCompteController extends AbstractController
                 $data = array_merge($session->get('utilisateur'), $data);
                 if($data['automatic_change_amount'] === 'autre'){
                     $data['automatic_change_amount'] = $data['autre_montant'];
-                    unset($data['autre_montant']);
                 }
+                unset($data['autre_montant']);
                 $session->set('utilisateur', $data);
 
                 return $this->redirectToRoute('ouverture_compte_signature_sepa');
@@ -474,6 +475,8 @@ class OuvertureCompteController extends AbstractController
             } else {
                 $data['question'] = $data['questionSecrete'];
             }
+            unset($data['questionSecrete']);
+            unset($data['questionPerso']);
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 

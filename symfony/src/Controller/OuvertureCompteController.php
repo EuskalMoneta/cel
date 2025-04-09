@@ -208,7 +208,7 @@ class OuvertureCompteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $data['options_asso_saisie_libre'] = '';
+            $data['asso_saisie_libre'] = Null;
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 

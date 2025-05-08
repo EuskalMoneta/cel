@@ -1234,20 +1234,12 @@ Dans quelques minutes, vous pourrez utiliser la monnaie locale du Pays Basque !]
       <trans-unit id="k9x.Swz" resname="ouverture_compte.fin.felicitations">
         <source>ouverture_compte.fin.felicitations</source>
         <target><![CDATA[Félicitations&nbsp;!<br>
-Et merci pour votre engagement avec la monnaie locale du Pays Basque.&nbsp;]]></target>
+				Vous pouvez maintenant utiliser l’Eusko, pour un Pays Basque plus écologique, euskaldun et solidaire !<br><br>
+Vous avez reçu un mail avec toutes les informations importantes, dont votre numéro d’adhérent.]]></target>
       </trans-unit>
       <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
         <source>ouverture_compte.fin.explication</source>
-        <target><![CDATA[Votre compte eusko sera chargé automatiquement le 10 du mois. En attendant, vous pouvez approvisionner votre compte eusko par carte bancaire instantanément et sans frais. Pour cela, rendez-vous sur votre compte eusko : <a href="moncompte.euskalmoneta.org">moncompte.euskalmoneta.org</a><br/><br/>
-
-                         Puis choisissez votre moyen de paiement favori :<br/>
-
-<ul class="mb-4 mt-3 ulfin">
-<li> L’application de paiement euskopay</li>
-<li> Les billets d’eusko, à récupérer dans l’un de nos <u>30 bureaux de change</u></li>
-<li> L’euskokart, envoyée par courrier sur simple demande</li>
-</ul>
-Et voila ! Vous pouvez maintenant utiliser l’Eusko, pour un Pays Basque plus écologique, euskaldun et solidaire !
+        <target><![CDATA[Votre compte eusko sera chargé automatiquement le 10 du mois. En attendant, vous pouvez approvisionner votre compte eusko par carte bancaire instantanément et sans frais. Pour cela, rendez-vous sur votre compte eusko, dans la rubrique change.
 ]]></target>
       </trans-unit>
       <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">

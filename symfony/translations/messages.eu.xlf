@@ -1232,20 +1232,13 @@ Igo ezazu argazki eskaneatu bat edo zure <strong>NAN</strong>aren edo <strong>pa
       <trans-unit id="k9x.Swz" resname="ouverture_compte.fin.felicitations">
         <source>ouverture_compte.fin.felicitations</source>
         <target><![CDATA[Goresmenak!<br>
-Eta milesker Euskal Herriko tokiko monetaren aldeko zure engaiamenduarengatik.]]></target>
+				Orain, euskoa erabil dezakezu, Euskal Herri ekologikoago, euskaldunago eta solidarioago baten aldeko tokiko moneta!<br><br>
+Mezu elektroniko bat jaso duzue informazio garrantzitsu guztiarekin, tartean zuen bazkide zenbakia.
+				]]></target>
       </trans-unit>
       <trans-unit id="t7Jh.By" resname="ouverture_compte.fin.explication">
               <source>ouverture_compte.fin.explication</source>
-              <target><![CDATA[Zure eusko kontua automatikoki diruz hornituko da hilabeteko 10. egunean. Anartean, zure eusko kontuan banku-txartel bidez dirua sartzen ahal duzu, berehala eta batere kosturik gabe. Horretarako, joan zaitez zure eusko kontura: <a href="moncompte.euskalmoneta.org/eu">moncompte.euskalmoneta.org/eu</a><br/><br/>
-
-                               Ondotik, hauta ezazu zure pagamolde gustukoena:<br/>
-
-      <ul class="mb-4 mt-3 ulfin">
-      <li> Euskopay ordainketa-aplikazioa</li>
-      <li> Eusko billeteak, <u>gure 30 truke-bulegoetako</u> edozeinetan eskuragarriak</li>
-      <li> Euskokarta, galdetuz gero postaz bidaltzen dena</li>
-      </ul>
-      Horra! Orain, euskoa erabil dezakezu, Euskal Herri ekologikoago, euskaldunago eta solidarioago baten aldeko tokiko moneta!
+	      <target><![CDATA[Zure eusko kontua automatikoki diruz hornituko da hilabeteko 10. egunean. Anartean, zure eusko kontuan banku-txartel bidez dirua sartzen ahal duzu, berehala eta batere kosturik gabe. Horretarako, joan zaitez zure eusko kontura, trukea atalean.
       ]]></target>
       </trans-unit>
       <trans-unit id="xjo7Yif" resname="ouverture_compte.fin.bouton">

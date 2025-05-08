@@ -17,7 +17,12 @@
                     <div class="text-center">
                         <i class="fas fa-check mb-4" style="font-size: 40px; margin-top: 50px;"></i>
                         <h1 class="threeper" style="font-size: 24px;" >{{ "ouverture_compte.fin.felicitations" | trans | raw }}</h1>
+                    </div>
+                    <div>
                         <h5 class="mb-0 threeper mt-4 mb-4" style="font-size: 16px;">{{ "ouverture_compte.fin.explication" | trans | raw }}</h5>
+
+                    </div>
+                    <div class="text-center mt-5">
                         <a href="{{ path('app_homepage') }}" class="btn btn-berdea">{{ "ouverture_compte.fin.bouton" | trans }}</a>
                     </div>
                 </div>
@@ -28,6 +33,6 @@
 
 
 {% block menu_footer %}
-{# On supprime le menu du bas. Sinon le menu de l'application serait
+    {# On supprime le menu du bas. Sinon le menu de l'application serait
 affiché car à cette étape l'utilisateur est authentifié. #}
 {% endblock %}

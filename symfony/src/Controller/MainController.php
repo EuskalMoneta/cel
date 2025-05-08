@@ -168,7 +168,7 @@ class MainController extends AbstractController
             $form = $this->createFormBuilder()
                 ->add('amount', NumberType::class, ['label' => 'Montant', 'required' => true])
                 ->add('description', TextType::class, ['label' => 'Description', 'required' => true])
-                ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
+                ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-primary btn']])
                 ->getForm();
 
             //Form process
@@ -242,7 +242,7 @@ class MainController extends AbstractController
             ])
             ->add('destinataire', TextType::class, [ 'required' => false, 'label' => $translator->trans('Destinataire'),])
             ->add('description', TextType::class, ['required' => false, 'label' => $translator->trans('Description'),])
-            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-success btn']])
+            ->add('submit', SubmitType::class, ['label' => 'Valider', 'attr' => ['class' => 'btn-primary btn']])
             ->getForm();
 
         //Form process

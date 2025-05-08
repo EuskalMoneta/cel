@@ -73,19 +73,19 @@
                 <div class="mt-5 text-center">
                     <div class="mr-md-5 ml-4">
 
-                        <a class="btn btn-outline-primary mr-4" id="btnCompte" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'compte', 'login': ''}) }}" href="#">
+                        <a class="button-nav mr-4" id="btnCompte" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'compte', 'login': ''}) }}" href="#">
                             {{ "recherche_adherent.adhesion" | trans | upper }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
                             </svg>
                         </a>
 
-                        <a class="btn btn-outline-primary" id="btnAdhesion" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'adhesion', 'login': ''}) }}" href="#">
+                        <a class="button-nav" id="btnAdhesion" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'adhesion', 'login': ''}) }}" href="#">
                             {{ "recherche_adherent.adhesion_sans" | trans | upper }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
                             </svg>
                         </a>
 
-                        <a class="btn btn-outline-primary" id="btnPrelevement" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'prelevement', 'login': ''}) }}" href="#">
+                        <a class="button-nav" id="btnPrelevement" data-action="{{ path('app_adhesion_etape0_passerelle', {'type': 'prelevement', 'login': ''}) }}" href="#">
                             {{ "recherche_adherent.prelevement" | trans | upper }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
@@ -99,8 +99,8 @@
 
                 <div class="mt-5 text-center">
                     <h2>Aucun résultat</h2>
-                    <a href="{{ path('app_ouverture_etape1_identite') }}" class="btn btn-outline-primary"> {{ "recherche_adherent.adhesion" | trans | upper }}</a>
-                    <a href="{{ path('app_adhesion_etape1_identite') }}" class="btn btn-outline-primary">{{ "recherche_adherent.adhesion_sans" | trans | upper }}</a>
+                    <a href="{{ path('app_ouverture_etape_identite') }}" class="button-nav"> {{ "recherche_adherent.adhesion" | trans | upper }}</a>
+                    <a href="{{ path('app_adhesion_etape1_identite') }}" class="button-nav">{{ "recherche_adherent.adhesion_sans" | trans | upper }}</a>
                 </div>
             {% endif %}
         </div>

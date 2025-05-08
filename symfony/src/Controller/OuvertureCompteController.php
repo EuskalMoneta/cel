@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Motivation;
 use App\Security\LoginFormAuthenticator;
 use App\Service\IDCheckAPI;
 use App\Service\YouSignAPI;
@@ -36,8 +37,8 @@ class OuvertureCompteController extends AbstractController
     const SURTITRE = "Ouverture de votre compte eusko";
     const NB_ETAPES = 8;
 
-    #[Route(path: '/{_locale}/ouverture-compte', name: 'app_ouverture_etape1_identite')]
-    public function etape1Identite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
+    #[Route(path: '/{_locale}/ouverture-compte', name: 'app_ouverture_etape_identite')]
+    public function etapeIdentite(Request $request, TranslatorInterface $translator, SessionInterface $session, APIToolbox $APIToolbox)
     {
         $session->start();
         $session->set('utilisateur', []);
@@ -50,7 +51,15 @@ class OuvertureCompteController extends AbstractController
             $member = $response['data'][0];
         }
 
-        $formBuilder = $this->createFormBuilder();
+        $formBuilder = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']]);
+
+        $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
+        $tabCountries = [];
+        foreach ($responseCountries['data'] as $country){
+            if($country->label !== '-'){
+                $tabCountries[$country->label] = $country->id;
+            }
+        }
 
         // Si on connait déjà l'utilisateur, on affiche le numéro d'adhérent dans le formulaire en lecture seule
         if ($member) {
@@ -80,6 +89,11 @@ class OuvertureCompteController extends AbstractController
                 'constraints' => [ new NotBlank() ],
                 'data' => ($member == null) ? '' : $member->email,
             ])
+            ->add('address', TextareaType::class, ['label' => $translator->trans('coordonnees.adresse'), 'required' => true])
+            ->add('zip', TextType::class, ['label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'basicAutoComplete', "autocomplete" => "off"]])
+            ->add('town', TextType::class, ['label' => $translator->trans('coordonnees.ville'), 'required' => true])
+            ->add('country_id', ChoiceType::class, ['label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries])
+            ->add('phone', TextType::class, ['label' => $translator->trans('coordonnees.telephone_portable'), 'required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('valide', CheckboxType::class, ['label' => " ", 'required' => true])
             ->add('submit', SubmitType::class, ['label' => 'Valider']);
         $form = $formBuilder->getForm();
@@ -107,11 +121,11 @@ class OuvertureCompteController extends AbstractController
                 }
             }
 
+            unset($data["valide"]);
             $session->set('utilisateur', $data);
             $session->set('compteur', 1);
 
-            return $this->redirectToRoute('app_compte_etape2_coordonnees');
-
+            return $this->redirectToRoute('app_compte_etape_justificatif');
         }
 
         return $this->render('ouverture_compte/etape_identite.html.twig', [
@@ -124,55 +138,11 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{_locale}/ouverture-compte/coordonnees', name: 'app_compte_etape2_coordonnees')]
-    public function etape2Coordonnees(APIToolbox $APIToolbox, Request $request, SessionInterface $session, TranslatorInterface $translator)
+    #[Route(path: '/{_locale}/ouverture-compte/justificatif', name: 'app_compte_etape_justificatif')]
+    public function etapejustificatif(SessionInterface $session, TranslatorInterface $translator, IDCheckAPI $IDCheckAPI): Response
     {
         $session->start();
 
-        $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
-        $tabCountries = [];
-        foreach ($responseCountries['data'] as $country){
-            if($country->label != '-'){
-                $tabCountries[$country->label] = $country->id;
-            }
-        }
-
-        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']])
-            ->add('address', TextareaType::class, ['label' => $translator->trans('coordonnees.adresse'), 'required' => true])
-            ->add('zip', TextType::class, ['label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'basicAutoComplete']])
-            ->add('town', TextType::class, ['label' => $translator->trans('coordonnees.ville'), 'required' => true])
-            ->add('country_id', ChoiceType::class, ['label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries])
-            ->add('phone', TextType::class, ['label' => $translator->trans('coordonnees.telephone_portable'), 'required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
-            ->add('submit', SubmitType::class, ['label' => 'Valider'])
-            ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $data = array_merge($session->get('utilisateur'), $data);
-            $session->set('utilisateur', $data);
-
-            if($_ENV["APP_ENV"] === 'dev'){
-                //return $this->redirectToRoute('app_compte_etape4_sepa');
-            }
-            return $this->redirectToRoute('app_compte_etape3_justificatif');
-        }
-
-        return $this->render('ouverture_compte/etape2_coordonnees.html.twig', [
-            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-            'numero_etape' => 2,
-            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
-            'titre' => $translator->trans('coordonnees.titre'),
-            'form' => $form
-        ]);
-    }
-
-    #[Route(path: '/{_locale}/ouverture-compte/justificatif', name: 'app_compte_etape3_justificatif')]
-    public function etape3justificatif(SessionInterface $session, TranslatorInterface $translator, IDCheckAPI $IDCheckAPI): Response
-    {
-        $session->start();
-        
         if($session->get('compteur') < 4){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [
@@ -189,25 +159,73 @@ class OuvertureCompteController extends AbstractController
                 ->add('submit', SubmitType::class, ['label' => 'Valider'])
                 ->getForm();
 
-            return $this->render('ouverture_compte/etape3_justificatif.html.twig', [
+            return $this->render('ouverture_compte/etape_justificatif.html.twig', [
                 'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-                'numero_etape' => 3,
+                'numero_etape' => 2,
                 'nb_etapes' => OuvertureCompteController::NB_ETAPES,
                 'titre' => $translator->trans('piece_d_identite.titre'),
                 'form' => $form
             ]);
         } else {
-            return $this->render('ouverture_compte/etape3_erreur.html.twig', [
+            return $this->render('ouverture_compte/etape_justificatif_erreur.html.twig', [
                 'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
-                'numero_etape' => 3,
+                'numero_etape' => 2,
                 'nb_etapes' => OuvertureCompteController::NB_ETAPES,
                 'titre' => $translator->trans('piece_d_identite_echec.titre')
             ]);
         }
     }
 
-    #[Route(path: '/{_locale}/ouverture-compte/sepa', name: 'app_compte_etape4_sepa')]
-    public function etape4Sepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
+    #[Route(path: '/{_locale}/ouverture-compte/choix-asso', name: 'app_compte_etape_choix_asso')]
+    public function etapeChoixAsso(APIToolbox $APIToolbox,
+                                   Request $request,
+                                   SessionInterface $session,
+                                   TranslatorInterface $translator,
+                                   Security $security)
+    {
+        $session->start();
+
+        $tabAssos = [];
+        $response = $APIToolbox->curlWithoutToken('GET', '/associations/');
+        if($response['httpcode'] == 200) {
+            foreach ($response['data'] as $asso){
+                $tabAssos[$asso->nom] = $asso->id;
+            }
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('asso_id', ChoiceType::class,
+                [
+                    'required' => false,
+                    'label' => $translator->trans('choix_asso.choisissez_une_asso'),
+                    'multiple' => false,
+                    'expanded' => false,
+                    'choices' => $tabAssos,
+                ])
+            ->add('submit', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $data['asso_saisie_libre'] = Null;
+            $data = array_merge($session->get('utilisateur'), $data);
+            $session->set('utilisateur', $data);
+
+            return $this->redirectToRoute('app_compte_etape_sepa');
+        }
+
+        return $this->render('ouverture_compte/etape_choix_asso.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 3,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('choix_asso.titre'),
+            'form' => $form
+        ]);
+    }
+
+    #[Route(path: '/{_locale}/ouverture-compte/sepa', name: 'app_compte_etape_sepa')]
+    public function etapeSepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
 
         $form = $this->createFormBuilder(['autre_montant' => 20], ['attr' => ['id' => 'form-virement']])
@@ -218,9 +236,9 @@ class OuvertureCompteController extends AbstractController
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        '100 eusko' => '100',
+                        '40 eusko' => '40',
                         '60 eusko' => '60',
-                        '20 eusko' => '20',
+                        '100 eusko' => '100',
                         $translator->trans('ouverture_compte.change.autre_montant') => 'autre',
                     ],
                 ]
@@ -252,23 +270,19 @@ class OuvertureCompteController extends AbstractController
             $iban = str_replace(' ', '', $data['iban']);
             if ($vacancesEuskoController->isValidIBAN($iban)) {
                 $data = array_merge($session->get('utilisateur'), $data);
-                if($data['automatic_change_amount'] == 'autre'){
+                if($data['automatic_change_amount'] === 'autre'){
                     $data['automatic_change_amount'] = $data['autre_montant'];
-                    unset($data['autre_montant']);
                 }
+                unset($data['autre_montant']);
                 $session->set('utilisateur', $data);
 
-                if($_ENV["APP_ENV"] == 'dev'){
-                    //return $this->redirectToRoute('app_compte_etape6_cotisation');
-                }
                 return $this->redirectToRoute('ouverture_compte_signature_sepa');
 
-            } else {
-                $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
             }
+            $this->addFlash('warning', $translator->trans('sepa.iban_invalide'));
         }
 
-        return $this->render('ouverture_compte/etape4_sepaIban.html.twig', [
+        return $this->render('ouverture_compte/etape_sepaIban.html.twig', [
             'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
             'numero_etape' => 4,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
@@ -303,7 +317,7 @@ class OuvertureCompteController extends AbstractController
         //etape 4 lancement de la procedure
         $responseActivateSignature = $youSignAPI->activateSignatureRequest(signatureRequestId: $responseCreateSignature->id);
 
-        return $this->render('ouverture_compte/etape5_signature_sepa.html.twig', [
+        return $this->render('ouverture_compte/etape_signature_sepa.html.twig', [
             'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
             'numero_etape' => 5,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
@@ -328,12 +342,14 @@ class OuvertureCompteController extends AbstractController
         return new JsonResponse('ok');
     }
 
-    #[Route(path: '/{_locale}/ouverture-compte/cotisation', name: 'app_compte_etape6_cotisation')]
-    public function etape6Cotisation(EntityManagerInterface $em, Request $request, SessionInterface $session, TranslatorInterface $translator)
+
+
+    #[Route(path: '/{_locale}/ouverture-compte/cotisation', name: 'app_compte_etape_cotisation')]
+    public function etapeCotisation(Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
 
-        if($_ENV["APP_ENV"] == 'dev'){
+        if($_ENV["APP_ENV"] === 'dev'){
             $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
 
             $data = array_merge(
@@ -352,10 +368,10 @@ class OuvertureCompteController extends AbstractController
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '2', 'par_an' => '24', 'monnaie' => 'eusko']) => '24',
-                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '3', 'par_an' => '36', 'monnaie' => 'eusko']) => '36',
-                    $translator->trans('cotisation.montant_par_mois_par_an', ['par_mois' => '5', 'par_an' => '60', 'monnaie' => 'eusko']) => '60',
-                    $translator->trans('cotisation.montant_par_an', ['par_an' => '5', 'monnaie' => 'eusko']).$translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
+                    $translator->trans('cotisation.montant_5') => '60',
+                    $translator->trans('cotisation.montant_3') => '36',
+                    $translator->trans('cotisation.montant_2') => '24',
+                    $translator->trans('cotisation.cas_de_figure_cotisation_sociale') => '5'
                 ],
             ])
             ->add('subscription_periodicity', ChoiceType::class, [
@@ -364,9 +380,10 @@ class OuvertureCompteController extends AbstractController
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    $translator->trans('cotisation.periodicite.annuel') => '12',
                     $translator->trans('cotisation.periodicite.mensuel') => '1',
+                    $translator->trans('cotisation.periodicite.annuel') => '12',
                 ],
+                'data' => 1
             ])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
@@ -381,10 +398,10 @@ class OuvertureCompteController extends AbstractController
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 
-            return $this->redirectToRoute('app_compte_etape7_securite');
+            return $this->redirectToRoute('app_compte_etape_securite');
         }
 
-        return $this->render('ouverture_compte/etape6_cotisation.html.twig', [
+        return $this->render('ouverture_compte/etape_cotisation.html.twig', [
             'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
             'numero_etape' => 6,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
@@ -393,11 +410,11 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{_locale}/ouverture-compte/securite', name: 'app_compte_etape7_securite')]
-    public function etape7Securite(APIToolbox $APIToolbox,
-                                   Request $request,
-                                   SessionInterface $session,
-                                   TranslatorInterface $translator)
+    #[Route(path: '/{_locale}/ouverture-compte/securite', name: 'app_compte_etape_securite')]
+    public function etapeSecurite(APIToolbox $APIToolbox,
+                                  Request $request,
+                                  SessionInterface $session,
+                                  TranslatorInterface $translator)
     {
         $session->start();
 
@@ -454,18 +471,20 @@ class OuvertureCompteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            if($data['questionSecrete'] == 'autre'){
+            if($data['questionSecrete'] === 'autre'){
                 $data['question'] = $data['questionPerso'];
             } else {
                 $data['question'] = $data['questionSecrete'];
             }
+            unset($data['questionSecrete']);
+            unset($data['questionPerso']);
             $data = array_merge($session->get('utilisateur'), $data);
             $session->set('utilisateur', $data);
 
-            return $this->redirectToRoute('app_compte_etape8_choix_asso');
+            return $this->redirectToRoute('app_compte_etape_finalisation');
         }
 
-        return $this->render('ouverture_compte/etape7_securite.html.twig', [
+        return $this->render('ouverture_compte/etape_securite.html.twig', [
             'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
             'numero_etape' => 7,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
@@ -474,70 +493,94 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{_locale}/ouverture-compte/choix-asso', name: 'app_compte_etape8_choix_asso')]
-    public function etape8ChoixAsso(APIToolbox $APIToolbox,
-                                    Request $request,
-                                    SessionInterface $session,
-                                    TranslatorInterface $translator,
-                                    Security $security)
+    #[Route(path: '/{_locale}/ouverture-compte/finalisation', name: 'app_compte_etape_finalisation')]
+    public function etapeFinalisation(APIToolbox $APIToolbox,
+                                      Request $request,
+                                      SessionInterface $session,
+                                      EntityManagerInterface $em,
+                                      TranslatorInterface $translator,
+                                      Security $security)
     {
         $session->start();
 
-        $tabAssos = [];
-        $response = $APIToolbox->curlWithoutToken('GET', '/associations/');
-        if($response['httpcode'] == 200) {
-            foreach ($response['data'] as $asso){
-                $tabAssos[$asso->nom] = $asso->id;
-            }
-        }
-
         $form = $this->createFormBuilder()
-            ->add('asso_id', ChoiceType::class,
+            ->add('finalisation', ChoiceType::class,
                 [
-                    'required' => false,
-                    'label' => $translator->trans('choix_asso.choisissez_une_asso'),
+                    'required' => true,
+                    'label' => ' ',
                     'multiple' => false,
-                    'expanded' => false,
-                    'choices' => $tabAssos,
+                    'expanded' => true,
+                    'choices' => [
+                        $translator->trans('finalisation.benevole') => 'Une rencontre avec des bénévoles de l’Eusko',
+                        $translator->trans('finalisation.particulier') => 'Des recommandations d’utilisateurs particuliers',
+                        $translator->trans('finalisation.pro') => 'Des recommandations d’utilisateurs pros ou d’associations',
+                        $translator->trans('finalisation.presse') => 'Un article de presse',
+                        $translator->trans('finalisation.reseaux') => 'Des publications sur les réseaux sociaux',
+                        $translator->trans('fermeture.compte.raison.autre') => 'Autre',
+                    ],
                 ])
-            ->add('asso_saisie_libre', TextType::class,
+            ->add('autre', TextType::class, [
+                'label' => ' ',
+                'required' => false,
+                'constraints' => [ new Length(['max'=> 150]) ]
+            ])
+            ->add('motivation', ChoiceType::class,
                 [
-                    'required' => false,
-                    'label' => $translator->trans('choix_asso.saisie_libre'),
+                    'required' => true,
+                    'label' => $translator->trans('motivation.titre'),
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices' => [
+                        $translator->trans('motivation.don3') => 'Le Don 3% Eusko pour mon association parrainée',
+                        $translator->trans('motivation.ecolocale') => 'Le soutien à l’économie locale et au commerce de proximité',
+                        $translator->trans('motivation.dev') => 'La pratique et le développement de l’euskara',
+                        $translator->trans('motivation.finance') => 'La circulation de l’argent hors des banques et de la spéculation financière',
+                        $translator->trans('motivation.transition') => 'La transition écologique, la consommation responsable et l’agriculture durable',
+                    ],
                 ])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $data = array_merge($session->get('utilisateur'), $data);
-            $session->set('utilisateur', $data);
+
+            $data = $session->get('utilisateur');
 
             $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte/', $data);
-
             if($response['httpcode'] == 201) {
                 $credentials['username'] = $response['data']->login;
                 $credentials['password'] = $data['password'];
 
                 $user = $APIToolbox->autoLogin($credentials);
 
+                $formData = $form->getData();
+                $motivation = new Motivation();
+                $motivation->setUser($response['data']->login);
+                $motivation->setDeclencheur($formData['finalisation']);
+                $motivation->setDeclencheurAutre($formData['autre']);
+                $motivation->setMotivations($formData['motivation']);
+
+                $em->persist($motivation);
+                $em->flush();
+
                 $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
 
                 return $security->login($user, LoginFormAuthenticator::class);
-            } else {
-                $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
             }
+
+            $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+
         }
 
-        return $this->render('ouverture_compte/etape8_choix_asso.html.twig', [
+        return $this->render('ouverture_compte/etape_finalisation.html.twig', [
             'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
             'numero_etape' => 8,
             'nb_etapes' => OuvertureCompteController::NB_ETAPES,
-            'titre' => $translator->trans('choix_asso.titre'),
+            'titre' => $translator->trans('finalisation.titre'),
             'form' => $form
         ]);
     }
+
 
     #[Route(path: '/{_locale}/ouverture-compte/bienvenue', name: 'app_compte_ecran_de_fin')]
     public function fin(): Response

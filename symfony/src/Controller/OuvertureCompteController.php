@@ -563,6 +563,8 @@ class OuvertureCompteController extends AbstractController
                 $em->persist($motivation);
                 $em->flush();
 
+                $session->set('utilisateur', []);
+
                 $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
 
                 return $security->login($user, LoginFormAuthenticator::class);

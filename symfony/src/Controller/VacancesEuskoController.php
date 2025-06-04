@@ -222,6 +222,8 @@ class VacancesEuskoController extends AbstractController
 
                     $user = $APIToolbox->autoLogin($credentials);
 
+                    $session->set('utilisateur', []);
+
                     //Route pour la redirection après login
                     $session->set('_security.main.target_path', $this->generateUrl('app_vee_etape4_success'));
 

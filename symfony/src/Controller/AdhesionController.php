@@ -481,6 +481,7 @@ class AdhesionController extends AbstractController
             $response = $APIToolbox->curlWithoutToken('POST', '/adherer/', $data);
 
             if($response['httpcode'] == 201) {
+                $session->set('utilisateur', []);
                 return $this->redirectToRoute('app_adhesion_fin');
             } else {
                 $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');

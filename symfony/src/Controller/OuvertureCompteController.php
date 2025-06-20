@@ -143,6 +143,11 @@ class OuvertureCompteController extends AbstractController
     {
         $session->start();
 
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
+
         if($session->get('compteur') < 4){
             $form = $this->createFormBuilder()
                 ->add('idcard', FileType::class, [
@@ -184,6 +189,11 @@ class OuvertureCompteController extends AbstractController
                                    Security $security)
     {
         $session->start();
+
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
 
         $tabAssos = [];
         $response = $APIToolbox->curlWithoutToken('GET', '/associations/');
@@ -227,6 +237,11 @@ class OuvertureCompteController extends AbstractController
     #[Route(path: '/{_locale}/ouverture-compte/sepa', name: 'app_compte_etape_sepa')]
     public function etapeSepa(SessionInterface $session, TranslatorInterface $translator, Request $request, VacancesEuskoController $vacancesEuskoController) {
         $session->start();
+
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
 
         $form = $this->createFormBuilder(['autre_montant' => 20], ['attr' => ['id' => 'form-virement']])
             ->add('automatic_change_amount', ChoiceType::class,
@@ -297,6 +312,11 @@ class OuvertureCompteController extends AbstractController
         $session->start();
         $user = $session->get('utilisateur');
 
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
+
         //etape 1 création de la signature request
         $responseCreateSignature = $youSignAPI->createSignatureRequest(name: "Signature prélèvement SEPA");
 
@@ -348,6 +368,11 @@ class OuvertureCompteController extends AbstractController
     public function etapeCotisation(Request $request, SessionInterface $session, TranslatorInterface $translator)
     {
         $session->start();
+
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
 
         if($_ENV["APP_ENV"] === 'dev'){
             $docBase64 = 'data:image/jpeg;base64,HDZUDHuzdhZdhozqhdoizqh';
@@ -417,6 +442,11 @@ class OuvertureCompteController extends AbstractController
                                   TranslatorInterface $translator)
     {
         $session->start();
+
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
 
         $questions = ['' => ''];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -503,6 +533,11 @@ class OuvertureCompteController extends AbstractController
     {
         $session->start();
 
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite'); 
+        }
+
         $form = $this->createFormBuilder()
             ->add('finalisation', ChoiceType::class,
                 [
@@ -562,6 +597,8 @@ class OuvertureCompteController extends AbstractController
 
                 $em->persist($motivation);
                 $em->flush();
+
+                $session->set('utilisateur', []);
 
                 $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
 

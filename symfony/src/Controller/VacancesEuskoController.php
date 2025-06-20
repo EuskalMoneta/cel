@@ -68,6 +68,10 @@ class VacancesEuskoController extends AbstractController
     {
 
         $session->start();
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_vee_etape1_identite'); 
+        }
 
         $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
         $tabCountries = [];
@@ -115,6 +119,10 @@ class VacancesEuskoController extends AbstractController
     public function etape3justificatif(APIToolbox $APIToolbox, Request $request, SessionInterface $session): \Symfony\Component\HttpFoundation\Response
     {
         $session->start();
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_vee_etape1_identite'); 
+        }
 
         if($session->get('compteur') < 20){
             $form = $this->createFormBuilder()
@@ -151,6 +159,10 @@ class VacancesEuskoController extends AbstractController
     {
 
         $session->start();
+        $utilisateurSession = $session->get('utilisateur');
+        if (empty($utilisateurSession)) {
+            return $this->redirectToRoute('app_vee_etape1_identite'); 
+        }
 
         $questions = ['' => ''];
         $response = $APIToolbox->curlWithoutToken('GET', '/predefined-security-questions/?language='.$request->getLocale());
@@ -221,6 +233,8 @@ class VacancesEuskoController extends AbstractController
                     $credentials['password'] = $data['password'];
 
                     $user = $APIToolbox->autoLogin($credentials);
+
+                    $session->set('utilisateur', []);
 
                     //Route pour la redirection après login
                     $session->set('_security.main.target_path', $this->generateUrl('app_vee_etape4_success'));

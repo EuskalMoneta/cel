@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\BonPlan;
 use App\Service\IDCheckAPI;
 use Doctrine\ORM\EntityManagerInterface;
@@ -466,7 +467,7 @@ class VacancesEuskoController extends AbstractController
     #[Route(path: '/vacances-en-eusko/fermeture-compte/panier', name: 'app_vee_fermeture_panier')]
     public function fermetureComptePanierVEE(APIToolbox $APIToolbox, EntityManagerInterface $em, Request $request, SessionInterface $session)
     {
-        $articles = $em->getRepository(\App\Entity\Article::class)->findBy(['visible' => true], ['prix' => 'ASC']);
+        $articles = $em->getRepository(Article::class)->findBy(['visible' => true], ['prix' => 'ASC']);
         $response = $APIToolbox->curlRequest('GET', '/account-summary-adherents/');
         if($response['httpcode'] == 200) {
             $infosUser = [

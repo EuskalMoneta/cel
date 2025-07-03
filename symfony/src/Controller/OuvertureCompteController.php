@@ -524,12 +524,11 @@ class OuvertureCompteController extends AbstractController
     }
 
     #[Route(path: '/{_locale}/ouverture-compte/finalisation', name: 'app_compte_etape_finalisation')]
-    public function etapeFinalisation(APIToolbox $APIToolbox,
-                                      Request $request,
+    public function etapeFinalisation(Request $request,
                                       SessionInterface $session,
                                       EntityManagerInterface $em,
                                       TranslatorInterface $translator,
-                                      Security $security)
+                                      )
     {
         $session->start();
 
@@ -579,34 +578,17 @@ class OuvertureCompteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $data = $session->get('utilisateur');
+            $formData = $form->getData();
+            $motivation = new Motivation();
+            $motivation->setUser($utilisateurSession['email']);
+            $motivation->setDeclencheur($formData['finalisation']);
+            $motivation->setDeclencheurAutre($formData['autre']);
+            $motivation->setMotivations($formData['motivation']);
 
-            $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte/', $data);
-            if($response['httpcode'] == 201) {
-                $credentials['username'] = $response['data']->login;
-                $credentials['password'] = $data['password'];
-
-                $user = $APIToolbox->autoLogin($credentials);
-
-                $formData = $form->getData();
-                $motivation = new Motivation();
-                $motivation->setUser($response['data']->login);
-                $motivation->setDeclencheur($formData['finalisation']);
-                $motivation->setDeclencheurAutre($formData['autre']);
-                $motivation->setMotivations($formData['motivation']);
-
-                $em->persist($motivation);
-                $em->flush();
-
-                $session->set('utilisateur', []);
-
-                $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
-
-                return $security->login($user, LoginFormAuthenticator::class);
-            }
+            $em->persist($motivation);
+            $em->flush();
 
             $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
-
         }
 
         return $this->render('ouverture_compte/etape_finalisation.html.twig', [
@@ -618,7 +600,62 @@ class OuvertureCompteController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/{_locale}/ouverture-compte/validation', name: 'app_compte_validation')]
+    public function etapeValidation( TranslatorInterface $translator): Response
+    {
+        return $this->render('ouverture_compte/etape_validation.html.twig', [
+            'surtitre' => $translator->trans(OuvertureCompteController::SURTITRE),
+            'numero_etape' => 8,
+            'nb_etapes' => OuvertureCompteController::NB_ETAPES,
+            'titre' => $translator->trans('ouverture_compte.validation.titre'),
+        ]);
+    }
 
+    #[Route(path: '/{_locale}/ouverture-compte/validation/async', name: 'app_compte_validation_async')]
+    public function validationAsync(Request $request,
+                                    APIToolbox $APIToolbox,
+                                    SessionInterface $session): JsonResponse
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(['bool' => false]);
+        }
+
+        $data = $session->get('utilisateur');
+
+        $response = $APIToolbox->curlWithoutToken('POST', '/creer-compte/', $data);
+
+        if($response['httpcode'] != 201) {
+            return new JsonResponse(['bool' => false]);
+        }
+
+        //on sauvegarde les identifiants uniquement pour faire un autologin
+        $credentials['username'] = $response['data']->login;
+        $credentials['password'] = $data['password'];
+
+        $session->set('credentials', $credentials);
+        $session->set('utilisateur', []);
+
+        return new JsonResponse(['bool' => true]);
+    }
+
+    #[Route(path: '/{_locale}/ouverture-compte/autologin', name: 'app_compte_autologin')]
+    public function autologin(SessionInterface $session,
+                              APIToolbox $APIToolbox,
+                              Security $security): Response
+    {
+        $session->start();
+
+        $credentials = $session->get('credentials');
+        if (empty($credentials)) {
+            return $this->redirectToRoute('app_ouverture_etape_identite');
+        }
+
+        $user = $APIToolbox->autoLogin($credentials);
+        $session->set('_security.main.target_path', $this->generateUrl('app_compte_ecran_de_fin'));
+        $session->set('credentials', []);
+
+        return $security->login($user, LoginFormAuthenticator::class);
+    }
     #[Route(path: '/{_locale}/ouverture-compte/bienvenue', name: 'app_compte_ecran_de_fin')]
     public function fin(): Response
     {

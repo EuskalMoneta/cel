@@ -1803,6 +1803,23 @@ Diru kentzeak hilaren 10ero egiten dira eta zure eusko kontua 24 oren barne karg
              <source>ouverture_compte.deux.faces</source>
              <target>Zure nortasun agiriaren bi aldeak behar ditugu. Bi aldeak dituen dokumentu bat deskarga dezakezu, edo bi dokumentu bereizi.</target>
            </trans-unit>
+
+           <trans-unit id="KJKXC298" resname="ouverture_compte.validation.titre">
+                   <source>ouverture_compte.validation.titre</source>
+                   <target>Validation</target>
+                 </trans-unit>
+                  <trans-unit id="K0009C298" resname="ouverture_compte.validation.explication">
+                   <source>ouverture_compte.validation.explication</source>
+                   <target>Veuillez patienter pendant la validation de votre dossier...</target>
+                 </trans-unit>
+                 <trans-unit id="K000koi8" resname="ouverture_compte.validation.success">
+                   <source>ouverture_compte.validation.success</source>
+                   <target>✅ Votre dossier a été validé avec succès !</target>
+                 </trans-unit>
+                 <trans-unit id="Kpmkoi8" resname="ouverture_compte.validation.echec">
+                   <source>ouverture_compte.validation.echec</source>
+                   <target>❌ La validation a pris trop de temps ou a échoué. Merci de bien vouloir nous contacter pour la finalisation de votre compte.</target>
+                 </trans-unit>
     </body>
   </file>
 </xliff>

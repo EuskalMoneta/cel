@@ -588,7 +588,7 @@ class OuvertureCompteController extends AbstractController
             $em->persist($motivation);
             $em->flush();
 
-            $this->addFlash('danger', 'Erreur lors de la validation de vos données, merci de re-essayer ou de contacter un administrateur.');
+            return $this->redirectToRoute('app_compte_validation');
         }
 
         return $this->render('ouverture_compte/etape_finalisation.html.twig', [

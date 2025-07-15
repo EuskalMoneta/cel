@@ -1786,6 +1786,22 @@ Les prélèvements sont effectués le 10 de chaque mois et votre compte eusko es
          <source>ouverture_compte.deux.faces</source>
          <target>Nous avons besoin des deux faces de votre carte d'identité. Vous pouvez télécharger un document contenant les deux faces ou télécharger deux documents distincts.</target>
        </trans-unit>
+       <trans-unit id="KJKXC298" resname="ouverture_compte.validation.titre">
+        <source>ouverture_compte.validation.titre</source>
+        <target>Validation</target>
+      </trans-unit>
+       <trans-unit id="K0009C298" resname="ouverture_compte.validation.explication">
+        <source>ouverture_compte.validation.explication</source>
+        <target>Veuillez patienter pendant la validation de votre dossier...</target>
+      </trans-unit>
+      <trans-unit id="K000koi8" resname="ouverture_compte.validation.success">
+        <source>ouverture_compte.validation.success</source>
+        <target>✅ Votre dossier a été validé avec succès !</target>
+      </trans-unit>
+      <trans-unit id="Kpmkoi8" resname="ouverture_compte.validation.echec">
+        <source>ouverture_compte.validation.echec</source>
+        <target>❌ La validation a pris trop de temps ou a échoué. Merci de bien vouloir nous contacter pour la finalisation de votre compte.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

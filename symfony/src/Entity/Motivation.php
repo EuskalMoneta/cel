@@ -24,7 +24,7 @@ class Motivation
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $motivations = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[ORM\Column(length: 120, nullable: true)]
     private ?string $user = null;
 
     #[ORM\Column]

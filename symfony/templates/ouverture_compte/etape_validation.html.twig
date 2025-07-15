@@ -1,0 +1,78 @@
+{% extends 'base_ouverture_compte.html.twig' %}
+
+{% block content %}
+    <p class="text-subtitle mb-1">
+
+        {{ 'ouverture_compte.validation.explication' | trans }}
+    </p>
+
+
+    <div id="loader">
+        <div id="spinner" class="text-center mt-4 spinner">
+            <div class="loadingio-spinner-spinner-3n6a06i025x"><div class="ldio-x8uv5a6ulc">
+                    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                </div></div>
+        </div>
+    </div>
+
+    <div id="success-message" style="display:none; color: green;">
+        {{ 'ouverture_compte.validation.success' | trans }}
+    </div>
+
+    <div id="error-message" style="display:none; color: red;">
+            {{ 'ouverture_compte.validation.echec' | trans }}
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            const success = document.getElementById('success-message');
+            const error = document.getElementById('error-message');
+
+            const controller = new AbortController();
+
+            //erreur si plus de 30 secondes
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+                $('#spinner').addClass('d-none');
+                error.style.display = 'block';
+            }, 30000);
+
+            fetch("{{ path('app_compte_validation_async') }}", {
+                method: 'POST',
+                signal: controller.signal,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+                .then(response => {
+                    clearTimeout(timeoutId);
+                    if (!response.ok) {
+                        throw new Error("Erreur serveur");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.bool) {
+                        $('#spinner').addClass('d-none');
+                        success.style.display = 'block';
+                        setTimeout(() => {
+                            window.location.href = "{{ path('app_compte_autologin') }}";
+                        }, 1000);
+                    } else {
+                        $('#spinner').addClass('d-none');
+                        error.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    $('#spinner').addClass('d-none');
+                    error.style.display = 'block';
+                });
+        });
+    </script>
+{% endblock %}

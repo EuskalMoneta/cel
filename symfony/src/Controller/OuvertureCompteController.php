@@ -54,6 +54,7 @@ class OuvertureCompteController extends AbstractController
         $formBuilder = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']]);
 
         $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
+
         $tabCountries = [];
         foreach ($responseCountries['data'] as $country){
             if($country->label !== '-'){

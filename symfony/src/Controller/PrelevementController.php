@@ -124,6 +124,10 @@ class PrelevementController extends AbstractController
                 $createdMoins = $created->modify('-1 minute');
                 $createdPlus = $created->modify('+1 day');
 
+                if($listFail != '') {
+                    $this->addFlash('danger', $translator->trans("Erreur de prélèvement : ") .'<ul>'. $listFail . '</ul> ');
+                }
+
                 return $this->redirectToRoute('app_prelevement_resultats', [
                     'dateFrom' => $createdMoins->format('Y-m-d H:i:s'),
                     'dateTo' => $createdPlus->format('Y-m-d')

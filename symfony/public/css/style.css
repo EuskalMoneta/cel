@@ -709,3 +709,8 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
 .button-nav::-webkit-details-marker {
     display: none;
 }
+.readonly-field {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

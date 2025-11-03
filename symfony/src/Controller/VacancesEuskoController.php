@@ -87,9 +87,9 @@ class VacancesEuskoController extends AbstractController
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']])
             ->add('address', TextareaType::class, ['required' => true])
-            ->add('zip', TextType::class, ['required' => true, 'attr' => ['class' => 'basicAutoComplete']])
-            ->add('town', TextType::class, ['required' => true])
-            ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries])
+            ->add('country_id', ChoiceType::class, ['label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries, 'attr' => ['class' => 'country-select']])
+            ->add('zip', TextType::class, ['label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'zip-input basicAutoComplete', "autocomplete" => "off"]])
+            ->add('town', TextType::class, ['label' => $translator->trans('coordonnees.ville'), 'required' => true, 'attr' => [ 'class' => 'town-input readonly-field', "autocomplete" => "off"]])
             ->add('phone', TextType::class, ['required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('submit', SubmitType::class, ['label' => 'Valider'])
             ->getForm();

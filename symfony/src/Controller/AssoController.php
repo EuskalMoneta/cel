@@ -24,15 +24,11 @@ class AssoController extends AbstractController
             $membre = $responseMember['data'][0];
 
             $asso1 = '';
-            $asso2 = '';
             $response = $APIToolbox->curlRequest('GET', '/associations/');
             if($response['httpcode'] == 200) {
                 foreach ($response['data'] as $asso) {
                     if ($asso->id == $membre->fk_asso) {
                         $asso1 = $asso->nom;
-                    }
-                    if ($asso->id == $membre->fk_asso2) {
-                        $asso2 = $asso->nom;
                     }
                 }
             }
@@ -43,7 +39,7 @@ class AssoController extends AbstractController
                 $montant_don = $response['data']->montant_don;
             }
 
-            return $this->render('asso/asso.html.twig', ['membre' => $membre, 'montant_don' => $montant_don, 'asso1' => $asso1, 'asso2' => $asso2]);
+            return $this->render('asso/asso.html.twig', ['membre' => $membre, 'montant_don' => $montant_don, 'asso1' => $asso1]);
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }
@@ -67,7 +63,6 @@ class AssoController extends AbstractController
             }
 
             if($request->isMethod('POST')){
-                $data['fk_asso2'] = '';
 
                 //If asso existante
                 if($request->get('radiostar')[0] == 'asso'){
@@ -122,20 +117,15 @@ class AssoController extends AbstractController
             }
 
             if($request->isMethod('POST')){
-                $data['fk_asso2'] = $request->get('fk_asso2');
 
-                if($data['fk_asso2'] == ''){
-                    $this->addFlash('danger', $translator->trans('Veuillez sélectionner une association dans la liste'));
-                } else {
-                    $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
-                    if($response['httpcode'] == 200) {
-                        $this->addFlash('success', $translator->trans('Vos associations ont bien été enregistrées.'));
-                        return $this->redirectToRoute('app_asso');
-                    }
+                $response = $APIToolbox->curlRequest('PATCH', '/members/'.$membre->id.'/', $data);
+                if($response['httpcode'] == 200) {
+                    $this->addFlash('success', $translator->trans('Votre association a bien été enregistrée.'));
+                    return $this->redirectToRoute('app_asso');
                 }
             }
 
-            return $this->render('asso/assoSecondChoix.html.twig', ['optionsAsso' => $optionsAsso, 'membre' => $membre]);
+	    return $this->redirectToRoute('app_asso');
         } else {
             throw new NotFoundHttpException("Impossible de récupérer les informations de l'adhérent !");
         }

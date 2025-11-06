@@ -201,9 +201,9 @@
         <source>Veuillez sélectionner une association dans la liste</source>
         <target>Veuillez sélectionner une association dans la liste</target>
       </trans-unit>
-      <trans-unit id="l3MzLhS" resname="Vos associations ont bien été enregistrées.">
-        <source>Vos associations ont bien été enregistrées.</source>
-        <target>Vos associations ont bien été enregistrées.</target>
+      <trans-unit id="l3MzLhS" resname="Votre association a bien été enregistrée.">
+        <source>Votre association a bien été enregistrée.</source>
+        <target>Votre association a bien été enregistrée.</target>
       </trans-unit>
       <trans-unit id="pV2Rx35" resname="Votre demande a bien été prise en compte">
         <source>Votre demande a bien été prise en compte</source>

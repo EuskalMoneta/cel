@@ -75,7 +75,7 @@
                 init();
             });
 
-            $('#coordonnees').submit(function () {
+            $('#coordonnees').submit(function (e) {
                 $('#form_phone').val(iti.getNumber());
 
                 var isFrance = $country.find('option:selected').text().trim() === 'France';
@@ -91,7 +91,7 @@
                     e.preventDefault();
                     return false;
                 }
-                
+
                 return true;
             });
 

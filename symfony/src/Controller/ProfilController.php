@@ -330,7 +330,7 @@ class ProfilController extends AbstractController
                 }
             }
 
-            $formBuilder = $this->createFormBuilder();
+            $formBuilder = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']]);
             if ($membre->type === 'Particulier' || $membre->type === 'Touriste') {
                 $formBuilder->add('birth', DateType::class, [
                     'widget' => 'single_text',
@@ -340,13 +340,14 @@ class ProfilController extends AbstractController
             }
             $formBuilder
                 ->add('address', TextareaType::class, ['required' => true, 'data' => $membre->address])
-                ->add('zip', TextType::class, ['required' => true, 'data' => $membre->zip, 'attr' => ['class' => 'basicAutoComplete']])
-                ->add('town', TextType::class, ['required' => true, 'data' => $membre->town])
-                ->add('country_id', ChoiceType::class, ['required' => true, 'choices' => $tabCountries, 'data' => $membre->country_id]);
+                ->add('country_id', ChoiceType::class, ['data' => $membre->country_id, 'label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries, 'attr' => ['class' => 'country-select']])
+                ->add('zip', TextType::class, ['data' => $membre->zip,'label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'zip-input basicAutoComplete', "autocomplete" => "off"]])
+                ->add('town', TextType::class, ['data' => $membre->town, 'label' => $translator->trans('coordonnees.ville'), 'required' => true, 'attr' => [ 'class' => 'town-input readonly-field', "autocomplete" => "off"]])
+                ;
             if ($membre->type === 'Particulier' || $membre->type === 'Touriste') {
-                $formBuilder->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile]);
+                $formBuilder->add('phone_mobile', TextType::class, ['required' => true, 'data' => $membre->phone_mobile, 'attr' => ['id' => 'form_phone']]);
             } else {
-                $formBuilder->add('phone', TextType::class, ['label' => 'Téléphone pro', 'required' => true, 'data' => $membre->phone]);
+                $formBuilder->add('phone', TextType::class, ['label' => 'Téléphone pro', 'required' => true, 'data' => $membre->phone,  'attr' => ['id' => 'form_phone']]);
             }
             $formBuilder
                 ->add('email', TextType::class, ['required' => true, 'data' => $membre->email])

@@ -54,6 +54,7 @@ class OuvertureCompteController extends AbstractController
         $formBuilder = $this->createFormBuilder(null, ['attr' => ['id' => 'coordonnees']]);
 
         $responseCountries = $APIToolbox->curlWithoutToken('GET', '/countries/');
+
         $tabCountries = [];
         foreach ($responseCountries['data'] as $country){
             if($country->label !== '-'){
@@ -76,23 +77,26 @@ class OuvertureCompteController extends AbstractController
                 'required' => true,
                 'constraints' => [ new NotBlank() ],
                 'data' => ($member == null) ? '' : $member->lastname,
+                'attr' => [ "autocomplete" => "off"],
             ])
             ->add('firstname', TextType::class, [
                 'label' => $translator->trans('identite.prenom'),
                 'required' => true,
                 'constraints' => [ new NotBlank() ],
                 'data' => ($member == null) ? '' : $member->firstname,
+                'attr' => [ "autocomplete" => "off"],
             ])
             ->add('email', EmailType::class, [
                 'label' => $translator->trans('identite.email'),
                 'required' => true,
                 'constraints' => [ new NotBlank() ],
                 'data' => ($member == null) ? '' : $member->email,
+                'attr' => [ "autocomplete" => "off"],
             ])
-            ->add('address', TextareaType::class, ['label' => $translator->trans('coordonnees.adresse'), 'required' => true])
-            ->add('zip', TextType::class, ['label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'basicAutoComplete', "autocomplete" => "off"]])
-            ->add('town', TextType::class, ['label' => $translator->trans('coordonnees.ville'), 'required' => true])
-            ->add('country_id', ChoiceType::class, ['label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries])
+            ->add('address', TextareaType::class, ['label' => $translator->trans('coordonnees.adresse'), 'required' => true, 'attr' => [ "autocomplete" => "off"]])
+            ->add('zip', TextType::class, ['label' => $translator->trans('coordonnees.code_postal'), 'required' => true, 'attr' => ['class' => 'zip-input basicAutoComplete', "autocomplete" => "off"]])
+            ->add('town', TextType::class, ['label' => $translator->trans('coordonnees.ville'), 'required' => true, 'attr' => [ 'class' => 'town-input readonly-field', "autocomplete" => "off"]])
+            ->add('country_id', ChoiceType::class, ['label' => $translator->trans('coordonnees.pays'), 'required' => true, 'choices' => $tabCountries, 'attr' => ['class' => 'country-select']])
             ->add('phone', TextType::class, ['label' => $translator->trans('coordonnees.telephone_portable'), 'required' => true, 'attr' => array('id'=>'phone', 'placeholder' => '')])
             ->add('valide', CheckboxType::class, ['label' => " ", 'required' => true])
             ->add('submit', SubmitType::class, ['label' => 'Valider']);

@@ -201,9 +201,9 @@
         <source>Veuillez sélectionner une association dans la liste</source>
         <target>Elkarte bat aukeratu zerrenda honetan</target>
       </trans-unit>
-      <trans-unit id="l3MzLhS" resname="Vos associations ont bien été enregistrées.">
-        <source>Vos associations ont bien été enregistrées.</source>
-        <target>Zure elkarteak ongi grabatuak izan dira.</target>
+      <trans-unit id="l3MzLhS" resname="Votre association a bien été enregistrée.">
+        <source>Votre association a bien été enregistrée.</source>
+        <target>Zure elkartea ongi grabatua izan da.</target>
       </trans-unit>
       <trans-unit id="pV2Rx35" resname="Votre demande a bien été prise en compte">
         <source>Votre demande a bien été prise en compte</source>

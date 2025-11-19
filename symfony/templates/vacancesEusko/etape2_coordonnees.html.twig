@@ -39,25 +39,64 @@
                 utilsScript: "{{ asset('js/intlTelInputUtils.js') }}"
             });
 
-            $('#coordonnees').submit(function () {
+            var $country = $('.country-select, #form_country_id');
+            var $zip = $('#form_zip');
+            var $town = $('#form_town');
+
+            function init() {
+                var isFrance = $country.find('option:selected').text().trim() === 'France';
+
+                if (isFrance) {
+                    $town.prop('readonly', true).addClass('readonly-field');
+
+                    $zip.addClass('basicAutoComplete').autoComplete({
+                        resolverSettings: {
+                            url: '{{ path('app_ajex_zipcode_search') }}'
+                        }
+                    }).on('autocomplete.select', function() {
+                        var parts = $(this).val().split('--');
+                        $zip.val(parts[0]);
+                        $town.val(parts[1] || '');
+                    });
+                } else {
+                    // Enlever readonly pour les autres pays
+                    $town.prop('readonly', false).removeClass('readonly-field');
+
+                    if ($zip.data('autoComplete')) {
+                        $zip.autoComplete('destroy').removeClass('basicAutoComplete');
+                    }
+                }
+            }
+
+            init();
+            $country.on('change', function() {
+                $zip.val('');
+                $town.val('');
+                init();
+            });
+
+            $('#coordonnees').submit(function (e) {
                 $('#form_phone').val(iti.getNumber());
+
+                var isFrance = $country.find('option:selected').text().trim() === 'France';
+
+                if (isFrance && !$town.val()) {
+                    e.preventDefault();
+                    alert('Veuillez sélectionner un code postal valide pour remplir automatiquement la ville.');
+                    $zip.focus();
+                    return false;
+                }
+
+                if (!$town.val()) {
+                    e.preventDefault();
+                    return false;
+                }
+
                 return true;
             });
 
         });
 
-        $('.basicAutoComplete').autoComplete({
-            resolverSettings: {
-                url: '{{ path('app_ajex_zipcode_search') }}'
-            }
-        });
-
-        $('.basicAutoComplete').bind('autocomplete.select', function() {
-            var ziptown = $("#form_zip").val().split('--');
-            $("form_zip").val(ziptown[0]);
-            $(this).val(ziptown[0]);
-            $('#form_town').val(ziptown[1]);
-        });
 
     </script>
 {% endblock %}
